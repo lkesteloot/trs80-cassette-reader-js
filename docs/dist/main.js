@@ -553,6 +553,36 @@ class Program_Program {
             this.binary[1] === 0xD3 &&
             this.binary[2] === 0xD3;
     }
+    /**
+     * Whether the binary represents an EDTASM program.
+     *
+     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/edtasm-file-format/
+     */
+    isEdtasmProgram() {
+        function isValidProgramNameChar(n) {
+            console.log("isValidProgramNameChar: " + n);
+            return (n >= 0x41 && n <= 0x5A) || n === 0x20;
+        }
+        function isValidLineNumberChar(n) {
+            console.log("isValidLineNumberChar: " + n);
+            return n >= 0xB0 && n <= 0xB9;
+        }
+        return this.binary != null &&
+            this.binary.length >= 13 &&
+            this.binary[0] === 0xD3 &&
+            isValidProgramNameChar(this.binary[1]) &&
+            isValidProgramNameChar(this.binary[2]) &&
+            isValidProgramNameChar(this.binary[3]) &&
+            isValidProgramNameChar(this.binary[4]) &&
+            isValidProgramNameChar(this.binary[5]) &&
+            isValidProgramNameChar(this.binary[6]) &&
+            isValidLineNumberChar(this.binary[7]) &&
+            isValidLineNumberChar(this.binary[8]) &&
+            isValidLineNumberChar(this.binary[9]) &&
+            isValidLineNumberChar(this.binary[10]) &&
+            isValidLineNumberChar(this.binary[11]) &&
+            this.binary[12] === 0x20;
+    }
 }
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
@@ -11561,7 +11591,78 @@ class WaveformDisplay_WaveformDisplay {
     }
 }
 
+// CONCATENATED MODULE: ./src/Edtasm.ts
+// Tools for decoding EDTASM programs.
+//
+// http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/edtasm-file-format/
+/**
+ * TODO share this code with Basic.ts.
+ *
+ * @param out the enclosing element to add to.
+ * @param text the text to add.
+ * @param className the name of the class for the item.
+ */
+function Edtasm_add(out, text, className) {
+    const e = document.createElement("span");
+    e.innerText = text;
+    e.classList.add(className);
+    out.appendChild(e);
+}
+function decodeEdtasm(bytes, out) {
+    // Check magic.
+    if (bytes.length < 7 || bytes[0] !== 0xD3) {
+        Edtasm_add(out, "EDTASM: missing magic -- not a EDTASM file.", "error");
+        return;
+    }
+    // Read name of program.
+    const name = (String.fromCodePoint(bytes[1]) +
+        String.fromCodePoint(bytes[2]) +
+        String.fromCodePoint(bytes[3]) +
+        String.fromCodePoint(bytes[4]) +
+        String.fromCodePoint(bytes[5]) +
+        String.fromCodePoint(bytes[6])).trim();
+    let i = 7;
+    while (true) {
+        // End of program.
+        if (bytes.length - i < 5) {
+            return;
+        }
+        const line = document.createElement("div");
+        // Read line number.
+        const lineNumber = "" +
+            (bytes[i] - 0xB0) +
+            (bytes[i + 1] - 0xB0) +
+            (bytes[i + 2] - 0xB0) +
+            (bytes[i + 3] - 0xB0) +
+            (bytes[i + 4] - 0xB0);
+        i += 5;
+        Edtasm_add(line, lineNumber, "line_number");
+        // Parse line.
+        let lineText = "";
+        while (i < bytes.length && bytes[i] != 0x0D && bytes[i] !== 0x0A && bytes[i] !== 0x1A) {
+            if (bytes[i] === 0x09) {
+                // Tab.
+                do {
+                    lineText += " ";
+                } while (lineText.length % 8 !== 0);
+            }
+            else {
+                // Non-tab.
+                lineText += String.fromCodePoint(bytes[i]);
+            }
+            i++;
+        }
+        Edtasm_add(line, lineText, "regular");
+        // Skip EOL.
+        while (i < bytes.length && (bytes[i] === 0x0D || bytes[i] === 0x0A)) {
+            i++;
+        }
+        out.appendChild(line);
+    }
+}
+
 // CONCATENATED MODULE: ./src/TapeBrowser.ts
+
 
 
 
@@ -11665,11 +11766,12 @@ class TapeBrowser_TapeBrowser {
         this.currentWaveformDisplay.draw();
     }
     showBinary(program) {
-        this.showProgramText();
+        this.showTextPane();
         const div = this.programText;
         clearElement(div);
         div.classList.add("binary");
         div.classList.remove("basic");
+        div.classList.remove("edtasm");
         const binary = program.binary;
         for (let addr = 0; addr < binary.length; addr += 16) {
             const line = document.createElement("div");
@@ -11707,12 +11809,22 @@ class TapeBrowser_TapeBrowser {
         }
     }
     showBasic(program) {
-        this.showProgramText();
+        this.showTextPane();
         const div = this.programText;
         clearElement(div);
         div.classList.add("basic");
         div.classList.remove("binary");
+        div.classList.remove("edtasm");
         fromTokenized(program.binary, div);
+    }
+    showEdtasm(program) {
+        this.showTextPane();
+        const div = this.programText;
+        clearElement(div);
+        div.classList.add("edtasm");
+        div.classList.remove("binary");
+        div.classList.remove("basic");
+        decodeEdtasm(program.binary, div);
     }
     showEmulator(screen, trs80) {
         this.showEmulatorScreens();
@@ -11730,7 +11842,7 @@ class TapeBrowser_TapeBrowser {
             this.startedTrs80 = undefined;
         }
     }
-    showProgramText() {
+    showTextPane() {
         this.stopTrs80();
         this.waveforms.style.display = "none";
         this.programText.style.display = "block";
@@ -11826,6 +11938,12 @@ class TapeBrowser_TapeBrowser {
                         this.showEmulator(screen, trs80);
                     });
                 }
+            }
+            console.log("Checking EDTASM");
+            if (program.isEdtasmProgram()) {
+                addRow("    Assembly", () => {
+                    this.showEdtasm(program);
+                });
             }
             let count = 1;
             for (const bitData of program.bits) {
