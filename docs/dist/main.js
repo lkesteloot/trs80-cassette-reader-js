@@ -11606,11 +11606,14 @@ function Edtasm_add(out, text, className) {
     e.classList.add(className);
     out.appendChild(e);
 }
+/**
+ * Decoded the program into the DIV, returning the program name.
+ */
 function decodeEdtasm(bytes, out) {
     // Check magic.
     if (bytes.length < 7 || bytes[0] !== 0xD3) {
         Edtasm_add(out, "EDTASM: missing magic -- not a EDTASM file.", "error");
-        return;
+        return "Error";
     }
     // Read name of program.
     const name = (String.fromCodePoint(bytes[1]) +
@@ -11623,7 +11626,7 @@ function decodeEdtasm(bytes, out) {
     while (true) {
         // End of program.
         if (bytes.length - i < 5) {
-            return;
+            return name;
         }
         const line = document.createElement("div");
         // Read line number.
@@ -11807,7 +11810,7 @@ class TapeBrowser_TapeBrowser {
             addKeyValue("Type", "Basic program", () => this.showPane(basicPane));
         }
         else if (edtasmPane !== undefined) {
-            addKeyValue("Type", "Assembly program", () => this.showPane(edtasmPane));
+            addKeyValue("Type", "Assembly program (" + edtasmPane.edtasmName + ")", () => this.showPane(edtasmPane));
         }
         else {
             addKeyValue("Type", "Unknown");
@@ -11898,8 +11901,10 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("edtasm");
-        decodeEdtasm(program.binary, div);
-        return new Pane(div);
+        const name = decodeEdtasm(program.binary, div);
+        const pane = new Pane(div);
+        pane.edtasmName = name;
+        return pane;
     }
     makeEmulatorPane(program, cassette) {
         const div = document.createElement("div");
@@ -11983,7 +11988,7 @@ class TapeBrowser_TapeBrowser {
                 addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new TapeBrowser_ReconstructedCassette(program)));
             }
             if (edtasmPane !== undefined) {
-                addPane("Assembly", edtasmPane);
+                addPane("Assembly (" + edtasmPane.edtasmName + ")", edtasmPane);
             }
         }
         // Show the first pane.
