@@ -11739,6 +11739,14 @@ class Pane {
     }
 }
 /**
+ * Remove all children from element.
+ */
+function clearElement(e) {
+    while (e.firstChild) {
+        e.removeChild(e.firstChild);
+    }
+}
+/**
  * UI for browsing a tape interactively.
  */
 class TapeBrowser_TapeBrowser {
@@ -11752,6 +11760,8 @@ class TapeBrowser_TapeBrowser {
         this.waveforms = waveforms;
         this.tapeContents = tapeContents;
         this.topData = topData;
+        clearElement(tapeContents);
+        clearElement(topData);
         this.originalWaveformDisplay.addWaveform(originalCanvas, tape.originalSamples);
         this.originalWaveformDisplay.addWaveform(filteredCanvas, tape.filteredSamples);
         this.originalWaveformDisplay.addWaveform(lowSpeedCanvas, tape.lowSpeedSamples);
@@ -11945,12 +11955,13 @@ class TapeBrowser_TapeBrowser {
 class Uploader {
     /**
      * @param dropZone any element where files can be dropped.
-     * @param dropUpload file type input element.
+     * @param inputElement file type input element.
      * @param dropS3 buttons to upload from S3.
      * @param dropProgress progress bar for loading large files.
      * @param handleAudioBuffer callback with AudioBuffer parameter.
      */
-    constructor(dropZone, dropUpload, dropS3, dropProgress, handleAudioBuffer) {
+    constructor(dropZone, inputElement, dropS3, dropProgress, handleAudioBuffer) {
+        this.uploadInput = inputElement;
         this.handleAudioBuffer = handleAudioBuffer;
         this.progressBar = dropProgress;
         dropZone.ondrop = (ev) => this.dropHandler(ev);
@@ -11960,15 +11971,15 @@ class Uploader {
             ev.preventDefault();
         };
         dropZone.ondragleave = () => dropZone.classList.remove("hover");
-        dropUpload.onchange = () => {
-            if (dropUpload.files) {
-                const file = dropUpload.files[0];
+        inputElement.onchange = () => {
+            if (inputElement.files) {
+                const file = inputElement.files[0];
                 if (file) {
                     this.handleDroppedFile(file);
                 }
             }
         };
-        dropUpload.onprogress = (event) => this.showProgress(event);
+        inputElement.onprogress = (event) => this.showProgress(event);
         dropS3.forEach((node) => {
             const button = node;
             button.onclick = () => {
@@ -11986,6 +11997,7 @@ class Uploader {
     }
     reset() {
         this.progressBar.classList.add("hidden");
+        this.uploadInput.value = "";
     }
     handleDroppedFile(file) {
         console.log("File " + file.name + " has size " + file.size);
