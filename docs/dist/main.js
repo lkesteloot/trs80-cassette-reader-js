@@ -11392,15 +11392,6 @@ class WaveformDisplay_WaveformDisplay {
         this.waveforms.push(new Waveform(canvas, samples));
         this.configureCanvas(canvas);
     }
-    replaceSamples(canvas, samples) {
-        for (const waveform of this.waveforms) {
-            if (waveform.canvas === canvas) {
-                waveform.samples = samples;
-                return;
-            }
-        }
-        throw new Error("canvas not found when replacing waveform");
-    }
     /**
      * Add a program to highlight in the waveform.
      */
@@ -11414,24 +11405,24 @@ class WaveformDisplay_WaveformDisplay {
         let dragging = false;
         let dragInitialX = 0;
         let dragInitialCenterSample = 0;
-        canvas.onmousedown = (event) => {
+        canvas.addEventListener("mousedown", event => {
             dragging = true;
             dragInitialX = event.x;
             dragInitialCenterSample = this.centerSample;
             canvas.style.cursor = "grab";
-        };
-        canvas.onmouseup = () => {
+        });
+        canvas.addEventListener("mouseup", () => {
             dragging = false;
             canvas.style.cursor = "auto";
-        };
-        canvas.onmousemove = (event) => {
+        });
+        canvas.addEventListener("mousemove", event => {
             if (dragging) {
                 const dx = event.x - dragInitialX;
                 const mag = Math.pow(2, this.displayLevel);
                 this.centerSample = Math.round(dragInitialCenterSample - dx * mag);
                 this.draw();
             }
-        };
+        });
     }
     /**
      * Draw all the waveforms.
@@ -11770,19 +11761,6 @@ class TapeBrowser_TapeBrowser {
         this.currentWaveformDisplay = this.originalWaveformDisplay;
         zoomInButton.onclick = () => this.originalWaveformDisplay.zoomIn();
         zoomOutButton.onclick = () => this.originalWaveformDisplay.zoomOut();
-        /*
-        // Configure zoom keys.
-        document.onkeypress = (event) => {
-            if (event.key === "=" && this.currentWaveformDisplay !== undefined) {
-                this.currentWaveformDisplay.zoomIn();
-                event.preventDefault();
-            }
-            if (event.key === "-" && this.currentWaveformDisplay !== undefined) {
-                this.currentWaveformDisplay.zoomOut();
-                event.preventDefault();
-            }
-        };
-         */
         // Update left-side panel.
         this.updateTapeContents();
         this.currentWaveformDisplay.draw();
@@ -11831,6 +11809,17 @@ class TapeBrowser_TapeBrowser {
     makeReconstructedPane(program) {
         const div = document.createElement("div");
         div.classList.add("reconstructed_waveform");
+        const zoomInButton = document.createElement("button");
+        zoomInButton.innerText = "Zoom In";
+        zoomInButton.classList.add("nice_button");
+        zoomInButton.addEventListener("click", () => waveformDisplay.zoomIn());
+        div.appendChild(zoomInButton);
+        div.appendChild(document.createTextNode(" "));
+        const zoomOutButton = document.createElement("button");
+        zoomOutButton.innerText = "Zoom Out";
+        zoomOutButton.classList.add("nice_button");
+        zoomOutButton.addEventListener("click", () => waveformDisplay.zoomOut());
+        div.appendChild(zoomOutButton);
         const p = document.createElement("p");
         p.innerText = "Reconstructed high-speed waveform:";
         div.appendChild(p);
@@ -11839,8 +11828,7 @@ class TapeBrowser_TapeBrowser {
         canvas.height = 400;
         div.appendChild(canvas);
         const waveformDisplay = new WaveformDisplay_WaveformDisplay();
-        waveformDisplay.addWaveform(canvas);
-        waveformDisplay.replaceSamples(canvas, program.reconstructedSamples);
+        waveformDisplay.addWaveform(canvas, program.reconstructedSamples);
         waveformDisplay.zoomToFitAll();
         return new Pane(div).setWaveformDisplay(waveformDisplay);
     }
@@ -11874,17 +11862,19 @@ class TapeBrowser_TapeBrowser {
      * Show a particular pane and hide all others.
      */
     showPane(pane) {
-        var _a, _b;
+        var _a, _b, _c, _d;
         // Hide all others.
-        for (const hiddenPane of this.panes) {
-            if (hiddenPane !== pane) {
-                hiddenPane.element.classList.add("hidden");
-                (_a = hiddenPane.trs80) === null || _a === void 0 ? void 0 : _a.stop();
+        for (const otherPane of this.panes) {
+            if (otherPane !== pane) {
+                otherPane.element.classList.add("hidden");
+                (_a = otherPane.row) === null || _a === void 0 ? void 0 : _a.classList.remove("selected");
+                (_b = otherPane.trs80) === null || _b === void 0 ? void 0 : _b.stop();
             }
         }
         // Show this one.
         pane.element.classList.remove("hidden");
-        (_b = pane.trs80) === null || _b === void 0 ? void 0 : _b.start();
+        (_c = pane.row) === null || _c === void 0 ? void 0 : _c.classList.add("selected");
+        (_d = pane.trs80) === null || _d === void 0 ? void 0 : _d.start();
     }
     /**
      * Create the panes and the table of contents for them on the left.
@@ -11921,7 +11911,7 @@ class TapeBrowser_TapeBrowser {
                 pane.element.classList.add("hidden");
                 this.topData.appendChild(pane.element);
                 this.panes.push(pane);
-                addRow("    " + label, () => {
+                pane.row = addRow("    " + label, () => {
                     this.showPane(pane);
                 });
             };
@@ -11946,6 +11936,10 @@ class TapeBrowser_TapeBrowser {
                 }
             }
              */
+        }
+        // Show the first pane.
+        if (this.panes.length > 0) {
+            this.showPane(this.panes[0]);
         }
     }
 }
