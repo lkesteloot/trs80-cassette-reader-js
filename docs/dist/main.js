@@ -560,11 +560,9 @@ class Program_Program {
      */
     isEdtasmProgram() {
         function isValidProgramNameChar(n) {
-            console.log("isValidProgramNameChar: " + n);
             return (n >= 0x41 && n <= 0x5A) || n === 0x20;
         }
         function isValidLineNumberChar(n) {
-            console.log("isValidLineNumberChar: " + n);
             return n >= 0xB0 && n <= 0xB9;
         }
         return this.binary != null &&
@@ -11668,88 +11666,101 @@ function decodeEdtasm(bytes, out) {
 
 
 
-
 /**
  * Generic cassette that reads from a Float32Array.
  */
 class TapeBrowser_Float32Cassette extends Cassette {
-    constructor(samples, samplesPerSecond, progressBar) {
+    constructor(samples, samplesPerSecond) {
         super();
         this.frame = 0;
         this.samples = samples;
         this.samplesPerSecond = samplesPerSecond;
+    }
+    setProgressBar(progressBar) {
         this.progressBar = progressBar;
         this.progressBar.max = this.samples.length;
     }
     onMotorStart() {
-        this.progressBar.classList.remove("hidden");
+        if (this.progressBar !== undefined) {
+            this.progressBar.classList.remove("hidden");
+        }
     }
     readSample() {
         if (this.frame % this.samplesPerSecond === 0) {
             console.log("Reading tape at " + frameToTimestamp(this.frame));
         }
-        if (this.frame % Math.floor(this.samplesPerSecond / 10) === 0) {
+        if (this.progressBar !== undefined && this.frame % Math.floor(this.samplesPerSecond / 10) === 0) {
             this.progressBar.value = this.frame;
         }
         return this.frame < this.samples.length ? this.samples[this.frame++] : 0;
     }
     onMotorStop() {
-        this.progressBar.classList.add("hidden");
+        if (this.progressBar !== undefined) {
+            this.progressBar.classList.add("hidden");
+        }
     }
 }
 /**
  * Implementation of Cassette that reads from our displayed data.
  */
 class TapeCassette extends TapeBrowser_Float32Cassette {
-    constructor(tape, program, progressBar) {
+    constructor(tape, program) {
         const samples = tape.originalSamples.samplesList[0];
         // Start one second before the official program start, so that the machine
         // can detect the header.
         const begin = Math.max(0, program.startFrame - tape.sampleRate);
         // Go until one second after the detected end of our program.
         const end = Math.min(samples.length, program.endFrame + tape.sampleRate);
-        super(samples.subarray(begin, end), tape.sampleRate, progressBar);
+        super(samples.subarray(begin, end), tape.sampleRate);
     }
 }
 /**
  * Implementation of Cassette that reads from our high-speed reconstruction.
  */
 class TapeBrowser_ReconstructedCassette extends TapeBrowser_Float32Cassette {
-    constructor(program, progressBar) {
-        super(program.reconstructedSamples.samplesList[0], HZ, progressBar);
+    constructor(program) {
+        super(program.reconstructedSamples.samplesList[0], HZ);
     }
 }
 /**
- * Remove all children from element.
+ * Class that keeps track of various information about a pane.
  */
-function clearElement(e) {
-    while (e.firstChild) {
-        e.removeChild(e.firstChild);
+class Pane {
+    constructor(element) {
+        this.element = element;
+    }
+    setWaveformDisplay(waveformDisplay) {
+        this.waveformDisplay = waveformDisplay;
+        return this;
+    }
+    setTrs80(trs80) {
+        this.trs80 = trs80;
+        return this;
     }
 }
 /**
  * UI for browsing a tape interactively.
  */
 class TapeBrowser_TapeBrowser {
-    constructor(tape, zoomInButton, zoomOutButton, waveforms, originalCanvas, filteredCanvas, lowSpeedCanvas, programText, emulatorScreens, reconstructedWaveforms, reconstructedCanvas, tapeContents) {
+    constructor(tape, zoomInButton, zoomOutButton, waveforms, originalCanvas, filteredCanvas, lowSpeedCanvas, tapeContents, topData) {
         this.originalWaveformDisplay = new WaveformDisplay_WaveformDisplay();
-        this.reconstructedWaveformDisplay = new WaveformDisplay_WaveformDisplay();
+        /**
+         * All the panes we created in the upper-right (program, etc.).
+         */
+        this.panes = [];
         this.tape = tape;
         this.waveforms = waveforms;
-        this.programText = programText;
-        this.emulatorScreens = emulatorScreens;
-        this.reconstructedWaveforms = reconstructedWaveforms;
-        this.reconstructedCanvas = reconstructedCanvas;
         this.tapeContents = tapeContents;
+        this.topData = topData;
         this.originalWaveformDisplay.addWaveform(originalCanvas, tape.originalSamples);
         this.originalWaveformDisplay.addWaveform(filteredCanvas, tape.filteredSamples);
         this.originalWaveformDisplay.addWaveform(lowSpeedCanvas, tape.lowSpeedSamples);
         this.tape.programs.forEach(program => this.originalWaveformDisplay.addProgram(program));
         this.originalWaveformDisplay.zoomToFitAll();
         this.currentWaveformDisplay = this.originalWaveformDisplay;
-        this.reconstructedWaveformDisplay.addWaveform(this.reconstructedCanvas);
         zoomInButton.onclick = () => this.originalWaveformDisplay.zoomIn();
         zoomOutButton.onclick = () => this.originalWaveformDisplay.zoomOut();
+        /*
         // Configure zoom keys.
         document.onkeypress = (event) => {
             if (event.key === "=" && this.currentWaveformDisplay !== undefined) {
@@ -11761,17 +11772,15 @@ class TapeBrowser_TapeBrowser {
                 event.preventDefault();
             }
         };
+         */
         // Update left-side panel.
         this.updateTapeContents();
         this.currentWaveformDisplay.draw();
     }
-    showBinary(program) {
-        this.showTextPane();
-        const div = this.programText;
-        clearElement(div);
+    makeBinaryPane(program) {
+        const div = document.createElement("div");
+        div.classList.add("program");
         div.classList.add("binary");
-        div.classList.remove("basic");
-        div.classList.remove("edtasm");
         const binary = program.binary;
         for (let addr = 0; addr < binary.length; addr += 16) {
             const line = document.createElement("div");
@@ -11807,82 +11816,71 @@ class TapeBrowser_TapeBrowser {
             }
             div.appendChild(line);
         }
+        return new Pane(div);
     }
-    showBasic(program) {
-        this.showTextPane();
-        const div = this.programText;
-        clearElement(div);
+    makeReconstructedPane(program) {
+        const div = document.createElement("div");
+        div.classList.add("reconstructed_waveform");
+        const p = document.createElement("p");
+        p.innerText = "Reconstructed high-speed waveform:";
+        div.appendChild(p);
+        const canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 400;
+        div.appendChild(canvas);
+        const waveformDisplay = new WaveformDisplay_WaveformDisplay();
+        waveformDisplay.addWaveform(canvas);
+        waveformDisplay.replaceSamples(canvas, program.reconstructedSamples);
+        waveformDisplay.zoomToFitAll();
+        return new Pane(div).setWaveformDisplay(waveformDisplay);
+    }
+    makeBasicPane(program) {
+        const div = document.createElement("div");
+        div.classList.add("program");
         div.classList.add("basic");
-        div.classList.remove("binary");
-        div.classList.remove("edtasm");
         fromTokenized(program.binary, div);
+        return new Pane(div);
     }
-    showEdtasm(program) {
-        this.showTextPane();
-        const div = this.programText;
-        clearElement(div);
+    makeEdtasmPane(program) {
+        const div = document.createElement("div");
+        div.classList.add("program");
         div.classList.add("edtasm");
-        div.classList.remove("binary");
-        div.classList.remove("basic");
         decodeEdtasm(program.binary, div);
+        return new Pane(div);
     }
-    showEmulator(screen, trs80) {
-        this.showEmulatorScreens();
-        // Show just this screen.
-        this.emulatorScreens.querySelectorAll(":scope > div")
-            .forEach((e) => {
-            if (e === screen) {
-                e.classList.remove("hidden");
-            }
-            else {
-                e.classList.add("hidden");
-            }
-        });
-        // Start the machine.
-        this.stopTrs80();
-        trs80.start();
-        this.startedTrs80 = trs80;
+    makeEmulatorPane(program, cassette) {
+        const div = document.createElement("div");
+        const screen = document.createElement("div");
+        div.appendChild(screen);
+        const progressBar = document.createElement("progress");
+        progressBar.classList.add("hidden");
+        cassette.setProgressBar(progressBar);
+        div.appendChild(progressBar);
+        const trs80 = new Trs80_Trs80(screen, cassette);
+        trs80.reset();
+        return new Pane(div).setTrs80(trs80);
     }
-    stopTrs80() {
-        if (this.startedTrs80 !== undefined) {
-            this.startedTrs80.stop();
-            this.startedTrs80 = undefined;
+    /**
+     * Show a particular pane and hide all others.
+     */
+    showPane(pane) {
+        var _a, _b;
+        // Hide all others.
+        for (const hiddenPane of this.panes) {
+            if (hiddenPane !== pane) {
+                hiddenPane.element.classList.add("hidden");
+                (_a = hiddenPane.trs80) === null || _a === void 0 ? void 0 : _a.stop();
+            }
         }
+        // Show this one.
+        pane.element.classList.remove("hidden");
+        (_b = pane.trs80) === null || _b === void 0 ? void 0 : _b.start();
     }
-    showTextPane() {
-        this.stopTrs80();
-        this.waveforms.classList.add("hidden");
-        this.programText.classList.remove("hidden");
-        this.emulatorScreens.classList.add("hidden");
-        this.reconstructedWaveforms.classList.add("hidden");
-        this.currentWaveformDisplay = undefined;
-    }
-    showWaveforms() {
-        this.stopTrs80();
-        this.waveforms.classList.remove("hidden");
-        this.programText.classList.add("hidden");
-        this.emulatorScreens.classList.add("hidden");
-        this.reconstructedWaveforms.classList.add("hidden");
-        this.currentWaveformDisplay = this.originalWaveformDisplay;
-    }
-    showEmulatorScreens() {
-        this.waveforms.classList.add("hidden");
-        this.programText.classList.add("hidden");
-        this.emulatorScreens.classList.remove("hidden");
-        this.reconstructedWaveforms.classList.add("hidden");
-        this.currentWaveformDisplay = undefined;
-    }
-    showReconstructedWaveforms(program) {
-        this.stopTrs80();
-        this.waveforms.classList.add("hidden");
-        this.programText.classList.add("hidden");
-        this.emulatorScreens.classList.add("hidden");
-        this.reconstructedWaveforms.classList.remove("hidden");
-        this.currentWaveformDisplay = this.reconstructedWaveformDisplay;
-        this.reconstructedWaveformDisplay.replaceSamples(this.reconstructedCanvas, program.reconstructedSamples);
-        this.reconstructedWaveformDisplay.zoomToFitAll();
-    }
+    /**
+     * Create the panes and the table of contents for them on the left.
+     */
     updateTapeContents() {
+        // Add a row to the table of contents.
         const addRow = (text, onClick) => {
             const div = document.createElement("div");
             div.classList.add("tape_contents_row");
@@ -11892,75 +11890,52 @@ class TapeBrowser_TapeBrowser {
                 div.onclick = onClick;
             }
             this.tapeContents.appendChild(div);
+            return div;
         };
-        clearElement(this.tapeContents);
-        this.stopTrs80();
-        clearElement(this.emulatorScreens);
+        // Show the name of the whole tape, and have it zoom out.
         addRow(this.tape.name, () => {
-            this.showWaveforms();
             this.originalWaveformDisplay.zoomToFitAll();
         });
+        // Create panes for each program.
         for (const program of this.tape.programs) {
-            addRow("Track " + program.trackNumber + ", copy " + program.copyNumber + ", " + program.decoderName, null);
-            addRow(frameToTimestamp(program.startFrame, true) + " to " +
+            // Header for program.
+            const row = addRow("Track " + program.trackNumber + ", copy " + program.copyNumber + ", " + program.decoderName, null);
+            row.style.marginTop = "1em";
+            // Span of program.
+            addRow("    " + frameToTimestamp(program.startFrame, true) + " to " +
                 frameToTimestamp(program.endFrame, true) + " (" +
-                frameToTimestamp(program.endFrame - program.startFrame, true) + ")", null);
-            addRow("    Waveforms", () => {
-                this.showWaveforms();
-                this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame);
-            });
-            addRow("    Binary", () => {
-                this.showBinary(program);
-            });
-            addRow("    Reconstructed", () => {
-                this.showReconstructedWaveforms(program);
-            });
+                frameToTimestamp(program.endFrame - program.startFrame, true) + ")", () => this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame));
+            // Add a pane to the top-right, register it, and add it to table of contents.
+            const addPane = (label, pane) => {
+                pane.element.classList.add("pane");
+                pane.element.classList.add("hidden");
+                this.topData.appendChild(pane.element);
+                this.panes.push(pane);
+                addRow("    " + label, () => {
+                    this.showPane(pane);
+                });
+            };
+            // Make the various panes.
+            addPane("Binary", this.makeBinaryPane(program));
+            addPane("Reconstructed", this.makeReconstructedPane(program));
             if (program.isBasicProgram()) {
-                addRow("    Basic", () => {
-                    this.showBasic(program);
-                });
-                {
-                    const screen = document.createElement("div");
-                    screen.classList.add("hidden");
-                    const progressBar = document.createElement("progress");
-                    progressBar.classList.add("hidden");
-                    const trs80 = new Trs80_Trs80(screen, new TapeCassette(this.tape, program, progressBar));
-                    trs80.reset();
-                    this.emulatorScreens.appendChild(screen);
-                    this.emulatorScreens.appendChild(progressBar);
-                    addRow("    Emulator (original)", () => {
-                        this.showEmulator(screen, trs80);
-                    });
-                }
-                {
-                    const screen = document.createElement("div");
-                    screen.classList.add("hidden");
-                    const progressBar = document.createElement("progress");
-                    progressBar.classList.add("hidden");
-                    const trs80 = new Trs80_Trs80(screen, new TapeBrowser_ReconstructedCassette(program, progressBar));
-                    trs80.reset();
-                    this.emulatorScreens.appendChild(screen);
-                    this.emulatorScreens.appendChild(progressBar);
-                    addRow("    Emulator (reconstructed)", () => {
-                        this.showEmulator(screen, trs80);
-                    });
-                }
+                addPane("Basic", this.makeBasicPane(program));
+                addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
+                addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new TapeBrowser_ReconstructedCassette(program)));
             }
-            console.log("Checking EDTASM");
             if (program.isEdtasmProgram()) {
-                addRow("    Assembly", () => {
-                    this.showEdtasm(program);
-                });
+                addPane("Assembly", this.makeEdtasmPane(program));
             }
+            /* TODO
             let count = 1;
             for (const bitData of program.bits) {
                 if (bitData.bitType === BitType.BAD) {
                     addRow("    Bit error " + count++ + " (" + frameToTimestamp(bitData.startFrame, true) + ")", () => {
-                        this.showWaveforms();
                         this.originalWaveformDisplay.zoomToBitData(bitData);
                     });
                 }
             }
+             */
         }
     }
 }
@@ -12872,7 +12847,7 @@ function handleAudioBuffer(pathname, audioBuffer) {
     const tape = new Tape_Tape(nameFromPathname(pathname), samples, audioBuffer.sampleRate);
     const decoder = new Decoder_Decoder(tape);
     decoder.decode();
-    const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("zoom_in_button"), document.getElementById("zoom_out_button"), document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("program_text"), document.getElementById("emulator_screens"), document.getElementById("reconstructed_waveforms"), document.getElementById("reconstructed_canvas"), document.getElementById("tape_contents"));
+    const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("zoom_in_button"), document.getElementById("zoom_out_button"), document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("tape_contents"), document.getElementById("top_data"));
     // Switch screens.
     const dropScreen = document.getElementById("drop_screen");
     const dataScreen = document.getElementById("data_screen");
@@ -12890,6 +12865,12 @@ function handleAudioBuffer(pathname, audioBuffer) {
         sizes: [20, 80],
         minSize: [200, 200],
         snapOffset: 0,
+    });
+    split_es(["#top_data", "#waveforms"], {
+        sizes: [50, 50],
+        minSize: [100, 100],
+        snapOffset: 0,
+        direction: "vertical",
     });
 }
 function main() {
