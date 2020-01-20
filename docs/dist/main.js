@@ -261,7 +261,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.bits = [];
     }
     getName() {
-        return "high speed";
+        return "High speed";
     }
     handleSample(tape, frame) {
         const samples = tape.lowSpeedSamples.samplesList[0];
@@ -412,7 +412,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
         return out;
     }
     getName() {
-        return "low speed";
+        return "Low speed";
     }
     handleSample(tape, frame) {
         const samples = tape.lowSpeedSamples.samplesList[0];
@@ -11766,7 +11766,7 @@ class TapeBrowser_TapeBrowser {
         this.updateTapeContents();
         this.currentWaveformDisplay.draw();
     }
-    makeMetadataPane(program) {
+    makeMetadataPane(program, basicPane, edtasmPane) {
         const div = document.createElement("div");
         div.classList.add("metadata");
         const h1 = document.createElement("h1");
@@ -11794,6 +11794,15 @@ class TapeBrowser_TapeBrowser {
         addKeyValue("Start time", frameToTimestamp(program.startFrame), () => this.originalWaveformDisplay.zoomToFit(program.startFrame - 100, program.startFrame + 100));
         addKeyValue("End time", frameToTimestamp(program.endFrame), () => this.originalWaveformDisplay.zoomToFit(program.endFrame - 100, program.endFrame + 100));
         addKeyValue("Duration", frameToTimestamp(program.endFrame - program.startFrame, true), () => this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame));
+        if (basicPane !== undefined) {
+            addKeyValue("Type", "Basic program", () => this.showPane(basicPane));
+        }
+        else if (edtasmPane !== undefined) {
+            addKeyValue("Type", "Assembly program", () => this.showPane(edtasmPane));
+        }
+        else {
+            addKeyValue("Type", "Unknown");
+        }
         let count = 1;
         for (const bitData of program.bits) {
             if (bitData.bitType === BitType.BAD) {
@@ -11948,21 +11957,24 @@ class TapeBrowser_TapeBrowser {
                     this.showPane(pane);
                 });
             };
+            // Make these panes here so they're accessible from the metadata page.
+            const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
+            const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
             // Metadata pane.
             let metadataLabel = frameToTimestamp(program.startFrame, true) + " to " +
                 frameToTimestamp(program.endFrame, true) + " (" +
                 frameToTimestamp(program.endFrame - program.startFrame, true) + ")";
-            addPane(metadataLabel, this.makeMetadataPane(program));
+            addPane(metadataLabel, this.makeMetadataPane(program, basicPane, edtasmPane));
             // Make the various panes.
             addPane("Binary", this.makeBinaryPane(program));
             addPane("Reconstructed", this.makeReconstructedPane(program));
-            if (program.isBasicProgram()) {
-                addPane("Basic", this.makeBasicPane(program));
+            if (basicPane !== undefined) {
+                addPane("Basic", basicPane);
                 addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
                 addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new TapeBrowser_ReconstructedCassette(program)));
             }
-            if (program.isEdtasmProgram()) {
-                addPane("Assembly", this.makeEdtasmPane(program));
+            if (edtasmPane !== undefined) {
+                addPane("Assembly", edtasmPane);
             }
         }
         // Show the first pane.
