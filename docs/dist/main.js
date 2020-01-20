@@ -532,6 +532,7 @@ class DisplaySamples {
 
 // CONCATENATED MODULE: ./src/Program.ts
 
+
 class Program_Program {
     constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bits, reconstructedSamples) {
         this.trackNumber = trackNumber;
@@ -542,6 +543,12 @@ class Program_Program {
         this.binary = binary;
         this.bits = bits;
         this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
+    }
+    /**
+     * Whether this program is really too short to be a real recording.
+     */
+    isTooShort() {
+        return this.endFrame - this.startFrame < HZ / 10;
     }
     /**
      * Whether the binary represents a Basic program.
@@ -829,7 +836,9 @@ class Decoder_Decoder {
                         highSpeedBytes = binary;
                     }
                     const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBits(), encodeHighSpeed(highSpeedBytes));
-                    this.tape.addProgram(program);
+                    if (!program.isTooShort()) {
+                        this.tape.addProgram(program);
+                    }
                     break;
             }
             copyNumber += 1;
