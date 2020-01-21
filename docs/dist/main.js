@@ -259,6 +259,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.bitCount = 0;
         this.lastCrossingFrame = 0;
         this.bits = [];
+        this.byteData = [];
     }
     getName() {
         return "High speed";
@@ -345,12 +346,33 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         }
         return bytes;
     }
-    getBits() {
+    getBitData() {
         return this.bits;
+    }
+    getByteData() {
+        return this.byteData;
+    }
+}
+
+// CONCATENATED MODULE: ./src/ByteData.ts
+/**
+ * Information about one particular byte (its position).
+ */
+class ByteData {
+    /**
+     * Create an object representing a byte.
+     *
+     * @param startFrame the first frame, inclusive.
+     * @param endFrame the last frame, inclusive.
+     */
+    constructor(startFrame, endFrame) {
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
     }
 }
 
 // CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
+
 
 
 
@@ -379,9 +401,10 @@ const END_OF_PROGRAM_SILENCE = HZ / 10;
 const MIN_HEADER_ZEROS = 6;
 class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     constructor(invert) {
+        this.programBytes = [];
+        this.byteData = [];
         this.invert = invert;
         this.state = TapeDecoderState.UNDECIDED;
-        this.programBytes = [];
         // The frame where we last detected a pulse.
         this.lastPulseFrame = 0;
         this.eatNextPulse = false;
@@ -392,7 +415,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
         // Height of the previous pulse. We set each pulse's threshold
         // to 1/3 of the previous pulse's height.
         this.pulseHeight = 0;
-        this.bits = [];
+        this.bitData = [];
         this.pulseCount = 0;
     }
     /**
@@ -438,10 +461,10 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                     console.log("Warning: At bit of wrong value at " +
                         frameToTimestamp(frame) + ", diff = " + timeDiff + ", last = " +
                         frameToTimestamp(this.lastPulseFrame));
-                    this.bits.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
+                    this.bitData.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
                 }
                 else {
-                    const lastBit = this.bits[this.bits.length - 1];
+                    const lastBit = this.bitData[this.bitData.length - 1];
                     if (lastBit && lastBit.bitType === BitType.ONE && lastBit.endFrame === this.lastPulseFrame) {
                         // Merge with previous 1 bit.
                         lastBit.endFrame = frame;
@@ -465,7 +488,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                     }
                     this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
                     if (this.lastPulseFrame !== 0) {
-                        this.bits.push(new BitData(this.lastPulseFrame, frame, bit ? BitType.ONE : BitType.ZERO));
+                        this.bitData.push(new BitData(this.lastPulseFrame, frame, bit ? BitType.ONE : BitType.ZERO));
                     }
                     if (this.state === TapeDecoderState.UNDECIDED) {
                         // Haven't found end of header yet. Look for it, preceded by zeros.
@@ -480,6 +503,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                         this.bitCount += 1;
                         if (this.bitCount === 8) {
                             this.programBytes.push(this.recentBits & 0xFF);
+                            this.byteData.push(new ByteData(this.bitData[this.bitData.length - 8].startFrame, frame));
                             this.bitCount = 0;
                         }
                     }
@@ -499,8 +523,11 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
         }
         return bytes;
     }
-    getBits() {
-        return this.bits;
+    getBitData() {
+        return this.bitData;
+    }
+    getByteData() {
+        return this.byteData;
     }
 }
 
@@ -534,14 +561,15 @@ class DisplaySamples {
 
 
 class Program_Program {
-    constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bits, reconstructedSamples) {
+    constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData, reconstructedSamples) {
         this.trackNumber = trackNumber;
         this.copyNumber = copyNumber;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
         this.decoderName = decoderName;
         this.binary = binary;
-        this.bits = bits;
+        this.bitData = bitData;
+        this.byteData = byteData;
         this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
     }
     /**
@@ -835,7 +863,7 @@ class Decoder_Decoder {
                     else {
                         highSpeedBytes = binary;
                     }
-                    const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBits(), encodeHighSpeed(highSpeedBytes));
+                    const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBitData(), tapeDecoders[0].getByteData(), encodeHighSpeed(highSpeedBytes));
                     if (!program.isTooShort()) {
                         this.tape.addProgram(program);
                     }
@@ -927,6 +955,12 @@ class ByteReader {
         return this.pos < this.b.length ? this.b[this.pos++] : EOF;
     }
     /**
+     * Return the byte address of the next byte to be read.
+     */
+    addr() {
+        return this.pos;
+    }
+    /**
      * Reads a little-endian short (two-byte) integer.
      *
      * @param allowEofAfterFirstByte
@@ -955,18 +989,21 @@ function add(out, text, className) {
     e.innerText = text;
     e.classList.add(className);
     out.appendChild(e);
+    return e;
 }
 /**
  * Decode a tokenized Basic program.
  * @param bytes tokenized program.
  * @param out div to write result into.
+ * @return array of generated HTML elements, index by byte index.
  */
 function fromTokenized(bytes, out) {
     const b = new ByteReader(bytes);
     let state;
+    const elements = [];
     if (b.read() !== 0xD3 || b.read() !== 0xD3 || b.read() !== 0xD3) {
         add(out, "Basic: missing magic -- not a BASIC file.", "error");
-        return;
+        return elements;
     }
     // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
     b.read();
@@ -990,7 +1027,10 @@ function fromTokenized(bytes, out) {
             add(line, "[EOF in line number]", "error");
             break;
         }
-        add(line, lineNumber.toString() + " ", "line_number");
+        let e = add(line, lineNumber.toString(), "line_number");
+        elements[b.addr() - 2] = e;
+        elements[b.addr() - 1] = e;
+        add(line, " ", "regular");
         // Read rest of line.
         let c; // Uint8 value.
         let ch; // String value.
@@ -1008,24 +1048,29 @@ function fromTokenized(bytes, out) {
                 state = COLON;
             }
             else if (ch === ":" && state === COLON) {
-                add(line, ":", "punctuation");
+                e = add(line, ":", "punctuation");
+                elements[b.addr() - 1] = e;
             }
             else if (c === REM && state === COLON) {
                 state = COLON_REM;
             }
             else if (c === REMQUOT && state === COLON_REM) {
-                add(line, "'", "comment");
+                e = add(line, "'", "comment");
+                elements[b.addr() - 1] = e;
                 state = RAW;
             }
             else if (c === ELSE && state === COLON) {
-                add(line, "ELSE", "keyword");
+                e = add(line, "ELSE", "keyword");
+                elements[b.addr() - 1] = e;
                 state = NORMAL;
             }
             else {
                 if (state === COLON || state === COLON_REM) {
-                    add(line, ":", "punctuation");
+                    e = add(line, ":", "punctuation");
+                    elements[b.addr() - 1] = e;
                     if (state === COLON_REM) {
-                        add(line, "REM", "comment");
+                        e = add(line, "REM", "comment");
+                        elements[b.addr() - 1] = e;
                         state = RAW;
                     }
                     else {
@@ -1036,13 +1081,14 @@ function fromTokenized(bytes, out) {
                     case NORMAL:
                         if (c >= 128 && c < 128 + TOKENS.length) {
                             const token = TOKENS[c - 128];
-                            add(line, token, c === DATA || c === REM ? "comment"
+                            e = add(line, token, c === DATA || c === REM ? "comment"
                                 : token.length === 1 ? "punctuation"
                                     : "keyword");
                         }
                         else {
-                            add(line, ch, ch === '"' ? "string" : "regular");
+                            e = add(line, ch, ch === '"' ? "string" : "regular");
                         }
+                        elements[b.addr() - 1] = e;
                         if (c === DATA || c === REM) {
                             state = RAW;
                         }
@@ -1052,24 +1098,26 @@ function fromTokenized(bytes, out) {
                         break;
                     case STRING_LITERAL:
                         if (ch === "\r") {
-                            add(line, "\\n", "punctuation");
+                            e = add(line, "\\n", "punctuation");
                         }
                         else if (ch === "\\") {
-                            add(line, "\\" + pad(c, 8, 3), "punctuation");
+                            e = add(line, "\\" + pad(c, 8, 3), "punctuation");
                         }
                         else if (c >= 32 && c < 128) {
-                            add(line, ch, "string");
+                            e = add(line, ch, "string");
                         }
                         else {
-                            add(line, "\\" + pad(c, 8, 3), "punctuation");
+                            e = add(line, "\\" + pad(c, 8, 3), "punctuation");
                         }
+                        elements[b.addr() - 1] = e;
                         if (ch === '"') {
                             // End of string.
                             state = NORMAL;
                         }
                         break;
                     case RAW:
-                        add(line, ch, "comment");
+                        e = add(line, ch, "comment");
+                        elements[b.addr() - 1] = e;
                         break;
                 }
             }
@@ -1080,14 +1128,18 @@ function fromTokenized(bytes, out) {
         }
         // Deal with eaten tokens.
         if (state === COLON || state === COLON_REM) {
-            add(line, ":", "punctuation");
+            e = add(line, ":", "punctuation");
+            elements[b.addr() - 1] = e;
             if (state === COLON_REM) {
-                add(line, "REM", "comment");
+                e = add(line, "REM", "comment");
             }
+            elements[b.addr() - 1] = e;
             /// state = NORMAL;
         }
+        // Append last line.
         out.appendChild(line);
     }
+    return elements;
 }
 
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/module/Cassette.js
@@ -11381,10 +11433,27 @@ class Waveform {
  */
 class WaveformDisplay_WaveformDisplay {
     constructor() {
+        /**
+         * The width of the canvases, in pixels.
+         */
         this.displayWidth = 0;
+        /**
+         * The zoom level, where 0 means all the way zoomed in and each original
+         * audio sample maps to one column of pixels on the screen; 1 means
+         * zoomed out from that by a factor of two, etc.
+         */
         this.displayLevel = 0; // Initialized in zoomToFitAll()
+        /**
+         * The sample in the middle of the display, in original samples.
+         */
         this.centerSample = 0; // Initialized in zoomToFitAll()
+        /**
+         * All the waveforms we're displaying, and their canvases.
+         */
         this.waveforms = [];
+        /**
+         * All the programs represented on these waveforms.
+         */
         this.programs = [];
     }
     /**
@@ -11406,6 +11475,27 @@ class WaveformDisplay_WaveformDisplay {
      */
     addProgram(program) {
         this.programs.push(program);
+    }
+    /**
+     * Update the current highlight.
+     */
+    setHighlight(highlight) {
+        this.startHighlightFrame = undefined;
+        this.endHighlightFrame = undefined;
+        if (highlight !== undefined) {
+            const byteData = highlight.program.byteData[highlight.firstIndex];
+            if (byteData !== undefined) {
+                this.startHighlightFrame = byteData.startFrame;
+                this.endHighlightFrame = byteData.endFrame;
+            }
+        }
+        this.draw();
+    }
+    /**
+     * Update the current highlight.
+     */
+    setSelection(selection) {
+        // TODO.
     }
     /**
      * Configure the mouse events in the canvas.
@@ -11482,7 +11572,7 @@ class WaveformDisplay_WaveformDisplay {
         // Programs.
         for (const program of this.programs) {
             if (drawingLine) {
-                for (const bitInfo of program.bits) {
+                for (const bitInfo of program.bitData) {
                     if (bitInfo.endFrame >= firstOrigSample && bitInfo.startFrame <= lastOrigSample) {
                         const x1 = frameToX(bitInfo.startFrame / mag);
                         const x2 = frameToX(bitInfo.endFrame / mag);
@@ -11506,12 +11596,22 @@ class WaveformDisplay_WaveformDisplay {
                 }
             }
             else {
-                ctx.fillStyle = "rgb(50, 50, 50)";
-                const x1 = frameToX(program.startFrame / mag);
-                const x2 = frameToX(program.endFrame / mag);
-                ctx.fillRect(x1, 0, x2 - x1, height);
+                // Disable highlighting of programs, it's not very useful and interferes
+                // with byte highlighting.
+                // ctx.fillStyle = "rgb(50, 50, 50)";
+                // const x1 = frameToX(program.startFrame / mag);
+                // const x2 = frameToX(program.endFrame / mag);
+                // ctx.fillRect(x1, 0, x2 - x1, height);
             }
         }
+        // Highlight.
+        if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
+            ctx.fillStyle = "rgb(150, 150, 150)";
+            const x1 = frameToX(this.startHighlightFrame / mag);
+            const x2 = frameToX(this.endHighlightFrame / mag);
+            ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
+        }
+        // Draw waveform.
         ctx.strokeStyle = "rgb(255, 255, 255)";
         if (drawingLine) {
             ctx.beginPath();
@@ -11662,7 +11762,23 @@ function decodeEdtasm(bytes, out) {
     }
 }
 
+// CONCATENATED MODULE: ./src/Highlight.ts
+/**
+ * Current selection or highlight.
+ */
+class Highlight {
+    constructor(program, beginIndex, endIndex) {
+        this.program = program;
+        // Default to one byte.
+        endIndex = (endIndex !== null && endIndex !== void 0 ? endIndex : beginIndex);
+        // Re-order so that begin <= end.
+        this.firstIndex = Math.min(beginIndex, endIndex);
+        this.lastIndex = Math.max(beginIndex, endIndex);
+    }
+}
+
 // CONCATENATED MODULE: ./src/TapeBrowser.ts
+
 
 
 
@@ -11751,6 +11867,91 @@ function clearElement(e) {
     }
 }
 /**
+ * Helper class to highlight or select elements.
+ */
+class TapeBrowser_Highlighter {
+    constructor(tapeBrowser, program) {
+        /**
+         * All elements, index by the byte index.
+         */
+        this.elements = [];
+        /**
+         * Currently-highlighted elements.
+         */
+        this.highlightedElements = [];
+        /**
+         * Currently-selected elements.
+         */
+        this.selectedElements = [];
+        this.tapeBrowser = tapeBrowser;
+        this.program = program;
+    }
+    /**
+     * Add an element to be highlighted.
+     */
+    addElement(byteIndex, element) {
+        this.elements[byteIndex] = element;
+        // Set up event listeners for highlighting.
+        element.addEventListener("mouseenter", () => {
+            if (this.selectionBeginIndex === undefined) {
+                this.tapeBrowser.setHighlight(new Highlight(this.program, byteIndex));
+            }
+            else {
+                this.tapeBrowser.setSelection(new Highlight(this.program, this.selectionBeginIndex, byteIndex));
+            }
+        });
+        element.addEventListener("mouseleave", () => {
+            if (this.selectionBeginIndex === undefined) {
+                this.tapeBrowser.setHighlight(undefined);
+            }
+        });
+        // Set up event listeners for selecting.
+        element.addEventListener("mousedown", event => {
+            this.tapeBrowser.setSelection(new Highlight(this.program, byteIndex));
+            this.selectionBeginIndex = byteIndex;
+            event.preventDefault();
+        });
+        element.addEventListener("mouseup", event => {
+            this.selectionBeginIndex = undefined;
+            event.preventDefault();
+        });
+    }
+    /**
+     * Highlight the specified elements.
+     */
+    highlight(highlight, program) {
+        for (const e of this.highlightedElements) {
+            e.classList.remove("highlighted");
+        }
+        this.highlightedElements.splice(0);
+        if (highlight !== undefined && highlight.program === program) {
+            const e = this.elements[highlight.firstIndex];
+            if (e !== undefined) {
+                e.classList.add("highlighted");
+                this.highlightedElements.push(e);
+            }
+        }
+    }
+    /**
+     * Select the specified elements.
+     */
+    select(highlight, program) {
+        for (const e of this.selectedElements) {
+            e.classList.remove("selected");
+        }
+        this.selectedElements.splice(0);
+        if (highlight !== undefined && highlight.program === program) {
+            for (let byteIndex = highlight.firstIndex; byteIndex <= highlight.lastIndex; byteIndex++) {
+                const e = this.elements[byteIndex];
+                if (e !== undefined) {
+                    e.classList.add("selected");
+                    this.selectedElements.push(e);
+                }
+            }
+        }
+    }
+}
+/**
  * UI for browsing a tape interactively.
  */
 class TapeBrowser_TapeBrowser {
@@ -11771,12 +11972,36 @@ class TapeBrowser_TapeBrowser {
         this.originalWaveformDisplay.addWaveform(lowSpeedCanvas, tape.lowSpeedSamples);
         this.tape.programs.forEach(program => this.originalWaveformDisplay.addProgram(program));
         this.originalWaveformDisplay.zoomToFitAll();
-        this.currentWaveformDisplay = this.originalWaveformDisplay;
         zoomInButton.onclick = () => this.originalWaveformDisplay.zoomIn();
         zoomOutButton.onclick = () => this.originalWaveformDisplay.zoomOut();
         // Update left-side panel.
         this.updateTapeContents();
-        this.currentWaveformDisplay.draw();
+        this.originalWaveformDisplay.draw();
+    }
+    /**
+     * Update the highlighted byte.
+     */
+    setHighlight(highlight) {
+        var _a, _b;
+        // Alert panes.
+        for (const pane of this.panes) {
+            (_b = (_a = pane).onHighlight) === null || _b === void 0 ? void 0 : _b.call(_a, highlight);
+        }
+        // Update waveform.
+        this.originalWaveformDisplay.setHighlight(highlight);
+    }
+    /**
+     * Update the selected byte.
+     */
+    setSelection(selection) {
+        var _a, _b;
+        console.log(selection);
+        // Alert panes.
+        for (const pane of this.panes) {
+            (_b = (_a = pane).onSelect) === null || _b === void 0 ? void 0 : _b.call(_a, selection);
+        }
+        // Update waveform.
+        this.originalWaveformDisplay.setSelection(selection);
     }
     makeMetadataPane(program, basicPane, edtasmPane) {
         const div = document.createElement("div");
@@ -11816,7 +12041,7 @@ class TapeBrowser_TapeBrowser {
             addKeyValue("Type", "Unknown");
         }
         let count = 1;
-        for (const bitData of program.bits) {
+        for (const bitData of program.bitData) {
             if (bitData.bitType === BitType.BAD) {
                 addKeyValue("Bit error " + count++, frameToTimestamp(bitData.startFrame), () => this.originalWaveformDisplay.zoomToBitData(bitData));
             }
@@ -11827,6 +12052,8 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("binary");
+        const hexHighlighter = new TapeBrowser_Highlighter(this, program);
+        const asciiHighlighter = new TapeBrowser_Highlighter(this, program);
         const binary = program.binary;
         for (let addr = 0; addr < binary.length; addr += 16) {
             const line = document.createElement("div");
@@ -11836,33 +12063,45 @@ class TapeBrowser_TapeBrowser {
             line.appendChild(e);
             // Hex.
             let subAddr;
-            e = document.createElement("span");
-            e.classList.add("hex");
             for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
-                e.innerText += pad(binary[subAddr], 16, 2) + " ";
+                e = document.createElement("span");
+                e.classList.add("hex");
+                e.innerText = pad(binary[subAddr], 16, 2);
+                line.appendChild(e);
+                hexHighlighter.addElement(subAddr, e);
+                line.appendChild(document.createTextNode(" "));
             }
             for (; subAddr < addr + 16; subAddr++) {
-                e.innerText += "   ";
+                line.appendChild(document.createTextNode("   "));
             }
-            e.innerText += "  ";
-            line.appendChild(e);
+            line.appendChild(document.createTextNode("  "));
             // ASCII.
             for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
                 const c = binary[subAddr];
                 e = document.createElement("span");
                 if (c >= 32 && c < 127) {
                     e.classList.add("ascii");
-                    e.innerText += String.fromCharCode(c);
+                    e.innerText = String.fromCharCode(c);
                 }
                 else {
                     e.classList.add("ascii-unprintable");
-                    e.innerText += ".";
+                    e.innerText = ".";
                 }
                 line.appendChild(e);
+                asciiHighlighter.addElement(subAddr, e);
             }
             div.appendChild(line);
         }
-        return new Pane(div);
+        let pane = new Pane(div);
+        pane.onHighlight = highlight => {
+            hexHighlighter.highlight(highlight, program);
+            asciiHighlighter.highlight(highlight, program);
+        };
+        pane.onSelect = selection => {
+            hexHighlighter.select(selection, program);
+            asciiHighlighter.select(selection, program);
+        };
+        return pane;
     }
     makeReconstructedPane(program) {
         const div = document.createElement("div");
@@ -11894,8 +12133,23 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("basic");
-        fromTokenized(program.binary, div);
-        return new Pane(div);
+        const elements = fromTokenized(program.binary, div);
+        const highlighter = new TapeBrowser_Highlighter(this, program);
+        let byteIndex = 0;
+        for (const e of elements) {
+            if (e !== undefined) {
+                highlighter.addElement(byteIndex, e);
+            }
+            byteIndex += 1;
+        }
+        let pane = new Pane(div);
+        pane.onHighlight = highlight => {
+            highlighter.highlight(highlight, program);
+        };
+        pane.onSelect = selection => {
+            highlighter.select(selection, program);
+        };
+        return pane;
     }
     makeEdtasmPane(program) {
         const div = document.createElement("div");
