@@ -16583,7 +16583,7 @@ function clearElement(e) {
  * Helper class to highlight or select elements.
  */
 class TapeBrowser_Highlighter {
-    constructor(tapeBrowser, program) {
+    constructor(tapeBrowser, program, container) {
         /**
          * All elements, index by the byte index.
          */
@@ -16598,6 +16598,12 @@ class TapeBrowser_Highlighter {
         this.selectedElements = [];
         this.tapeBrowser = tapeBrowser;
         this.program = program;
+        this.container = container;
+        container.addEventListener("mousedown", event => event.preventDefault());
+        container.addEventListener("mouseup", event => {
+            this.selectionBeginIndex = undefined;
+            event.preventDefault();
+        });
     }
     /**
      * Add an element to be highlighted.
@@ -16610,10 +16616,8 @@ class TapeBrowser_Highlighter {
         this.elements[byteIndex] = element;
         // Set up event listeners for highlighting.
         element.addEventListener("mouseenter", () => {
-            if (this.selectionBeginIndex === undefined) {
-                this.tapeBrowser.setHighlight(new Highlight(this.program, byteIndex));
-            }
-            else {
+            this.tapeBrowser.setHighlight(new Highlight(this.program, byteIndex));
+            if (this.selectionBeginIndex !== undefined) {
                 this.tapeBrowser.setSelection(new Highlight(this.program, this.selectionBeginIndex, byteIndex));
             }
         });
@@ -16768,8 +16772,8 @@ class TapeBrowser_TapeBrowser {
     makeBinaryPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
-        const hexHighlighter = new TapeBrowser_Highlighter(this, program);
-        const asciiHighlighter = new TapeBrowser_Highlighter(this, program);
+        const hexHighlighter = new TapeBrowser_Highlighter(this, program, div);
+        const asciiHighlighter = new TapeBrowser_Highlighter(this, program, div);
         const [hexElements, asciiElements] = Hexdump_create(program.binary, div);
         hexElements.forEach((e, byteIndex) => hexHighlighter.addElement(byteIndex, e));
         asciiElements.forEach((e, byteIndex) => asciiHighlighter.addElement(byteIndex, e));
@@ -16814,7 +16818,7 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         const elements = fromTokenized(program.binary, div);
-        const highlighter = new TapeBrowser_Highlighter(this, program);
+        const highlighter = new TapeBrowser_Highlighter(this, program, div);
         elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         let pane = new Pane(div);
         pane.onHighlight = highlight => {
