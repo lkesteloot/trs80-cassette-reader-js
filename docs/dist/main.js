@@ -5608,8 +5608,8 @@ function fromTokenized(bytes, out) {
         }
         let e = Basic_add(line, lineNumber.toString(), classes.lineNumber);
         elements[b.addr() - 2] = e;
+        e = Basic_add(line, " ", classes.regular);
         elements[b.addr() - 1] = e;
-        Basic_add(line, " ", classes.regular);
         // Read rest of line.
         let c; // Uint8 value.
         let ch; // String value.
@@ -16412,23 +16412,27 @@ const Edtasm_selectClassName = Edtasm_sheet.classes.selected;
  * @param out the enclosing element to add to.
  * @param text the text to add.
  * @param className the name of the class for the item.
+ * @return the new element.
  */
 function Edtasm_add(out, text, className) {
     const e = document.createElement("span");
     e.innerText = text;
     e.classList.add(className);
     out.appendChild(e);
+    return e;
 }
 /**
- * Decoded the program into the DIV, returning the program name.
+ * Decoded the program into the DIV, returning the program name and array of created elements.
  */
 function decodeEdtasm(bytes, out) {
     Edtasm_sheet.attach();
     const classes = Edtasm_sheet.classes;
+    const elements = [];
+    let e;
     // Check magic.
     if (bytes.length < 7 || bytes[0] !== 0xD3) {
         Edtasm_add(out, "EDTASM: missing magic -- not a EDTASM file.", classes.error);
-        return "Error";
+        return ["Error", elements];
     }
     // Read name of program.
     const name = (String.fromCodePoint(bytes[1]) +
@@ -16441,34 +16445,41 @@ function decodeEdtasm(bytes, out) {
     while (true) {
         if (bytes.length - i < 5) {
             // End of program.
-            return name;
+            return [name, elements];
         }
         const line = document.createElement("div");
         // Read line number.
-        const lineNumber = "" +
-            (bytes[i] - 0xB0) +
-            (bytes[i + 1] - 0xB0) +
-            (bytes[i + 2] - 0xB0) +
-            (bytes[i + 3] - 0xB0) +
-            (bytes[i + 4] - 0xB0);
-        i += 5;
-        Edtasm_add(line, lineNumber, classes.lineNumber);
+        for (let j = 0; j < 5; j++) {
+            e = Edtasm_add(line, (bytes[i] - 0xB0).toString(), classes.lineNumber);
+            elements[i] = e;
+            i++;
+        }
         // Parse line.
-        let lineText = "";
+        let pos = 0;
+        let className = classes.regular;
         while (i < bytes.length && bytes[i] != 0x0D && bytes[i] !== 0x0A && bytes[i] !== 0x1A) {
+            let text;
             if (bytes[i] === 0x09) {
                 // Tab.
+                text = "";
                 do {
-                    lineText += " ";
-                } while (lineText.length % 8 !== 0);
+                    text += " ";
+                    pos++;
+                } while (pos % 8 !== 0);
             }
             else {
                 // Non-tab.
-                lineText += String.fromCodePoint(bytes[i]);
+                text = String.fromCodePoint(bytes[i]);
+                if (text === ";") {
+                    // Semicolon to end of line is comment.
+                    className = classes.comment;
+                }
+                pos++;
             }
+            e = Edtasm_add(line, text, className);
+            elements[i] = e;
             i++;
         }
-        Edtasm_add(line, lineText, classes.regular);
         // Skip EOL.
         while (i < bytes.length && (bytes[i] === 0x0D || bytes[i] === 0x0A)) {
             i++;
@@ -16832,10 +16843,17 @@ class TapeBrowser_TapeBrowser {
     makeEdtasmPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
-        div.classList.add("edtasm");
-        const name = decodeEdtasm(program.binary, div);
+        const [name, elements] = decodeEdtasm(program.binary, div);
+        const highlighter = new TapeBrowser_Highlighter(this, program, div);
+        elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         const pane = new Pane(div);
         pane.edtasmName = name;
+        pane.onHighlight = highlight => {
+            highlighter.highlight(highlight, program, Edtasm_highlightClassName);
+        };
+        pane.onSelect = selection => {
+            highlighter.select(selection, program, Edtasm_selectClassName);
+        };
         return pane;
     }
     makeEmulatorPane(program, cassette) {
