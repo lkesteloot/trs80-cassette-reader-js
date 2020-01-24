@@ -16179,9 +16179,11 @@ class WaveformDisplay_WaveformDisplay {
             dragInitialCenterSample = this.centerSample;
             canvas.style.cursor = "grab";
         });
-        canvas.addEventListener("mouseup", () => {
-            dragging = false;
-            canvas.style.cursor = "auto";
+        window.addEventListener("mouseup", () => {
+            if (dragging) {
+                dragging = false;
+                canvas.style.cursor = "auto";
+            }
         });
         canvas.addEventListener("mousemove", event => {
             if (dragging) {
@@ -16600,9 +16602,11 @@ class TapeBrowser_Highlighter {
         this.program = program;
         this.container = container;
         container.addEventListener("mousedown", event => event.preventDefault());
-        container.addEventListener("mouseup", event => {
-            this.selectionBeginIndex = undefined;
-            event.preventDefault();
+        window.addEventListener("mouseup", event => {
+            if (this.selectionBeginIndex !== undefined) {
+                this.selectionBeginIndex = undefined;
+                event.preventDefault();
+            }
         });
     }
     /**
@@ -16630,10 +16634,6 @@ class TapeBrowser_Highlighter {
         element.addEventListener("mousedown", event => {
             this.tapeBrowser.setSelection(new Highlight(this.program, byteIndex));
             this.selectionBeginIndex = byteIndex;
-            event.preventDefault();
-        });
-        element.addEventListener("mouseup", event => {
-            this.selectionBeginIndex = undefined;
             event.preventDefault();
         });
     }
