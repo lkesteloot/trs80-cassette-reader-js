@@ -16086,7 +16086,11 @@ Trs80_Trs80.TIMER_CYCLES = CLOCK_HZ / TIMER_HZ;
 
 
 
+// EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
+var dist = __webpack_require__(7);
+
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
+
 
 /**
  * An individual waveform to be displayed.
@@ -16131,11 +16135,11 @@ class WaveformDisplay_WaveformDisplay {
         /**
          * Listeners of the maxZoom property.
          */
-        this.onMaxZoom = [];
+        this.onMaxZoom = new dist["SimpleEventDispatcher"]();
         /**
          * Listeners of the zoom property.
          */
-        this.onZoom = [];
+        this.onZoom = new dist["SimpleEventDispatcher"]();
     }
     /**
      * Add a waveform to display.
@@ -16152,7 +16156,7 @@ class WaveformDisplay_WaveformDisplay {
         let newMaxZoom = samples.samplesList.length - 1;
         if (newMaxZoom !== this.maxZoom) {
             this.maxZoom = newMaxZoom;
-            this.onMaxZoom.forEach(callback => callback(newMaxZoom));
+            this.onMaxZoom.dispatch(newMaxZoom);
         }
         this.waveforms.push(new Waveform(canvas, samples));
         this.configureCanvas(canvas);
@@ -16186,15 +16190,27 @@ class WaveformDisplay_WaveformDisplay {
      * Update the current highlight.
      */
     setSelection(selection) {
-        // Selection and highlight are the same for us.
-        this.setHighlight(selection);
+        this.startSelectionFrame = undefined;
+        this.endSelectionFrame = undefined;
+        if (selection !== undefined) {
+            let byteData = selection.program.byteData[selection.firstIndex];
+            if (byteData !== undefined) {
+                this.startSelectionFrame = byteData.startFrame;
+                this.endSelectionFrame = byteData.endFrame;
+            }
+            byteData = selection.program.byteData[selection.lastIndex];
+            if (byteData !== undefined) {
+                this.endSelectionFrame = byteData.endFrame;
+            }
+        }
+        this.draw();
     }
     /**
      * Zoom to fit the current selection, if any.
      */
     doneSelecting() {
-        if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
-            this.zoomToFit(this.startHighlightFrame, this.endHighlightFrame);
+        if (this.startSelectionFrame !== undefined && this.endSelectionFrame !== undefined) {
+            this.zoomToFit(this.startSelectionFrame, this.endSelectionFrame);
         }
     }
     /**
@@ -16212,8 +16228,8 @@ class WaveformDisplay_WaveformDisplay {
         // the negative of the real zoom.
         input.min = (-this.maxZoom).toString();
         input.max = "0";
-        this.onMaxZoom.push(maxZoom => input.min = (-maxZoom).toString());
-        this.onZoom.push(zoom => input.value = (-zoom).toString());
+        this.onMaxZoom.subscribe(maxZoom => input.min = (-maxZoom).toString());
+        this.onZoom.subscribe(zoom => input.value = (-zoom).toString());
         input.addEventListener("input", () => {
             this.setZoom(-parseInt(input.value));
         });
@@ -16328,6 +16344,13 @@ class WaveformDisplay_WaveformDisplay {
                 // ctx.fillRect(x1, 0, x2 - x1, height);
             }
         }
+        // Selection.
+        if (this.startSelectionFrame !== undefined && this.endSelectionFrame !== undefined) {
+            ctx.fillStyle = "#555555";
+            const x1 = frameToX(this.startSelectionFrame / mag);
+            const x2 = frameToX(this.endSelectionFrame / mag);
+            ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
+        }
         // Highlight.
         if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
             ctx.fillStyle = "rgb(150, 150, 150)";
@@ -16370,7 +16393,7 @@ class WaveformDisplay_WaveformDisplay {
         const newZoom = Math.min(Math.max(0, zoom), this.maxZoom);
         if (newZoom !== this.zoom) {
             this.zoom = newZoom;
-            this.onZoom.forEach(callback => callback(newZoom));
+            this.onZoom.dispatch(newZoom);
             this.draw();
         }
     }
@@ -16558,9 +16581,6 @@ class Highlight {
         this.lastIndex = Math.max(beginIndex, endIndex);
     }
 }
-
-// EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
-var dist = __webpack_require__(7);
 
 // CONCATENATED MODULE: ./src/TapeBrowser.ts
 
