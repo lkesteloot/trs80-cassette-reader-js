@@ -16635,14 +16635,6 @@ class Pane {
     constructor(element) {
         this.element = element;
     }
-    setWaveformDisplay(waveformDisplay) {
-        this.waveformDisplay = waveformDisplay;
-        return this;
-    }
-    setTrs80(trs80) {
-        this.trs80 = trs80;
-        return this;
-    }
 }
 /**
  * Remove all children from element.
@@ -16676,7 +16668,7 @@ class TapeBrowser_Highlighter {
         window.addEventListener("mouseup", event => {
             if (this.selectionBeginIndex !== undefined) {
                 this.selectionBeginIndex = undefined;
-                this.tapeBrowser.doneSelecting();
+                this.tapeBrowser.doneSelecting(this);
                 event.preventDefault();
             }
         });
@@ -16743,6 +16735,37 @@ class TapeBrowser_Highlighter {
             }
         }
     }
+    /**
+     * Called when the user is done selecting and we should scroll to the selection.
+     */
+    doneSelecting() {
+        // Bring the middle element into view.
+        if (this.selectedElements.length > 0) {
+            const midElement = this.selectedElements[Math.floor(this.selectedElements.length / 2)];
+            if (midElement.offsetHeight === 0) {
+                // Not visible, do this later.
+                this.scrollToElement = midElement;
+            }
+            else {
+                midElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+            }
+        }
+    }
+    /**
+     * This set of elements was just shown.
+     */
+    didShow() {
+        if (this.scrollToElement !== undefined) {
+            this.scrollToElement.scrollIntoView({
+                behavior: "auto",
+                block: "center",
+            });
+            this.scrollToElement = undefined;
+        }
+    }
 }
 /**
  * UI for browsing a tape interactively.
@@ -16763,7 +16786,7 @@ class TapeBrowser_TapeBrowser {
          */
         this.onSelection = new dist["SimpleEventDispatcher"]();
         /**
-         * Dispatcher for the selection being done.
+         * Dispatcher for the selection being done. Value is the source of the selecting process.
          */
         this.onDoneSelecting = new dist["SimpleEventDispatcher"]();
         this.tape = tape;
@@ -16796,8 +16819,8 @@ class TapeBrowser_TapeBrowser {
     /**
      * Called when the user has finished selecting part of the data (releases the mouse button).
      */
-    doneSelecting() {
-        this.onDoneSelecting.dispatch(this.selection);
+    doneSelecting(source) {
+        this.onDoneSelecting.dispatch(source);
     }
     /**
      * Make the lower-right pane of original waveforms.
@@ -16833,7 +16856,7 @@ class TapeBrowser_TapeBrowser {
         waveforms.appendChild(canvas);
         this.onHighlight.subscribe(highlight => this.originalWaveformDisplay.setHighlight(highlight));
         this.onSelection.subscribe(selection => this.originalWaveformDisplay.setSelection(selection));
-        this.onDoneSelecting.subscribe(selection => this.originalWaveformDisplay.doneSelecting());
+        this.onDoneSelecting.subscribe(() => this.originalWaveformDisplay.doneSelecting());
     }
     /**
      * Make pane of metadata for a program.
@@ -16899,7 +16922,18 @@ class TapeBrowser_TapeBrowser {
             hexHighlighter.select(selection, program, Hexdump_selectClassName);
             asciiHighlighter.select(selection, program, Hexdump_selectClassName);
         });
-        return new Pane(div);
+        this.onDoneSelecting.subscribe(source => {
+            if (source !== hexHighlighter && source !== asciiHighlighter) {
+                hexHighlighter.doneSelecting();
+                asciiHighlighter.doneSelecting();
+            }
+        });
+        let pane = new Pane(div);
+        pane.didShow = () => {
+            hexHighlighter.didShow();
+            asciiHighlighter.didShow();
+        };
+        return pane;
     }
     makeReconstructedPane(program) {
         const waveformDisplay = new WaveformDisplay_WaveformDisplay();
@@ -16917,7 +16951,7 @@ class TapeBrowser_TapeBrowser {
         div.appendChild(canvas);
         waveformDisplay.addWaveform(canvas, program.reconstructedSamples);
         waveformDisplay.zoomToFitAll();
-        return new Pane(div).setWaveformDisplay(waveformDisplay);
+        return new Pane(div);
     }
     makeBasicPane(program) {
         const div = document.createElement("div");
@@ -16931,7 +16965,16 @@ class TapeBrowser_TapeBrowser {
         this.onSelection.subscribe(selection => {
             highlighter.select(selection, program, selectClassName);
         });
-        return new Pane(div);
+        this.onDoneSelecting.subscribe(source => {
+            if (source !== highlighter) {
+                highlighter.doneSelecting();
+            }
+        });
+        let pane = new Pane(div);
+        pane.didShow = () => {
+            highlighter.didShow();
+        };
+        return pane;
     }
     makeEdtasmPane(program) {
         const div = document.createElement("div");
@@ -16945,8 +16988,16 @@ class TapeBrowser_TapeBrowser {
         this.onSelection.subscribe(selection => {
             highlighter.select(selection, program, Edtasm_selectClassName);
         });
+        this.onDoneSelecting.subscribe(source => {
+            if (source !== highlighter) {
+                highlighter.doneSelecting();
+            }
+        });
         const pane = new Pane(div);
         pane.edtasmName = name;
+        pane.didShow = () => {
+            highlighter.didShow();
+        };
         return pane;
     }
     makeEmulatorPane(program, cassette) {
@@ -16959,25 +17010,30 @@ class TapeBrowser_TapeBrowser {
         div.appendChild(progressBar);
         const trs80 = new Trs80_Trs80(screen, cassette);
         trs80.reset();
-        return new Pane(div).setTrs80(trs80);
+        let pane = new Pane(div);
+        pane.didShow = () => trs80.start();
+        pane.didHide = () => trs80.stop();
+        return pane;
     }
     /**
      * Show a particular pane and hide all others.
      */
     showPane(pane) {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         // Hide all others.
         for (const otherPane of this.panes) {
             if (otherPane !== pane) {
+                (_b = (_a = otherPane).willHide) === null || _b === void 0 ? void 0 : _b.call(_a);
                 otherPane.element.classList.add("hidden");
-                (_a = otherPane.row) === null || _a === void 0 ? void 0 : _a.classList.remove("selected");
-                (_b = otherPane.trs80) === null || _b === void 0 ? void 0 : _b.stop();
+                (_c = otherPane.row) === null || _c === void 0 ? void 0 : _c.classList.remove("selected");
+                (_e = (_d = otherPane).didHide) === null || _e === void 0 ? void 0 : _e.call(_d);
             }
         }
         // Show this one.
+        (_g = (_f = pane).willShow) === null || _g === void 0 ? void 0 : _g.call(_f);
         pane.element.classList.remove("hidden");
-        (_c = pane.row) === null || _c === void 0 ? void 0 : _c.classList.add("selected");
-        (_d = pane.trs80) === null || _d === void 0 ? void 0 : _d.start();
+        (_h = pane.row) === null || _h === void 0 ? void 0 : _h.classList.add("selected");
+        (_k = (_j = pane).didShow) === null || _k === void 0 ? void 0 : _k.call(_j);
     }
     /**
      * Create the panes and the table of contents for them on the left.
