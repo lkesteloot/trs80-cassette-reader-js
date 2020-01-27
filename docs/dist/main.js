@@ -16111,7 +16111,11 @@ class WaveformDisplay_WaveformDisplay {
          * audio sample maps to one column of pixels on the screen; 1 means
          * zoomed out from that by a factor of two, etc.
          */
-        this.displayLevel = 0; // Initialized in zoomToFitAll()
+        this.zoom = 0; // Initialized in zoomToFitAll()
+        /**
+         * The max value that zoom can have.
+         */
+        this.maxZoom = 0;
         /**
          * The sample in the middle of the display, in original samples.
          */
@@ -16124,6 +16128,14 @@ class WaveformDisplay_WaveformDisplay {
          * All the programs represented on these waveforms.
          */
         this.programs = [];
+        /**
+         * Listeners of the maxZoom property.
+         */
+        this.onMaxZoom = [];
+        /**
+         * Listeners of the zoom property.
+         */
+        this.onZoom = [];
     }
     /**
      * Add a waveform to display.
@@ -16135,6 +16147,12 @@ class WaveformDisplay_WaveformDisplay {
         }
         else if (this.displayWidth !== displayWidth) {
             throw new Error("Widths of the canvases must match");
+        }
+        // Compute max display level.
+        let newMaxZoom = samples.samplesList.length - 1;
+        if (newMaxZoom !== this.maxZoom) {
+            this.maxZoom = newMaxZoom;
+            this.onMaxZoom.forEach(callback => callback(newMaxZoom));
         }
         this.waveforms.push(new Waveform(canvas, samples));
         this.configureCanvas(canvas);
@@ -16167,6 +16185,28 @@ class WaveformDisplay_WaveformDisplay {
         // TODO.
     }
     /**
+     * Create zoom control elements, bind them to this waveform display, and return them.
+     * These are not guaranteed to be a block element. Caller should warp them in
+     * a div if that's what they want.
+     */
+    makeZoomControls() {
+        const label = document.createElement("label");
+        label.innerText = "Zoom: ";
+        const input = document.createElement("input");
+        input.type = "range";
+        label.appendChild(input);
+        // We want to flip this horizontally, so make the slider's value
+        // the negative of the real zoom.
+        input.min = (-this.maxZoom).toString();
+        input.max = "0";
+        this.onMaxZoom.push(maxZoom => input.min = (-maxZoom).toString());
+        this.onZoom.push(zoom => input.value = (-zoom).toString());
+        input.addEventListener("input", () => {
+            this.setZoom(-parseInt(input.value));
+        });
+        return label;
+    }
+    /**
      * Configure the mouse events in the canvas.
      */
     configureCanvas(canvas) {
@@ -16188,7 +16228,7 @@ class WaveformDisplay_WaveformDisplay {
         canvas.addEventListener("mousemove", event => {
             if (dragging) {
                 const dx = event.x - dragInitialX;
-                const mag = Math.pow(2, this.displayLevel);
+                const mag = Math.pow(2, this.zoom);
                 this.centerSample = Math.round(dragInitialCenterSample - dx * mag);
                 this.draw();
             }
@@ -16208,10 +16248,10 @@ class WaveformDisplay_WaveformDisplay {
      * @param sampleCount number of samples we want to display.
      */
     computeFitLevel(sampleCount) {
-        let displayLevel = Math.ceil(Math.log2(sampleCount / this.displayWidth));
-        displayLevel = Math.max(displayLevel, 0);
-        displayLevel = Math.min(displayLevel, sampleCount - 1);
-        return displayLevel;
+        let zoom = Math.ceil(Math.log2(sampleCount / this.displayWidth));
+        zoom = Math.max(zoom, 0);
+        zoom = Math.min(zoom, sampleCount - 1);
+        return zoom;
     }
     /**
      * @param {HTMLCanvasElement} canvas
@@ -16228,8 +16268,8 @@ class WaveformDisplay_WaveformDisplay {
             return;
         }
         const samplesList = displaySamples.samplesList;
-        const samples = samplesList[this.displayLevel];
-        const mag = Math.pow(2, this.displayLevel);
+        const samples = samplesList[this.zoom];
+        const mag = Math.pow(2, this.zoom);
         const centerSample = Math.floor(this.centerSample / mag);
         const frameToX = (i) => Math.floor(width / 2) + (i - centerSample);
         // Compute viewing window in zoom space.
@@ -16239,7 +16279,7 @@ class WaveformDisplay_WaveformDisplay {
         const firstOrigSample = Math.floor(firstSample * mag);
         const lastOrigSample = Math.ceil(lastSample * mag);
         // Whether we're zoomed in enough to draw and line and individual bits.
-        const drawingLine = this.displayLevel < 3;
+        const drawingLine = this.zoom < 3;
         // Programs.
         for (const program of this.programs) {
             if (drawingLine) {
@@ -16311,24 +16351,27 @@ class WaveformDisplay_WaveformDisplay {
         }
     }
     /**
+     * Set the zoom level to a particular value.
+     */
+    setZoom(zoom) {
+        const newZoom = Math.min(Math.max(0, zoom), this.maxZoom);
+        if (newZoom !== this.zoom) {
+            this.zoom = newZoom;
+            this.onZoom.forEach(callback => callback(newZoom));
+            this.draw();
+        }
+    }
+    /**
      * Zoom in one level.
      */
     zoomIn() {
-        if (this.displayLevel > 0) {
-            this.displayLevel -= 1;
-            this.draw();
-        }
+        this.setZoom(this.zoom - 1);
     }
     /**
      * Zoom out one level.
      */
     zoomOut() {
-        if (this.waveforms.length > 0 &&
-            this.waveforms[0].samples !== undefined &&
-            this.displayLevel < this.waveforms[0].samples.samplesList.length - 1) {
-            this.displayLevel += 1;
-            this.draw();
-        }
+        this.setZoom(this.zoom + 1);
     }
     /**
      * Zoom to fit a particular bit.
@@ -16344,10 +16387,10 @@ class WaveformDisplay_WaveformDisplay {
      */
     zoomToFit(startFrame, endFrame) {
         const sampleCount = endFrame - startFrame;
-        // Find appropriate zoom.
-        this.displayLevel = this.computeFitLevel(sampleCount);
         // Visually centered sample (in level 0).
         this.centerSample = Math.floor((startFrame + endFrame) / 2);
+        // Find appropriate zoom.
+        this.setZoom(this.computeFitLevel(sampleCount));
         this.draw();
     }
     /**
@@ -16687,7 +16730,7 @@ class TapeBrowser_Highlighter {
  * UI for browsing a tape interactively.
  */
 class TapeBrowser_TapeBrowser {
-    constructor(tape, zoomInButton, zoomOutButton, waveforms, originalCanvas, filteredCanvas, lowSpeedCanvas, tapeContents, topData) {
+    constructor(tape, waveforms, originalCanvas, filteredCanvas, lowSpeedCanvas, tapeContents, topData) {
         this.originalWaveformDisplay = new WaveformDisplay_WaveformDisplay();
         /**
          * All the panes we created in the upper-right (program, etc.).
@@ -16699,13 +16742,9 @@ class TapeBrowser_TapeBrowser {
         this.topData = topData;
         clearElement(tapeContents);
         clearElement(topData);
-        this.originalWaveformDisplay.addWaveform(originalCanvas, tape.originalSamples);
-        this.originalWaveformDisplay.addWaveform(filteredCanvas, tape.filteredSamples);
-        this.originalWaveformDisplay.addWaveform(lowSpeedCanvas, tape.lowSpeedSamples);
+        this.makeWaveforms(waveforms);
         this.tape.programs.forEach(program => this.originalWaveformDisplay.addProgram(program));
         this.originalWaveformDisplay.zoomToFitAll();
-        zoomInButton.onclick = () => this.originalWaveformDisplay.zoomIn();
-        zoomOutButton.onclick = () => this.originalWaveformDisplay.zoomOut();
         // Update left-side panel.
         this.updateTapeContents();
         this.originalWaveformDisplay.draw();
@@ -16734,6 +16773,36 @@ class TapeBrowser_TapeBrowser {
         }
         // Update waveform.
         this.originalWaveformDisplay.setSelection(selection);
+    }
+    makeWaveforms(waveforms) {
+        clearElement(waveforms);
+        const zoomControls = document.createElement("div");
+        zoomControls.appendChild(this.originalWaveformDisplay.makeZoomControls());
+        waveforms.appendChild(zoomControls);
+        let label = document.createElement("p");
+        label.innerText = "Original waveform:";
+        waveforms.appendChild(label);
+        let canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 400;
+        this.originalWaveformDisplay.addWaveform(canvas, this.tape.originalSamples);
+        waveforms.appendChild(canvas);
+        label = document.createElement("p");
+        label.innerText = "High-pass filtered to get rid of DC:";
+        waveforms.appendChild(label);
+        canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 400;
+        this.originalWaveformDisplay.addWaveform(canvas, this.tape.filteredSamples);
+        waveforms.appendChild(canvas);
+        label = document.createElement("p");
+        label.innerText = "Differentiated for low-speed decoding:";
+        waveforms.appendChild(label);
+        canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 400;
+        this.originalWaveformDisplay.addWaveform(canvas, this.tape.lowSpeedSamples);
+        waveforms.appendChild(canvas);
     }
     makeMetadataPane(program, basicPane, edtasmPane) {
         const div = document.createElement("div");
@@ -16800,19 +16869,12 @@ class TapeBrowser_TapeBrowser {
         return pane;
     }
     makeReconstructedPane(program) {
+        const waveformDisplay = new WaveformDisplay_WaveformDisplay();
         const div = document.createElement("div");
         div.classList.add("reconstructed_waveform");
-        const zoomInButton = document.createElement("button");
-        zoomInButton.innerText = "Zoom In";
-        zoomInButton.classList.add("nice_button");
-        zoomInButton.addEventListener("click", () => waveformDisplay.zoomIn());
-        div.appendChild(zoomInButton);
-        div.appendChild(document.createTextNode(" "));
-        const zoomOutButton = document.createElement("button");
-        zoomOutButton.innerText = "Zoom Out";
-        zoomOutButton.classList.add("nice_button");
-        zoomOutButton.addEventListener("click", () => waveformDisplay.zoomOut());
-        div.appendChild(zoomOutButton);
+        const zoomControls = document.createElement("div");
+        zoomControls.appendChild(waveformDisplay.makeZoomControls());
+        div.appendChild(zoomControls);
         const p = document.createElement("p");
         p.innerText = "Reconstructed high-speed waveform:";
         div.appendChild(p);
@@ -16820,7 +16882,6 @@ class TapeBrowser_TapeBrowser {
         canvas.width = 800;
         canvas.height = 400;
         div.appendChild(canvas);
-        const waveformDisplay = new WaveformDisplay_WaveformDisplay();
         waveformDisplay.addWaveform(canvas, program.reconstructedSamples);
         waveformDisplay.zoomToFitAll();
         return new Pane(div).setWaveformDisplay(waveformDisplay);
@@ -17856,13 +17917,14 @@ function handleAudioBuffer(pathname, audioBuffer) {
     const tape = new Tape_Tape(nameFromPathname(pathname), samples, audioBuffer.sampleRate);
     const decoder = new Decoder_Decoder(tape);
     decoder.decode();
-    const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("zoom_in_button"), document.getElementById("zoom_out_button"), document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("tape_contents"), document.getElementById("top_data"));
+    const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("tape_contents"), document.getElementById("top_data"));
     // Switch screens.
     const dropScreen = document.getElementById("drop_screen");
     const dataScreen = document.getElementById("data_screen");
     dropScreen.classList.add("hidden");
     dataScreen.classList.remove("hidden");
-    const loadAnotherButton = document.getElementById("load_another_button");
+    /*
+    const loadAnotherButton = document.getElementById("load_another_button") as HTMLButtonElement;
     loadAnotherButton.onclick = () => {
         dropScreen.classList.remove("hidden");
         dataScreen.classList.add("hidden");
@@ -17870,6 +17932,7 @@ function handleAudioBuffer(pathname, audioBuffer) {
             uploader.reset();
         }
     };
+    */
     split_es(["#data_screen > nav", "#data_screen > main"], {
         sizes: [20, 80],
         minSize: [200, 200],
