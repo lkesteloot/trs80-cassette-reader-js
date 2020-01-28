@@ -469,10 +469,12 @@ class ByteData {
     /**
      * Create an object representing a byte.
      *
+     * @param value the byte value (0-255).
      * @param startFrame the first frame, inclusive.
      * @param endFrame the last frame, inclusive.
      */
-    constructor(startFrame, endFrame) {
+    constructor(value, startFrame, endFrame) {
+        this.value = value;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
     }
@@ -576,6 +578,11 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                         // Merge with previous 1 bit.
                         lastBit.endFrame = frame;
                     }
+                    const lastByte = this.byteData[this.byteData.length - 1];
+                    if (lastByte && lastByte.endFrame === this.lastPulseFrame) {
+                        // Adjust last bit.
+                        lastByte.endFrame = frame;
+                    }
                 }
                 this.eatNextPulse = false;
                 this.lenientFirstBit = false;
@@ -609,8 +616,9 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                     else {
                         this.bitCount += 1;
                         if (this.bitCount === 8) {
-                            this.programBytes.push(this.recentBits & 0xFF);
-                            this.byteData.push(new ByteData(this.bitData[this.bitData.length - 8].startFrame, frame));
+                            let byteValue = this.recentBits & 0xFF;
+                            this.programBytes.push(byteValue);
+                            this.byteData.push(new ByteData(byteValue, this.bitData[this.bitData.length - 8].startFrame, frame));
                             this.bitCount = 0;
                         }
                     }
@@ -678,6 +686,12 @@ class Program_Program {
         this.bitData = bitData;
         this.byteData = byteData;
         this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
+    }
+    /**
+     * Get a generic label for the program.
+     */
+    getProgramLabel() {
+        return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoderName;
     }
     /**
      * Whether this program is really too short to be a real recording.
@@ -5569,6 +5583,13 @@ const Basic_sheet = src_Jss.createStyleSheet(STYLE);
 const highlightClassName = Basic_sheet.classes.highlighted;
 const selectClassName = Basic_sheet.classes.selected;
 /**
+ * Get the token for the byte value, or undefined if the value does
+ * not map to a token.
+ */
+function getToken(c) {
+    return c >= 128 && c < 128 + TOKENS.length ? TOKENS[c - 128] : undefined;
+}
+/**
  * Decode a tokenized Basic program.
  * @param bytes tokenized program.
  * @param out div to write result into.
@@ -5658,8 +5679,8 @@ function fromTokenized(bytes, out) {
                 }
                 switch (state) {
                     case NORMAL:
-                        if (c >= 128 && c < 128 + TOKENS.length) {
-                            const token = TOKENS[c - 128];
+                        const token = getToken(c);
+                        if (token !== undefined) {
                             e = Basic_add(line, token, c === DATA || c === REM ? classes.comment
                                 : token.length === 1 ? classes.punctuation
                                     : classes.keyword);
@@ -16092,6 +16113,7 @@ var dist = __webpack_require__(7);
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
 
 
+
 /**
  * An individual waveform to be displayed.
  */
@@ -16309,54 +16331,75 @@ class WaveformDisplay_WaveformDisplay {
         const lastOrigSample = Math.ceil(lastSample * mag);
         // Whether we're zoomed in enough to draw and line and individual bits.
         const drawingLine = this.zoom < 3;
-        // Programs.
-        for (const program of this.programs) {
-            if (drawingLine) {
-                for (const bitInfo of program.bitData) {
-                    if (bitInfo.endFrame >= firstOrigSample && bitInfo.startFrame <= lastOrigSample) {
-                        const x1 = frameToX(bitInfo.startFrame / mag);
-                        const x2 = frameToX(bitInfo.endFrame / mag);
-                        // console.log(bitInfo, x1, x2);
-                        switch (bitInfo.bitType) {
-                            case BitType.ZERO:
-                                ctx.fillStyle = "rgb(50, 50, 50)";
-                                break;
-                            case BitType.ONE:
-                                ctx.fillStyle = "rgb(100, 100, 100)";
-                                break;
-                            case BitType.START:
-                                ctx.fillStyle = "rgb(20, 150, 20)";
-                                break;
-                            case BitType.BAD:
-                                ctx.fillStyle = "rgb(150, 20, 20)";
-                                break;
-                        }
-                        ctx.fillRect(x1, 0, x2 - x1 - 1, height);
-                    }
-                }
-            }
-            else {
-                // Disable highlighting of programs, it's not very useful and interferes
-                // with byte highlighting.
-                // ctx.fillStyle = "rgb(50, 50, 50)";
-                // const x1 = frameToX(program.startFrame / mag);
-                // const x2 = frameToX(program.endFrame / mag);
-                // ctx.fillRect(x1, 0, x2 - x1, height);
-            }
-        }
         // Selection.
         if (this.startSelectionFrame !== undefined && this.endSelectionFrame !== undefined) {
-            ctx.fillStyle = "#555555";
+            ctx.fillStyle = "rgb(50, 50, 50)";
             const x1 = frameToX(this.startSelectionFrame / mag);
             const x2 = frameToX(this.endSelectionFrame / mag);
             ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
         }
         // Highlight.
         if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
-            ctx.fillStyle = "rgb(150, 150, 150)";
+            ctx.fillStyle = "rgb(75, 75, 75)";
             const x1 = frameToX(this.startHighlightFrame / mag);
             const x2 = frameToX(this.endHighlightFrame / mag);
             ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
+        }
+        // Programs and bits.
+        for (const program of this.programs) {
+            if (drawingLine) {
+                // Highlight bits.
+                for (const bitInfo of program.bitData) {
+                    if (bitInfo.endFrame >= firstOrigSample && bitInfo.startFrame <= lastOrigSample) {
+                        const x1 = frameToX(bitInfo.startFrame / mag);
+                        const x2 = frameToX(bitInfo.endFrame / mag);
+                        let label;
+                        let color;
+                        switch (bitInfo.bitType) {
+                            case BitType.ZERO:
+                                color = "rgb(150, 150, 150)";
+                                label = "0";
+                                break;
+                            case BitType.ONE:
+                                color = "rgb(150, 150, 150)";
+                                label = "1";
+                                break;
+                            case BitType.START:
+                                color = "rgb(50, 200, 50)";
+                                label = "START";
+                                break;
+                            case BitType.BAD:
+                                color = "rgb(200, 50, 50)";
+                                label = "BAD";
+                                break;
+                        }
+                        this.drawBraceAndLabel(ctx, x1, x2, label, color);
+                    }
+                }
+            }
+            else if (this.zoom < 5) {
+                // Highlight bytes.
+                for (const byteInfo of program.byteData) {
+                    if (byteInfo.endFrame >= firstOrigSample && byteInfo.startFrame <= lastOrigSample) {
+                        const x1 = frameToX(byteInfo.startFrame / mag);
+                        const x2 = frameToX(byteInfo.endFrame / mag);
+                        let byteValue = byteInfo.value;
+                        const basicToken = getToken(byteValue);
+                        const label = byteValue < 32 ? "\\" + String.fromCodePoint(byteValue + 64).toLowerCase()
+                            : byteValue === 32 ? '\u2423' // Open box to represent space.
+                                : byteValue < 128 ? String.fromCodePoint(byteValue)
+                                    : program.isBasicProgram() && basicToken !== undefined ? basicToken
+                                        : "0x" + byteValue.toString(16).padStart(2, "0").toUpperCase();
+                        this.drawBraceAndLabel(ctx, x1, x2, label, "rgb(150, 150, 150)");
+                    }
+                }
+            }
+            else {
+                // Highlight the whole program.
+                const x1 = frameToX(program.startFrame / mag);
+                const x2 = frameToX(program.endFrame / mag);
+                this.drawBraceAndLabel(ctx, x1, x2, program.getProgramLabel(), "rgb(150, 150, 150)");
+            }
         }
         // Draw waveform.
         ctx.strokeStyle = "rgb(255, 255, 255)";
@@ -16436,6 +16479,37 @@ class WaveformDisplay_WaveformDisplay {
         if (this.waveforms.length > 0 && this.waveforms[0].samples !== undefined) {
             this.zoomToFit(0, this.waveforms[0].samples.samplesList[0].length);
         }
+    }
+    /**
+     * Draw a down-facing brace withe specified label.
+     */
+    drawBraceAndLabel(ctx, left, right, label, color) {
+        const middle = (left + right) / 2;
+        // Don't use a custom font here, they load asynchronously and we're not told when they
+        // finish loading, so we can't redraw and the initial draw uses some default serif font.
+        ctx.font = '10pt monospace';
+        ctx.fillStyle = color;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        ctx.fillText(label, middle, 38);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1;
+        this.drawBrace(ctx, left, middle, right, 40, 380);
+    }
+    /**
+     * Draw a horizontal brace, pointing up, facing down.
+     */
+    drawBrace(ctx, left, middle, right, top, bottom) {
+        const radius = Math.min(10, (right - left) / 4);
+        const lineY = top + 20;
+        ctx.beginPath();
+        ctx.moveTo(left, bottom);
+        ctx.arcTo(left, lineY, left + radius, lineY, radius);
+        ctx.arcTo(middle, lineY, middle, top, radius);
+        ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
+        ctx.arcTo(right, lineY, right, lineY + radius, radius);
+        ctx.lineTo(right, bottom);
+        ctx.stroke();
     }
 }
 
@@ -17079,7 +17153,7 @@ class TapeBrowser_TapeBrowser {
         // Create panes for each program.
         for (const program of this.tape.programs) {
             // Header for program.
-            const row = addRow("Track " + program.trackNumber + ", copy " + program.copyNumber + ", " + program.decoderName);
+            const row = addRow(program.getProgramLabel());
             row.classList.add("program_title");
             // Add a pane to the top-right, register it, and add it to table of contents.
             const addPane = (label, pane) => {
