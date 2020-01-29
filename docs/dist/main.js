@@ -1201,11 +1201,13 @@ const HZ = 48000;
 function highPassFilter(samples, size) {
     const out = new Float32Array(samples.length);
     let sum = 0;
-    for (let i = 0; i < samples.length; i++) {
+    for (let i = 0; i < size; i++) {
         sum += samples[i];
-        if (i >= size) {
-            sum -= samples[i - size];
-        }
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    for (let i = size; i < samples.length; i++) {
+        sum += samples[i] - samples[i - size];
         // Subtract out the average of the last "size" samples (to estimate local DC component).
         out[i] = samples[i] - sum / size;
     }
@@ -1630,11 +1632,10 @@ class DisplaySamples {
     filterDown() {
         while (this.samplesList[this.samplesList.length - 1].length > 500) {
             const samples = this.samplesList[this.samplesList.length - 1];
-            const half = Math.ceil(samples.length / 2);
+            const half = Math.floor(samples.length / 2);
             const down = new Float32Array(half);
-            for (let i = 0; i < half; i++) {
-                const j = i * 2;
-                down[i] = j === samples.length - 1 ? samples[j] : Math.max(samples[j], samples[j + 1]);
+            for (let i = 0, j = 0; i < half; i++, j += 2) {
+                down[i] = Math.max(samples[j], samples[j + 1]);
             }
             this.samplesList.push(down);
         }
@@ -1659,8 +1660,14 @@ class Program_Program {
     /**
      * Get a generic label for the program.
      */
-    getProgramLabel() {
+    getLabel() {
         return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoderName;
+    }
+    /**
+     * Get a generic short label for the program.
+     */
+    getShortLabel() {
+        return "T" + this.trackNumber + " C" + this.copyNumber;
     }
     /**
      * Whether this program is really too short to be a real recording.
@@ -17454,7 +17461,7 @@ class WaveformDisplay_WaveformDisplay {
                 // Highlight the whole program.
                 const x1 = frameToX(program.startFrame / mag);
                 const x2 = frameToX(program.endFrame / mag);
-                this.drawBraceAndLabel(ctx, x1, x2, "rgb(150, 150, 150)", program.getProgramLabel(), "rgb(255, 255, 255)");
+                this.drawBraceAndLabel(ctx, x1, x2, "rgb(150, 150, 150)", program.getShortLabel(), "rgb(255, 255, 255)");
             }
         }
         // Draw waveform.
@@ -18225,7 +18232,7 @@ class TapeBrowser_TapeBrowser {
         // Create panes for each program.
         for (const program of this.tape.programs) {
             // Header for program.
-            const row = addRow(program.getProgramLabel());
+            const row = addRow(program.getLabel());
             row.classList.add("program_title");
             // Add a pane to the top-right, register it, and add it to table of contents.
             const addPane = (label, pane) => {
