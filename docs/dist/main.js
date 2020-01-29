@@ -18065,7 +18065,7 @@ class TapeBrowser_TapeBrowser {
             addKeyValue("Type", "Basic program", () => this.showPane(basicPane));
         }
         else if (edtasmPane !== undefined) {
-            addKeyValue("Type", "Assembly program (" + edtasmPane.edtasmName + ")", () => this.showPane(edtasmPane));
+            addKeyValue("Type", "Assembly program" + (edtasmPane.edtasmName ? " (" + edtasmPane.edtasmName + ")" : ""), () => this.showPane(edtasmPane));
         }
         else {
             addKeyValue("Type", "Unknown");
@@ -18254,7 +18254,7 @@ class TapeBrowser_TapeBrowser {
                 addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new TapeBrowser_ReconstructedCassette(program)));
             }
             if (edtasmPane !== undefined) {
-                addPane("Assembly (" + edtasmPane.edtasmName + ")", edtasmPane);
+                addPane("Assembly" + (edtasmPane.edtasmName ? " (" + edtasmPane.edtasmName + ")" : ""), edtasmPane);
             }
         }
         // Show the first pane.
