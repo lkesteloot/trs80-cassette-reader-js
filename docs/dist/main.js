@@ -110,6 +110,14 @@ function pad(n, base, size) {
     }
     return s;
 }
+/**
+ * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
+ */
+function base64EncodeUint8Array(array) {
+    let s = "";
+    array.forEach(c => s += String.fromCharCode(c));
+    return btoa(s);
+}
 
 // CONCATENATED MODULE: ./src/AudioUtils.ts
 
@@ -16674,6 +16682,7 @@ function decodeEdtasm(bytes, out) {
 
 
 
+
 /**
  * Generic cassette that reads from a Int16Array.
  */
@@ -17004,6 +17013,13 @@ class TapeBrowser_TapeBrowser {
         addKeyValue("Start time", frameToTimestamp(program.startFrame), () => this.originalWaveformDisplay.zoomToFit(program.startFrame - 100, program.startFrame + 100));
         addKeyValue("End time", frameToTimestamp(program.endFrame), () => this.originalWaveformDisplay.zoomToFit(program.endFrame - 100, program.endFrame + 100));
         addKeyValue("Duration", frameToTimestamp(program.endFrame - program.startFrame, true), () => this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame));
+        addKeyValue("Binary", "Download " + program.binary.length + " bytes", () => {
+            // Download binary.
+            const a = document.createElement("a");
+            a.href = "data:application/octet-stream;base64," + base64EncodeUint8Array(program.binary);
+            a.download = program.getShortLabel().replace(" ", "-") + ".bin";
+            a.click();
+        });
         if (basicPane !== undefined) {
             addKeyValue("Type", "Basic program", () => this.showPane(basicPane));
         }
