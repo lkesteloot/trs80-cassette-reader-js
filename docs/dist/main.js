@@ -263,7 +263,6 @@ var TapeDecoderState;
 
 
 
-
 // What distance away from 0 counts as "positive" (or, when negative, "negative").
 const THRESHOLD = 500 / 32768.0;
 // If we go this many frames without any crossing, then we can assume we're done.
@@ -308,8 +307,6 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
                         let bitType;
                         if (this.bitCount === 1) {
                             if (bit) {
-                                console.log("Bad start bit at byte " + this.programBytes.length + ", " +
-                                    frameToTimestamp(frame) + ", cycle size " + this.cycleSize + ".");
                                 this.state = TapeDecoderState.ERROR;
                                 bitType = BitType.BAD;
                             }
@@ -483,9 +480,6 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
             }
             if (this.eatNextPulse) {
                 if (this.state === TapeDecoderState.DETECTED && !bit && !this.lenientFirstBit) {
-                    console.log("Warning: At bit of wrong value at " +
-                        frameToTimestamp(frame) + ", diff = " + timeDiff + ", last = " +
-                        frameToTimestamp(this.lastPulseFrame));
                     this.bitData.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
                 }
                 else {
@@ -826,7 +820,6 @@ class Decoder_Decoder {
         let frame = 0;
         let programStartFrame = -1;
         while (frame < samples.length) {
-            console.log("--------------------------------------- " + instanceNumber);
             // Start out trying all decoders.
             let tapeDecoders = [
                 new LowSpeedTapeDecoder_LowSpeedTapeDecoder(true),
@@ -858,10 +851,6 @@ class Decoder_Decoder {
                             copyNumber = 1;
                         }
                         programStartFrame = frame;
-                        console.log("Decoder \"" + tapeDecoder.getName() + "\" detected " +
-                            trackNumber + "-" + copyNumber + " at " +
-                            frameToTimestamp(frame) + " after " +
-                            leadTime.toFixed(3) + " seconds.");
                         // Throw away the other decoders.
                         tapeDecoders = [
                             tapeDecoder,
@@ -876,18 +865,16 @@ class Decoder_Decoder {
             }
             switch (state) {
                 case TapeDecoderState.UNDECIDED:
-                    console.log("Reached end of tape without finding track.");
                     break;
                 case TapeDecoderState.DETECTED:
-                    console.log("Reached end of tape while still reading track.");
                     break;
                 case TapeDecoderState.ERROR:
                 case TapeDecoderState.FINISHED:
                     if (state === TapeDecoderState.ERROR) {
-                        console.log("Decoder detected an error; skipping program.");
+                        // Error, keep program anyway?
                     }
                     else {
-                        console.log("Found end of program at " + frameToTimestamp(frame) + ".");
+                        // Finished, keep program.
                     }
                     let binary = tapeDecoders[0].getBinary();
                     // Low-speed programs end in two 0x00, but high-speed programs
@@ -17283,7 +17270,6 @@ class ArrayBufferReader {
      * Read a buffer of Int16 numbers.
      */
     readInt16Array(byteLength) {
-        console.log("Total = %d, index = %d, asking = %d", this.arrayBuffer.byteLength, this.index, byteLength);
         const array = new Int16Array(this.arrayBuffer, this.index, byteLength / 2);
         this.index += byteLength;
         return array;
@@ -17299,11 +17285,9 @@ function readWavFile(arrayBuffer) {
     // Read ID.
     const riffId = reader.readString(4);
     if (riffId === "RIFF") {
-        console.log("detected little-endian WAVE file");
         reader.littleEndian = true;
     }
     else if (riffId === "RIFX") {
-        console.log("detected big-endian WAVE file");
         reader.littleEndian = false;
     }
     else {
@@ -17351,7 +17335,6 @@ function readWavFile(arrayBuffer) {
                 // determined from the length of the data and the container size as determined
                 // from the Format chunk.
                 const numSamples = reader.readUint32();
-                console.log('number of samples: %o', numSamples);
                 break;
             }
             case "data": {
