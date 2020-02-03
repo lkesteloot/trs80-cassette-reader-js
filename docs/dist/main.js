@@ -16730,8 +16730,7 @@ class Trs80_Trs80 {
                 // Various controls.
                 this.modeImage = value;
                 this.setCassetteMotor((value & 0x02) !== 0);
-                // TODO
-                // this.setExpandedCharacters((value & 0x04) !== 0);
+                this.setExpandedCharacters((value & 0x04) !== 0);
                 break;
             case 0xF0:
                 // Disk command.
@@ -16925,6 +16924,17 @@ class Trs80_Trs80 {
     // What to do when the hardware timer goes off.
     handleTimer() {
         this.setTimerInterrupt(true);
+    }
+    // Enable or disable expanded character set.
+    setExpandedCharacters(expanded) {
+        if (expanded) {
+            this.node.classList.remove(CSS_PREFIX + "-narrow");
+            this.node.classList.add(CSS_PREFIX + "-expanded");
+        }
+        else {
+            this.node.classList.remove(CSS_PREFIX + "-expanded");
+            this.node.classList.add(CSS_PREFIX + "-narrow");
+        }
     }
     // Reset the controller to a known state.
     resetCassette() {
