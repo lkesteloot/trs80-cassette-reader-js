@@ -1680,12 +1680,6 @@ class Program_Program {
         return "T" + this.trackNumber + " C" + this.copyNumber;
     }
     /**
-     * Whether this program is really too short to be a real recording.
-     */
-    isTooShort(sampleRate) {
-        return this.endFrame - this.startFrame < sampleRate / 10;
-    }
-    /**
      * Whether the binary represents a Basic program.
      */
     isBasicProgram() {
@@ -1874,11 +1868,12 @@ class Decoder_Decoder {
     }
     decode() {
         const samples = this.tape.filteredSamples.samplesList[0];
-        let instanceNumber = 1;
         let trackNumber = 0;
-        let copyNumber = 1;
+        let copyNumber = 0;
         let frame = 0;
         let programStartFrame = -1;
+        let newTrack = true;
+        // Find each program.
         while (frame < samples.length) {
             // Start out trying all decoders.
             let tapeDecoders = [
@@ -1907,8 +1902,7 @@ class Decoder_Decoder {
                         // See how long it took to find it. A large gap means a new track.
                         const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
                         if (leadTime > 10 || programStartFrame === -1) {
-                            trackNumber += 1;
-                            copyNumber = 1;
+                            newTrack = true;
                         }
                         programStartFrame = frame;
                         // Throw away the other decoders.
@@ -1952,14 +1946,21 @@ class Decoder_Decoder {
                     else {
                         highSpeedBytes = binary;
                     }
-                    const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBitData(), tapeDecoders[0].getByteData(), encodeHighSpeed(highSpeedBytes, this.tape.sampleRate));
-                    if (!program.isTooShort(this.tape.sampleRate)) {
+                    // Skip very short programs, they're mis-detects.
+                    if (frame - programStartFrame > this.tape.sampleRate / 10) {
+                        if (newTrack) {
+                            trackNumber++;
+                            copyNumber = 1;
+                            newTrack = false;
+                        }
+                        else {
+                            copyNumber += 1;
+                        }
+                        const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBitData(), tapeDecoders[0].getByteData(), encodeHighSpeed(highSpeedBytes, this.tape.sampleRate));
                         this.tape.addProgram(program);
                     }
                     break;
             }
-            copyNumber += 1;
-            instanceNumber += 1;
         }
     }
 }
