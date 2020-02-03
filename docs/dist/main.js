@@ -81,115 +81,1091 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/*!
+ * Strongly Typed Events for TypeScript
+ * https://github.com/KeesCBakker/StronlyTypedEvents/
+ * http://keestalkstech.com
+ *
+ * Copyright Kees C. Bakker / KeesTalksTech
+ * Released under the MIT license
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+var ste_core_1 = __webpack_require__(1);
+exports.DispatcherBase = ste_core_1.DispatcherBase;
+exports.DispatcherWrapper = ste_core_1.DispatcherWrapper;
+exports.EventListBase = ste_core_1.EventListBase;
+exports.Subscription = ste_core_1.Subscription;
+var ste_events_1 = __webpack_require__(9);
+exports.EventDispatcher = ste_events_1.EventDispatcher;
+exports.EventHandlingBase = ste_events_1.EventHandlingBase;
+exports.EventList = ste_events_1.EventList;
+exports.NonUniformEventList = ste_events_1.NonUniformEventList;
+var ste_simple_events_1 = __webpack_require__(11);
+exports.SimpleEventDispatcher = ste_simple_events_1.SimpleEventDispatcher;
+exports.SimpleEventHandlingBase = ste_simple_events_1.SimpleEventHandlingBase;
+exports.SimpleEventList = ste_simple_events_1.SimpleEventList;
+exports.NonUniformSimpleEventList = ste_simple_events_1.NonUniformSimpleEventList;
+var ste_signals_1 = __webpack_require__(13);
+exports.SignalDispatcher = ste_signals_1.SignalDispatcher;
+exports.SignalHandlingBase = ste_signals_1.SignalHandlingBase;
+exports.SignalList = ste_signals_1.SignalList;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/*!
+ * Strongly Typed Events for TypeScript - Core
+ * https://github.com/KeesCBakker/StronlyTypedEvents/
+ * http://keestalkstech.com
+ *
+ * Copyright Kees C. Bakker / KeesTalksTech
+ * Released under the MIT license
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+var dispatching_1 = __webpack_require__(7);
+exports.DispatcherBase = dispatching_1.DispatcherBase;
+exports.DispatcherWrapper = dispatching_1.DispatcherWrapper;
+exports.EventListBase = dispatching_1.EventListBase;
+var subscription_1 = __webpack_require__(3);
+exports.Subscription = subscription_1.Subscription;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* global window */
+
+
+var root;
+
+if (typeof self !== 'undefined') {
+  root = self;
+} else if (typeof window !== 'undefined') {
+  root = window;
+} else if (typeof global !== 'undefined') {
+  root = global;
+} else if (true) {
+  root = module;
+} else {}
+
+var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
+/* harmony default export */ __webpack_exports__["a"] = (result);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(6)(module)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Stores a handler. Manages execution meta data.
+ * @class Subscription
+ * @template TEventHandler
+ */
+var Subscription = /** @class */ (function () {
+    /**
+     * Creates an instance of Subscription.
+     *
+     * @param {TEventHandler} handler The handler for the subscription.
+     * @param {boolean} isOnce Indicates if the handler should only be executed once.
+     */
+    function Subscription(handler, isOnce) {
+        this.handler = handler;
+        this.isOnce = isOnce;
+        /**
+         * Indicates if the subscription has been executed before.
+         */
+        this.isExecuted = false;
+    }
+    /**
+     * Executes the handler.
+     *
+     * @param {boolean} executeAsync True if the even should be executed async.
+     * @param {*} scope The scope the scope of the event.
+     * @param {IArguments} args The arguments for the event.
+     */
+    Subscription.prototype.execute = function (executeAsync, scope, args) {
+        if (!this.isOnce || !this.isExecuted) {
+            this.isExecuted = true;
+            var fn = this.handler;
+            if (executeAsync) {
+                setTimeout(function () {
+                    fn.apply(scope, args);
+                }, 1);
+            }
+            else {
+                fn.apply(scope, args);
+            }
+        }
+    };
+    return Subscription;
+}());
+exports.Subscription = Subscription;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return symbolObservablePonyfill; });
+function symbolObservablePonyfill(root) {
+	var result;
+	var Symbol = root.Symbol;
+
+	if (typeof Symbol === 'function') {
+		if (Symbol.observable) {
+			result = Symbol.observable;
+		} else {
+			result = Symbol('observable');
+			Symbol.observable = result;
+		}
+	} else {
+		result = '@@observable';
+	}
+
+	return result;
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var management_1 = __webpack_require__(8);
+var subscription_1 = __webpack_require__(3);
+/**
+ * Base class for implementation of the dispatcher. It facilitates the subscribe
+ * and unsubscribe methods based on generic handlers. The TEventType specifies
+ * the type of event that should be exposed. Use the asEvent to expose the
+ * dispatcher as event.
+ */
+var DispatcherBase = /** @class */ (function () {
+    function DispatcherBase() {
+        this._wrap = new DispatcherWrapper(this);
+        this._subscriptions = new Array();
+    }
+    Object.defineProperty(DispatcherBase.prototype, "count", {
+        /**
+         * Returns the number of subscriptions.
+         *
+         * @readonly
+         *
+         * @memberOf DispatcherBase
+         */
+        get: function () {
+            return this._subscriptions.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Subscribe to the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     * @returns A function that unsubscribes the event handler from the event.
+     */
+    DispatcherBase.prototype.subscribe = function (fn) {
+        var _this = this;
+        if (fn) {
+            this._subscriptions.push(new subscription_1.Subscription(fn, false));
+        }
+        return function () {
+            _this.unsubscribe(fn);
+        };
+    };
+    /**
+     * Subscribe to the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     * @returns A function that unsubscribes the event handler from the event.
+     */
+    DispatcherBase.prototype.sub = function (fn) {
+        return this.subscribe(fn);
+    };
+    /**
+     * Subscribe once to the event with the specified name.
+     * @param fn The event handler that is called when the event is dispatched.
+     * @returns A function that unsubscribes the event handler from the event.
+     */
+    DispatcherBase.prototype.one = function (fn) {
+        var _this = this;
+        if (fn) {
+            this._subscriptions.push(new subscription_1.Subscription(fn, true));
+        }
+        return function () {
+            _this.unsubscribe(fn);
+        };
+    };
+    /**
+     * Checks it the event has a subscription for the specified handler.
+     * @param fn The event handler.
+     */
+    DispatcherBase.prototype.has = function (fn) {
+        if (!fn)
+            return false;
+        return this._subscriptions.some(function (sub) { return sub.handler == fn; });
+    };
+    /**
+     * Unsubscribes the handler from the dispatcher.
+     * @param fn The event handler.
+     */
+    DispatcherBase.prototype.unsubscribe = function (fn) {
+        if (!fn)
+            return;
+        for (var i = 0; i < this._subscriptions.length; i++) {
+            if (this._subscriptions[i].handler == fn) {
+                this._subscriptions.splice(i, 1);
+                break;
+            }
+        }
+    };
+    /**
+     * Unsubscribes the handler from the dispatcher.
+     * @param fn The event handler.
+     */
+    DispatcherBase.prototype.unsub = function (fn) {
+        this.unsubscribe(fn);
+    };
+    /**
+     * Generic dispatch will dispatch the handlers with the given arguments.
+     *
+     * @protected
+     * @param {boolean} executeAsync True if the even should be executed async.
+     * @param {*} The scope the scope of the event. The scope becomes the "this" for handler.
+     * @param {IArguments} args The arguments for the event.
+     */
+    DispatcherBase.prototype._dispatch = function (executeAsync, scope, args) {
+        var _this = this;
+        var _loop_1 = function (sub) {
+            var ev = new management_1.EventManagement(function () { return _this.unsub(sub.handler); });
+            var nargs = Array.prototype.slice.call(args);
+            nargs.push(ev);
+            sub.execute(executeAsync, scope, nargs);
+            //cleanup subs that are no longer needed
+            this_1.cleanup(sub);
+            if (!executeAsync && ev.propagationStopped) {
+                return "break";
+            }
+        };
+        var this_1 = this;
+        //execute on a copy because of bug #9
+        for (var _i = 0, _a = __spreadArrays(this._subscriptions); _i < _a.length; _i++) {
+            var sub = _a[_i];
+            var state_1 = _loop_1(sub);
+            if (state_1 === "break")
+                break;
+        }
+    };
+    /**
+     * Cleans up subs that ran and should run only once.
+     */
+    DispatcherBase.prototype.cleanup = function (sub) {
+        if (sub.isOnce && sub.isExecuted) {
+            var i = this._subscriptions.indexOf(sub);
+            if (i > -1) {
+                this._subscriptions.splice(i, 1);
+            }
+        }
+    };
+    /**
+     * Creates an event from the dispatcher. Will return the dispatcher
+     * in a wrapper. This will prevent exposure of any dispatcher methods.
+     */
+    DispatcherBase.prototype.asEvent = function () {
+        return this._wrap;
+    };
+    /**
+     * Clears all the subscriptions.
+     */
+    DispatcherBase.prototype.clear = function () {
+        this._subscriptions.splice(0, this._subscriptions.length);
+    };
+    return DispatcherBase;
+}());
+exports.DispatcherBase = DispatcherBase;
+/**
+ * Base class for event lists classes. Implements the get and remove.
+ */
+var EventListBase = /** @class */ (function () {
+    function EventListBase() {
+        this._events = {};
+    }
+    /**
+     * Gets the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    EventListBase.prototype.get = function (name) {
+        var event = this._events[name];
+        if (event) {
+            return event;
+        }
+        event = this.createDispatcher();
+        this._events[name] = event;
+        return event;
+    };
+    /**
+     * Removes the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    EventListBase.prototype.remove = function (name) {
+        delete this._events[name];
+    };
+    return EventListBase;
+}());
+exports.EventListBase = EventListBase;
+/**
+ * Hides the implementation of the event dispatcher. Will expose methods that
+ * are relevent to the event.
+ */
+var DispatcherWrapper = /** @class */ (function () {
+    /**
+     * Creates a new EventDispatcherWrapper instance.
+     * @param dispatcher The dispatcher.
+     */
+    function DispatcherWrapper(dispatcher) {
+        this._subscribe = function (fn) { return dispatcher.subscribe(fn); };
+        this._unsubscribe = function (fn) { return dispatcher.unsubscribe(fn); };
+        this._one = function (fn) { return dispatcher.one(fn); };
+        this._has = function (fn) { return dispatcher.has(fn); };
+        this._clear = function () { return dispatcher.clear(); };
+        this._count = function () { return dispatcher.count; };
+    }
+    Object.defineProperty(DispatcherWrapper.prototype, "count", {
+        /**
+         * Returns the number of subscriptions.
+         *
+         * @readonly
+         * @type {number}
+         * @memberOf DispatcherWrapper
+         */
+        get: function () {
+            return this._count();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Subscribe to the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     * @returns A function that unsubscribes the event handler from the event.
+     */
+    DispatcherWrapper.prototype.subscribe = function (fn) {
+        return this._subscribe(fn);
+    };
+    /**
+     * Subscribe to the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     * @returns A function that unsubscribes the event handler from the event.
+     */
+    DispatcherWrapper.prototype.sub = function (fn) {
+        return this.subscribe(fn);
+    };
+    /**
+     * Unsubscribe from the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     */
+    DispatcherWrapper.prototype.unsubscribe = function (fn) {
+        this._unsubscribe(fn);
+    };
+    /**
+     * Unsubscribe from the event dispatcher.
+     * @param fn The event handler that is called when the event is dispatched.
+     */
+    DispatcherWrapper.prototype.unsub = function (fn) {
+        this.unsubscribe(fn);
+    };
+    /**
+     * Subscribe once to the event with the specified name.
+     * @param fn The event handler that is called when the event is dispatched.
+     */
+    DispatcherWrapper.prototype.one = function (fn) {
+        return this._one(fn);
+    };
+    /**
+     * Checks it the event has a subscription for the specified handler.
+     * @param fn The event handler.
+     */
+    DispatcherWrapper.prototype.has = function (fn) {
+        return this._has(fn);
+    };
+    /**
+     * Clears all the subscriptions.
+     */
+    DispatcherWrapper.prototype.clear = function () {
+        this._clear();
+    };
+    return DispatcherWrapper;
+}());
+exports.DispatcherWrapper = DispatcherWrapper;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Allows the user to interact with the event.
+ *
+ * @class EventManagement
+ * @implements {IEventManagement}
+ */
+var EventManagement = /** @class */ (function () {
+    function EventManagement(unsub) {
+        this.unsub = unsub;
+        this.propagationStopped = false;
+    }
+    EventManagement.prototype.stopPropagation = function () {
+        this.propagationStopped = true;
+    };
+    return EventManagement;
+}());
+exports.EventManagement = EventManagement;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var events_1 = __webpack_require__(10);
+exports.EventDispatcher = events_1.EventDispatcher;
+exports.EventHandlingBase = events_1.EventHandlingBase;
+exports.EventList = events_1.EventList;
+exports.NonUniformEventList = events_1.NonUniformEventList;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ste_core_1 = __webpack_require__(1);
+/**
+ * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
+ * or dispatch events. Use the ToEvent() method to expose the event.
+ */
+var EventDispatcher = /** @class */ (function (_super) {
+    __extends(EventDispatcher, _super);
+    /**
+     * Creates a new EventDispatcher instance.
+     */
+    function EventDispatcher() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Dispatches the event.
+     * @param sender The sender.
+     * @param args The arguments object.
+     */
+    EventDispatcher.prototype.dispatch = function (sender, args) {
+        this._dispatch(false, this, arguments);
+    };
+    /**
+     * Dispatches the events thread.
+     * @param sender The sender.
+     * @param args The arguments object.
+     */
+    EventDispatcher.prototype.dispatchAsync = function (sender, args) {
+        this._dispatch(true, this, arguments);
+    };
+    /**
+     * Creates an event from the dispatcher. Will return the dispatcher
+     * in a wrapper. This will prevent exposure of any dispatcher methods.
+     */
+    EventDispatcher.prototype.asEvent = function () {
+        return _super.prototype.asEvent.call(this);
+    };
+    return EventDispatcher;
+}(ste_core_1.DispatcherBase));
+exports.EventDispatcher = EventDispatcher;
+/**
+ * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
+ */
+var NonUniformEventList = /** @class */ (function () {
+    function NonUniformEventList() {
+        this._events = {};
+    }
+    /**
+     * Gets the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    NonUniformEventList.prototype.get = function (name) {
+        if (this._events[name]) {
+            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
+            return this._events[name];
+        }
+        var event = this.createDispatcher();
+        this._events[name] = event;
+        return event;
+    };
+    /**
+     * Removes the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    NonUniformEventList.prototype.remove = function (name) {
+        delete this._events[name];
+    };
+    /**
+     * Creates a new dispatcher instance.
+     */
+    NonUniformEventList.prototype.createDispatcher = function () {
+        return new EventDispatcher();
+    };
+    return NonUniformEventList;
+}());
+exports.NonUniformEventList = NonUniformEventList;
+/**
+ * Storage class for multiple events that are accessible by name.
+ * Events dispatchers are automatically created.
+ */
+var EventList = /** @class */ (function (_super) {
+    __extends(EventList, _super);
+    /**
+     * Creates a new EventList instance.
+     */
+    function EventList() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Creates a new dispatcher instance.
+     */
+    EventList.prototype.createDispatcher = function () {
+        return new EventDispatcher();
+    };
+    return EventList;
+}(ste_core_1.EventListBase));
+exports.EventList = EventList;
+/**
+ * Extends objects with event handling capabilities.
+ */
+var EventHandlingBase = /** @class */ (function () {
+    function EventHandlingBase() {
+        this._events = new EventList();
+    }
+    Object.defineProperty(EventHandlingBase.prototype, "events", {
+        /**
+         * Gets the list with all the event dispatchers.
+         */
+        get: function () {
+            return this._events;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.subscribe = function (name, fn) {
+        this._events.get(name).subscribe(fn);
+    };
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.sub = function (name, fn) {
+        this.subscribe(name, fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.unsubscribe = function (name, fn) {
+        this._events.get(name).unsubscribe(fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.unsub = function (name, fn) {
+        this.unsubscribe(name, fn);
+    };
+    /**
+     * Subscribes to once the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.one = function (name, fn) {
+        this._events.get(name).one(fn);
+    };
+    /**
+     * Subscribes to once the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    EventHandlingBase.prototype.has = function (name, fn) {
+        return this._events.get(name).has(fn);
+    };
+    return EventHandlingBase;
+}());
+exports.EventHandlingBase = EventHandlingBase;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var simple_events_1 = __webpack_require__(12);
+exports.SimpleEventDispatcher = simple_events_1.SimpleEventDispatcher;
+exports.SimpleEventHandlingBase = simple_events_1.SimpleEventHandlingBase;
+exports.SimpleEventList = simple_events_1.SimpleEventList;
+exports.NonUniformSimpleEventList = simple_events_1.NonUniformSimpleEventList;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ste_core_1 = __webpack_require__(1);
+/**
+ * The dispatcher handles the storage of subsciptions and facilitates
+ * subscription, unsubscription and dispatching of a simple event
+ */
+var SimpleEventDispatcher = /** @class */ (function (_super) {
+    __extends(SimpleEventDispatcher, _super);
+    /**
+     * Creates a new SimpleEventDispatcher instance.
+     */
+    function SimpleEventDispatcher() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Dispatches the event.
+     * @param args The arguments object.
+     */
+    SimpleEventDispatcher.prototype.dispatch = function (args) {
+        this._dispatch(false, this, arguments);
+    };
+    /**
+     * Dispatches the events thread.
+     * @param args The arguments object.
+     */
+    SimpleEventDispatcher.prototype.dispatchAsync = function (args) {
+        this._dispatch(true, this, arguments);
+    };
+    /**
+     * Creates an event from the dispatcher. Will return the dispatcher
+     * in a wrapper. This will prevent exposure of any dispatcher methods.
+     */
+    SimpleEventDispatcher.prototype.asEvent = function () {
+        return _super.prototype.asEvent.call(this);
+    };
+    return SimpleEventDispatcher;
+}(ste_core_1.DispatcherBase));
+exports.SimpleEventDispatcher = SimpleEventDispatcher;
+/**
+ * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
+ */
+var NonUniformSimpleEventList = /** @class */ (function () {
+    function NonUniformSimpleEventList() {
+        this._events = {};
+    }
+    /**
+     * Gets the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    NonUniformSimpleEventList.prototype.get = function (name) {
+        if (this._events[name]) {
+            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
+            return this._events[name];
+        }
+        var event = this.createDispatcher();
+        this._events[name] = event;
+        return event;
+    };
+    /**
+     * Removes the dispatcher associated with the name.
+     * @param name The name of the event.
+     */
+    NonUniformSimpleEventList.prototype.remove = function (name) {
+        delete this._events[name];
+    };
+    /**
+     * Creates a new dispatcher instance.
+     */
+    NonUniformSimpleEventList.prototype.createDispatcher = function () {
+        return new SimpleEventDispatcher();
+    };
+    return NonUniformSimpleEventList;
+}());
+exports.NonUniformSimpleEventList = NonUniformSimpleEventList;
+/**
+ * Storage class for multiple simple events that are accessible by name.
+ * Events dispatchers are automatically created.
+ */
+var SimpleEventList = /** @class */ (function (_super) {
+    __extends(SimpleEventList, _super);
+    /**
+     * Creates a new SimpleEventList instance.
+     */
+    function SimpleEventList() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Creates a new dispatcher instance.
+     */
+    SimpleEventList.prototype.createDispatcher = function () {
+        return new SimpleEventDispatcher();
+    };
+    return SimpleEventList;
+}(ste_core_1.EventListBase));
+exports.SimpleEventList = SimpleEventList;
+/**
+ * Extends objects with simple event handling capabilities.
+ */
+var SimpleEventHandlingBase = /** @class */ (function () {
+    function SimpleEventHandlingBase() {
+        this._events = new SimpleEventList();
+    }
+    Object.defineProperty(SimpleEventHandlingBase.prototype, "events", {
+        get: function () {
+            return this._events;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.subscribe = function (name, fn) {
+        this._events.get(name).subscribe(fn);
+    };
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.sub = function (name, fn) {
+        this.subscribe(name, fn);
+    };
+    /**
+     * Subscribes once to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.one = function (name, fn) {
+        this._events.get(name).one(fn);
+    };
+    /**
+     * Checks it the event has a subscription for the specified handler.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.has = function (name, fn) {
+        return this._events.get(name).has(fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.unsubscribe = function (name, fn) {
+        this._events.get(name).unsubscribe(fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SimpleEventHandlingBase.prototype.unsub = function (name, fn) {
+        this.unsubscribe(name, fn);
+    };
+    return SimpleEventHandlingBase;
+}());
+exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var signals_1 = __webpack_require__(14);
+exports.SignalDispatcher = signals_1.SignalDispatcher;
+exports.SignalHandlingBase = signals_1.SignalHandlingBase;
+exports.SignalList = signals_1.SignalList;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var ste_core_1 = __webpack_require__(1);
+/**
+ * The dispatcher handles the storage of subsciptions and facilitates
+ * subscription, unsubscription and dispatching of a signal event.
+ */
+var SignalDispatcher = /** @class */ (function (_super) {
+    __extends(SignalDispatcher, _super);
+    /**
+     * Creates a new SignalDispatcher instance.
+     */
+    function SignalDispatcher() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Dispatches the signal.
+     */
+    SignalDispatcher.prototype.dispatch = function () {
+        this._dispatch(false, this, arguments);
+    };
+    /**
+     * Dispatches the signal threaded.
+     */
+    SignalDispatcher.prototype.dispatchAsync = function () {
+        this._dispatch(true, this, arguments);
+    };
+    /**
+     * Creates an event from the dispatcher. Will return the dispatcher
+     * in a wrapper. This will prevent exposure of any dispatcher methods.
+     */
+    SignalDispatcher.prototype.asEvent = function () {
+        return _super.prototype.asEvent.call(this);
+    };
+    return SignalDispatcher;
+}(ste_core_1.DispatcherBase));
+exports.SignalDispatcher = SignalDispatcher;
+/**
+ * Storage class for multiple signal events that are accessible by name.
+ * Events dispatchers are automatically created.
+ */
+var SignalList = /** @class */ (function (_super) {
+    __extends(SignalList, _super);
+    /**
+     * Creates a new SignalList instance.
+     */
+    function SignalList() {
+        return _super.call(this) || this;
+    }
+    /**
+     * Creates a new dispatcher instance.
+     */
+    SignalList.prototype.createDispatcher = function () {
+        return new SignalDispatcher();
+    };
+    return SignalList;
+}(ste_core_1.EventListBase));
+exports.SignalList = SignalList;
+/**
+ * Extends objects with signal event handling capabilities.
+ */
+var SignalHandlingBase = /** @class */ (function () {
+    function SignalHandlingBase() {
+        this._events = new SignalList();
+    }
+    Object.defineProperty(SignalHandlingBase.prototype, "events", {
+        get: function () {
+            return this._events;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Subscribes once to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.one = function (name, fn) {
+        this._events.get(name).one(fn);
+    };
+    /**
+     * Checks it the event has a subscription for the specified handler.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.has = function (name, fn) {
+        return this._events.get(name).has(fn);
+    };
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.subscribe = function (name, fn) {
+        this._events.get(name).subscribe(fn);
+    };
+    /**
+     * Subscribes to the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.sub = function (name, fn) {
+        this.subscribe(name, fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.unsubscribe = function (name, fn) {
+        this._events.get(name).unsubscribe(fn);
+    };
+    /**
+     * Unsubscribes from the event with the specified name.
+     * @param name The name of the event.
+     * @param fn The event handler.
+     */
+    SignalHandlingBase.prototype.unsub = function (name, fn) {
+        this.unsubscribe(name, fn);
+    };
+    return SignalHandlingBase;
+}());
+exports.SignalHandlingBase = SignalHandlingBase;
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-
-// CONCATENATED MODULE: ./src/Utils.ts
-/**
- * Convert a number to a string.
- *
- * @param n number to convert
- * @param base base of the number
- * @param size zero-pad to this many digits
- */
-function pad(n, base, size) {
-    let s = n.toString(base);
-    if (base === 16) {
-        // I prefer upper case hex.
-        s = s.toUpperCase();
-    }
-    while (s.length < size) {
-        s = "0" + s;
-    }
-    return s;
-}
-/**
- * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
- */
-function base64EncodeUint8Array(array) {
-    let s = "";
-    array.forEach(c => s += String.fromCharCode(c));
-    return btoa(s);
-}
-
-// CONCATENATED MODULE: ./src/AudioUtils.ts
-
-// Expected HZ on tape.
-const HZ = 48000;
-class AudioFile {
-    constructor(rate, samples) {
-        this.rate = rate;
-        this.samples = samples;
-    }
-}
-/**
- * Simple high-pass filter.
- *
- * @param samples samples to filter.
- * @param size size of filter
- * @returns filtered samples.
- */
-function highPassFilter(samples, size) {
-    const out = new Int16Array(samples.length);
-    let sum = 0;
-    for (let i = 0; i < size; i++) {
-        sum += samples[i];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    for (let i = size; i < samples.length; i++) {
-        sum += samples[i] - samples[i - size];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    return out;
-}
-/**
- * @param frame the frame number to be described as a timestamp.
- * @param brief omit hour if zero, omit milliseconds and frame itself.
- */
-function frameToTimestamp(frame, brief) {
-    const time = frame / HZ;
-    let ms = Math.floor(time * 1000);
-    let sec = Math.floor(ms / 1000);
-    ms -= sec * 1000;
-    let min = Math.floor(sec / 60);
-    sec -= min * 60;
-    const hour = Math.floor(min / 60);
-    min -= hour * 60;
-    if (brief) {
-        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
-    }
-    else {
-        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
-    }
-}
-/**
- * Concatenate a list of audio samples into one.
- */
-function concatAudio(samplesList) {
-    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
-    const allSamples = new Int16Array(length);
-    let offset = 0;
-    for (const samples of samplesList) {
-        allSamples.set(samples, offset);
-        offset += samples.length;
-    }
-    return allSamples;
-}
-/**
- * Clamp the number to the range of signed 16-bit int.
- */
-function clampToInt16(x) {
-    return Math.max(Math.min(x, 32767), -32768);
-}
 
 // CONCATENATED MODULE: ./src/BitData.ts
 /**
@@ -271,7 +1247,7 @@ const MIN_SILENCE_FRAMES = 1000;
  * Decodes high-speed (1500 baud) cassettes.
  */
 class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
-    constructor() {
+    constructor(tape) {
         this.state = TapeDecoderState.UNDECIDED;
         this.programBytes = [];
         this.oldSign = 0;
@@ -281,12 +1257,13 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.lastCrossingFrame = 0;
         this.bits = [];
         this.byteData = [];
+        this.tape = tape;
     }
     getName() {
         return "High speed";
     }
-    handleSample(tape, frame) {
-        const samples = tape.lowSpeedSamples.samplesList[0];
+    handleSample(frame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
         const sample = samples[frame];
         const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
         // Detect zero-crossing.
@@ -373,6 +1350,105 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
     }
 }
 
+// CONCATENATED MODULE: ./src/Utils.ts
+/**
+ * Convert a number to a string.
+ *
+ * @param n number to convert
+ * @param base base of the number
+ * @param size zero-pad to this many digits
+ */
+function pad(n, base, size) {
+    let s = n.toString(base);
+    if (base === 16) {
+        // I prefer upper case hex.
+        s = s.toUpperCase();
+    }
+    while (s.length < size) {
+        s = "0" + s;
+    }
+    return s;
+}
+/**
+ * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
+ */
+function base64EncodeUint8Array(array) {
+    let s = "";
+    array.forEach(c => s += String.fromCharCode(c));
+    return btoa(s);
+}
+
+// CONCATENATED MODULE: ./src/AudioUtils.ts
+
+class AudioFile {
+    constructor(rate, samples) {
+        this.rate = rate;
+        this.samples = samples;
+    }
+}
+/**
+ * Simple high-pass filter.
+ *
+ * @param samples samples to filter.
+ * @param size size of filter
+ * @returns filtered samples.
+ */
+function highPassFilter(samples, size) {
+    const out = new Int16Array(samples.length);
+    let sum = 0;
+    for (let i = 0; i < size; i++) {
+        sum += samples[i];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    for (let i = size; i < samples.length; i++) {
+        sum += samples[i] - samples[i - size];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    return out;
+}
+/**
+ * @param frame the frame number to be described as a timestamp.
+ * @param hz number of frames per second in original recording.
+ * @param brief omit hour if zero, omit milliseconds and frame itself.
+ */
+function frameToTimestamp(frame, hz, brief) {
+    const time = frame / hz;
+    let ms = Math.floor(time * 1000);
+    let sec = Math.floor(ms / 1000);
+    ms -= sec * 1000;
+    let min = Math.floor(sec / 60);
+    sec -= min * 60;
+    const hour = Math.floor(min / 60);
+    min -= hour * 60;
+    if (brief) {
+        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
+    }
+    else {
+        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
+    }
+}
+/**
+ * Concatenate a list of audio samples into one.
+ */
+function concatAudio(samplesList) {
+    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
+    const allSamples = new Int16Array(length);
+    let offset = 0;
+    for (const samples of samplesList) {
+        allSamples.set(samples, offset);
+        offset += samples.length;
+    }
+    return allSamples;
+}
+/**
+ * Clamp the number to the range of signed 16-bit int.
+ */
+function clampToInt16(x) {
+    return Math.max(Math.min(x, 32767), -32768);
+}
+
 // CONCATENATED MODULE: ./src/ByteData.ts
 /**
  * Information about one particular byte (its position).
@@ -399,31 +1475,15 @@ class ByteData {
 
 
 /**
- * Number of samples between the top of the pulse and the bottom of it.
- */
-const PULSE_PEAK_DISTANCE = 7;
-/**
- * Number of samples between start of pulse detection and end of pulse. Once
- * we detect a pulse, we ignore this number of samples.
- */
-const PULSE_WIDTH = 22;
-/**
- * Number of samples that determines a zero (longer) or one (shorter) bit.
- */
-const BIT_DETERMINATOR = 68;
-/**
- * Number of quiet samples that would indicate the end of the program.
- */
-const END_OF_PROGRAM_SILENCE = HZ / 10;
-/**
  * Number of consecutive zero bits we require in the header before we're pretty
  * sure this is a low speed program.
  */
 const MIN_HEADER_ZEROS = 6;
 class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
-    constructor(invert) {
+    constructor(tape, invert) {
         this.programBytes = [];
         this.byteData = [];
+        this.tape = tape;
         this.invert = invert;
         this.state = TapeDecoderState.UNDECIDED;
         // The frame where we last detected a pulse.
@@ -438,6 +1498,15 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
         this.pulseHeight = 0;
         this.bitData = [];
         this.pulseCount = 0;
+        // Number of samples between start of pulse detection and end of pulse. Once
+        // we detect a pulse, we ignore this number of samples.
+        // TODO make tape.sampleRate-sensitive.
+        this.pulseWidth = 22;
+        // Number of samples that determines a zero (longer) or one (shorter) bit.
+        // TODO make tape.sampleRate-sensitive.
+        this.bitDeterminator = 68;
+        // Number of quiet samples that would indicate the end of the program.
+        this.endOfProgramSilence = tape.sampleRate / 10;
     }
     /**
      * Differentiating filter to accentuate pulses.
@@ -447,11 +1516,14 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
      */
     static filterSamples(samples) {
         const out = new Int16Array(samples.length);
+        // Number of samples between the top of the pulse and the bottom of it.
+        // TODO make tape.sampleRate-sensitive.
+        const pulsePeakDistance = 7;
         for (let i = 0; i < samples.length; i++) {
             // Differentiate to accentuate a pulse. Pulse go positive, then negative,
-            // with a space of PULSE_PEAK_DISTANCE, so subtracting those generates a large
+            // with a space of pulsePeakDistance, so subtracting those generates a large
             // positive value at the bottom of the pulse.
-            const newSample = i >= PULSE_PEAK_DISTANCE ? samples[i - PULSE_PEAK_DISTANCE] - samples[i] : 0;
+            const newSample = i >= pulsePeakDistance ? samples[i - pulsePeakDistance] - samples[i] : 0;
             out[i] = clampToInt16(newSample);
         }
         return out;
@@ -459,21 +1531,21 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     getName() {
         return "Low speed";
     }
-    handleSample(tape, frame) {
-        const samples = tape.lowSpeedSamples.samplesList[0];
+    handleSample(frame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
         const pulse = this.invert ? -samples[frame] : samples[frame];
         const timeDiff = frame - this.lastPulseFrame;
-        const pulsing = timeDiff > PULSE_WIDTH && pulse >= this.pulseHeight / 3;
+        const pulsing = timeDiff > this.pulseWidth && pulse >= this.pulseHeight / 3;
         // Keep track of the height of this pulse, to calibrate for the next one.
-        if (timeDiff < PULSE_WIDTH) {
+        if (timeDiff < this.pulseWidth) {
             this.pulseHeight = Math.max(this.pulseHeight, pulse);
         }
-        if (this.state === TapeDecoderState.DETECTED && timeDiff > END_OF_PROGRAM_SILENCE) {
+        if (this.state === TapeDecoderState.DETECTED && timeDiff > this.endOfProgramSilence) {
             // End of program.
             this.state = TapeDecoderState.FINISHED;
         }
         else if (pulsing) {
-            const bit = timeDiff < BIT_DETERMINATOR;
+            const bit = timeDiff < this.bitDeterminator;
             if (this.pulseCount++ === 1000) {
                 // For debugging, forces a detection so we can inspect the bits.
                 /// this.state = TapeDecoderState.DETECTED;
@@ -583,7 +1655,6 @@ class DisplaySamples {
 
 // CONCATENATED MODULE: ./src/Program.ts
 
-
 class Program_Program {
     constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData, reconstructedSamples) {
         this.trackNumber = trackNumber;
@@ -611,8 +1682,8 @@ class Program_Program {
     /**
      * Whether this program is really too short to be a real recording.
      */
-    isTooShort() {
-        return this.endFrame - this.startFrame < HZ / 10;
+    isTooShort(sampleRate) {
+        return this.endFrame - this.startFrame < sampleRate / 10;
     }
     /**
      * Whether the binary represents a Basic program.
@@ -656,34 +1727,6 @@ class Program_Program {
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
 
-/**
- * Length of a zero bit, in samples.
- */
-const ZERO_LENGTH = Math.round(0.00072 * HZ);
-/**
- * Length of a one bit, in samples.
- */
-const ONE_LENGTH = Math.round(0.00034 * HZ);
-/**
- * Samples representing a zero bit.
- */
-const ZERO = generateCycle(ZERO_LENGTH);
-/**
- * Samples representing a one bit.
- */
-const ONE = generateCycle(ONE_LENGTH);
-/**
- * Samples representing a long zero bit. This is the first start bit
- * after the end of the header. It's 1 ms longer than a regular zero.
- */
-const LONG_ZERO = generateCycle(ZERO_LENGTH + HZ / 1000);
-/**
- * The final cycle in the entire waveform, which is necessary
- * to force that last negative-to-positive transition (and interrupt).
- * We could just use a simple half cycle here, but it's nicer to do
- * something like the original analog.
- */
-const FINAL_HALF_CYCLE = generateFinalHalfCycle(ZERO_LENGTH * 3, ZERO);
 /**
  * Generate one cycle of a sine wave.
  * @param length number of samples in the full cycle.
@@ -753,32 +1796,50 @@ function generateFinalHalfCycle(length, previousBit) {
  * Adds the byte "b" to the samples list, most significant bit first.
  * @param samplesList list of samples we're adding to.
  * @param b byte to generate.
+ * @param zero samples for a zero bit.
+ * @param one samples for a one bit.
  */
-function addByte(samplesList, b) {
+function addByte(samplesList, b, zero, one) {
     // MSb first.
     for (let i = 7; i >= 0; i--) {
         if ((b & (1 << i)) != 0) {
-            samplesList.push(ONE);
+            samplesList.push(one);
         }
         else {
-            samplesList.push(ZERO);
+            samplesList.push(zero);
         }
     }
 }
 /**
  * Encode the sequence of bytes as an array of audio samples for high-speed (1500 baud) cassettes.
  */
-function encodeHighSpeed(bytes) {
+function encodeHighSpeed(bytes, sampleRate) {
+    // Length of a zero bit, in samples.
+    const ZERO_LENGTH = Math.round(0.00072 * sampleRate);
+    // Length of a one bit, in samples.
+    const ONE_LENGTH = Math.round(0.00034 * sampleRate);
+    // Samples representing a zero bit.
+    const zero = generateCycle(ZERO_LENGTH);
+    // Samples representing a one bit.
+    const one = generateCycle(ONE_LENGTH);
+    // Samples representing a long zero bit. This is the first start bit
+    // after the end of the header. It's 1 ms longer than a regular zero.
+    const LONG_ZERO = generateCycle(ZERO_LENGTH + sampleRate / 1000);
+    // The final cycle in the entire waveform, which is necessary
+    // to force that last negative-to-positive transition (and interrupt).
+    // We could just use a simple half cycle here, but it's nicer to do
+    // something like the original analog.
+    const FINAL_HALF_CYCLE = generateFinalHalfCycle(ZERO_LENGTH * 3, zero);
     // List of samples.
     const samplesList = [];
     // Start with half a second of silence.
-    samplesList.push(new Int16Array(HZ / 2));
+    samplesList.push(new Int16Array(sampleRate / 2));
     // Header of 0x55.
     for (let i = 0; i < 256; i++) {
-        addByte(samplesList, 0x55);
+        addByte(samplesList, 0x55, zero, one);
     }
     // End of header.
-    addByte(samplesList, 0x7F);
+    addByte(samplesList, 0x7F, zero, one);
     // Write program.
     let firstStartBit = true;
     for (const b of bytes) {
@@ -788,21 +1849,20 @@ function encodeHighSpeed(bytes) {
             firstStartBit = false;
         }
         else {
-            samplesList.push(ZERO);
+            samplesList.push(zero);
         }
-        addByte(samplesList, b);
+        addByte(samplesList, b, zero, one);
     }
     // Finish off the last cycle, so that it generates an interrupt.
     samplesList.push(FINAL_HALF_CYCLE);
     // End with half a second of silence.
-    samplesList.push(new Int16Array(HZ / 2));
+    samplesList.push(new Int16Array(sampleRate / 2));
     // Concatenate all samples.
     return concatAudio(samplesList);
 }
 
 // CONCATENATED MODULE: ./src/Decoder.ts
 // Uses tape decoders to work through the tape, finding programs and decoding them.
-
 
 
 
@@ -822,9 +1882,9 @@ class Decoder_Decoder {
         while (frame < samples.length) {
             // Start out trying all decoders.
             let tapeDecoders = [
-                new LowSpeedTapeDecoder_LowSpeedTapeDecoder(true),
-                new LowSpeedTapeDecoder_LowSpeedTapeDecoder(false),
-                new HighSpeedTapeDecoder_HighSpeedTapeDecoder(),
+                new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, true),
+                new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, false),
+                new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
             ];
             const searchFrameStart = frame;
             let state = TapeDecoderState.UNDECIDED;
@@ -834,7 +1894,7 @@ class Decoder_Decoder {
                 let detectedIndex = -1;
                 for (let i = 0; i < tapeDecoders.length; i++) {
                     const tapeDecoder = tapeDecoders[i];
-                    tapeDecoder.handleSample(this.tape, frame);
+                    tapeDecoder.handleSample(frame);
                     // See if it detected its encoding.
                     if (tapeDecoder.getState() !== TapeDecoderState.UNDECIDED) {
                         detectedIndex = i;
@@ -845,7 +1905,7 @@ class Decoder_Decoder {
                     if (detectedIndex !== -1) {
                         const tapeDecoder = tapeDecoders[detectedIndex];
                         // See how long it took to find it. A large gap means a new track.
-                        const leadTime = (frame - searchFrameStart) / HZ;
+                        const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
                         if (leadTime > 10 || programStartFrame === -1) {
                             trackNumber += 1;
                             copyNumber = 1;
@@ -892,8 +1952,8 @@ class Decoder_Decoder {
                     else {
                         highSpeedBytes = binary;
                     }
-                    const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBitData(), tapeDecoders[0].getByteData(), encodeHighSpeed(highSpeedBytes));
-                    if (!program.isTooShort()) {
+                    const program = new Program_Program(trackNumber, copyNumber, programStartFrame, frame, tapeDecoders[0].getName(), binary, tapeDecoders[0].getBitData(), tapeDecoders[0].getByteData(), encodeHighSpeed(highSpeedBytes, this.tape.sampleRate));
+                    if (!program.isTooShort(this.tape.sampleRate)) {
                         this.tape.addProgram(program);
                     }
                     break;
@@ -3301,7 +4361,7 @@ function functionPlugin() {
 /* harmony default export */ var jss_plugin_rule_value_function_esm = (functionPlugin);
 
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js
-var es = __webpack_require__(4);
+var es = __webpack_require__(2);
 
 // CONCATENATED MODULE: ./node_modules/jss-plugin-rule-value-observable/dist/jss-plugin-rule-value-observable.esm.js
 
@@ -16030,7 +17090,7 @@ class Highlight {
 }
 
 // EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
-var dist = __webpack_require__(2);
+var dist = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
 
@@ -16674,11 +17734,11 @@ function decodeEdtasm(bytes, out) {
  * Generic cassette that reads from a Int16Array.
  */
 class TapeBrowser_Int16Cassette extends Cassette {
-    constructor(samples, samplesPerSecond) {
+    constructor(samples, sampleRate) {
         super();
         this.frame = 0;
         this.samples = samples;
-        this.samplesPerSecond = samplesPerSecond;
+        this.samplesPerSecond = sampleRate;
     }
     setProgressBar(progressBar) {
         this.progressBar = progressBar;
@@ -16691,7 +17751,7 @@ class TapeBrowser_Int16Cassette extends Cassette {
     }
     readSample() {
         if (this.frame % this.samplesPerSecond === 0) {
-            console.log("Reading tape at " + frameToTimestamp(this.frame));
+            console.log("Reading tape at " + frameToTimestamp(this.frame, this.samplesPerSecond));
         }
         if (this.progressBar !== undefined && this.frame % Math.floor(this.samplesPerSecond / 10) === 0) {
             this.progressBar.value = this.frame;
@@ -16721,9 +17781,9 @@ class TapeCassette extends TapeBrowser_Int16Cassette {
 /**
  * Implementation of Cassette that reads from our high-speed reconstruction.
  */
-class TapeBrowser_ReconstructedCassette extends TapeBrowser_Int16Cassette {
-    constructor(program) {
-        super(program.reconstructedSamples.samplesList[0], HZ);
+class ReconstructedCassette extends TapeBrowser_Int16Cassette {
+    constructor(program, sampleRate) {
+        super(program.reconstructedSamples.samplesList[0], sampleRate);
     }
 }
 /**
@@ -16997,9 +18057,9 @@ class TapeBrowser_TapeBrowser {
             table.appendChild(row);
         };
         addKeyValue("Decoder", program.decoderName);
-        addKeyValue("Start time", frameToTimestamp(program.startFrame), () => this.originalWaveformDisplay.zoomToFit(program.startFrame - 100, program.startFrame + 100));
-        addKeyValue("End time", frameToTimestamp(program.endFrame), () => this.originalWaveformDisplay.zoomToFit(program.endFrame - 100, program.endFrame + 100));
-        addKeyValue("Duration", frameToTimestamp(program.endFrame - program.startFrame, true), () => this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame));
+        addKeyValue("Start time", frameToTimestamp(program.startFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToFit(program.startFrame - 100, program.startFrame + 100));
+        addKeyValue("End time", frameToTimestamp(program.endFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToFit(program.endFrame - 100, program.endFrame + 100));
+        addKeyValue("Duration", frameToTimestamp(program.endFrame - program.startFrame, this.tape.sampleRate, true), () => this.originalWaveformDisplay.zoomToFit(program.startFrame, program.endFrame));
         addKeyValue("Binary", "Download " + program.binary.length + " bytes", () => {
             // Download binary.
             const a = document.createElement("a");
@@ -17019,7 +18079,7 @@ class TapeBrowser_TapeBrowser {
         let count = 1;
         for (const bitData of program.bitData) {
             if (bitData.bitType === BitType.BAD) {
-                addKeyValue("Bit error " + count++, frameToTimestamp(bitData.startFrame), () => this.originalWaveformDisplay.zoomToBitData(bitData));
+                addKeyValue("Bit error " + count++, frameToTimestamp(bitData.startFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToBitData(bitData));
             }
         }
         return new Pane(div);
@@ -17187,9 +18247,9 @@ class TapeBrowser_TapeBrowser {
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
             const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
             // Metadata pane.
-            let metadataLabel = frameToTimestamp(program.startFrame, true) + " to " +
-                frameToTimestamp(program.endFrame, true) + " (" +
-                frameToTimestamp(program.endFrame - program.startFrame, true) + ")";
+            let metadataLabel = frameToTimestamp(program.startFrame, this.tape.sampleRate, true) + " to " +
+                frameToTimestamp(program.endFrame, this.tape.sampleRate, true) + " (" +
+                frameToTimestamp(program.endFrame - program.startFrame, this.tape.sampleRate, true) + ")";
             addPane(metadataLabel, this.makeMetadataPane(program, basicPane, edtasmPane));
             // Make the various panes.
             addPane("Binary", this.makeBinaryPane(program));
@@ -17197,7 +18257,7 @@ class TapeBrowser_TapeBrowser {
             if (basicPane !== undefined) {
                 addPane("Basic", basicPane);
                 addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
-                addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new TapeBrowser_ReconstructedCassette(program)));
+                addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new ReconstructedCassette(program, this.tape.sampleRate)));
             }
             if (edtasmPane !== undefined) {
                 addPane("Assembly" + (edtasmPane.edtasmName ? " (" + edtasmPane.edtasmName + ")" : ""), edtasmPane);
@@ -18294,1087 +19354,6 @@ function main() {
 // CONCATENATED MODULE: ./src/index.ts
 
 main();
-
-
-/***/ }),
-/* 1 */,
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var ste_core_1 = __webpack_require__(3);
-exports.DispatcherBase = ste_core_1.DispatcherBase;
-exports.DispatcherWrapper = ste_core_1.DispatcherWrapper;
-exports.EventListBase = ste_core_1.EventListBase;
-exports.Subscription = ste_core_1.Subscription;
-var ste_events_1 = __webpack_require__(15);
-exports.EventDispatcher = ste_events_1.EventDispatcher;
-exports.EventHandlingBase = ste_events_1.EventHandlingBase;
-exports.EventList = ste_events_1.EventList;
-exports.NonUniformEventList = ste_events_1.NonUniformEventList;
-var ste_simple_events_1 = __webpack_require__(17);
-exports.SimpleEventDispatcher = ste_simple_events_1.SimpleEventDispatcher;
-exports.SimpleEventHandlingBase = ste_simple_events_1.SimpleEventHandlingBase;
-exports.SimpleEventList = ste_simple_events_1.SimpleEventList;
-exports.NonUniformSimpleEventList = ste_simple_events_1.NonUniformSimpleEventList;
-var ste_signals_1 = __webpack_require__(19);
-exports.SignalDispatcher = ste_signals_1.SignalDispatcher;
-exports.SignalHandlingBase = ste_signals_1.SignalHandlingBase;
-exports.SignalList = ste_signals_1.SignalList;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var dispatching_1 = __webpack_require__(13);
-exports.DispatcherBase = dispatching_1.DispatcherBase;
-exports.DispatcherWrapper = dispatching_1.DispatcherWrapper;
-exports.EventListBase = dispatching_1.EventListBase;
-var subscription_1 = __webpack_require__(6);
-exports.Subscription = subscription_1.Subscription;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
-/* global window */
-
-
-var root;
-
-if (typeof self !== 'undefined') {
-  root = self;
-} else if (typeof window !== 'undefined') {
-  root = window;
-} else if (typeof global !== 'undefined') {
-  root = global;
-} else if (true) {
-  root = module;
-} else {}
-
-var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
-/* harmony default export */ __webpack_exports__["a"] = (result);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(12)(module)))
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Stores a handler. Manages execution meta data.
- * @class Subscription
- * @template TEventHandler
- */
-var Subscription = /** @class */ (function () {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    function Subscription(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    Subscription.prototype.execute = function (executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(function () {
-                    fn.apply(scope, args);
-                }, 1);
-            }
-            else {
-                fn.apply(scope, args);
-            }
-        }
-    };
-    return Subscription;
-}());
-exports.Subscription = Subscription;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return symbolObservablePonyfill; });
-function symbolObservablePonyfill(root) {
-	var result;
-	var Symbol = root.Symbol;
-
-	if (typeof Symbol === 'function') {
-		if (Symbol.observable) {
-			result = Symbol.observable;
-		} else {
-			result = Symbol('observable');
-			Symbol.observable = result;
-		}
-	} else {
-		result = '@@observable';
-	}
-
-	return result;
-};
-
-
-/***/ }),
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __spreadArrays = (this && this.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var management_1 = __webpack_require__(14);
-var subscription_1 = __webpack_require__(6);
-/**
- * Base class for implementation of the dispatcher. It facilitates the subscribe
- * and unsubscribe methods based on generic handlers. The TEventType specifies
- * the type of event that should be exposed. Use the asEvent to expose the
- * dispatcher as event.
- */
-var DispatcherBase = /** @class */ (function () {
-    function DispatcherBase() {
-        this._wrap = new DispatcherWrapper(this);
-        this._subscriptions = new Array();
-    }
-    Object.defineProperty(DispatcherBase.prototype, "count", {
-        /**
-         * Returns the number of subscriptions.
-         *
-         * @readonly
-         *
-         * @memberOf DispatcherBase
-         */
-        get: function () {
-            return this._subscriptions.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    DispatcherBase.prototype.subscribe = function (fn) {
-        var _this = this;
-        if (fn) {
-            this._subscriptions.push(new subscription_1.Subscription(fn, false));
-        }
-        return function () {
-            _this.unsubscribe(fn);
-        };
-    };
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    DispatcherBase.prototype.sub = function (fn) {
-        return this.subscribe(fn);
-    };
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    DispatcherBase.prototype.one = function (fn) {
-        var _this = this;
-        if (fn) {
-            this._subscriptions.push(new subscription_1.Subscription(fn, true));
-        }
-        return function () {
-            _this.unsubscribe(fn);
-        };
-    };
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    DispatcherBase.prototype.has = function (fn) {
-        if (!fn)
-            return false;
-        return this._subscriptions.some(function (sub) { return sub.handler == fn; });
-    };
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    DispatcherBase.prototype.unsubscribe = function (fn) {
-        if (!fn)
-            return;
-        for (var i = 0; i < this._subscriptions.length; i++) {
-            if (this._subscriptions[i].handler == fn) {
-                this._subscriptions.splice(i, 1);
-                break;
-            }
-        }
-    };
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    DispatcherBase.prototype.unsub = function (fn) {
-        this.unsubscribe(fn);
-    };
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} The scope the scope of the event. The scope becomes the "this" for handler.
-     * @param {IArguments} args The arguments for the event.
-     */
-    DispatcherBase.prototype._dispatch = function (executeAsync, scope, args) {
-        var _this = this;
-        var _loop_1 = function (sub) {
-            var ev = new management_1.EventManagement(function () { return _this.unsub(sub.handler); });
-            var nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            sub.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this_1.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return "break";
-            }
-        };
-        var this_1 = this;
-        //execute on a copy because of bug #9
-        for (var _i = 0, _a = __spreadArrays(this._subscriptions); _i < _a.length; _i++) {
-            var sub = _a[_i];
-            var state_1 = _loop_1(sub);
-            if (state_1 === "break")
-                break;
-        }
-    };
-    /**
-     * Cleans up subs that ran and should run only once.
-     */
-    DispatcherBase.prototype.cleanup = function (sub) {
-        if (sub.isOnce && sub.isExecuted) {
-            var i = this._subscriptions.indexOf(sub);
-            if (i > -1) {
-                this._subscriptions.splice(i, 1);
-            }
-        }
-    };
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    DispatcherBase.prototype.asEvent = function () {
-        return this._wrap;
-    };
-    /**
-     * Clears all the subscriptions.
-     */
-    DispatcherBase.prototype.clear = function () {
-        this._subscriptions.splice(0, this._subscriptions.length);
-    };
-    return DispatcherBase;
-}());
-exports.DispatcherBase = DispatcherBase;
-/**
- * Base class for event lists classes. Implements the get and remove.
- */
-var EventListBase = /** @class */ (function () {
-    function EventListBase() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    EventListBase.prototype.get = function (name) {
-        var event = this._events[name];
-        if (event) {
-            return event;
-        }
-        event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    };
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    EventListBase.prototype.remove = function (name) {
-        delete this._events[name];
-    };
-    return EventListBase;
-}());
-exports.EventListBase = EventListBase;
-/**
- * Hides the implementation of the event dispatcher. Will expose methods that
- * are relevent to the event.
- */
-var DispatcherWrapper = /** @class */ (function () {
-    /**
-     * Creates a new EventDispatcherWrapper instance.
-     * @param dispatcher The dispatcher.
-     */
-    function DispatcherWrapper(dispatcher) {
-        this._subscribe = function (fn) { return dispatcher.subscribe(fn); };
-        this._unsubscribe = function (fn) { return dispatcher.unsubscribe(fn); };
-        this._one = function (fn) { return dispatcher.one(fn); };
-        this._has = function (fn) { return dispatcher.has(fn); };
-        this._clear = function () { return dispatcher.clear(); };
-        this._count = function () { return dispatcher.count; };
-    }
-    Object.defineProperty(DispatcherWrapper.prototype, "count", {
-        /**
-         * Returns the number of subscriptions.
-         *
-         * @readonly
-         * @type {number}
-         * @memberOf DispatcherWrapper
-         */
-        get: function () {
-            return this._count();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    DispatcherWrapper.prototype.subscribe = function (fn) {
-        return this._subscribe(fn);
-    };
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    DispatcherWrapper.prototype.sub = function (fn) {
-        return this.subscribe(fn);
-    };
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    DispatcherWrapper.prototype.unsubscribe = function (fn) {
-        this._unsubscribe(fn);
-    };
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    DispatcherWrapper.prototype.unsub = function (fn) {
-        this.unsubscribe(fn);
-    };
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    DispatcherWrapper.prototype.one = function (fn) {
-        return this._one(fn);
-    };
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    DispatcherWrapper.prototype.has = function (fn) {
-        return this._has(fn);
-    };
-    /**
-     * Clears all the subscriptions.
-     */
-    DispatcherWrapper.prototype.clear = function () {
-        this._clear();
-    };
-    return DispatcherWrapper;
-}());
-exports.DispatcherWrapper = DispatcherWrapper;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Allows the user to interact with the event.
- *
- * @class EventManagement
- * @implements {IEventManagement}
- */
-var EventManagement = /** @class */ (function () {
-    function EventManagement(unsub) {
-        this.unsub = unsub;
-        this.propagationStopped = false;
-    }
-    EventManagement.prototype.stopPropagation = function () {
-        this.propagationStopped = true;
-    };
-    return EventManagement;
-}());
-exports.EventManagement = EventManagement;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = __webpack_require__(16);
-exports.EventDispatcher = events_1.EventDispatcher;
-exports.EventHandlingBase = events_1.EventHandlingBase;
-exports.EventList = events_1.EventList;
-exports.NonUniformEventList = events_1.NonUniformEventList;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ste_core_1 = __webpack_require__(3);
-/**
- * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
- * or dispatch events. Use the ToEvent() method to expose the event.
- */
-var EventDispatcher = /** @class */ (function (_super) {
-    __extends(EventDispatcher, _super);
-    /**
-     * Creates a new EventDispatcher instance.
-     */
-    function EventDispatcher() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Dispatches the event.
-     * @param sender The sender.
-     * @param args The arguments object.
-     */
-    EventDispatcher.prototype.dispatch = function (sender, args) {
-        this._dispatch(false, this, arguments);
-    };
-    /**
-     * Dispatches the events thread.
-     * @param sender The sender.
-     * @param args The arguments object.
-     */
-    EventDispatcher.prototype.dispatchAsync = function (sender, args) {
-        this._dispatch(true, this, arguments);
-    };
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    EventDispatcher.prototype.asEvent = function () {
-        return _super.prototype.asEvent.call(this);
-    };
-    return EventDispatcher;
-}(ste_core_1.DispatcherBase));
-exports.EventDispatcher = EventDispatcher;
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-var NonUniformEventList = /** @class */ (function () {
-    function NonUniformEventList() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    NonUniformEventList.prototype.get = function (name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        var event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    };
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    NonUniformEventList.prototype.remove = function (name) {
-        delete this._events[name];
-    };
-    /**
-     * Creates a new dispatcher instance.
-     */
-    NonUniformEventList.prototype.createDispatcher = function () {
-        return new EventDispatcher();
-    };
-    return NonUniformEventList;
-}());
-exports.NonUniformEventList = NonUniformEventList;
-/**
- * Storage class for multiple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-var EventList = /** @class */ (function (_super) {
-    __extends(EventList, _super);
-    /**
-     * Creates a new EventList instance.
-     */
-    function EventList() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    EventList.prototype.createDispatcher = function () {
-        return new EventDispatcher();
-    };
-    return EventList;
-}(ste_core_1.EventListBase));
-exports.EventList = EventList;
-/**
- * Extends objects with event handling capabilities.
- */
-var EventHandlingBase = /** @class */ (function () {
-    function EventHandlingBase() {
-        this._events = new EventList();
-    }
-    Object.defineProperty(EventHandlingBase.prototype, "events", {
-        /**
-         * Gets the list with all the event dispatchers.
-         */
-        get: function () {
-            return this._events;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.subscribe = function (name, fn) {
-        this._events.get(name).subscribe(fn);
-    };
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.sub = function (name, fn) {
-        this.subscribe(name, fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.unsubscribe = function (name, fn) {
-        this._events.get(name).unsubscribe(fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.unsub = function (name, fn) {
-        this.unsubscribe(name, fn);
-    };
-    /**
-     * Subscribes to once the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.one = function (name, fn) {
-        this._events.get(name).one(fn);
-    };
-    /**
-     * Subscribes to once the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    EventHandlingBase.prototype.has = function (name, fn) {
-        return this._events.get(name).has(fn);
-    };
-    return EventHandlingBase;
-}());
-exports.EventHandlingBase = EventHandlingBase;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var simple_events_1 = __webpack_require__(18);
-exports.SimpleEventDispatcher = simple_events_1.SimpleEventDispatcher;
-exports.SimpleEventHandlingBase = simple_events_1.SimpleEventHandlingBase;
-exports.SimpleEventList = simple_events_1.SimpleEventList;
-exports.NonUniformSimpleEventList = simple_events_1.NonUniformSimpleEventList;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ste_core_1 = __webpack_require__(3);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a simple event
- */
-var SimpleEventDispatcher = /** @class */ (function (_super) {
-    __extends(SimpleEventDispatcher, _super);
-    /**
-     * Creates a new SimpleEventDispatcher instance.
-     */
-    function SimpleEventDispatcher() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Dispatches the event.
-     * @param args The arguments object.
-     */
-    SimpleEventDispatcher.prototype.dispatch = function (args) {
-        this._dispatch(false, this, arguments);
-    };
-    /**
-     * Dispatches the events thread.
-     * @param args The arguments object.
-     */
-    SimpleEventDispatcher.prototype.dispatchAsync = function (args) {
-        this._dispatch(true, this, arguments);
-    };
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    SimpleEventDispatcher.prototype.asEvent = function () {
-        return _super.prototype.asEvent.call(this);
-    };
-    return SimpleEventDispatcher;
-}(ste_core_1.DispatcherBase));
-exports.SimpleEventDispatcher = SimpleEventDispatcher;
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-var NonUniformSimpleEventList = /** @class */ (function () {
-    function NonUniformSimpleEventList() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    NonUniformSimpleEventList.prototype.get = function (name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        var event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    };
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    NonUniformSimpleEventList.prototype.remove = function (name) {
-        delete this._events[name];
-    };
-    /**
-     * Creates a new dispatcher instance.
-     */
-    NonUniformSimpleEventList.prototype.createDispatcher = function () {
-        return new SimpleEventDispatcher();
-    };
-    return NonUniformSimpleEventList;
-}());
-exports.NonUniformSimpleEventList = NonUniformSimpleEventList;
-/**
- * Storage class for multiple simple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-var SimpleEventList = /** @class */ (function (_super) {
-    __extends(SimpleEventList, _super);
-    /**
-     * Creates a new SimpleEventList instance.
-     */
-    function SimpleEventList() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    SimpleEventList.prototype.createDispatcher = function () {
-        return new SimpleEventDispatcher();
-    };
-    return SimpleEventList;
-}(ste_core_1.EventListBase));
-exports.SimpleEventList = SimpleEventList;
-/**
- * Extends objects with simple event handling capabilities.
- */
-var SimpleEventHandlingBase = /** @class */ (function () {
-    function SimpleEventHandlingBase() {
-        this._events = new SimpleEventList();
-    }
-    Object.defineProperty(SimpleEventHandlingBase.prototype, "events", {
-        get: function () {
-            return this._events;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.subscribe = function (name, fn) {
-        this._events.get(name).subscribe(fn);
-    };
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.sub = function (name, fn) {
-        this.subscribe(name, fn);
-    };
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.one = function (name, fn) {
-        this._events.get(name).one(fn);
-    };
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.has = function (name, fn) {
-        return this._events.get(name).has(fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.unsubscribe = function (name, fn) {
-        this._events.get(name).unsubscribe(fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SimpleEventHandlingBase.prototype.unsub = function (name, fn) {
-        this.unsubscribe(name, fn);
-    };
-    return SimpleEventHandlingBase;
-}());
-exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var signals_1 = __webpack_require__(20);
-exports.SignalDispatcher = signals_1.SignalDispatcher;
-exports.SignalHandlingBase = signals_1.SignalHandlingBase;
-exports.SignalList = signals_1.SignalList;
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var ste_core_1 = __webpack_require__(3);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a signal event.
- */
-var SignalDispatcher = /** @class */ (function (_super) {
-    __extends(SignalDispatcher, _super);
-    /**
-     * Creates a new SignalDispatcher instance.
-     */
-    function SignalDispatcher() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Dispatches the signal.
-     */
-    SignalDispatcher.prototype.dispatch = function () {
-        this._dispatch(false, this, arguments);
-    };
-    /**
-     * Dispatches the signal threaded.
-     */
-    SignalDispatcher.prototype.dispatchAsync = function () {
-        this._dispatch(true, this, arguments);
-    };
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    SignalDispatcher.prototype.asEvent = function () {
-        return _super.prototype.asEvent.call(this);
-    };
-    return SignalDispatcher;
-}(ste_core_1.DispatcherBase));
-exports.SignalDispatcher = SignalDispatcher;
-/**
- * Storage class for multiple signal events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-var SignalList = /** @class */ (function (_super) {
-    __extends(SignalList, _super);
-    /**
-     * Creates a new SignalList instance.
-     */
-    function SignalList() {
-        return _super.call(this) || this;
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    SignalList.prototype.createDispatcher = function () {
-        return new SignalDispatcher();
-    };
-    return SignalList;
-}(ste_core_1.EventListBase));
-exports.SignalList = SignalList;
-/**
- * Extends objects with signal event handling capabilities.
- */
-var SignalHandlingBase = /** @class */ (function () {
-    function SignalHandlingBase() {
-        this._events = new SignalList();
-    }
-    Object.defineProperty(SignalHandlingBase.prototype, "events", {
-        get: function () {
-            return this._events;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.one = function (name, fn) {
-        this._events.get(name).one(fn);
-    };
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.has = function (name, fn) {
-        return this._events.get(name).has(fn);
-    };
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.subscribe = function (name, fn) {
-        this._events.get(name).subscribe(fn);
-    };
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.sub = function (name, fn) {
-        this.subscribe(name, fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.unsubscribe = function (name, fn) {
-        this._events.get(name).unsubscribe(fn);
-    };
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    SignalHandlingBase.prototype.unsub = function (name, fn) {
-        this.unsubscribe(name, fn);
-    };
-    return SignalHandlingBase;
-}());
-exports.SignalHandlingBase = SignalHandlingBase;
 
 
 /***/ })
