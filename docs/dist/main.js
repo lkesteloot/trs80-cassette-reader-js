@@ -1717,6 +1717,20 @@ class Program_Program {
             isValidLineNumberChar(this.binary[11]) &&
             this.binary[12] === 0x20;
     }
+    /**
+     * Whether these two programs have the same binaries.
+     */
+    sameBinaryAs(other) {
+        if (this.binary.length !== other.binary.length) {
+            return false;
+        }
+        for (let i = 0; i < this.binary.length; i++) {
+            if (this.binary[i] !== other.binary[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
@@ -1747,7 +1761,7 @@ function generateFinalHalfCycle(length, previousBit) {
     // Points on the Bezier.
     const x1 = 0;
     const y1 = 0;
-    const y2 = 1.0;
+    const y2 = 32767;
     const x2 = (y2 - y1 + x1 * slope) / slope;
     const x3 = length / 2;
     const y3 = 0;
@@ -18224,26 +18238,51 @@ class TapeBrowser_TapeBrowser {
      * Create the panes and the table of contents for them on the left.
      */
     updateTapeContents() {
+        var _a;
+        // Add a new section that we can style all at once.
+        const addSection = () => {
+            const sectionDiv = document.createElement("div");
+            this.tapeContents.appendChild(sectionDiv);
+            return sectionDiv;
+        };
+        let sectionDiv = addSection();
         // Add a row to the table of contents.
         const addRow = (text, onClick) => {
-            const div = document.createElement("div");
-            div.classList.add("tape_contents_row");
-            div.innerText = text;
+            const rowDiv = document.createElement("div");
+            rowDiv.classList.add("tape_contents_row");
+            rowDiv.innerText = text;
             if (onClick !== undefined) {
-                div.classList.add("selectable_row");
-                div.onclick = onClick;
+                rowDiv.classList.add("selectable_row");
+                rowDiv.onclick = onClick;
             }
-            this.tapeContents.appendChild(div);
-            return div;
+            sectionDiv.appendChild(rowDiv);
+            return rowDiv;
         };
         // Show the name of the whole tape.
         const title = addRow(this.tape.name);
         title.classList.add("tape_title");
         // Create panes for each program.
+        let previousTrackNumber = -1;
+        let firstCopyOfTrack = undefined;
         for (const program of this.tape.programs) {
+            let duplicateCopy = false;
+            sectionDiv = addSection();
             // Header for program.
             const row = addRow(program.getLabel());
             row.classList.add("program_title");
+            // Dividing line for new tracks.
+            if (program.trackNumber !== previousTrackNumber) {
+                row.classList.add("new_track");
+                previousTrackNumber = program.trackNumber;
+                firstCopyOfTrack = program;
+            }
+            else if (firstCopyOfTrack !== undefined) {
+                // Non-first copies.
+                if (program.sameBinaryAs(firstCopyOfTrack)) {
+                    sectionDiv.classList.add("duplicate_copy");
+                    duplicateCopy = true;
+                }
+            }
             // Add a pane to the top-right, register it, and add it to table of contents.
             const addPane = (label, pane) => {
                 pane.element.classList.add("pane");
@@ -18263,7 +18302,7 @@ class TapeBrowser_TapeBrowser {
                 frameToTimestamp(program.endFrame - program.startFrame, this.tape.sampleRate, true) + ")";
             addPane(metadataLabel, this.makeMetadataPane(program, basicPane, edtasmPane));
             // Make the various panes.
-            addPane("Binary", this.makeBinaryPane(program));
+            addPane("Binary" + (duplicateCopy ? " (same as copy " + ((_a = firstCopyOfTrack) === null || _a === void 0 ? void 0 : _a.copyNumber) + ")" : ""), this.makeBinaryPane(program));
             addPane("Reconstructed", this.makeReconstructedPane(program));
             if (basicPane !== undefined) {
                 addPane("Basic", basicPane);
