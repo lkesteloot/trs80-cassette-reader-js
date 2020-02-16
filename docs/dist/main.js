@@ -1653,10 +1653,18 @@ class DisplaySamples {
     }
 }
 
+// EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
+var dist = __webpack_require__(0);
+
 // CONCATENATED MODULE: ./src/Program.ts
+
 
 class Program_Program {
     constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData, reconstructedSamples) {
+        this.name = "";
+        this.notes = "";
+        this.onName = new dist["SimpleEventDispatcher"]();
+        this.onNotes = new dist["SimpleEventDispatcher"]();
         this.trackNumber = trackNumber;
         this.copyNumber = copyNumber;
         this.startFrame = startFrame;
@@ -1688,6 +1696,38 @@ class Program_Program {
             this.binary[0] === 0xD3 &&
             this.binary[1] === 0xD3 &&
             this.binary[2] === 0xD3;
+    }
+    /**
+     * Set the name of the program, as set by the user.
+     */
+    setName(name) {
+        if (name !== this.name) {
+            this.name = name;
+            this.onName.dispatch(name);
+        }
+    }
+    /**
+     * Set the notes for the program, as set by the user.
+     */
+    setNotes(notes) {
+        if (notes !== this.notes) {
+            this.notes = notes;
+            this.onNotes.dispatch(notes);
+        }
+    }
+    /**
+     * Get a representative timestamp for this program, in seconds.
+     */
+    getTimestamp(sampleRate) {
+        return (this.startFrame + this.endFrame) / 2 / sampleRate;
+    }
+    /**
+     * Whether the given timestamp (in seconds) could apply to this program.
+     */
+    isForTimestamp(timestamp, sampleRate) {
+        const startTimestamp = this.startFrame / sampleRate;
+        const endTimestamp = this.endFrame / sampleRate;
+        return startTimestamp <= timestamp && timestamp <= endTimestamp;
     }
     /**
      * Whether the binary represents an EDTASM program.
@@ -1986,6 +2026,7 @@ class Decoder_Decoder {
 
 
 
+const LOCAL_DATA_KEY = "tapes";
 class Tape_Tape {
     /**
      * @param name text to display (e.g., "LOAD80-Feb82-s1").
@@ -2001,6 +2042,56 @@ class Tape_Tape {
     }
     addProgram(program) {
         this.programs.push(program);
+    }
+    /**
+     * Listen for changes to local storage and apply them.
+     */
+    listenForStorageChanges() {
+        window.addEventListener("storage", event => {
+            if (event.key === LOCAL_DATA_KEY) {
+                this.loadUserData();
+            }
+        });
+    }
+    /**
+     * Load the saved user data and apply to existing programs.
+     */
+    loadUserData() {
+        const jsonData = window.localStorage.getItem(LOCAL_DATA_KEY);
+        if (jsonData === null) {
+            return;
+        }
+        const data = JSON.parse(jsonData);
+        const tapeData = data.tapes[this.name];
+        if (tapeData) {
+            for (const programData of tapeData.programs) {
+                for (const program of this.programs) {
+                    if (program.isForTimestamp(programData.timestamp, this.sampleRate)) {
+                        program.setName(programData.name);
+                        program.setNotes(programData.notes);
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Synchronously saves all user data (names and notes) to local storage.
+     */
+    saveUserData() {
+        const data = {
+            tapes: {
+                [this.name]: {
+                    name: this.name,
+                    notes: "",
+                    programs: this.programs.map(program => ({
+                        name: program.name,
+                        notes: program.notes,
+                        timestamp: program.getTimestamp(this.sampleRate),
+                    })),
+                },
+            },
+        };
+        window.localStorage.setItem(LOCAL_DATA_KEY, JSON.stringify(data));
     }
 }
 
@@ -17114,9 +17205,6 @@ class Highlight {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
-var dist = __webpack_require__(0);
-
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
 
 
@@ -18065,12 +18153,19 @@ class TapeBrowser_TapeBrowser {
         div.appendChild(h1);
         const table = document.createElement("table");
         div.appendChild(table);
-        const addKeyValue = (key, value, click) => {
+        // Add entry with any data cell for value. Returns the key element.
+        const addKeyElement = (key, valueElement) => {
             const row = document.createElement("tr");
             const keyElement = document.createElement("td");
             keyElement.classList.add("key");
             keyElement.innerText = key + ":";
             row.appendChild(keyElement);
+            row.appendChild(valueElement);
+            table.appendChild(row);
+            return keyElement;
+        };
+        // Add entry with text (possibly clickable) for value.
+        const addKeyValue = (key, value, click) => {
             const valueElement = document.createElement("td");
             valueElement.classList.add("value");
             valueElement.innerText = value;
@@ -18078,8 +18173,7 @@ class TapeBrowser_TapeBrowser {
                 valueElement.classList.add("clickable");
                 valueElement.addEventListener("click", click);
             }
-            row.appendChild(valueElement);
-            table.appendChild(row);
+            addKeyElement(key, valueElement);
         };
         addKeyValue("Decoder", program.decoderName);
         addKeyValue("Start time", frameToTimestamp(program.startFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToFit(program.startFrame - 100, program.startFrame + 100));
@@ -18101,6 +18195,38 @@ class TapeBrowser_TapeBrowser {
         else {
             addKeyValue("Type", "Unknown");
         }
+        // Add editable fields.
+        {
+            const td = document.createElement("td");
+            td.classList.add("value");
+            const input = document.createElement("input");
+            input.classList.add("name");
+            program.onName.subscribe(name => input.value = name);
+            input.value = program.name;
+            td.appendChild(input);
+            addKeyElement("Name", td);
+            input.addEventListener("input", event => {
+                program.setName(input.value);
+                this.tape.saveUserData();
+            });
+        }
+        {
+            const td = document.createElement("td");
+            td.classList.add("value");
+            const input = document.createElement("textarea");
+            input.classList.add("notes");
+            input.rows = 5;
+            program.onNotes.subscribe(notes => input.value = notes);
+            input.value = program.notes;
+            td.appendChild(input);
+            const keyElement = addKeyElement("Notes", td);
+            keyElement.classList.add("top");
+            input.addEventListener("input", event => {
+                program.setNotes(input.value);
+                this.tape.saveUserData();
+            });
+        }
+        // Add bit errors.
         let count = 1;
         for (const bitData of program.bitData) {
             if (bitData.bitType === BitType.BAD) {
@@ -18268,7 +18394,8 @@ class TapeBrowser_TapeBrowser {
             let duplicateCopy = false;
             sectionDiv = addSection();
             // Header for program.
-            const row = addRow(program.getLabel());
+            const row = addRow(program.name || program.getLabel());
+            program.onName.subscribe(name => row.innerText = program.name || program.getLabel());
             row.classList.add("program_title");
             // Dividing line for new tracks.
             if (program.trackNumber !== previousTrackNumber) {
@@ -19369,6 +19496,8 @@ function handleAudioBuffer(pathname, audioFile) {
     const tape = new Tape_Tape(nameFromPathname(pathname), audioFile);
     const decoder = new Decoder_Decoder(tape);
     decoder.decode();
+    tape.listenForStorageChanges();
+    tape.loadUserData();
     const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("tape_contents"), document.getElementById("top_data"));
     // Switch screens.
     const dropScreen = document.getElementById("drop_screen");
