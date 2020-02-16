@@ -104,17 +104,17 @@ exports.DispatcherBase = ste_core_1.DispatcherBase;
 exports.DispatcherWrapper = ste_core_1.DispatcherWrapper;
 exports.EventListBase = ste_core_1.EventListBase;
 exports.Subscription = ste_core_1.Subscription;
-var ste_events_1 = __webpack_require__(9);
+var ste_events_1 = __webpack_require__(7);
 exports.EventDispatcher = ste_events_1.EventDispatcher;
 exports.EventHandlingBase = ste_events_1.EventHandlingBase;
 exports.EventList = ste_events_1.EventList;
 exports.NonUniformEventList = ste_events_1.NonUniformEventList;
-var ste_simple_events_1 = __webpack_require__(11);
+var ste_simple_events_1 = __webpack_require__(9);
 exports.SimpleEventDispatcher = ste_simple_events_1.SimpleEventDispatcher;
 exports.SimpleEventHandlingBase = ste_simple_events_1.SimpleEventHandlingBase;
 exports.SimpleEventList = ste_simple_events_1.SimpleEventList;
 exports.NonUniformSimpleEventList = ste_simple_events_1.NonUniformSimpleEventList;
-var ste_signals_1 = __webpack_require__(13);
+var ste_signals_1 = __webpack_require__(11);
 exports.SignalDispatcher = ste_signals_1.SignalDispatcher;
 exports.SignalHandlingBase = ste_signals_1.SignalHandlingBase;
 exports.SignalList = ste_signals_1.SignalList;
@@ -135,7 +135,7 @@ exports.SignalList = ste_signals_1.SignalList;
  * Released under the MIT license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var dispatching_1 = __webpack_require__(7);
+var dispatching_1 = __webpack_require__(5);
 exports.DispatcherBase = dispatching_1.DispatcherBase;
 exports.DispatcherWrapper = dispatching_1.DispatcherWrapper;
 exports.EventListBase = dispatching_1.EventListBase;
@@ -167,7 +167,7 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(13), __webpack_require__(14)(module)))
 
 /***/ }),
 /* 3 */
@@ -249,62 +249,6 @@ function symbolObservablePonyfill(root) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = function(originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -317,7 +261,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var management_1 = __webpack_require__(8);
+var management_1 = __webpack_require__(6);
 var subscription_1 = __webpack_require__(3);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
@@ -584,7 +528,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 8 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -610,13 +554,13 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 9 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var events_1 = __webpack_require__(10);
+var events_1 = __webpack_require__(8);
 exports.EventDispatcher = events_1.EventDispatcher;
 exports.EventHandlingBase = events_1.EventHandlingBase;
 exports.EventList = events_1.EventList;
@@ -624,7 +568,7 @@ exports.NonUniformEventList = events_1.NonUniformEventList;
 
 
 /***/ }),
-/* 10 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -810,13 +754,13 @@ exports.EventHandlingBase = EventHandlingBase;
 
 
 /***/ }),
-/* 11 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var simple_events_1 = __webpack_require__(12);
+var simple_events_1 = __webpack_require__(10);
 exports.SimpleEventDispatcher = simple_events_1.SimpleEventDispatcher;
 exports.SimpleEventHandlingBase = simple_events_1.SimpleEventHandlingBase;
 exports.SimpleEventList = simple_events_1.SimpleEventList;
@@ -824,7 +768,7 @@ exports.NonUniformSimpleEventList = simple_events_1.NonUniformSimpleEventList;
 
 
 /***/ }),
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1005,20 +949,20 @@ exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
 
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var signals_1 = __webpack_require__(14);
+var signals_1 = __webpack_require__(12);
 exports.SignalDispatcher = signals_1.SignalDispatcher;
 exports.SignalHandlingBase = signals_1.SignalHandlingBase;
 exports.SignalList = signals_1.SignalList;
 
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1158,6 +1102,62 @@ var SignalHandlingBase = /** @class */ (function () {
     return SignalHandlingBase;
 }());
 exports.SignalHandlingBase = SignalHandlingBase;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = function(originalModule) {
+	if (!originalModule.webpackPolyfill) {
+		var module = Object.create(originalModule);
+		// module.parent = undefined by default
+		if (!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		Object.defineProperty(module, "exports", {
+			enumerable: true
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
 
 
 /***/ }),
@@ -1663,8 +1663,10 @@ class Program_Program {
     constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData, reconstructedSamples) {
         this.name = "";
         this.notes = "";
+        this.screenshot = "";
         this.onName = new dist["SimpleEventDispatcher"]();
         this.onNotes = new dist["SimpleEventDispatcher"]();
+        this.onScreenshot = new dist["SimpleEventDispatcher"]();
         this.trackNumber = trackNumber;
         this.copyNumber = copyNumber;
         this.startFrame = startFrame;
@@ -1713,6 +1715,15 @@ class Program_Program {
         if (notes !== this.notes) {
             this.notes = notes;
             this.onNotes.dispatch(notes);
+        }
+    }
+    /**
+     * Set the screenshot for the program.
+     */
+    setScreenshot(screenshot) {
+        if (screenshot !== this.screenshot) {
+            this.screenshot = screenshot;
+            this.onScreenshot.dispatch(screenshot);
         }
     }
     /**
@@ -2057,6 +2068,7 @@ class Tape_Tape {
      * Load the saved user data and apply to existing programs.
      */
     loadUserData() {
+        var _a, _b, _c;
         const jsonData = window.localStorage.getItem(LOCAL_DATA_KEY);
         if (jsonData === null) {
             return;
@@ -2067,8 +2079,9 @@ class Tape_Tape {
             for (const programData of tapeData.programs) {
                 for (const program of this.programs) {
                     if (program.isForTimestamp(programData.timestamp, this.sampleRate)) {
-                        program.setName(programData.name);
-                        program.setNotes(programData.notes);
+                        program.setName((_a = programData.name, (_a !== null && _a !== void 0 ? _a : "")));
+                        program.setNotes((_b = programData.notes, (_b !== null && _b !== void 0 ? _b : "")));
+                        program.setScreenshot((_c = programData.screenshot, (_c !== null && _c !== void 0 ? _c : "")));
                     }
                 }
             }
@@ -2086,6 +2099,7 @@ class Tape_Tape {
                     programs: this.programs.map(program => ({
                         name: program.name,
                         notes: program.notes,
+                        screenshot: program.screenshot,
                         timestamp: program.getTimestamp(this.sampleRate),
                     })),
                 },
@@ -16619,7 +16633,9 @@ const DISK_INTRQ_NMI_MASK = 0x80;
 const TIMER_HZ = 30;
 const ROM_SIZE = 14 * 1024;
 const RAM_START = 16 * 1024;
-const SCREEN_ADDRESS = 15 * 1024;
+// RAM address range of screen.
+const SCREEN_BEGIN = 15 * 1024;
+const SCREEN_END = 16 * 1024;
 // https://en.wikipedia.org/wiki/TRS-80#Model_III
 const CLOCK_HZ = 2030000;
 const INITIAL_CLICKS_PER_TICK = 2000;
@@ -16639,8 +16655,11 @@ var CassetteValue;
     CassetteValue[CassetteValue["NEUTRAL"] = 1] = "NEUTRAL";
     CassetteValue[CassetteValue["POSITIVE"] = 2] = "POSITIVE";
 })(CassetteValue || (CassetteValue = {}));
+/**
+ * Whether the memory address maps to a screen location.
+ */
 function isScreenAddress(address) {
-    return address >= SCREEN_ADDRESS && address < SCREEN_ADDRESS + 1024;
+    return address >= SCREEN_BEGIN && address < SCREEN_END;
 }
 /**
  * HAL for the TRS-80 Model III.
@@ -16681,10 +16700,7 @@ class Trs80_Trs80 {
         this.cassetteSamplesRead = 0;
         this.cassetteRiseInterruptCount = 0;
         this.cassetteFallInterruptCount = 0;
-        // Make our own sub-node that we have control over.
-        const node = document.createElement("div");
-        parentNode.appendChild(node);
-        this.node = node;
+        this.node = Trs80_Trs80.createScreenNode(parentNode);
         this.cassette = cassette;
         this.memory.fill(0);
         const raw = window.atob(model3Rom);
@@ -16693,8 +16709,7 @@ class Trs80_Trs80 {
         }
         this.tStateCount = 0;
         this.keyboard.configureKeyboard();
-        this.configureNode();
-        this.configureStyle();
+        Trs80_Trs80.configureStyle();
     }
     reset() {
         this.setIrqMask(0);
@@ -16835,7 +16850,7 @@ class Trs80_Trs80 {
                 // Various controls.
                 this.modeImage = value;
                 this.setCassetteMotor((value & 0x02) !== 0);
-                this.setExpandedCharacters((value & 0x04) !== 0);
+                Trs80_Trs80.setExpandedCharacters(this.node, (value & 0x04) !== 0);
                 break;
             case 0xF0:
                 // Disk command.
@@ -16874,22 +16889,8 @@ class Trs80_Trs80 {
             console.log("Warning: Writing to ROM location 0x" + toHex(address, 4));
         }
         else {
-            if (address >= 15360 && address < 16384) {
-                const chList = this.node.getElementsByClassName(CSS_PREFIX + "-c" + address);
-                if (chList.length > 0) {
-                    const ch = chList[0];
-                    // It'd be nice to put the character there so that copy-and-paste works.
-                    /// ch.innerText = String.fromCharCode(value);
-                    for (let i = 0; i < ch.classList.length; i++) {
-                        const className = ch.classList[i];
-                        if (className.startsWith(CSS_PREFIX + "-char-")) {
-                            ch.classList.remove(className);
-                            // There should only be one.
-                            break;
-                        }
-                    }
-                    ch.classList.add(CSS_PREFIX + "-char-" + value);
-                }
+            if (address >= SCREEN_BEGIN && address < SCREEN_END) {
+                Trs80_Trs80.writeScreenChar(this.node, address, value);
             }
             else if (address < RAM_START) {
                 console.log("Writing to unmapped memory at 0x" + toHex(address, 4));
@@ -16905,21 +16906,154 @@ class Trs80_Trs80 {
     cassetteInterruptsEnabled() {
         return (this.irqMask & CASSETTE_IRQ_MASKS) !== 0;
     }
+    /**
+     * Get an opaque string that represents the state of the screen. Flashes the screen.
+     */
+    getScreenshot() {
+        const buf = [];
+        // First byte is screen mode, where 0 means normal (64 columns) and 1 means wide (32 columns).
+        buf.push(this.isExpandedCharacters() ? 1 : 0);
+        // Run-length encode bytes with (value,count) pairs, with a max count of 255. Bytes
+        // in the range 33 to 127 inclusive have an implicit count of 1.
+        for (let address = SCREEN_BEGIN; address < SCREEN_END; address++) {
+            const value = this.memory[address];
+            if (value > 32 && value < 128) {
+                // Bytes in this range don't store a count.
+                buf.push(value);
+            }
+            else if (buf.length < 2 || buf[buf.length - 1] === 255 || buf[buf.length - 2] !== value) {
+                // New entry.
+                buf.push(value);
+                buf.push(1);
+            }
+            else {
+                // Increment existing count.
+                buf[buf.length - 1] += 1;
+            }
+        }
+        // Convert to a binary string.
+        let s = buf.map(n => String.fromCharCode(n)).join("");
+        // Start visual flash effect.
+        Trs80_Trs80.flashNode(this.node);
+        // Base-64 encode and prefix with version number.
+        return "0:" + btoa(s);
+    }
+    /**
+     * Flash the node as if a photo were taken.
+     */
+    static flashNode(node) {
+        // Position a semi-transparent white div over the screen, and reduce its transparency over time.
+        const oldNodePosition = node.style.position;
+        node.style.position = "relative";
+        const overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.right = "0";
+        overlay.style.bottom = "0";
+        overlay.style.backgroundColor = "#ffffff";
+        // Fade out.
+        let opacity = 1;
+        const updateOpacity = () => {
+            overlay.style.opacity = opacity.toString();
+            opacity -= 0.1;
+            if (opacity >= 0) {
+                window.requestAnimationFrame(updateOpacity);
+            }
+            else {
+                node.removeChild(overlay);
+                node.style.position = oldNodePosition;
+            }
+        };
+        updateOpacity();
+        node.appendChild(overlay);
+    }
+    /**
+     * Write a character to the screen.
+     */
+    static writeScreenChar(node, address, value) {
+        const chList = node.getElementsByClassName(CSS_PREFIX + "-c" + address);
+        if (chList.length > 0) {
+            const ch = chList[0];
+            // It'd be nice to put the character there so that copy-and-paste works.
+            /// ch.innerText = String.fromCharCode(value);
+            for (let i = 0; i < ch.classList.length; i++) {
+                const className = ch.classList[i];
+                if (className.startsWith(CSS_PREFIX + "-char-")) {
+                    ch.classList.remove(className);
+                    // There should only be one.
+                    break;
+                }
+            }
+            ch.classList.add(CSS_PREFIX + "-char-" + value);
+        }
+    }
+    /**
+     * Create a screen in the parent node and fill it with the screenshot.
+     */
+    static displayScreenshot(parentNode, screenshot) {
+        // Empty parent.
+        while (parentNode.firstChild) {
+            parentNode.removeChild(parentNode.firstChild);
+        }
+        // Leave it blank if screenshot string is blank.
+        if (screenshot === "") {
+            return;
+        }
+        // Create a node for ourselves below the parent.
+        const node = Trs80_Trs80.createScreenNode(parentNode);
+        // Make global CSS if necessary.
+        Trs80_Trs80.configureStyle();
+        if (!screenshot.startsWith("0:")) {
+            throw new Error("Invalid screenshot version number");
+        }
+        // Decode screenshot.
+        const s = atob(screenshot.substring(2));
+        if (s.length === 0) {
+            throw new Error("Screenshot string is empty");
+        }
+        // Set expanded mode.
+        Trs80_Trs80.setExpandedCharacters(node, s.charCodeAt(0) === 1);
+        let address = SCREEN_BEGIN;
+        for (let i = 1; i < s.length; i++) {
+            const value = s.charCodeAt(i);
+            let count = 1;
+            if (value > 32 && value < 128) {
+                // Implicit count of 1.
+            }
+            else {
+                i++;
+                if (i === s.length) {
+                    throw new Error("Missing count in RLE");
+                }
+                count = s.charCodeAt(i);
+            }
+            // Emit "count" values.
+            while (count--) {
+                Trs80_Trs80.writeScreenChar(node, address++, value);
+            }
+        }
+        if (address !== SCREEN_END) {
+            throw new Error("Screenshot was of the wrong length");
+        }
+    }
     // Reset whether we've seen this NMI interrupt if the mask and latch no longer overlap.
     updateNmiSeen() {
         if ((this.nmiLatch & this.nmiMask) === 0) {
             this.nmiSeen = false;
         }
     }
-    configureNode() {
-        if (this.node.classList.contains(CSS_PREFIX)) {
-            // Already configured.
-            return;
-        }
-        this.node.classList.add(CSS_PREFIX);
-        this.node.classList.add(CSS_PREFIX + "-narrow");
+    /**
+     * Create and configure the DOM node that we're rendering into.
+     */
+    static createScreenNode(parentNode) {
+        // Make our own sub-node that we have control over.
+        const node = document.createElement("div");
+        parentNode.appendChild(node);
+        node.classList.add(CSS_PREFIX);
+        node.classList.add(CSS_PREFIX + "-narrow");
         for (let offset = 0; offset < 1024; offset++) {
-            const address = SCREEN_ADDRESS + offset;
+            const address = SCREEN_BEGIN + offset;
             const c = document.createElement("span");
             c.classList.add(CSS_PREFIX + "-c" + address);
             if (offset % 2 === 0) {
@@ -16929,14 +17063,18 @@ class Trs80_Trs80 {
                 c.classList.add(CSS_PREFIX + "-odd-column");
             }
             c.innerText = " ";
-            this.node.appendChild(c);
+            node.appendChild(c);
             // Newlines.
             if (offset % 64 === 63) {
-                this.node.appendChild(document.createElement("br"));
+                node.appendChild(document.createElement("br"));
             }
         }
+        return node;
     }
-    configureStyle() {
+    /**
+     * Make a global stylesheet for all TRS-80 emulators on this page.
+     */
+    static configureStyle() {
         const styleId = CSS_PREFIX + "-style";
         if (document.getElementById(styleId) !== null) {
             // Already created.
@@ -17031,15 +17169,21 @@ class Trs80_Trs80 {
         this.setTimerInterrupt(true);
     }
     // Enable or disable expanded character set.
-    setExpandedCharacters(expanded) {
+    static setExpandedCharacters(node, expanded) {
         if (expanded) {
-            this.node.classList.remove(CSS_PREFIX + "-narrow");
-            this.node.classList.add(CSS_PREFIX + "-expanded");
+            node.classList.remove(CSS_PREFIX + "-narrow");
+            node.classList.add(CSS_PREFIX + "-expanded");
         }
         else {
-            this.node.classList.remove(CSS_PREFIX + "-expanded");
-            this.node.classList.add(CSS_PREFIX + "-narrow");
+            node.classList.remove(CSS_PREFIX + "-expanded");
+            node.classList.add(CSS_PREFIX + "-narrow");
         }
+    }
+    /**
+     * Whether the screen node is currently set for expanded characters.
+     */
+    isExpandedCharacters() {
+        return this.node.classList.contains(CSS_PREFIX + "-expanded");
     }
     // Reset the controller to a known state.
     resetCassette() {
@@ -18148,11 +18292,14 @@ class TapeBrowser_TapeBrowser {
     makeMetadataPane(program, basicPane, edtasmPane) {
         const div = document.createElement("div");
         div.classList.add("metadata");
+        div.style.display = "flex";
+        const textInfoDiv = document.createElement("div");
+        div.appendChild(textInfoDiv);
         const h1 = document.createElement("h1");
         h1.innerText = "Track " + program.trackNumber + ", copy " + program.copyNumber;
-        div.appendChild(h1);
+        textInfoDiv.appendChild(h1);
         const table = document.createElement("table");
-        div.appendChild(table);
+        textInfoDiv.appendChild(table);
         // Add entry with any data cell for value. Returns the key element.
         const addKeyElement = (key, valueElement) => {
             const row = document.createElement("tr");
@@ -18233,6 +18380,12 @@ class TapeBrowser_TapeBrowser {
                 addKeyValue("Bit error " + count++, frameToTimestamp(bitData.startFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToBitData(bitData));
             }
         }
+        // Add screenshot.
+        const screenshotDiv = document.createElement("div");
+        screenshotDiv.style.marginLeft = "20pt";
+        div.appendChild(screenshotDiv);
+        Trs80_Trs80.displayScreenshot(screenshotDiv, program.screenshot);
+        program.onScreenshot.subscribe(screenshot => Trs80_Trs80.displayScreenshot(screenshotDiv, screenshot));
         return new Pane(div);
     }
     makeBinaryPane(program) {
@@ -18333,6 +18486,14 @@ class TapeBrowser_TapeBrowser {
         progressBar.classList.add("hidden");
         cassette.setProgressBar(progressBar);
         div.appendChild(progressBar);
+        const screenshotButton = document.createElement("button");
+        screenshotButton.innerText = "Take Screenshot";
+        screenshotButton.addEventListener("click", event => {
+            const screenshot = trs80.getScreenshot();
+            program.setScreenshot(screenshot);
+            this.tape.saveUserData();
+        });
+        div.appendChild(screenshotButton);
         const trs80 = new Trs80_Trs80(screen, cassette);
         trs80.reset();
         let pane = new Pane(div);
