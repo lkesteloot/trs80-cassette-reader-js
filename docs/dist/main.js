@@ -1385,6 +1385,36 @@ function clearElement(e) {
         e.removeChild(e.firstChild);
     }
 }
+/**
+ * Flash the node as if a photo were taken.
+ */
+function flashNode(node) {
+    // Position a semi-transparent white div over the screen, and reduce its transparency over time.
+    const oldNodePosition = node.style.position;
+    node.style.position = "relative";
+    const overlay = document.createElement("div");
+    overlay.style.position = "absolute";
+    overlay.style.left = "0";
+    overlay.style.top = "0";
+    overlay.style.right = "0";
+    overlay.style.bottom = "0";
+    overlay.style.backgroundColor = "#ffffff";
+    // Fade out.
+    let opacity = 1;
+    const updateOpacity = () => {
+        overlay.style.opacity = opacity.toString();
+        opacity -= 0.05;
+        if (opacity >= 0) {
+            window.requestAnimationFrame(updateOpacity);
+        }
+        else {
+            node.removeChild(overlay);
+            node.style.position = oldNodePosition;
+        }
+    };
+    updateOpacity();
+    node.appendChild(overlay);
+}
 
 // CONCATENATED MODULE: ./src/AudioUtils.ts
 
@@ -2110,14 +2140,30 @@ class Tape_Tape {
                 },
             ],
         };
-        window.localStorage.setItem(LOCAL_DATA_KEY, JSON.stringify(data));
+        Tape_Tape.saveAllDataAsJson(JSON.stringify(data));
     }
+    /**
+     * Get user data as a SavedData object.
+     */
     static loadAllData() {
         const jsonData = window.localStorage.getItem(LOCAL_DATA_KEY);
         if (jsonData === null) {
             return { tapes: [] };
         }
         return JSON.parse(jsonData);
+    }
+    /**
+     * Get user data as a formatted JSON object.
+     */
+    static getAllDataAsJson() {
+        // Re-format it nicely.
+        return JSON.stringify(this.loadAllData(), null, 2);
+    }
+    /**
+     * Set the full data from a JSON string.
+     */
+    static saveAllDataAsJson(jsonData) {
+        window.localStorage.setItem(LOCAL_DATA_KEY, jsonData);
     }
 }
 
@@ -19705,6 +19751,49 @@ function populateBrowseScreen(browseScreen) {
         }
     }
 }
+/**
+ * Show the export/import panel and the appropriate set of buttons.
+ */
+function showExportImport(action) {
+    const exportImport = document.getElementById("export_import");
+    exportImport.classList.remove("hidden");
+    // Hide all button groups.
+    for (const buttonGroup of exportImport.getElementsByClassName("button_group")) {
+        buttonGroup.classList.add("hidden");
+    }
+    // Show our button group.
+    const buttonGroup = document.getElementById(action == "export" ? "export_buttons" : "import_buttons");
+    buttonGroup.classList.remove("hidden");
+}
+function showExportData() {
+    showExportImport("export");
+    const textArea = document.getElementById("user_data_field");
+    textArea.placeholder = "";
+    textArea.value = Tape_Tape.getAllDataAsJson();
+    textArea.select();
+}
+function showImportData() {
+    showExportImport("import");
+    const textArea = document.getElementById("user_data_field");
+    textArea.value = "";
+    textArea.placeholder = "Paste exported data here, then click “Import”.";
+    textArea.focus();
+}
+function copyToClipboard() {
+    const textArea = document.getElementById("user_data_field");
+    textArea.select();
+    document.execCommand("copy");
+    const exportImport = document.getElementById("export_import");
+    flashNode(exportImport);
+}
+function importData() {
+    const textArea = document.getElementById("user_data_field");
+    if (textArea) {
+        Tape_Tape.saveAllDataAsJson(textArea.value);
+        const exportImport = document.getElementById("export_import");
+        flashNode(exportImport);
+    }
+}
 function handleAudioBuffer(pathname, audioFile) {
     console.log("Audio is " + audioFile.rate + " Hz");
     // TODO check that there's 1 channel.
@@ -19749,12 +19838,16 @@ function main() {
     const exportDataButton = document.getElementById("export_data_button");
     const importDataButton = document.getElementById("import_data_button");
     const browseDataButton = document.getElementById("browse_data_button");
-    exportDataButton.addEventListener("click", event => 0);
-    importDataButton.addEventListener("click", event => 0);
+    const copyToClipboardButton = document.getElementById("copy_to_clipboard_button");
+    const importButton = document.getElementById("import_button");
+    exportDataButton.addEventListener("click", event => showExportData());
+    importDataButton.addEventListener("click", event => showImportData());
     browseDataButton.addEventListener("click", event => {
         const browseScreen = showScreen("browse_screen");
         populateBrowseScreen(browseScreen);
     });
+    copyToClipboardButton.addEventListener("click", event => copyToClipboard());
+    importButton.addEventListener("click", event => importData());
 }
 
 // CONCATENATED MODULE: ./src/index.ts
