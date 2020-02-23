@@ -1377,6 +1377,14 @@ function base64EncodeUint8Array(array) {
     array.forEach(c => s += String.fromCharCode(c));
     return btoa(s);
 }
+/**
+ * Remove all children from element.
+ */
+function clearElement(e) {
+    while (e.firstChild) {
+        e.removeChild(e.firstChild);
+    }
+}
 
 // CONCATENATED MODULE: ./src/AudioUtils.ts
 
@@ -2069,19 +2077,16 @@ class Tape_Tape {
      */
     loadUserData() {
         var _a, _b, _c;
-        const jsonData = window.localStorage.getItem(LOCAL_DATA_KEY);
-        if (jsonData === null) {
-            return;
-        }
-        const data = JSON.parse(jsonData);
-        const tapeData = data.tapes[this.name];
-        if (tapeData) {
-            for (const programData of tapeData.programs) {
-                for (const program of this.programs) {
-                    if (program.isForTimestamp(programData.timestamp, this.sampleRate)) {
-                        program.setName((_a = programData.name, (_a !== null && _a !== void 0 ? _a : "")));
-                        program.setNotes((_b = programData.notes, (_b !== null && _b !== void 0 ? _b : "")));
-                        program.setScreenshot((_c = programData.screenshot, (_c !== null && _c !== void 0 ? _c : "")));
+        const data = Tape_Tape.loadAllData();
+        for (const tapeData of data.tapes) {
+            if (tapeData.name === this.name) {
+                for (const programData of tapeData.programs) {
+                    for (const program of this.programs) {
+                        if (program.isForTimestamp(programData.timestamp, this.sampleRate)) {
+                            program.setName((_a = programData.name, (_a !== null && _a !== void 0 ? _a : "")));
+                            program.setNotes((_b = programData.notes, (_b !== null && _b !== void 0 ? _b : "")));
+                            program.setScreenshot((_c = programData.screenshot, (_c !== null && _c !== void 0 ? _c : "")));
+                        }
                     }
                 }
             }
@@ -2092,8 +2097,8 @@ class Tape_Tape {
      */
     saveUserData() {
         const data = {
-            tapes: {
-                [this.name]: {
+            tapes: [
+                {
                     name: this.name,
                     notes: "",
                     programs: this.programs.map(program => ({
@@ -2103,9 +2108,16 @@ class Tape_Tape {
                         timestamp: program.getTimestamp(this.sampleRate),
                     })),
                 },
-            },
+            ],
         };
         window.localStorage.setItem(LOCAL_DATA_KEY, JSON.stringify(data));
+    }
+    static loadAllData() {
+        const jsonData = window.localStorage.getItem(LOCAL_DATA_KEY);
+        if (jsonData === null) {
+            return { tapes: [] };
+        }
+        return JSON.parse(jsonData);
     }
 }
 
@@ -18052,14 +18064,6 @@ class Pane {
     }
 }
 /**
- * Remove all children from element.
- */
-function clearElement(e) {
-    while (e.firstChild) {
-        e.removeChild(e.firstChild);
-    }
-}
-/**
  * Helper class to highlight or select elements.
  */
 class TapeBrowser_Highlighter {
@@ -19632,11 +19636,8 @@ var Split = function (idsOption, options) {
 
 
 
-const dropZone = document.getElementById("drop_zone");
-const dropUpload = document.getElementById("drop_upload");
-const dropS3 = document.querySelectorAll("#test_files button");
-const dropProgress = document.getElementById("drop_progress");
-let uploader;
+
+
 function nameFromPathname(pathname) {
     let name = pathname;
     // Keep only last component.
@@ -19651,6 +19652,59 @@ function nameFromPathname(pathname) {
     }
     return name;
 }
+/**
+ * Show the screen with the specified ID, hide the rest.
+ * @return the shown element.
+ */
+function showScreen(screenId) {
+    const allScreens = document.getElementsByClassName("screen");
+    let shownScreen = undefined;
+    for (const screen of allScreens) {
+        if (screen.id === screenId) {
+            screen.classList.remove("hidden");
+            shownScreen = screen;
+        }
+        else {
+            screen.classList.add("hidden");
+        }
+    }
+    if (shownScreen === undefined) {
+        throw new Error("Cannot find screen " + screenId);
+    }
+    return shownScreen;
+}
+/**
+ * Show the user data.
+ */
+function populateBrowseScreen(browseScreen) {
+    clearElement(browseScreen);
+    const data = Tape_Tape.loadAllData();
+    for (const tapeData of data.tapes) {
+        const h1 = document.createElement("h1");
+        h1.textContent = tapeData.name;
+        browseScreen.appendChild(h1);
+        if (tapeData.notes) {
+            const p = document.createElement("p");
+            p.textContent = tapeData.notes;
+            browseScreen.appendChild(p);
+        }
+        for (const programData of tapeData.programs) {
+            const h2 = document.createElement("h2");
+            h2.textContent = programData.name || "Untitled";
+            browseScreen.appendChild(h2);
+            if (programData.notes) {
+                const p = document.createElement("p");
+                p.textContent = programData.notes;
+                browseScreen.appendChild(p);
+            }
+            if (programData.screenshot) {
+                const div = document.createElement("div");
+                browseScreen.appendChild(div);
+                Trs80_Trs80.displayScreenshot(div, programData.screenshot);
+            }
+        }
+    }
+}
 function handleAudioBuffer(pathname, audioFile) {
     console.log("Audio is " + audioFile.rate + " Hz");
     // TODO check that there's 1 channel.
@@ -19661,15 +19715,11 @@ function handleAudioBuffer(pathname, audioFile) {
     tape.loadUserData();
     const tapeBrowser = new TapeBrowser_TapeBrowser(tape, document.getElementById("waveforms"), document.getElementById("original_canvas"), document.getElementById("filtered_canvas"), document.getElementById("low_speed_canvas"), document.getElementById("tape_contents"), document.getElementById("top_data"));
     // Switch screens.
-    const dropScreen = document.getElementById("drop_screen");
-    const dataScreen = document.getElementById("data_screen");
-    dropScreen.classList.add("hidden");
-    dataScreen.classList.remove("hidden");
+    showScreen("data_screen");
     /*
     const loadAnotherButton = document.getElementById("load_another_button") as HTMLButtonElement;
     loadAnotherButton.onclick = () => {
-        dropScreen.classList.remove("hidden");
-        dataScreen.classList.add("hidden");
+        showScreen("drop_screen");
         if (uploader !== undefined) {
             uploader.reset();
         }
@@ -19688,7 +19738,23 @@ function handleAudioBuffer(pathname, audioFile) {
     });
 }
 function main() {
-    uploader = new Uploader_Uploader(dropZone, dropUpload, dropS3, dropProgress, handleAudioBuffer);
+    showScreen("drop_screen");
+    // Configure uploading box.
+    const dropZone = document.getElementById("drop_zone");
+    const dropUpload = document.getElementById("drop_upload");
+    const dropS3 = document.querySelectorAll("#test_files button");
+    const dropProgress = document.getElementById("drop_progress");
+    const uploader = new Uploader_Uploader(dropZone, dropUpload, dropS3, dropProgress, handleAudioBuffer);
+    // Configure action buttons.
+    const exportDataButton = document.getElementById("export_data_button");
+    const importDataButton = document.getElementById("import_data_button");
+    const browseDataButton = document.getElementById("browse_data_button");
+    exportDataButton.addEventListener("click", event => 0);
+    importDataButton.addEventListener("click", event => 0);
+    browseDataButton.addEventListener("click", event => {
+        const browseScreen = showScreen("browse_screen");
+        populateBrowseScreen(browseScreen);
+    });
 }
 
 // CONCATENATED MODULE: ./src/index.ts
