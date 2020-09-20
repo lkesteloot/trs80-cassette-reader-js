@@ -6666,59 +6666,59 @@ function Basic_add(out, text, className) {
     return e;
 }
 // Stylesheet.
-const BACKGROUND_COLOR = "#1E1E1E";
+const BACKGROUND_COLOR = "var(--background)";
 const STYLE = {
     error: {
-        color: "#aa0000",
+        color: "var(--red)",
         "&$highlighted": {
-            backgroundColor: "#aa0000",
+            backgroundColor: "var(--red)",
             color: BACKGROUND_COLOR,
         },
     },
     lineNumber: {
-        color: "#858585",
+        color: "var(--foreground-secondary)",
         "&$highlighted": {
-            backgroundColor: "#858585",
+            backgroundColor: "var(--foreground-secondary)",
             color: BACKGROUND_COLOR,
         },
     },
     punctuation: {
-        color: "#D4D4D4",
+        color: "var(--foreground-secondary)",
         "&$highlighted": {
-            backgroundColor: "#D4D4D4",
+            backgroundColor: "var(--foreground-secondary)",
             color: BACKGROUND_COLOR,
         },
     },
     keyword: {
-        color: "#C586C0",
+        color: "var(--blue)",
         "&$highlighted": {
-            backgroundColor: "#C586C0",
+            backgroundColor: "var(--blue)",
             color: BACKGROUND_COLOR,
         },
     },
     regular: {
-        color: "#9CDCFE",
+        color: "var(--foreground)",
         "&$highlighted": {
-            backgroundColor: "#9CDCFE",
+            backgroundColor: "var(--foreground)",
             color: BACKGROUND_COLOR,
         },
     },
     string: {
-        color: "#CE9178",
+        color: "var(--orange)",
         "&$highlighted": {
-            backgroundColor: "#CE9178",
+            backgroundColor: "var(--orange)",
             color: BACKGROUND_COLOR,
         },
     },
     comment: {
-        color: "#6A9955",
+        color: "var(--cyan)",
         "&$highlighted": {
-            backgroundColor: "#6A9955",
+            backgroundColor: "var(--cyan)",
             color: BACKGROUND_COLOR,
         },
     },
     selected: {
-        backgroundColor: "#555555",
+        backgroundColor: "var(--background-highlights)",
     },
     highlighted: {
     // Empty style that's referenced above as $highlighted.
@@ -6892,38 +6892,38 @@ function fromTokenized(bytes, out) {
 
 
 // Stylesheet.
-const Hexdump_BACKGROUND_COLOR = "#1E1E1E";
+const Hexdump_BACKGROUND_COLOR = "var(--background)";
 const Hexdump_STYLE = {
     address: {
-        color: "#858585",
+        color: "var(--foreground-secondary)",
         "&$highlighted": {
-            backgroundColor: "#858585",
+            backgroundColor: "var(--foreground-secondary)",
             color: Hexdump_BACKGROUND_COLOR,
         },
     },
     hex: {
-        color: "#D4D4D4",
+        color: "var(--blue)",
         "&$highlighted": {
-            backgroundColor: "#D4D4D4",
+            backgroundColor: "var(--blue)",
             color: Hexdump_BACKGROUND_COLOR,
         },
     },
     ascii: {
-        color: "#D4D4D4",
+        color: "var(--cyan)",
         "&$highlighted": {
-            backgroundColor: "#D4D4D4",
+            backgroundColor: "var(--cyan)",
             color: Hexdump_BACKGROUND_COLOR,
         },
     },
     asciiUnprintable: {
-        color: "#858585",
+        color: "var(--foreground-secondary)",
         "&$highlighted": {
-            backgroundColor: "#858585",
+            backgroundColor: "var(--foreground-secondary)",
             color: Hexdump_BACKGROUND_COLOR,
         },
     },
     selected: {
-        backgroundColor: "#555555",
+        backgroundColor: "var(--background-highlights)",
     },
     highlighted: {
     // Empty style that's referenced above as $highlighted.
@@ -19465,8 +19465,19 @@ class WaveformDisplay_WaveformDisplay {
         const ctx = canvas.getContext("2d");
         const width = canvas.width;
         const height = canvas.height;
+        // Get the theme variables.
+        canvas.classList.add("dark-mode");
+        const style = getComputedStyle(canvas);
+        const backgroundColor = style.getPropertyValue("--background");
+        const selectionColor = style.getPropertyValue("--background-highlights");
+        const highlightColor = "rgba(0, 0, 0, 0.2)";
+        const braceColor = style.getPropertyValue("--foreground-secondary");
+        const labelColor = style.getPropertyValue("--foreground");
+        const waveformColor = style.getPropertyValue("--blue");
+        const startColor = style.getPropertyValue("--cyan");
+        const badColor = style.getPropertyValue("--red");
         // Background.
-        ctx.fillStyle = "rgb(0, 0, 0)";
+        ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, width, height);
         if (displaySamples === undefined) {
             return;
@@ -19486,14 +19497,14 @@ class WaveformDisplay_WaveformDisplay {
         const drawingLine = this.zoom < 3;
         // Selection.
         if (this.startSelectionFrame !== undefined && this.endSelectionFrame !== undefined) {
-            ctx.fillStyle = "rgb(50, 50, 50)";
+            ctx.fillStyle = selectionColor;
             const x1 = frameToX(this.startSelectionFrame / mag);
             const x2 = frameToX(this.endSelectionFrame / mag);
             ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
         }
         // Highlight.
         if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
-            ctx.fillStyle = "rgb(75, 75, 75)";
+            ctx.fillStyle = highlightColor;
             const x1 = frameToX(this.startHighlightFrame / mag);
             const x2 = frameToX(this.endHighlightFrame / mag);
             ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
@@ -19506,32 +19517,32 @@ class WaveformDisplay_WaveformDisplay {
                     if (bitInfo.endFrame >= firstOrigSample && bitInfo.startFrame <= lastOrigSample) {
                         const x1 = frameToX(bitInfo.startFrame / mag);
                         const x2 = frameToX(bitInfo.endFrame / mag);
-                        let braceColor;
+                        let bitBraceColor;
                         let label;
-                        let labelColor;
+                        let bitLabelColor;
                         switch (bitInfo.bitType) {
                             case BitType.ZERO:
-                                braceColor = "rgb(150, 150, 150)";
-                                labelColor = "rgb(255, 255, 255)";
+                                bitBraceColor = braceColor;
+                                bitLabelColor = labelColor;
                                 label = "0";
                                 break;
                             case BitType.ONE:
-                                braceColor = "rgb(150, 150, 150)";
-                                labelColor = "rgb(255, 255, 255)";
+                                bitBraceColor = braceColor;
+                                bitLabelColor = labelColor;
                                 label = "1";
                                 break;
                             case BitType.START:
-                                braceColor = "rgb(50, 200, 50)";
-                                labelColor = "rgb(100, 255, 100)";
+                                bitBraceColor = startColor;
+                                bitLabelColor = startColor;
                                 label = "START";
                                 break;
                             case BitType.BAD:
-                                braceColor = "rgb(200, 50, 50)";
-                                labelColor = "rgb(255, 100, 100)";
+                                bitBraceColor = badColor;
+                                bitLabelColor = badColor;
                                 label = "BAD";
                                 break;
                         }
-                        this.drawBraceAndLabel(ctx, x1, x2, braceColor, label, labelColor);
+                        this.drawBraceAndLabel(ctx, x1, x2, bitBraceColor, label, bitLabelColor);
                     }
                 }
             }
@@ -19548,7 +19559,7 @@ class WaveformDisplay_WaveformDisplay {
                                 : byteValue < 128 ? String.fromCodePoint(byteValue)
                                     : program.isBasicProgram() && basicToken !== undefined ? basicToken
                                         : "0x" + byteValue.toString(16).padStart(2, "0").toUpperCase();
-                        this.drawBraceAndLabel(ctx, x1, x2, "rgb(150, 150, 150)", label, "rgb(255, 255, 255)");
+                        this.drawBraceAndLabel(ctx, x1, x2, braceColor, label, labelColor);
                     }
                 }
             }
@@ -19556,11 +19567,11 @@ class WaveformDisplay_WaveformDisplay {
                 // Highlight the whole program.
                 const x1 = frameToX(program.startFrame / mag);
                 const x2 = frameToX(program.endFrame / mag);
-                this.drawBraceAndLabel(ctx, x1, x2, "rgb(150, 150, 150)", program.getShortLabel(), "rgb(255, 255, 255)");
+                this.drawBraceAndLabel(ctx, x1, x2, braceColor, program.getShortLabel(), labelColor);
             }
         }
         // Draw waveform.
-        ctx.strokeStyle = "rgb(255, 255, 255)";
+        ctx.strokeStyle = waveformColor;
         if (drawingLine) {
             ctx.beginPath();
         }
@@ -20230,6 +20241,7 @@ class TapeBrowser_TapeBrowser {
             const td = document.createElement("td");
             td.classList.add("value");
             const input = document.createElement("input");
+            input.type = "text";
             input.classList.add("name");
             program.onName.subscribe(name => input.value = name);
             input.value = program.name;
