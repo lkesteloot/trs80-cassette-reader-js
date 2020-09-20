@@ -6745,6 +6745,7 @@ function fromTokenized(bytes, out) {
     const classes = Basic_sheet.classes;
     const b = new ByteReader(bytes);
     let state;
+    // Map from byte address to HTML element for that byte.
     const elements = [];
     if (b.read() !== 0xD3 || b.read() !== 0xD3 || b.read() !== 0xD3) {
         Basic_add(out, "Basic: missing magic -- not a BASIC file.", classes.error);
@@ -6779,6 +6780,7 @@ function fromTokenized(bytes, out) {
         // Read rest of line.
         let c; // Uint8 value.
         let ch; // String value.
+        let colonAddr = 0;
         state = NORMAL;
         while (true) {
             c = b.read();
@@ -6791,13 +6793,16 @@ function fromTokenized(bytes, out) {
             // way to add a single quote as a comment.
             if (ch === ":" && state === NORMAL) {
                 state = COLON;
+                colonAddr = b.addr() - 1;
             }
             else if (ch === ":" && state === COLON) {
                 e = Basic_add(line, ":", classes.punctuation);
-                elements[b.addr() - 1] = e;
+                elements[colonAddr] = e;
+                colonAddr = b.addr() - 1;
             }
             else if (c === REM && state === COLON) {
                 state = COLON_REM;
+                colonAddr = 0;
             }
             else if (c === REMQUOT && state === COLON_REM) {
                 e = Basic_add(line, "'", classes.comment);
@@ -6808,11 +6813,12 @@ function fromTokenized(bytes, out) {
                 e = Basic_add(line, "ELSE", classes.keyword);
                 elements[b.addr() - 1] = e;
                 state = NORMAL;
+                colonAddr = 0;
             }
             else {
                 if (state === COLON || state === COLON_REM) {
                     e = Basic_add(line, ":", classes.punctuation);
-                    elements[b.addr() - 1] = e;
+                    elements[colonAddr] = e;
                     if (state === COLON_REM) {
                         e = Basic_add(line, "REM", classes.comment);
                         elements[b.addr() - 1] = e;
@@ -6821,6 +6827,7 @@ function fromTokenized(bytes, out) {
                     else {
                         state = NORMAL;
                     }
+                    colonAddr = 0;
                 }
                 switch (state) {
                     case NORMAL:
@@ -6874,12 +6881,13 @@ function fromTokenized(bytes, out) {
         // Deal with eaten tokens.
         if (state === COLON || state === COLON_REM) {
             e = Basic_add(line, ":", classes.punctuation);
-            elements[b.addr() - 1] = e;
+            elements[colonAddr] = e;
             if (state === COLON_REM) {
                 e = Basic_add(line, "REM", classes.comment);
+                elements[b.addr() - 1] = e;
             }
-            elements[b.addr() - 1] = e;
             /// state = NORMAL;
+            /// colonAddr = 0;
         }
         // Append last line.
         out.appendChild(line);
