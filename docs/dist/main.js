@@ -6911,18 +6911,19 @@ function toDiv(basicElements, out) {
     const classes = BasicRender_sheet.classes;
     // Map from byte address to HTML element for that byte.
     const elements = [];
-    let line = document.createElement("div");
-    out.appendChild(line);
+    let line = undefined;
     for (const basicElement of basicElements) {
         let className;
+        if (line === undefined || basicElement.elementType === ElementType.LINE_NUMBER) {
+            line = document.createElement("div");
+            out.appendChild(line);
+        }
         switch (basicElement.elementType) {
             case ElementType.ERROR:
                 className = classes.error;
                 break;
             case ElementType.LINE_NUMBER:
                 className = classes.lineNumber;
-                line = document.createElement("div");
-                out.appendChild(line);
                 break;
             case ElementType.PUNCTUATION:
                 className = classes.punctuation;
