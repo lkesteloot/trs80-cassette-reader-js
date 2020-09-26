@@ -2167,6 +2167,255 @@ class Tape_Tape {
     }
 }
 
+// CONCATENATED MODULE: ./src/Basic.ts
+// Tools for decoding Basic programs.
+
+// Starts at 0x80.
+const TOKENS = [
+    "END", "FOR", "RESET", "SET", "CLS", "CMD", "RANDOM", "NEXT",
+    "DATA", "INPUT", "DIM", "READ", "LET", "GOTO", "RUN", "IF",
+    "RESTORE", "GOSUB", "RETURN", "REM", "STOP", "ELSE", "TRON", "TROFF",
+    "DEFSTR", "DEFINT", "DEFSNG", "DEFDBL", "LINE", "EDIT", "ERROR", "RESUME",
+    "OUT", "ON", "OPEN", "FIELD", "GET", "PUT", "CLOSE", "LOAD",
+    "MERGE", "NAME", "KILL", "LSET", "RSET", "SAVE", "SYSTEM", "LPRINT",
+    "DEF", "POKE", "PRINT", "CONT", "LIST", "LLIST", "DELETE", "AUTO",
+    "CLEAR", "CLOAD", "CSAVE", "NEW", "TAB(", "TO", "FN", "USING",
+    "VARPTR", "USR", "ERL", "ERR", "STRING", "INSTR", "POINT", "TIME$",
+    "MEM", "INKEY$", "THEN", "NOT", "STEP", "+", "-", "*",
+    "/", "[", "AND", "OR", ">", "=", "<", "SGN",
+    "INT", "ABS", "FRE", "INP", "POS", "SQR", "RND", "LOG",
+    "EXP", "COS", "SIN", "TAN", "ATN", "PEEK", "CVI", "CVS",
+    "CVD", "EOF", "LOC", "LOF", "MKI", "MKS$", "MKD$", "CINT",
+    "CSNG", "CDBL", "FIX", "LEN", "STR$", "VAL", "ASC", "CHR$",
+    "LEFT$", "RIGHT$", "MID$",
+];
+const REM = 0x93;
+const DATA = 0x88;
+const REMQUOT = 0xFB;
+const ELSE = 0x95;
+const EOF = -1;
+/**
+ * Parser state.
+ */
+// Normal part of line.
+const NORMAL = 0;
+// Inside string literal.
+const STRING_LITERAL = 1;
+// After REM or DATA statement to end of line.
+const RAW = 2;
+// Just ate a colon.
+const COLON = 3;
+// Just ate a colon and a REM.
+const COLON_REM = 4;
+class ByteReader {
+    constructor(b) {
+        this.b = b;
+        this.pos = 0;
+    }
+    /**
+     * Return the next byte, or EOF on end of array.
+     *
+     * @returns {number}
+     */
+    read() {
+        return this.pos < this.b.length ? this.b[this.pos++] : EOF;
+    }
+    /**
+     * Return the byte address of the next byte to be read.
+     */
+    addr() {
+        return this.pos;
+    }
+    /**
+     * Reads a little-endian short (two-byte) integer.
+     *
+     * @param allowEofAfterFirstByte
+     * @returns the integer, or EOF on end of file.
+     */
+    readShort(allowEofAfterFirstByte) {
+        const low = this.read();
+        if (low === EOF) {
+            return EOF;
+        }
+        const high = this.read();
+        if (high === EOF) {
+            return allowEofAfterFirstByte ? low : EOF;
+        }
+        return low + high * 256;
+    }
+}
+/**
+ * Get the token for the byte value, or undefined if the value does
+ * not map to a token.
+ */
+function getToken(c) {
+    return c >= 128 && c < 128 + TOKENS.length ? TOKENS[c - 128] : undefined;
+}
+/**
+ * Type of Basic element, for syntax highlighting.
+ */
+var ElementType;
+(function (ElementType) {
+    ElementType[ElementType["ERROR"] = 0] = "ERROR";
+    ElementType[ElementType["LINE_NUMBER"] = 1] = "LINE_NUMBER";
+    ElementType[ElementType["PUNCTUATION"] = 2] = "PUNCTUATION";
+    ElementType[ElementType["KEYWORD"] = 3] = "KEYWORD";
+    ElementType[ElementType["REGULAR"] = 4] = "REGULAR";
+    ElementType[ElementType["STRING"] = 5] = "STRING";
+    ElementType[ElementType["COMMENT"] = 6] = "COMMENT";
+})(ElementType || (ElementType = {}));
+/**
+ * Piece of a Basic program (token, character, line number).
+ */
+class BasicElement {
+    constructor(offset, text, elementType) {
+        this.offset = offset;
+        this.text = text;
+        this.elementType = elementType;
+    }
+}
+/**
+ * Decode a tokenized Basic program.
+ * @param bytes tokenized program.
+ * @return array of generated BasicElements, index by byte index.
+ */
+function fromTokenized(bytes) {
+    const b = new ByteReader(bytes);
+    let state;
+    // Map from byte address to BasicElement for that byte.
+    const elements = [];
+    if (b.read() !== 0xD3 || b.read() !== 0xD3 || b.read() !== 0xD3) {
+        elements.push(new BasicElement(undefined, "Basic: missing magic -- not a BASIC file.", ElementType.ERROR));
+        return elements;
+    }
+    // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
+    b.read();
+    while (true) {
+        // Read the address of the next line. We ignore this (as does Basic when
+        // loading programs), only using it to detect end of program. (In the real
+        // Basic these are regenerated after loading.)
+        const address = b.readShort(true);
+        if (address === EOF) {
+            elements.push(new BasicElement(undefined, "[EOF in next line's address]", ElementType.ERROR));
+            break;
+        }
+        // Zero address indicates end of program.
+        if (address === 0) {
+            break;
+        }
+        // Read current line number.
+        const lineNumber = b.readShort(false);
+        if (lineNumber === EOF) {
+            elements.push(new BasicElement(undefined, "[EOF in line number]", ElementType.ERROR));
+            break;
+        }
+        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER));
+        elements.push(new BasicElement(b.addr() - 1, " ", ElementType.REGULAR));
+        // Read rest of line.
+        let c; // Uint8 value.
+        let ch; // String value.
+        let colonAddr = 0;
+        state = NORMAL;
+        while (true) {
+            c = b.read();
+            if (c === EOF || c === 0) {
+                break;
+            }
+            ch = String.fromCharCode(c);
+            // Detect the ":REM'" sequence (colon, REM, single quote), because
+            // that translates to a single quote. Must be a backward-compatible
+            // way to add a single quote as a comment.
+            if (ch === ":" && state === NORMAL) {
+                state = COLON;
+                colonAddr = b.addr() - 1;
+            }
+            else if (ch === ":" && state === COLON) {
+                elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
+                colonAddr = b.addr() - 1;
+            }
+            else if (c === REM && state === COLON) {
+                state = COLON_REM;
+                colonAddr = 0;
+            }
+            else if (c === REMQUOT && state === COLON_REM) {
+                elements.push(new BasicElement(b.addr() - 1, "'", ElementType.COMMENT));
+                state = RAW;
+            }
+            else if (c === ELSE && state === COLON) {
+                elements.push(new BasicElement(b.addr() - 1, "ELSE", ElementType.KEYWORD));
+                state = NORMAL;
+                colonAddr = 0;
+            }
+            else {
+                if (state === COLON || state === COLON_REM) {
+                    elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
+                    if (state === COLON_REM) {
+                        elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
+                        state = RAW;
+                    }
+                    else {
+                        state = NORMAL;
+                    }
+                    colonAddr = 0;
+                }
+                switch (state) {
+                    case NORMAL:
+                        const token = getToken(c);
+                        elements.push(token !== undefined
+                            ? new BasicElement(b.addr() - 1, token, c === DATA || c === REM ? ElementType.COMMENT
+                                : token.length === 1 ? ElementType.PUNCTUATION
+                                    : ElementType.KEYWORD)
+                            : new BasicElement(b.addr() - 1, ch, ch === '"' ? ElementType.STRING : ElementType.REGULAR));
+                        if (c === DATA || c === REM) {
+                            state = RAW;
+                        }
+                        else if (ch === '"') {
+                            state = STRING_LITERAL;
+                        }
+                        break;
+                    case STRING_LITERAL:
+                        var e;
+                        if (ch === "\r") {
+                            e = new BasicElement(b.addr() - 1, "\\n", ElementType.PUNCTUATION);
+                        }
+                        else if (ch === "\\") {
+                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
+                        }
+                        else if (c >= 32 && c < 128) {
+                            e = new BasicElement(b.addr() - 1, ch, ElementType.STRING);
+                        }
+                        else {
+                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
+                        }
+                        elements.push(e);
+                        if (ch === '"') {
+                            // End of string.
+                            state = NORMAL;
+                        }
+                        break;
+                    case RAW:
+                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.COMMENT));
+                        break;
+                }
+            }
+        }
+        if (c === EOF) {
+            elements.push(new BasicElement(undefined, "[EOF in line]", ElementType.ERROR));
+            break;
+        }
+        // Deal with eaten tokens.
+        if (state === COLON || state === COLON_REM) {
+            elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
+            if (state === COLON_REM) {
+                elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
+            }
+            /// state = NORMAL;
+            /// colonAddr = 0;
+        }
+    }
+    return elements;
+}
+
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/extends.js
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -6574,91 +6823,16 @@ var jss_preset_default_esm_index = (function (options) {
 jss_esm.setup(jss_preset_default_esm());
 /* harmony default export */ var src_Jss = (jss_esm);
 
-// CONCATENATED MODULE: ./src/Basic.ts
-// Tools for decoding Basic programs.
+// CONCATENATED MODULE: ./src/BasicRender.ts
 
 
-// Starts at 0x80.
-const TOKENS = [
-    "END", "FOR", "RESET", "SET", "CLS", "CMD", "RANDOM", "NEXT",
-    "DATA", "INPUT", "DIM", "READ", "LET", "GOTO", "RUN", "IF",
-    "RESTORE", "GOSUB", "RETURN", "REM", "STOP", "ELSE", "TRON", "TROFF",
-    "DEFSTR", "DEFINT", "DEFSNG", "DEFDBL", "LINE", "EDIT", "ERROR", "RESUME",
-    "OUT", "ON", "OPEN", "FIELD", "GET", "PUT", "CLOSE", "LOAD",
-    "MERGE", "NAME", "KILL", "LSET", "RSET", "SAVE", "SYSTEM", "LPRINT",
-    "DEF", "POKE", "PRINT", "CONT", "LIST", "LLIST", "DELETE", "AUTO",
-    "CLEAR", "CLOAD", "CSAVE", "NEW", "TAB(", "TO", "FN", "USING",
-    "VARPTR", "USR", "ERL", "ERR", "STRING", "INSTR", "POINT", "TIME$",
-    "MEM", "INKEY$", "THEN", "NOT", "STEP", "+", "-", "*",
-    "/", "[", "AND", "OR", ">", "=", "<", "SGN",
-    "INT", "ABS", "FRE", "INP", "POS", "SQR", "RND", "LOG",
-    "EXP", "COS", "SIN", "TAN", "ATN", "PEEK", "CVI", "CVS",
-    "CVD", "EOF", "LOC", "LOF", "MKI", "MKS$", "MKD$", "CINT",
-    "CSNG", "CDBL", "FIX", "LEN", "STR$", "VAL", "ASC", "CHR$",
-    "LEFT$", "RIGHT$", "MID$",
-];
-const REM = 0x93;
-const DATA = 0x88;
-const REMQUOT = 0xFB;
-const ELSE = 0x95;
-const EOF = -1;
-/**
- * Parser state.
- */
-// Normal part of line.
-const NORMAL = 0;
-// Inside string literal.
-const STRING_LITERAL = 1;
-// After REM or DATA statement to end of line.
-const RAW = 2;
-// Just ate a colon.
-const COLON = 3;
-// Just ate a colon and a REM.
-const COLON_REM = 4;
-class ByteReader {
-    constructor(b) {
-        this.b = b;
-        this.pos = 0;
-    }
-    /**
-     * Return the next byte, or EOF on end of array.
-     *
-     * @returns {number}
-     */
-    read() {
-        return this.pos < this.b.length ? this.b[this.pos++] : EOF;
-    }
-    /**
-     * Return the byte address of the next byte to be read.
-     */
-    addr() {
-        return this.pos;
-    }
-    /**
-     * Reads a little-endian short (two-byte) integer.
-     *
-     * @param allowEofAfterFirstByte
-     * @returns the integer, or EOF on end of file.
-     */
-    readShort(allowEofAfterFirstByte) {
-        const low = this.read();
-        if (low === EOF) {
-            return EOF;
-        }
-        const high = this.read();
-        if (high === EOF) {
-            return allowEofAfterFirstByte ? low : EOF;
-        }
-        return low + high * 256;
-    }
-}
 /**
  *
  * @param out the enclosing element to add to.
  * @param text the text to add.
  * @param className the name of the class for the item.
  */
-function Basic_add(out, text, className) {
+function BasicRender_add(out, text, className) {
     const e = document.createElement("span");
     e.innerText = text;
     e.classList.add(className);
@@ -6724,188 +6898,17 @@ const STYLE = {
     // Empty style that's referenced above as $highlighted.
     },
 };
-const Basic_sheet = src_Jss.createStyleSheet(STYLE);
-const highlightClassName = Basic_sheet.classes.highlighted;
-const selectClassName = Basic_sheet.classes.selected;
-/**
- * Get the token for the byte value, or undefined if the value does
- * not map to a token.
- */
-function getToken(c) {
-    return c >= 128 && c < 128 + TOKENS.length ? TOKENS[c - 128] : undefined;
-}
-/**
- * Type of Basic element, for syntax highlighting.
- */
-var ElementType;
-(function (ElementType) {
-    ElementType[ElementType["ERROR"] = 0] = "ERROR";
-    ElementType[ElementType["LINE_NUMBER"] = 1] = "LINE_NUMBER";
-    ElementType[ElementType["PUNCTUATION"] = 2] = "PUNCTUATION";
-    ElementType[ElementType["KEYWORD"] = 3] = "KEYWORD";
-    ElementType[ElementType["REGULAR"] = 4] = "REGULAR";
-    ElementType[ElementType["STRING"] = 5] = "STRING";
-    ElementType[ElementType["COMMENT"] = 6] = "COMMENT";
-})(ElementType || (ElementType = {}));
-/**
- * Piece of a Basic program (token, character, line number).
- */
-class BasicElement {
-    constructor(offset, text, elementType) {
-        this.offset = offset;
-        this.text = text;
-        this.elementType = elementType;
-    }
-}
-/**
- * Decode a tokenized Basic program.
- * @param bytes tokenized program.
- * @return array of generated BasicElements, index by byte index.
- */
-function fromTokenized(bytes) {
-    const b = new ByteReader(bytes);
-    let state;
-    // Map from byte address to BasicElement for that byte.
-    const elements = [];
-    if (b.read() !== 0xD3 || b.read() !== 0xD3 || b.read() !== 0xD3) {
-        elements.push(new BasicElement(undefined, "Basic: missing magic -- not a BASIC file.", ElementType.ERROR));
-        return elements;
-    }
-    // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
-    b.read();
-    while (true) {
-        // Read the address of the next line. We ignore this (as does Basic when
-        // loading programs), only using it to detect end of program. (In the real
-        // Basic these are regenerated after loading.)
-        const address = b.readShort(true);
-        if (address === EOF) {
-            elements.push(new BasicElement(undefined, "[EOF in next line's address]", ElementType.ERROR));
-            break;
-        }
-        // Zero address indicates end of program.
-        if (address === 0) {
-            break;
-        }
-        // Read current line number.
-        const lineNumber = b.readShort(false);
-        if (lineNumber === EOF) {
-            elements.push(new BasicElement(undefined, "[EOF in line number]", ElementType.ERROR));
-            break;
-        }
-        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER));
-        elements.push(new BasicElement(b.addr() - 1, " ", ElementType.REGULAR));
-        // Read rest of line.
-        let c; // Uint8 value.
-        let ch; // String value.
-        let colonAddr = 0;
-        state = NORMAL;
-        while (true) {
-            c = b.read();
-            if (c === EOF || c === 0) {
-                break;
-            }
-            ch = String.fromCharCode(c);
-            // Detect the ":REM'" sequence (colon, REM, single quote), because
-            // that translates to a single quote. Must be a backward-compatible
-            // way to add a single quote as a comment.
-            if (ch === ":" && state === NORMAL) {
-                state = COLON;
-                colonAddr = b.addr() - 1;
-            }
-            else if (ch === ":" && state === COLON) {
-                elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
-                colonAddr = b.addr() - 1;
-            }
-            else if (c === REM && state === COLON) {
-                state = COLON_REM;
-                colonAddr = 0;
-            }
-            else if (c === REMQUOT && state === COLON_REM) {
-                elements.push(new BasicElement(b.addr() - 1, "'", ElementType.COMMENT));
-                state = RAW;
-            }
-            else if (c === ELSE && state === COLON) {
-                elements.push(new BasicElement(b.addr() - 1, "ELSE", ElementType.KEYWORD));
-                state = NORMAL;
-                colonAddr = 0;
-            }
-            else {
-                if (state === COLON || state === COLON_REM) {
-                    elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
-                    if (state === COLON_REM) {
-                        elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
-                        state = RAW;
-                    }
-                    else {
-                        state = NORMAL;
-                    }
-                    colonAddr = 0;
-                }
-                switch (state) {
-                    case NORMAL:
-                        const token = getToken(c);
-                        elements.push(token !== undefined
-                            ? new BasicElement(b.addr() - 1, token, c === DATA || c === REM ? ElementType.COMMENT
-                                : token.length === 1 ? ElementType.PUNCTUATION
-                                    : ElementType.KEYWORD)
-                            : new BasicElement(b.addr() - 1, ch, ch === '"' ? ElementType.STRING : ElementType.REGULAR));
-                        if (c === DATA || c === REM) {
-                            state = RAW;
-                        }
-                        else if (ch === '"') {
-                            state = STRING_LITERAL;
-                        }
-                        break;
-                    case STRING_LITERAL:
-                        var e;
-                        if (ch === "\r") {
-                            e = new BasicElement(b.addr() - 1, "\\n", ElementType.PUNCTUATION);
-                        }
-                        else if (ch === "\\") {
-                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
-                        }
-                        else if (c >= 32 && c < 128) {
-                            e = new BasicElement(b.addr() - 1, ch, ElementType.STRING);
-                        }
-                        else {
-                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
-                        }
-                        elements.push(e);
-                        if (ch === '"') {
-                            // End of string.
-                            state = NORMAL;
-                        }
-                        break;
-                    case RAW:
-                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.COMMENT));
-                        break;
-                }
-            }
-        }
-        if (c === EOF) {
-            elements.push(new BasicElement(undefined, "[EOF in line]", ElementType.ERROR));
-            break;
-        }
-        // Deal with eaten tokens.
-        if (state === COLON || state === COLON_REM) {
-            elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
-            if (state === COLON_REM) {
-                elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
-            }
-            /// state = NORMAL;
-            /// colonAddr = 0;
-        }
-    }
-    return elements;
-}
+const BasicRender_sheet = src_Jss.createStyleSheet(STYLE);
+const highlightClassName = BasicRender_sheet.classes.highlighted;
+const selectClassName = BasicRender_sheet.classes.selected;
 /**
  * Render an array of Basic elements to a DIV.
  *
  * @return array of the elements added, with the index being the offset into the original bytes array.
  */
 function toDiv(basicElements, out) {
-    Basic_sheet.attach();
-    const classes = Basic_sheet.classes;
+    BasicRender_sheet.attach();
+    const classes = BasicRender_sheet.classes;
     // Map from byte address to HTML element for that byte.
     const elements = [];
     let line = document.createElement("div");
@@ -6938,7 +6941,7 @@ function toDiv(basicElements, out) {
                 className = classes.comment;
                 break;
         }
-        const e = Basic_add(line, basicElement.text, className);
+        const e = BasicRender_add(line, basicElement.text, className);
         if (basicElement.offset !== undefined) {
             elements[basicElement.offset] = e;
         }
@@ -19894,6 +19897,7 @@ function decodeEdtasm(bytes, out) {
 }
 
 // CONCATENATED MODULE: ./src/TapeBrowser.ts
+
 
 
 
