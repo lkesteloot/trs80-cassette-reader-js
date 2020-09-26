@@ -6735,32 +6735,51 @@ function getToken(c) {
     return c >= 128 && c < 128 + TOKENS.length ? TOKENS[c - 128] : undefined;
 }
 /**
+ * Type of Basic element, for syntax highlighting.
+ */
+var ElementType;
+(function (ElementType) {
+    ElementType[ElementType["ERROR"] = 0] = "ERROR";
+    ElementType[ElementType["LINE_NUMBER"] = 1] = "LINE_NUMBER";
+    ElementType[ElementType["PUNCTUATION"] = 2] = "PUNCTUATION";
+    ElementType[ElementType["KEYWORD"] = 3] = "KEYWORD";
+    ElementType[ElementType["REGULAR"] = 4] = "REGULAR";
+    ElementType[ElementType["STRING"] = 5] = "STRING";
+    ElementType[ElementType["COMMENT"] = 6] = "COMMENT";
+})(ElementType || (ElementType = {}));
+/**
+ * Piece of a Basic program (token, character, line number).
+ */
+class BasicElement {
+    constructor(offset, text, elementType) {
+        this.offset = offset;
+        this.text = text;
+        this.elementType = elementType;
+    }
+}
+/**
  * Decode a tokenized Basic program.
  * @param bytes tokenized program.
- * @param out div to write result into.
- * @return array of generated HTML elements, index by byte index.
+ * @return array of generated BasicElements, index by byte index.
  */
-function fromTokenized(bytes, out) {
-    Basic_sheet.attach();
-    const classes = Basic_sheet.classes;
+function fromTokenized(bytes) {
     const b = new ByteReader(bytes);
     let state;
-    // Map from byte address to HTML element for that byte.
+    // Map from byte address to BasicElement for that byte.
     const elements = [];
     if (b.read() !== 0xD3 || b.read() !== 0xD3 || b.read() !== 0xD3) {
-        Basic_add(out, "Basic: missing magic -- not a BASIC file.", classes.error);
+        elements.push(new BasicElement(undefined, "Basic: missing magic -- not a BASIC file.", ElementType.ERROR));
         return elements;
     }
     // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
     b.read();
     while (true) {
-        const line = document.createElement("div");
         // Read the address of the next line. We ignore this (as does Basic when
         // loading programs), only using it to detect end of program. (In the real
         // Basic these are regenerated after loading.)
         const address = b.readShort(true);
         if (address === EOF) {
-            Basic_add(line, "[EOF in next line's address]", classes.error);
+            elements.push(new BasicElement(undefined, "[EOF in next line's address]", ElementType.ERROR));
             break;
         }
         // Zero address indicates end of program.
@@ -6770,13 +6789,11 @@ function fromTokenized(bytes, out) {
         // Read current line number.
         const lineNumber = b.readShort(false);
         if (lineNumber === EOF) {
-            Basic_add(line, "[EOF in line number]", classes.error);
+            elements.push(new BasicElement(undefined, "[EOF in line number]", ElementType.ERROR));
             break;
         }
-        let e = Basic_add(line, lineNumber.toString(), classes.lineNumber);
-        elements[b.addr() - 2] = e;
-        e = Basic_add(line, " ", classes.regular);
-        elements[b.addr() - 1] = e;
+        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER));
+        elements.push(new BasicElement(b.addr() - 1, " ", ElementType.REGULAR));
         // Read rest of line.
         let c; // Uint8 value.
         let ch; // String value.
@@ -6796,8 +6813,7 @@ function fromTokenized(bytes, out) {
                 colonAddr = b.addr() - 1;
             }
             else if (ch === ":" && state === COLON) {
-                e = Basic_add(line, ":", classes.punctuation);
-                elements[colonAddr] = e;
+                elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
                 colonAddr = b.addr() - 1;
             }
             else if (c === REM && state === COLON) {
@@ -6805,23 +6821,19 @@ function fromTokenized(bytes, out) {
                 colonAddr = 0;
             }
             else if (c === REMQUOT && state === COLON_REM) {
-                e = Basic_add(line, "'", classes.comment);
-                elements[b.addr() - 1] = e;
+                elements.push(new BasicElement(b.addr() - 1, "'", ElementType.COMMENT));
                 state = RAW;
             }
             else if (c === ELSE && state === COLON) {
-                e = Basic_add(line, "ELSE", classes.keyword);
-                elements[b.addr() - 1] = e;
+                elements.push(new BasicElement(b.addr() - 1, "ELSE", ElementType.KEYWORD));
                 state = NORMAL;
                 colonAddr = 0;
             }
             else {
                 if (state === COLON || state === COLON_REM) {
-                    e = Basic_add(line, ":", classes.punctuation);
-                    elements[colonAddr] = e;
+                    elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
                     if (state === COLON_REM) {
-                        e = Basic_add(line, "REM", classes.comment);
-                        elements[b.addr() - 1] = e;
+                        elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
                         state = RAW;
                     }
                     else {
@@ -6832,15 +6844,11 @@ function fromTokenized(bytes, out) {
                 switch (state) {
                     case NORMAL:
                         const token = getToken(c);
-                        if (token !== undefined) {
-                            e = Basic_add(line, token, c === DATA || c === REM ? classes.comment
-                                : token.length === 1 ? classes.punctuation
-                                    : classes.keyword);
-                        }
-                        else {
-                            e = Basic_add(line, ch, ch === '"' ? classes.string : classes.regular);
-                        }
-                        elements[b.addr() - 1] = e;
+                        elements.push(token !== undefined
+                            ? new BasicElement(b.addr() - 1, token, c === DATA || c === REM ? ElementType.COMMENT
+                                : token.length === 1 ? ElementType.PUNCTUATION
+                                    : ElementType.KEYWORD)
+                            : new BasicElement(b.addr() - 1, ch, ch === '"' ? ElementType.STRING : ElementType.REGULAR));
                         if (c === DATA || c === REM) {
                             state = RAW;
                         }
@@ -6849,48 +6857,91 @@ function fromTokenized(bytes, out) {
                         }
                         break;
                     case STRING_LITERAL:
+                        var e;
                         if (ch === "\r") {
-                            e = Basic_add(line, "\\n", classes.punctuation);
+                            e = new BasicElement(b.addr() - 1, "\\n", ElementType.PUNCTUATION);
                         }
                         else if (ch === "\\") {
-                            e = Basic_add(line, "\\" + pad(c, 8, 3), classes.punctuation);
+                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
                         }
                         else if (c >= 32 && c < 128) {
-                            e = Basic_add(line, ch, classes.string);
+                            e = new BasicElement(b.addr() - 1, ch, ElementType.STRING);
                         }
                         else {
-                            e = Basic_add(line, "\\" + pad(c, 8, 3), classes.punctuation);
+                            e = new BasicElement(b.addr() - 1, "\\" + pad(c, 8, 3), ElementType.PUNCTUATION);
                         }
-                        elements[b.addr() - 1] = e;
+                        elements.push(e);
                         if (ch === '"') {
                             // End of string.
                             state = NORMAL;
                         }
                         break;
                     case RAW:
-                        e = Basic_add(line, ch, classes.comment);
-                        elements[b.addr() - 1] = e;
+                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.COMMENT));
                         break;
                 }
             }
         }
         if (c === EOF) {
-            Basic_add(line, "[EOF in line]", classes.error);
+            elements.push(new BasicElement(undefined, "[EOF in line]", ElementType.ERROR));
             break;
         }
         // Deal with eaten tokens.
         if (state === COLON || state === COLON_REM) {
-            e = Basic_add(line, ":", classes.punctuation);
-            elements[colonAddr] = e;
+            elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
             if (state === COLON_REM) {
-                e = Basic_add(line, "REM", classes.comment);
-                elements[b.addr() - 1] = e;
+                elements.push(new BasicElement(b.addr() - 1, "REM", ElementType.COMMENT));
             }
             /// state = NORMAL;
             /// colonAddr = 0;
         }
-        // Append last line.
-        out.appendChild(line);
+    }
+    return elements;
+}
+/**
+ * Render an array of Basic elements to a DIV.
+ *
+ * @return array of the elements added, with the index being the offset into the original bytes array.
+ */
+function toDiv(basicElements, out) {
+    Basic_sheet.attach();
+    const classes = Basic_sheet.classes;
+    // Map from byte address to HTML element for that byte.
+    const elements = [];
+    let line = document.createElement("div");
+    out.appendChild(line);
+    for (const basicElement of basicElements) {
+        let className;
+        switch (basicElement.elementType) {
+            case ElementType.ERROR:
+                className = classes.error;
+                break;
+            case ElementType.LINE_NUMBER:
+                className = classes.lineNumber;
+                line = document.createElement("div");
+                out.appendChild(line);
+                break;
+            case ElementType.PUNCTUATION:
+                className = classes.punctuation;
+                break;
+            case ElementType.KEYWORD:
+                className = classes.keyword;
+                break;
+            case ElementType.REGULAR:
+            default:
+                className = classes.regular;
+                break;
+            case ElementType.STRING:
+                className = classes.string;
+                break;
+            case ElementType.COMMENT:
+                className = classes.comment;
+                break;
+        }
+        const e = Basic_add(line, basicElement.text, className);
+        if (basicElement.offset !== undefined) {
+            elements[basicElement.offset] = e;
+        }
     }
     return elements;
 }
@@ -20340,7 +20391,7 @@ class TapeBrowser_TapeBrowser {
     makeBasicPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
-        const elements = fromTokenized(program.binary, div);
+        const elements = toDiv(fromTokenized(program.binary), div);
         const highlighter = new TapeBrowser_Highlighter(this, program, div);
         elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         this.onHighlight.subscribe(highlight => {
