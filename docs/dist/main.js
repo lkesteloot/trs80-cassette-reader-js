@@ -1807,6 +1807,16 @@ class Program_Program {
             this.binary[12] === 0x20;
     }
     /**
+     * Whether this is a program that can be loaded with the SYSTEM command.
+     *
+     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
+     */
+    isSystemProgram() {
+        return this.binary != null &&
+            this.binary.length >= 1 &&
+            this.binary[0] === 0x55;
+    }
+    /**
      * Whether these two programs have the same binaries.
      */
     sameBinaryAs(other) {
@@ -20570,6 +20580,8 @@ class TapeBrowser_TapeBrowser {
             addPane("Reconstructed", this.makeReconstructedPane(program));
             if (basicPane !== undefined) {
                 addPane("Basic", basicPane);
+            }
+            if (basicPane !== undefined || program.isSystemProgram()) {
                 addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
                 addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new ReconstructedCassette(program, this.tape.sampleRate)));
             }
