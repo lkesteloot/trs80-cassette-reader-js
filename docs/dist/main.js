@@ -1820,6 +1820,19 @@ class Program_Program {
         }
         return true;
     }
+    /**
+     * Return a .cas file version of the binary.
+     *
+     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
+     */
+    asCasFile() {
+        // 256 zero bytes, 0xA5 byte, binary contents, then two zero bytes.
+        const cas = new Uint8Array(this.binary.length + 256 + 1 + 2);
+        // Don't need to explicitly fill in the zeros.
+        cas[256] = 0xA5;
+        cas.set(this.binary, 257);
+        return cas;
+    }
 }
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
@@ -20714,7 +20727,73 @@ function readWavFile(arrayBuffer) {
     return new AudioFile(rate, samples);
 }
 
+// CONCATENATED MODULE: ./src/LowSpeedTapeEncoder.ts
+
+/**
+ * Generate one cycle of a sine wave.
+ * @param length number of samples in the full cycle.
+ * @return audio samples for one cycle.
+ */
+function LowSpeedTapeEncoder_generateCycle(length) {
+    const audio = new Int16Array(length);
+    for (let i = 0; i < length; i++) {
+        const t = 2 * Math.PI * i / length;
+        // -0.5 to 0.5, matches recorded audio.
+        audio[i] = Math.sin(t) * 16384;
+    }
+    return audio;
+}
+/**
+ * Adds the byte "b" to the samples list, most significant bit first.
+ * @param samplesList list of samples we're adding to.
+ * @param b byte to generate.
+ * @param cycle samples for a cycle.
+ * @param silence samples for silence.
+ */
+function LowSpeedTapeEncoder_addByte(samplesList, b, cycle, silence) {
+    // MSb first.
+    for (let i = 7; i >= 0; i--) {
+        if ((b & (1 << i)) != 0) {
+            // One.
+            samplesList.push(cycle);
+            samplesList.push(cycle);
+        }
+        else {
+            // Zero.
+            samplesList.push(silence);
+            samplesList.push(cycle);
+        }
+    }
+}
+/**
+ * Encode the sequence of bytes as an array of audio samples for low-speed (500 baud) cassettes.
+ * @param bytes cas-style array of bytes, including 256 zero bytes, sync bytes, and trailing zero bytes.
+ * @param sampleRate number of samples per second in the generated audio.
+ */
+function encodeLowSpeed(bytes, sampleRate) {
+    // Length of one cycle, in samples. They're all 1ms.
+    const CYCLE_LENGTH = Math.round(0.001 * sampleRate);
+    // Samples representing one cycle.
+    const cycle = LowSpeedTapeEncoder_generateCycle(CYCLE_LENGTH);
+    // Samples representing 1ms of silence.
+    const silence = new Int16Array(CYCLE_LENGTH);
+    // List of samples.
+    const samplesList = [];
+    // Start with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    for (let i = 0; i < bytes.length; i++) {
+        LowSpeedTapeEncoder_addByte(samplesList, bytes[i], cycle, silence);
+    }
+    // End with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    // Concatenate all samples.
+    return concatAudio(samplesList);
+}
+
 // CONCATENATED MODULE: ./src/Uploader.ts
+// Handles uploading WAV files and decoding them.
+
+
 
 class Uploader_Uploader {
     /**
@@ -20786,7 +20865,10 @@ class Uploader_Uploader {
         this.progressBar.max = event.total;
     }
     handleArrayBuffer(pathname, arrayBuffer) {
-        const audioFile = readWavFile(arrayBuffer);
+        const rate = 44100;
+        const audioFile = pathname.toLowerCase().endsWith(".cas")
+            ? new AudioFile(rate, encodeLowSpeed(new Uint8Array(arrayBuffer), rate))
+            : readWavFile(arrayBuffer);
         this.handleAudioBuffer(pathname, audioFile);
     }
     dropHandler(ev) {
