@@ -2057,12 +2057,32 @@ var Flag;
 
 
 
+// CONCATENATED MODULE: ./src/WaveformAnnotation.ts
+/**
+ * Information about one particular section of the waveform.
+ */
+class WaveformAnnotation {
+    /**
+     * Create an object representing a section to annotate.
+     *
+     * @param text any text to display for that section.
+     * @param firstIndex the first index into the binary, inclusive.
+     * @param lastIndex the last index into the binary, inclusive.
+     */
+    constructor(text, firstIndex, lastIndex) {
+        this.text = text;
+        this.firstIndex = firstIndex;
+        this.lastIndex = lastIndex;
+    }
+}
+
 // CONCATENATED MODULE: ./src/SystemProgram.ts
 /**
  * Tools for dealing with SYSTEM (machine language) programs.
  *
  * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
  */
+
 
 
 const FILE_HEADER = 0x55;
@@ -2096,7 +2116,9 @@ class SystemProgram_SystemProgram {
         this.filename = "";
         this.chunks = [];
         this.entryPointAddress = 0;
+        this.annotations = [];
         const b = new ByteReader(binary);
+        this.annotations.push(new WaveformAnnotation("File\nHead", b.addr(), b.addr()));
         const headerByte = b.read();
         if (headerByte === EOF) {
             this.error = "File is empty";
@@ -2113,7 +2135,9 @@ class SystemProgram_SystemProgram {
             return;
         }
         this.filename = this.filename.trim();
+        this.annotations.push(new WaveformAnnotation("Filename\n\"" + this.filename + "\"", b.addr() - FILENAME_LENGTH, b.addr() - 1));
         while (true) {
+            this.annotations.push(new WaveformAnnotation("Data\nHead", b.addr(), b.addr()));
             const marker = b.read();
             if (marker === EOF) {
                 this.error = "File is truncated at start of block";
@@ -2135,11 +2159,13 @@ class SystemProgram_SystemProgram {
             if (length === 0) {
                 length = 256;
             }
+            this.annotations.push(new WaveformAnnotation("Length\n" + length, b.addr() - 1, b.addr() - 1));
             const loadAddress = b.readShort(false);
             if (loadAddress === EOF) {
                 this.error = "File is truncated at load address";
                 return;
             }
+            this.annotations.push(new WaveformAnnotation("Address\n" + toHexWord(loadAddress), b.addr() - 2, b.addr() - 1));
             const data = b.readBytes(length);
             if (data.length < length) {
                 this.error = "File is truncated at data";
@@ -2150,6 +2176,7 @@ class SystemProgram_SystemProgram {
                 this.error = "File is truncated at checksum";
                 return;
             }
+            this.annotations.push(new WaveformAnnotation("XSum\n0x" + toHexByte(checksum), b.addr() - 1, b.addr() - 1));
             this.chunks.push(new SystemChunk(loadAddress, data, checksum));
         }
         this.entryPointAddress = b.readShort(false);
@@ -2158,6 +2185,7 @@ class SystemProgram_SystemProgram {
             this.entryPointAddress = 0;
             return;
         }
+        this.annotations.push(new WaveformAnnotation("Run\n" + toHexWord(this.entryPointAddress), b.addr() - 2, b.addr() - 1));
     }
     /**
      * Convert an address in memory to the original byte offset in the binary. Returns undefined if
@@ -7849,6 +7877,7 @@ class Disasm_Disasm {
 
 
 
+
 /**
  * Add text to the line with the specified class.
  *
@@ -7935,6 +7964,8 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     const classes = SystemProgramRender_sheet.classes;
     // Every element we render that maps to a byte in the program.
     const elements = [];
+    // Waveform annotations.
+    const annotations = [];
     if (systemProgram.error !== undefined) {
         const line = document.createElement("div");
         out.appendChild(line);
@@ -7973,10 +8004,12 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         SystemProgramRender_add(line, instruction.toText(), classes.opcodes);
         const byteOffset = systemProgram.addressToByteOffset(instruction.address);
         if (byteOffset !== undefined) {
-            elements.push(new Highlightable(byteOffset, byteOffset + instruction.bin.length - 1, line));
+            let lastIndex = byteOffset + instruction.bin.length - 1;
+            elements.push(new Highlightable(byteOffset, lastIndex, line));
+            annotations.push(new WaveformAnnotation(instruction.toText(), byteOffset, lastIndex));
         }
     }
-    return elements;
+    return [elements, annotations];
 }
 
 // CONCATENATED MODULE: ./src/Hexdump.ts
@@ -20279,6 +20312,7 @@ class ProgressBar {
 
 
 
+
 /**
  * An individual waveform to be displayed.
  */
@@ -20625,19 +20659,47 @@ class WaveformDisplay_WaveformDisplay {
                 }
             }
             else if (this.zoom < 5) {
-                // Highlight bytes.
-                for (const byteInfo of program.byteData) {
-                    if (byteInfo.endFrame >= firstOrigSample && byteInfo.startFrame <= lastOrigSample) {
-                        const x1 = frameToX(byteInfo.startFrame / mag);
-                        const x2 = frameToX(byteInfo.endFrame / mag);
-                        let byteValue = byteInfo.value;
-                        const basicToken = getToken(byteValue);
-                        const label = byteValue < 32 ? "^" + String.fromCodePoint(byteValue + 64)
-                            : byteValue === 32 ? '\u2423' // Open box to represent space.
-                                : byteValue < 128 ? String.fromCodePoint(byteValue)
-                                    : program.isBasicProgram() && basicToken !== undefined ? basicToken
-                                        : "0x" + byteValue.toString(16).padStart(2, "0").toUpperCase();
-                        this.drawBraceAndLabel(ctx, x1, x2, braceColor, label, labelColor);
+                // Highlight annotations, if we have them.
+                if (program.annotations !== undefined) {
+                    for (const annotation of program.annotations) {
+                        let startFrame = undefined;
+                        let endFrame = undefined;
+                        for (let i = annotation.firstIndex; i <= annotation.lastIndex; i++) {
+                            const byteInfo = program.byteData[i];
+                            if (byteInfo !== undefined) {
+                                if (startFrame === undefined || endFrame === undefined) {
+                                    startFrame = byteInfo.startFrame;
+                                    endFrame = byteInfo.endFrame;
+                                }
+                                else {
+                                    startFrame = Math.min(startFrame, byteInfo.startFrame);
+                                    endFrame = Math.max(endFrame, byteInfo.endFrame);
+                                }
+                            }
+                        }
+                        if (endFrame !== undefined && startFrame !== undefined &&
+                            endFrame >= firstOrigSample && startFrame <= lastOrigSample) {
+                            const x1 = frameToX(startFrame / mag);
+                            const x2 = frameToX(endFrame / mag);
+                            this.drawBraceAndLabel(ctx, x1, x2, braceColor, annotation.text, labelColor);
+                        }
+                    }
+                }
+                else {
+                    // Highlight bytes.
+                    for (const byteInfo of program.byteData) {
+                        if (byteInfo.endFrame >= firstOrigSample && byteInfo.startFrame <= lastOrigSample) {
+                            const x1 = frameToX(byteInfo.startFrame / mag);
+                            const x2 = frameToX(byteInfo.endFrame / mag);
+                            let byteValue = byteInfo.value;
+                            const basicToken = getToken(byteValue);
+                            const label = byteValue < 32 ? "^" + String.fromCodePoint(byteValue + 64)
+                                : byteValue === 32 ? '\u2423' // Open box to represent space.
+                                    : byteValue < 128 ? String.fromCodePoint(byteValue)
+                                        : program.isBasicProgram() && basicToken !== undefined ? basicToken
+                                            : toHexByte(byteValue);
+                            this.drawBraceAndLabel(ctx, x1, x2, braceColor, label, labelColor);
+                        }
                     }
                 }
             }
@@ -20732,13 +20794,19 @@ class WaveformDisplay_WaveformDisplay {
      */
     drawBraceAndLabel(ctx, left, right, braceColor, label, labelColor) {
         const middle = (left + right) / 2;
-        // Don't use a custom font here, they load asynchronously and we're not told when they
-        // finish loading, so we can't redraw and the initial draw uses some default serif font.
-        ctx.font = '10pt monospace';
-        ctx.fillStyle = labelColor;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        ctx.fillText(label, middle, 38);
+        const ledding = 16;
+        // Don't have more than two lines, there's no space for it.
+        const lines = label.split("\n");
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            // Don't use a custom font here, they load asynchronously and we're not told when they
+            // finish loading, so we can't redraw and the initial draw uses some default serif font.
+            ctx.font = '10pt monospace';
+            ctx.fillStyle = labelColor;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillText(line, middle, 38 - (lines.length - i - 1) * ledding);
+        }
         ctx.strokeStyle = braceColor;
         ctx.lineWidth = 1;
         this.drawBrace(ctx, left, middle, right, 40, 380);
@@ -21315,9 +21383,13 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         const systemProgram = new SystemProgram_SystemProgram(program.binary);
-        const highlightables = SystemProgramRender_toDiv(systemProgram, div);
+        const [highlightables, annotations] = SystemProgramRender_toDiv(systemProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
         highlighter.addHighlightables(highlightables);
+        if (program.annotations === undefined) {
+            program.annotations = [];
+        }
+        program.annotations.push(...systemProgram.annotations, ...annotations);
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, SystemProgramRender_highlightClassName);
         });
