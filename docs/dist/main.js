@@ -2159,6 +2159,22 @@ class SystemProgram_SystemProgram {
             return;
         }
     }
+    /**
+     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
+     * not found in any chunk.
+     */
+    addressToByteOffset(address) {
+        // Skip file header and block header.
+        let offset = 1 + FILENAME_LENGTH + 4;
+        for (const chunk of this.chunks) {
+            if (address >= chunk.loadAddress && address < chunk.loadAddress + chunk.data.length) {
+                return offset + (address - chunk.loadAddress);
+            }
+            // Skip checksum and block header of the next block.
+            offset += chunk.data.length + 5;
+        }
+        return undefined;
+    }
 }
 
 // CONCATENATED MODULE: ./src/Program.ts
@@ -7680,58 +7696,57 @@ const SystemProgramRender_BACKGROUND_COLOR = "var(--background)";
 const SystemProgramRender_STYLE = {
     error: {
         color: "var(--red)",
-        "&$highlighted": {
-            backgroundColor: "var(--red)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     address: {
         color: "var(--foreground-secondary)",
-        "&$highlighted": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     hex: {
         color: "var(--blue)",
-        "&$highlighted": {
-            backgroundColor: "var(--blue)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     opcodes: {
         color: "var(--cyan)",
-        "&$highlighted": {
-            backgroundColor: "var(--cyan)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     label: {
         color: "var(--orange)",
-        "&$highlighted": {
-            backgroundColor: "var(--orange)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     space: {
-        color: "var(--foregroun)",
-        "&$highlighted": {
-            backgroundColor: "var(--foreground)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
+        color: "var(--foreground-secondary)",
     },
     punctuation: {
         color: "var(--foreground-secondary)",
-        "&$highlighted": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
     },
     selected: {
         backgroundColor: "var(--background-highlights)",
     },
     highlighted: {
-    // Empty style that's referenced above as $highlighted.
+        "& $hex": {
+            backgroundColor: "var(--blue)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $punctuation": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $space": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $label": {
+            backgroundColor: "var(--orange)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $opcodes": {
+            backgroundColor: "var(--cyan)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $address": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $error": {
+            backgroundColor: "var(--red)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
     },
 };
 const SystemProgramRender_sheet = src_Jss.createStyleSheet(SystemProgramRender_STYLE);
@@ -7780,11 +7795,13 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         out.appendChild(line);
         SystemProgramRender_add(line, toHexWord(instruction.address), classes.address);
         SystemProgramRender_add(line, "  ", classes.space);
-        const e = SystemProgramRender_add(line, instruction.binText(), classes.hex);
+        SystemProgramRender_add(line, instruction.binText(), classes.hex);
         SystemProgramRender_add(line, "".padEnd(12 - instruction.binText().length + 8), classes.space);
         SystemProgramRender_add(line, instruction.toText(), classes.opcodes);
-        // We don't have index in original array. Not remotely.
-        //        elements[instruction.] = e;
+        const byteOffset = systemProgram.addressToByteOffset(instruction.address);
+        if (byteOffset !== undefined) {
+            elements[byteOffset] = line;
+        }
     }
     return elements;
 }
