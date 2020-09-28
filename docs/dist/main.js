@@ -7719,6 +7719,7 @@ const SystemProgramRender_STYLE = {
         backgroundColor: "var(--background-highlights)",
     },
     highlighted: {
+        backgroundColor: "var(--foreground-secondary)",
         "& $hex": {
             backgroundColor: "var(--blue)",
             color: SystemProgramRender_BACKGROUND_COLOR,
@@ -20753,132 +20754,12 @@ function decodeEdtasm(bytes, out) {
     }
 }
 
-// CONCATENATED MODULE: ./src/TapeBrowser.ts
+// CONCATENATED MODULE: ./src/Highlighter.ts
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Generic cassette that reads from a Int16Array.
- */
-class TapeBrowser_Int16Cassette extends Cassette {
-    constructor(samples, sampleRate) {
-        super();
-        this.frame = 0;
-        this.motorOn = false;
-        this.rewinding = false;
-        this.samples = samples;
-        this.samplesPerSecond = sampleRate;
-    }
-    rewind() {
-        if (this.progressBar === undefined) {
-            this.frame = 0;
-        }
-        else {
-            this.rewinding = true;
-            this.updateProgressBarVisibility();
-            const updateRewind = () => {
-                var _a;
-                if (this.frame > 0) {
-                    this.frame = Math.max(0, Math.round(this.frame - this.samples.length / 30));
-                    (_a = this.progressBar) === null || _a === void 0 ? void 0 : _a.setValue(this.frame);
-                    window.requestAnimationFrame(updateRewind);
-                }
-                else {
-                    this.rewinding = false;
-                    this.updateProgressBarVisibility();
-                }
-            };
-            // Wait for progress bar to become visible.
-            setTimeout(updateRewind, 150);
-        }
-    }
-    setProgressBar(progressBar) {
-        this.progressBar = progressBar;
-        this.progressBar.setMaxValue(this.samples.length);
-    }
-    onMotorStart() {
-        this.motorOn = true;
-        this.updateProgressBarVisibility();
-    }
-    readSample() {
-        if (this.rewinding) {
-            // Can't read while rewinding.
-            return 0;
-        }
-        else {
-            if (this.frame % this.samplesPerSecond === 0) {
-                console.log("Reading tape at " + frameToTimestamp(this.frame, this.samplesPerSecond));
-            }
-            if (this.progressBar !== undefined &&
-                (this.frame % Math.floor(this.samplesPerSecond / 10) === 0 ||
-                    this.frame == this.samples.length - 1)) {
-                this.progressBar.setValue(this.frame);
-            }
-            return this.frame < this.samples.length ? this.samples[this.frame++] / 32768 : 0;
-        }
-    }
-    onMotorStop() {
-        this.motorOn = false;
-        this.updateProgressBarVisibility();
-    }
-    updateProgressBarVisibility() {
-        if (this.progressBar !== undefined) {
-            if (this.motorOn || this.rewinding) {
-                this.progressBar.show();
-            }
-            else {
-                this.progressBar.hide();
-            }
-        }
-    }
-}
-/**
- * Implementation of Cassette that reads from our displayed data.
- */
-class TapeCassette extends TapeBrowser_Int16Cassette {
-    constructor(tape, program) {
-        const samples = tape.originalSamples.samplesList[0];
-        // Start one second before the official program start, so that the machine
-        // can detect the header.
-        const begin = Math.max(0, program.startFrame - tape.sampleRate);
-        // Go until one second after the detected end of our program.
-        const end = Math.min(samples.length, program.endFrame + tape.sampleRate);
-        super(samples.subarray(begin, end), tape.sampleRate);
-    }
-}
-/**
- * Implementation of Cassette that reads from our high-speed reconstruction.
- */
-class ReconstructedCassette extends TapeBrowser_Int16Cassette {
-    constructor(program, sampleRate) {
-        super(program.reconstructedSamples.samplesList[0], sampleRate);
-    }
-}
-/**
- * Class that keeps track of various information about a pane.
- */
-class Pane {
-    constructor(element) {
-        this.element = element;
-    }
-}
 /**
  * Helper class to highlight or select elements.
  */
-class TapeBrowser_Highlighter {
+class Highlighter_Highlighter {
     constructor(tapeBrowser, program, container) {
         /**
          * All elements, index by the byte index.
@@ -20996,6 +20877,126 @@ class TapeBrowser_Highlighter {
             });
             this.scrollToElement = undefined;
         }
+    }
+}
+
+// CONCATENATED MODULE: ./src/TapeBrowser.ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Generic cassette that reads from a Int16Array.
+ */
+class TapeBrowser_Int16Cassette extends Cassette {
+    constructor(samples, sampleRate) {
+        super();
+        this.frame = 0;
+        this.motorOn = false;
+        this.rewinding = false;
+        this.samples = samples;
+        this.samplesPerSecond = sampleRate;
+    }
+    rewind() {
+        if (this.progressBar === undefined) {
+            this.frame = 0;
+        }
+        else {
+            this.rewinding = true;
+            this.updateProgressBarVisibility();
+            const updateRewind = () => {
+                var _a;
+                if (this.frame > 0) {
+                    this.frame = Math.max(0, Math.round(this.frame - this.samples.length / 30));
+                    (_a = this.progressBar) === null || _a === void 0 ? void 0 : _a.setValue(this.frame);
+                    window.requestAnimationFrame(updateRewind);
+                }
+                else {
+                    this.rewinding = false;
+                    this.updateProgressBarVisibility();
+                }
+            };
+            // Wait for progress bar to become visible.
+            setTimeout(updateRewind, 150);
+        }
+    }
+    setProgressBar(progressBar) {
+        this.progressBar = progressBar;
+        this.progressBar.setMaxValue(this.samples.length);
+    }
+    onMotorStart() {
+        this.motorOn = true;
+        this.updateProgressBarVisibility();
+    }
+    readSample() {
+        if (this.rewinding) {
+            // Can't read while rewinding.
+            return 0;
+        }
+        else {
+            if (this.frame % this.samplesPerSecond === 0) {
+                console.log("Reading tape at " + frameToTimestamp(this.frame, this.samplesPerSecond));
+            }
+            if (this.progressBar !== undefined &&
+                (this.frame % Math.floor(this.samplesPerSecond / 10) === 0 ||
+                    this.frame == this.samples.length - 1)) {
+                this.progressBar.setValue(this.frame);
+            }
+            return this.frame < this.samples.length ? this.samples[this.frame++] / 32768 : 0;
+        }
+    }
+    onMotorStop() {
+        this.motorOn = false;
+        this.updateProgressBarVisibility();
+    }
+    updateProgressBarVisibility() {
+        if (this.progressBar !== undefined) {
+            if (this.motorOn || this.rewinding) {
+                this.progressBar.show();
+            }
+            else {
+                this.progressBar.hide();
+            }
+        }
+    }
+}
+/**
+ * Implementation of Cassette that reads from our displayed data.
+ */
+class TapeCassette extends TapeBrowser_Int16Cassette {
+    constructor(tape, program) {
+        const samples = tape.originalSamples.samplesList[0];
+        // Start one second before the official program start, so that the machine
+        // can detect the header.
+        const begin = Math.max(0, program.startFrame - tape.sampleRate);
+        // Go until one second after the detected end of our program.
+        const end = Math.min(samples.length, program.endFrame + tape.sampleRate);
+        super(samples.subarray(begin, end), tape.sampleRate);
+    }
+}
+/**
+ * Implementation of Cassette that reads from our high-speed reconstruction.
+ */
+class ReconstructedCassette extends TapeBrowser_Int16Cassette {
+    constructor(program, sampleRate) {
+        super(program.reconstructedSamples.samplesList[0], sampleRate);
+    }
+}
+/**
+ * Class that keeps track of various information about a pane.
+ */
+class Pane {
+    constructor(element) {
+        this.element = element;
     }
 }
 /**
@@ -21214,8 +21215,8 @@ class TapeBrowser_TapeBrowser {
     makeBinaryPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
-        const hexHighlighter = new TapeBrowser_Highlighter(this, program, div);
-        const asciiHighlighter = new TapeBrowser_Highlighter(this, program, div);
+        const hexHighlighter = new Highlighter_Highlighter(this, program, div);
+        const asciiHighlighter = new Highlighter_Highlighter(this, program, div);
         const [hexElements, asciiElements] = Hexdump_create(program.binary, div);
         hexElements.forEach((e, byteIndex) => hexHighlighter.addElement(byteIndex, e));
         asciiElements.forEach((e, byteIndex) => asciiHighlighter.addElement(byteIndex, e));
@@ -21258,7 +21259,7 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         const elements = toDiv(fromTokenized(program.binary), div);
-        const highlighter = new TapeBrowser_Highlighter(this, program, div);
+        const highlighter = new Highlighter_Highlighter(this, program, div);
         elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, highlightClassName);
@@ -21282,7 +21283,7 @@ class TapeBrowser_TapeBrowser {
         div.classList.add("program");
         const systemProgram = new SystemProgram_SystemProgram(program.binary);
         const elements = SystemProgramRender_toDiv(systemProgram, div);
-        const highlighter = new TapeBrowser_Highlighter(this, program, div);
+        const highlighter = new Highlighter_Highlighter(this, program, div);
         elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, SystemProgramRender_highlightClassName);
@@ -21308,7 +21309,7 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         const [name, elements] = decodeEdtasm(program.binary, div);
-        const highlighter = new TapeBrowser_Highlighter(this, program, div);
+        const highlighter = new Highlighter_Highlighter(this, program, div);
         elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, Edtasm_highlightClassName);
