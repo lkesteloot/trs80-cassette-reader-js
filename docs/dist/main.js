@@ -8006,7 +8006,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         if (byteOffset !== undefined) {
             let lastIndex = byteOffset + instruction.bin.length - 1;
             elements.push(new Highlightable(byteOffset, lastIndex, line));
-            annotations.push(new WaveformAnnotation(instruction.toText(), byteOffset, lastIndex));
+            annotations.push(new WaveformAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
         }
     }
     return [elements, annotations];
