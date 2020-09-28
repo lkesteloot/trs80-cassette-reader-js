@@ -2737,6 +2737,8 @@ var ElementType;
  */
 class BasicElement {
     constructor(offset, text, elementType) {
+        // Length of section in "bytes" array.
+        this.length = 1;
         this.offset = offset;
         this.text = text;
         this.elementType = elementType;
@@ -2777,8 +2779,10 @@ function fromTokenized(bytes) {
             elements.push(new BasicElement(undefined, "[EOF in line number]", ElementType.ERROR));
             break;
         }
-        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER));
-        elements.push(new BasicElement(b.addr() - 1, " ", ElementType.REGULAR));
+        let lineNumberElement = new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER);
+        lineNumberElement.length = 2;
+        elements.push(lineNumberElement);
+        elements.push(new BasicElement(undefined, " ", ElementType.REGULAR));
         // Read rest of line.
         let c; // Uint8 value.
         let ch; // String value.
@@ -7291,7 +7295,176 @@ var jss_preset_default_esm_index = (function (options) {
 jss_esm.setup(jss_preset_default_esm());
 /* harmony default export */ var src_Jss = (jss_esm);
 
+// CONCATENATED MODULE: ./src/Highlight.ts
+/**
+ * Current selection or highlight.
+ */
+class Highlight {
+    constructor(program, firstIndex, lastIndex) {
+        this.program = program;
+        // Default to one byte.
+        lastIndex = (lastIndex !== null && lastIndex !== void 0 ? lastIndex : firstIndex);
+        // Re-order so that begin <= end.
+        this.firstIndex = Math.min(firstIndex, lastIndex);
+        this.lastIndex = Math.max(firstIndex, lastIndex);
+    }
+}
+
+// CONCATENATED MODULE: ./src/Highlighter.ts
+
+/**
+ * Represents an item that's highlightable and maps to a part of the program's binary.
+ */
+class Highlightable {
+    constructor(firstIndex, lastIndex, element) {
+        this.firstIndex = firstIndex;
+        this.lastIndex = lastIndex;
+        this.element = element;
+    }
+}
+/**
+ * Helper class to highlight or select elements.
+ */
+class Highlighter_Highlighter {
+    constructor(tapeBrowser, program, container) {
+        /**
+         * All elements, index by the byte index.
+         */
+        this.elements = [];
+        /**
+         * Currently-highlighted elements.
+         */
+        this.highlightedElements = [];
+        /**
+         * Currently-selected elements.
+         */
+        this.selectedElements = [];
+        this.tapeBrowser = tapeBrowser;
+        this.program = program;
+        this.container = container;
+        container.addEventListener("mousedown", event => event.preventDefault());
+        window.addEventListener("mouseup", event => {
+            if (this.selectionBeginIndex !== undefined) {
+                this.selectionBeginIndex = undefined;
+                this.tapeBrowser.doneSelecting(this);
+                event.preventDefault();
+            }
+        });
+    }
+    /**
+     * Add the highlightable element to the highlighter.
+     */
+    addHighlightable(h) {
+        // Allow undefined element for convenience of caller. Just ignore it.
+        const element = h.element;
+        if (element === undefined) {
+            return;
+        }
+        for (let byteIndex = h.firstIndex; byteIndex <= h.lastIndex; byteIndex++) {
+            this.elements[byteIndex] = element;
+        }
+        // Set up event listeners for highlighting.
+        element.addEventListener("mouseenter", () => {
+            this.tapeBrowser.setHighlight(new Highlight(this.program, h.firstIndex, h.lastIndex));
+            if (this.selectionBeginIndex !== undefined) {
+                const highlight = h.firstIndex <= this.selectionBeginIndex && this.selectionBeginIndex <= h.lastIndex
+                    ? new Highlight(this.program, h.firstIndex, h.lastIndex)
+                    : this.selectionBeginIndex < h.firstIndex
+                        ? new Highlight(this.program, this.selectionBeginIndex, h.lastIndex)
+                        : new Highlight(this.program, h.firstIndex, this.selectionBeginIndex);
+                this.tapeBrowser.setSelection(highlight);
+            }
+        });
+        element.addEventListener("mouseleave", () => {
+            if (this.selectionBeginIndex === undefined) {
+                this.tapeBrowser.setHighlight(undefined);
+            }
+        });
+        // Set up event listeners for selecting.
+        element.addEventListener("mousedown", event => {
+            this.tapeBrowser.setSelection(new Highlight(this.program, h.firstIndex, h.lastIndex));
+            // This isn't right, it depends on which way they'll select. Might have to fix later.
+            this.selectionBeginIndex = h.firstIndex;
+            event.preventDefault();
+        });
+    }
+    /**
+     * Add all highlightables to the highlighter.
+     */
+    addHighlightables(highlightables) {
+        for (const highlightable of highlightables) {
+            this.addHighlightable(highlightable);
+        }
+    }
+    /**
+     * Highlight the specified elements.
+     */
+    highlight(highlight, program, highlightClassName) {
+        for (const e of this.highlightedElements) {
+            e.classList.remove(highlightClassName);
+        }
+        this.highlightedElements.splice(0);
+        if (highlight !== undefined && highlight.program === program) {
+            const e = this.elements[highlight.firstIndex];
+            if (e !== undefined) {
+                e.classList.add(highlightClassName);
+                this.highlightedElements.push(e);
+            }
+        }
+    }
+    /**
+     * Select the specified elements.
+     */
+    select(highlight, program, selectClassName) {
+        for (const e of this.selectedElements) {
+            e.classList.remove(selectClassName);
+        }
+        this.selectedElements.splice(0);
+        if (highlight !== undefined && highlight.program === program) {
+            for (let byteIndex = highlight.firstIndex; byteIndex <= highlight.lastIndex; byteIndex++) {
+                const e = this.elements[byteIndex];
+                if (e !== undefined) {
+                    e.classList.add(selectClassName);
+                    this.selectedElements.push(e);
+                }
+            }
+        }
+    }
+    /**
+     * Called when the user is done selecting and we should scroll to the selection.
+     */
+    doneSelecting() {
+        // Bring the middle element into view.
+        if (this.selectedElements.length > 0) {
+            const midElement = this.selectedElements[Math.floor(this.selectedElements.length / 2)];
+            if (midElement.offsetHeight === 0) {
+                // Not visible, do this later.
+                this.scrollToElement = midElement;
+            }
+            else {
+                midElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                });
+            }
+        }
+    }
+    /**
+     * This set of elements was just shown.
+     */
+    didShow() {
+        if (this.scrollToElement !== undefined) {
+            this.scrollToElement.scrollIntoView({
+                behavior: "auto",
+                block: "center",
+            });
+            this.scrollToElement = undefined;
+        }
+    }
+}
+
 // CONCATENATED MODULE: ./src/BasicRender.ts
+
 
 
 /**
@@ -7372,8 +7545,6 @@ const highlightClassName = BasicRender_sheet.classes.highlighted;
 const selectClassName = BasicRender_sheet.classes.selected;
 /**
  * Render an array of Basic elements to a DIV.
- *
- * @return array of the elements added, with the index being the offset into the original bytes array.
  */
 function toDiv(basicElements, out) {
     BasicRender_sheet.attach();
@@ -7413,7 +7584,7 @@ function toDiv(basicElements, out) {
         }
         const e = BasicRender_add(line, basicElement.text, className);
         if (basicElement.offset !== undefined) {
-            elements[basicElement.offset] = e;
+            elements.push(new Highlightable(basicElement.offset, basicElement.offset + basicElement.length - 1, e));
         }
     }
     return elements;
@@ -7677,6 +7848,7 @@ class Disasm_Disasm {
 
 
 
+
 /**
  * Add text to the line with the specified class.
  *
@@ -7761,7 +7933,7 @@ const SystemProgramRender_selectClassName = SystemProgramRender_sheet.classes.se
 function SystemProgramRender_toDiv(systemProgram, out) {
     SystemProgramRender_sheet.attach();
     const classes = SystemProgramRender_sheet.classes;
-    // Map from byte address to HTML element for that byte.
+    // Every element we render that maps to a byte in the program.
     const elements = [];
     if (systemProgram.error !== undefined) {
         const line = document.createElement("div");
@@ -7801,7 +7973,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         SystemProgramRender_add(line, instruction.toText(), classes.opcodes);
         const byteOffset = systemProgram.addressToByteOffset(instruction.address);
         if (byteOffset !== undefined) {
-            elements[byteOffset] = line;
+            elements.push(new Highlightable(byteOffset, byteOffset + instruction.bin.length - 1, line));
         }
     }
     return elements;
@@ -7809,6 +7981,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
 
 // CONCATENATED MODULE: ./src/Hexdump.ts
 // Tools for generating a hex dump of a binary file.
+
 
 
 // Stylesheet.
@@ -7869,7 +8042,7 @@ function Hexdump_create(binary, div) {
             e = document.createElement("span");
             e.classList.add(classes.hex);
             e.innerText = pad(binary[subAddr], 16, 2);
-            hexElements.push(e);
+            hexElements.push(new Highlightable(hexElements.length, hexElements.length, e));
             line.appendChild(e);
             line.appendChild(document.createTextNode(" "));
         }
@@ -7889,7 +8062,7 @@ function Hexdump_create(binary, div) {
                 e.classList.add(classes.asciiUnprintable);
                 e.innerText = ".";
             }
-            asciiElements.push(e);
+            asciiElements.push(new Highlightable(asciiElements.length, asciiElements.length, e));
             line.appendChild(e);
         }
         div.appendChild(line);
@@ -20101,21 +20274,6 @@ class ProgressBar {
 
 
 
-// CONCATENATED MODULE: ./src/Highlight.ts
-/**
- * Current selection or highlight.
- */
-class Highlight {
-    constructor(program, firstIndex, lastIndex) {
-        this.program = program;
-        // Default to one byte.
-        lastIndex = (lastIndex !== null && lastIndex !== void 0 ? lastIndex : firstIndex);
-        // Re-order so that begin <= end.
-        this.firstIndex = Math.min(firstIndex, lastIndex);
-        this.lastIndex = Math.max(firstIndex, lastIndex);
-    }
-}
-
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
 
 
@@ -20631,6 +20789,7 @@ class WaveformDisplay_WaveformDisplay {
 //
 // http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/edtasm-file-format/
 
+
 // Stylesheet.
 const Edtasm_BACKGROUND_COLOR = "#1E1E1E";
 const Edtasm_STYLE = {
@@ -20717,7 +20876,7 @@ function decodeEdtasm(bytes, out) {
         // Read line number.
         for (let j = 0; j < 5; j++) {
             e = Edtasm_add(line, (bytes[i] - 0xB0).toString(), classes.lineNumber);
-            elements[i] = e;
+            elements.push(new Highlightable(i, i, e));
             i++;
         }
         // Parse line.
@@ -20743,7 +20902,7 @@ function decodeEdtasm(bytes, out) {
                 pos++;
             }
             e = Edtasm_add(line, text, className);
-            elements[i] = e;
+            elements.push(new Highlightable(i, i, e));
             i++;
         }
         // Skip EOL.
@@ -20751,132 +20910,6 @@ function decodeEdtasm(bytes, out) {
             i++;
         }
         out.appendChild(line);
-    }
-}
-
-// CONCATENATED MODULE: ./src/Highlighter.ts
-
-/**
- * Helper class to highlight or select elements.
- */
-class Highlighter_Highlighter {
-    constructor(tapeBrowser, program, container) {
-        /**
-         * All elements, index by the byte index.
-         */
-        this.elements = [];
-        /**
-         * Currently-highlighted elements.
-         */
-        this.highlightedElements = [];
-        /**
-         * Currently-selected elements.
-         */
-        this.selectedElements = [];
-        this.tapeBrowser = tapeBrowser;
-        this.program = program;
-        this.container = container;
-        container.addEventListener("mousedown", event => event.preventDefault());
-        window.addEventListener("mouseup", event => {
-            if (this.selectionBeginIndex !== undefined) {
-                this.selectionBeginIndex = undefined;
-                this.tapeBrowser.doneSelecting(this);
-                event.preventDefault();
-            }
-        });
-    }
-    /**
-     * Add an element to be highlighted.
-     */
-    addElement(byteIndex, element) {
-        // Allow undefined element for convenience of caller. Just ignore it.
-        if (element === undefined) {
-            return;
-        }
-        this.elements[byteIndex] = element;
-        // Set up event listeners for highlighting.
-        element.addEventListener("mouseenter", () => {
-            this.tapeBrowser.setHighlight(new Highlight(this.program, byteIndex));
-            if (this.selectionBeginIndex !== undefined) {
-                this.tapeBrowser.setSelection(new Highlight(this.program, this.selectionBeginIndex, byteIndex));
-            }
-        });
-        element.addEventListener("mouseleave", () => {
-            if (this.selectionBeginIndex === undefined) {
-                this.tapeBrowser.setHighlight(undefined);
-            }
-        });
-        // Set up event listeners for selecting.
-        element.addEventListener("mousedown", event => {
-            this.tapeBrowser.setSelection(new Highlight(this.program, byteIndex));
-            this.selectionBeginIndex = byteIndex;
-            event.preventDefault();
-        });
-    }
-    /**
-     * Highlight the specified elements.
-     */
-    highlight(highlight, program, highlightClassName) {
-        for (const e of this.highlightedElements) {
-            e.classList.remove(highlightClassName);
-        }
-        this.highlightedElements.splice(0);
-        if (highlight !== undefined && highlight.program === program) {
-            const e = this.elements[highlight.firstIndex];
-            if (e !== undefined) {
-                e.classList.add(highlightClassName);
-                this.highlightedElements.push(e);
-            }
-        }
-    }
-    /**
-     * Select the specified elements.
-     */
-    select(highlight, program, selectClassName) {
-        for (const e of this.selectedElements) {
-            e.classList.remove(selectClassName);
-        }
-        this.selectedElements.splice(0);
-        if (highlight !== undefined && highlight.program === program) {
-            for (let byteIndex = highlight.firstIndex; byteIndex <= highlight.lastIndex; byteIndex++) {
-                const e = this.elements[byteIndex];
-                if (e !== undefined) {
-                    e.classList.add(selectClassName);
-                    this.selectedElements.push(e);
-                }
-            }
-        }
-    }
-    /**
-     * Called when the user is done selecting and we should scroll to the selection.
-     */
-    doneSelecting() {
-        // Bring the middle element into view.
-        if (this.selectedElements.length > 0) {
-            const midElement = this.selectedElements[Math.floor(this.selectedElements.length / 2)];
-            if (midElement.offsetHeight === 0) {
-                // Not visible, do this later.
-                this.scrollToElement = midElement;
-            }
-            else {
-                midElement.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                });
-            }
-        }
-    }
-    /**
-     * This set of elements was just shown.
-     */
-    didShow() {
-        if (this.scrollToElement !== undefined) {
-            this.scrollToElement.scrollIntoView({
-                behavior: "auto",
-                block: "center",
-            });
-            this.scrollToElement = undefined;
-        }
     }
 }
 
@@ -21218,8 +21251,8 @@ class TapeBrowser_TapeBrowser {
         const hexHighlighter = new Highlighter_Highlighter(this, program, div);
         const asciiHighlighter = new Highlighter_Highlighter(this, program, div);
         const [hexElements, asciiElements] = Hexdump_create(program.binary, div);
-        hexElements.forEach((e, byteIndex) => hexHighlighter.addElement(byteIndex, e));
-        asciiElements.forEach((e, byteIndex) => asciiHighlighter.addElement(byteIndex, e));
+        hexHighlighter.addHighlightables(hexElements);
+        asciiHighlighter.addHighlightables(asciiElements);
         this.onHighlight.subscribe(highlight => {
             hexHighlighter.highlight(highlight, program, Hexdump_highlightClassName);
             asciiHighlighter.highlight(highlight, program, Hexdump_highlightClassName);
@@ -21258,9 +21291,9 @@ class TapeBrowser_TapeBrowser {
     makeBasicPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
-        const elements = toDiv(fromTokenized(program.binary), div);
+        const highlightables = toDiv(fromTokenized(program.binary), div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
-        elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
+        highlighter.addHighlightables(highlightables);
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, highlightClassName);
         });
@@ -21282,9 +21315,9 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
         const systemProgram = new SystemProgram_SystemProgram(program.binary);
-        const elements = SystemProgramRender_toDiv(systemProgram, div);
+        const highlightables = SystemProgramRender_toDiv(systemProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
-        elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
+        highlighter.addHighlightables(highlightables);
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, SystemProgramRender_highlightClassName);
         });
@@ -21310,7 +21343,7 @@ class TapeBrowser_TapeBrowser {
         div.classList.add("program");
         const [name, elements] = decodeEdtasm(program.binary, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
-        elements.forEach((e, byteIndex) => highlighter.addElement(byteIndex, e));
+        highlighter.addHighlightables(elements);
         this.onHighlight.subscribe(highlight => {
             highlighter.highlight(highlight, program, Edtasm_highlightClassName);
         });
