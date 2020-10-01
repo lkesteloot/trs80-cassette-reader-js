@@ -1236,436 +1236,6 @@ var TapeDecoderState;
     TapeDecoderState[TapeDecoderState["FINISHED"] = 2] = "FINISHED";
 })(TapeDecoderState || (TapeDecoderState = {}));
 
-// CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
-
-
-
-// What distance away from 0 counts as "positive" (or, when negative, "negative").
-const THRESHOLD = 500 / 32768.0;
-// If we go this many frames without any crossing, then we can assume we're done.
-const MIN_SILENCE_FRAMES = 1000;
-/**
- * Decodes high-speed (1500 baud) cassettes.
- */
-class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
-    constructor(tape) {
-        this.state = TapeDecoderState.UNDECIDED;
-        this.programBytes = [];
-        this.oldSign = 0;
-        this.cycleSize = 0;
-        this.recentBits = 0;
-        this.bitCount = 0;
-        this.lastCrossingFrame = 0;
-        this.bits = [];
-        this.byteData = [];
-        this.tape = tape;
-    }
-    getName() {
-        return "High speed";
-    }
-    handleSample(frame) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        const sample = samples[frame];
-        const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
-        // Detect zero-crossing.
-        if (this.oldSign !== 0 && newSign !== 0 && this.oldSign !== newSign) {
-            this.lastCrossingFrame = frame;
-            // Detect positive edge. That's the end of the cycle.
-            if (this.oldSign === -1) {
-                // Only consider cycles in the right range of periods.
-                if (this.cycleSize > 7 && this.cycleSize < 44) {
-                    // Long cycle is "0", short cycle is "1".
-                    const bit = this.cycleSize < 22;
-                    // Bits are MSb to LSb.
-                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
-                    // If we're in the program, add the bit to our stream.
-                    if (this.state === TapeDecoderState.DETECTED) {
-                        this.bitCount += 1;
-                        let bitType;
-                        if (this.bitCount === 1) {
-                            // Just got a start bit. Must be zero.
-                            if (bit) {
-                                bitType = BitType.BAD;
-                            }
-                            else {
-                                bitType = BitType.START;
-                            }
-                        }
-                        else {
-                            bitType = bit ? BitType.ONE : BitType.ZERO;
-                        }
-                        this.bits.push(new BitData(frame - this.cycleSize, frame, bitType));
-                        // Got enough bits for a byte (including the start bit).
-                        if (this.bitCount === 9) {
-                            this.programBytes.push(this.recentBits & 0xFF);
-                            this.bitCount = 0;
-                        }
-                    }
-                    else {
-                        // Detect end of header.
-                        if ((this.recentBits & 0xFFFFFFFF) === 0x5555557F) {
-                            this.state = TapeDecoderState.DETECTED;
-                            // No start bit on first byte.
-                            this.bitCount = 1;
-                            this.recentBits = 0;
-                        }
-                    }
-                }
-                else if (this.state === TapeDecoderState.DETECTED &&
-                    this.programBytes.length > 0 && this.cycleSize > 66) {
-                    // 1.5 ms gap, end of recording.
-                    // TODO pull this out of zero crossing.
-                    this.state = TapeDecoderState.FINISHED;
-                }
-                // End of cycle, start a new one.
-                this.cycleSize = 0;
-            }
-        }
-        else {
-            // Continue current cycle.
-            this.cycleSize += 1;
-        }
-        if (newSign !== 0) {
-            this.oldSign = newSign;
-        }
-        if (this.state === TapeDecoderState.DETECTED && frame - this.lastCrossingFrame > MIN_SILENCE_FRAMES) {
-            this.state = TapeDecoderState.FINISHED;
-        }
-    }
-    getState() {
-        return this.state;
-    }
-    getBinary() {
-        const bytes = new Uint8Array(this.programBytes.length);
-        for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = this.programBytes[i];
-        }
-        return bytes;
-    }
-    getBitData() {
-        return this.bits;
-    }
-    getByteData() {
-        return this.byteData;
-    }
-}
-
-// CONCATENATED MODULE: ./src/Utils.ts
-/**
- * Convert a number to a string.
- *
- * @param n number to convert
- * @param base base of the number
- * @param size zero-pad to this many digits
- */
-function pad(n, base, size) {
-    let s = n.toString(base);
-    if (base === 16) {
-        // I prefer upper case hex.
-        s = s.toUpperCase();
-    }
-    while (s.length < size) {
-        s = "0" + s;
-    }
-    return s;
-}
-/**
- * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
- */
-function base64EncodeUint8Array(array) {
-    let s = "";
-    array.forEach(c => s += String.fromCharCode(c));
-    return btoa(s);
-}
-/**
- * Remove all children from element.
- */
-function clearElement(e) {
-    while (e.firstChild) {
-        e.removeChild(e.firstChild);
-    }
-}
-/**
- * Flash the node as if a photo were taken.
- */
-function flashNode(node) {
-    // Position a semi-transparent white div over the screen, and reduce its transparency over time.
-    const oldNodePosition = node.style.position;
-    node.style.position = "relative";
-    const overlay = document.createElement("div");
-    overlay.style.position = "absolute";
-    overlay.style.left = "0";
-    overlay.style.top = "0";
-    overlay.style.right = "0";
-    overlay.style.bottom = "0";
-    overlay.style.backgroundColor = "#ffffff";
-    // Fade out.
-    let opacity = 1;
-    const updateOpacity = () => {
-        overlay.style.opacity = opacity.toString();
-        opacity -= 0.05;
-        if (opacity >= 0) {
-            window.requestAnimationFrame(updateOpacity);
-        }
-        else {
-            node.removeChild(overlay);
-            node.style.position = oldNodePosition;
-        }
-    };
-    updateOpacity();
-    node.appendChild(overlay);
-}
-
-// CONCATENATED MODULE: ./src/AudioUtils.ts
-
-class AudioFile {
-    constructor(rate, samples) {
-        this.rate = rate;
-        this.samples = samples;
-    }
-}
-/**
- * Simple high-pass filter.
- *
- * @param samples samples to filter.
- * @param size size of filter
- * @returns filtered samples.
- */
-function highPassFilter(samples, size) {
-    const out = new Int16Array(samples.length);
-    let sum = 0;
-    for (let i = 0; i < size; i++) {
-        sum += samples[i];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    for (let i = size; i < samples.length; i++) {
-        sum += samples[i] - samples[i - size];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    return out;
-}
-/**
- * @param frame the frame number to be described as a timestamp.
- * @param hz number of frames per second in original recording.
- * @param brief omit hour if zero, omit milliseconds and frame itself.
- */
-function frameToTimestamp(frame, hz, brief) {
-    const time = frame / hz;
-    let ms = Math.floor(time * 1000);
-    let sec = Math.floor(ms / 1000);
-    ms -= sec * 1000;
-    let min = Math.floor(sec / 60);
-    sec -= min * 60;
-    const hour = Math.floor(min / 60);
-    min -= hour * 60;
-    if (brief) {
-        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
-    }
-    else {
-        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
-    }
-}
-/**
- * Concatenate a list of audio samples into one.
- */
-function concatAudio(samplesList) {
-    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
-    const allSamples = new Int16Array(length);
-    let offset = 0;
-    for (const samples of samplesList) {
-        allSamples.set(samples, offset);
-        offset += samples.length;
-    }
-    return allSamples;
-}
-/**
- * Clamp the number to the range of signed 16-bit int.
- */
-function clampToInt16(x) {
-    return Math.max(Math.min(x, 32767), -32768);
-}
-
-// CONCATENATED MODULE: ./src/ByteData.ts
-/**
- * Information about one particular byte (its position).
- */
-class ByteData {
-    /**
-     * Create an object representing a byte.
-     *
-     * @param value the byte value (0-255).
-     * @param startFrame the first frame, inclusive.
-     * @param endFrame the last frame, inclusive.
-     */
-    constructor(value, startFrame, endFrame) {
-        this.value = value;
-        this.startFrame = startFrame;
-        this.endFrame = endFrame;
-    }
-}
-
-// CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
-
-
-
-
-
-/**
- * Number of consecutive zero bits we require in the header before we're pretty
- * sure this is a low speed program.
- */
-const MIN_HEADER_ZEROS = 6;
-class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
-    constructor(tape, invert) {
-        this.programBytes = [];
-        this.byteData = [];
-        this.tape = tape;
-        this.invert = invert;
-        this.state = TapeDecoderState.UNDECIDED;
-        // The frame where we last detected a pulse.
-        this.lastPulseFrame = 0;
-        this.eatNextPulse = false;
-        this.bitCount = 0;
-        this.recentBits = 0;
-        this.lenientFirstBit = false;
-        this.detectedZeros = 0;
-        // Height of the previous pulse. We set each pulse's threshold
-        // to 1/3 of the previous pulse's height.
-        this.pulseHeight = 0;
-        this.bitData = [];
-        this.pulseCount = 0;
-        // Number of samples between start of pulse detection and end of pulse. Once
-        // we detect a pulse, we ignore this number of samples.
-        // TODO make tape.sampleRate-sensitive.
-        this.pulseWidth = 22;
-        // Number of samples that determines a zero (longer) or one (shorter) bit.
-        // TODO make tape.sampleRate-sensitive.
-        this.bitDeterminator = 68;
-        // Number of quiet samples that would indicate the end of the program.
-        this.endOfProgramSilence = tape.sampleRate / 10;
-    }
-    /**
-     * Differentiating filter to accentuate pulses.
-     *
-     * @param samples samples to filter.
-     * @returns filtered samples.
-     */
-    static filterSamples(samples) {
-        const out = new Int16Array(samples.length);
-        // Number of samples between the top of the pulse and the bottom of it.
-        // TODO make tape.sampleRate-sensitive.
-        const pulsePeakDistance = 7;
-        for (let i = 0; i < samples.length; i++) {
-            // Differentiate to accentuate a pulse. Pulse go positive, then negative,
-            // with a space of pulsePeakDistance, so subtracting those generates a large
-            // positive value at the bottom of the pulse.
-            const newSample = i >= pulsePeakDistance ? samples[i - pulsePeakDistance] - samples[i] : 0;
-            out[i] = clampToInt16(newSample);
-        }
-        return out;
-    }
-    getName() {
-        return "Low speed" + (this.invert ? " (Inv)" : "");
-    }
-    handleSample(frame) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        const pulse = this.invert ? -samples[frame] : samples[frame];
-        const timeDiff = frame - this.lastPulseFrame;
-        const pulsing = timeDiff > this.pulseWidth && pulse >= this.pulseHeight / 3;
-        // Keep track of the height of this pulse, to calibrate for the next one.
-        if (timeDiff < this.pulseWidth) {
-            this.pulseHeight = Math.max(this.pulseHeight, pulse);
-        }
-        if (this.state === TapeDecoderState.DETECTED && timeDiff > this.endOfProgramSilence) {
-            // End of program.
-            this.state = TapeDecoderState.FINISHED;
-        }
-        else if (pulsing) {
-            const bit = timeDiff < this.bitDeterminator;
-            if (this.pulseCount++ === 1000) {
-                // For debugging, forces a detection so we can inspect the bits.
-                /// this.state = TapeDecoderState.DETECTED;
-            }
-            if (this.eatNextPulse) {
-                if (this.state === TapeDecoderState.DETECTED && !bit && !this.lenientFirstBit) {
-                    this.bitData.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
-                }
-                else {
-                    const lastBit = this.bitData[this.bitData.length - 1];
-                    if (lastBit && lastBit.bitType === BitType.ONE && lastBit.endFrame === this.lastPulseFrame) {
-                        // Merge with previous 1 bit.
-                        lastBit.endFrame = frame;
-                    }
-                    const lastByte = this.byteData[this.byteData.length - 1];
-                    if (lastByte && lastByte.endFrame === this.lastPulseFrame) {
-                        // Adjust last bit.
-                        lastByte.endFrame = frame;
-                    }
-                }
-                this.eatNextPulse = false;
-                this.lenientFirstBit = false;
-            }
-            else {
-                // If we see a 1 in the header, reset the count. We want a bunch of consecutive zeros.
-                if (bit && this.state === TapeDecoderState.UNDECIDED && this.detectedZeros < MIN_HEADER_ZEROS) {
-                    // Still not in header. Reset count.
-                    this.detectedZeros = 0;
-                }
-                else {
-                    if (bit) {
-                        this.eatNextPulse = true;
-                    }
-                    else {
-                        this.detectedZeros += 1;
-                    }
-                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
-                    if (this.lastPulseFrame !== 0) {
-                        this.bitData.push(new BitData(this.lastPulseFrame, frame, bit ? BitType.ONE : BitType.ZERO));
-                    }
-                    if (this.state === TapeDecoderState.UNDECIDED) {
-                        // Haven't found end of header yet. Look for it, preceded by zeros.
-                        if (this.recentBits === 0x000000A5) {
-                            this.bitCount = 0;
-                            // For some reason we don't get a clock after this last 1.
-                            this.lenientFirstBit = true;
-                            this.state = TapeDecoderState.DETECTED;
-                        }
-                    }
-                    else {
-                        this.bitCount += 1;
-                        if (this.bitCount === 8) {
-                            let byteValue = this.recentBits & 0xFF;
-                            this.programBytes.push(byteValue);
-                            this.byteData.push(new ByteData(byteValue, this.bitData[this.bitData.length - 8].startFrame, frame));
-                            this.bitCount = 0;
-                        }
-                    }
-                }
-            }
-            this.lastPulseFrame = frame;
-            this.pulseHeight = 0;
-        }
-    }
-    getState() {
-        return this.state;
-    }
-    getBinary() {
-        const bytes = new Uint8Array(this.programBytes.length);
-        for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = this.programBytes[i];
-        }
-        return bytes;
-    }
-    getBitData() {
-        return this.bitData;
-    }
-    getByteData() {
-        return this.byteData;
-    }
-}
-
 // CONCATENATED MODULE: ./src/DisplaySamples.ts
 /**
  * Samples that are pre-filtered so we can display them zoomed out quickly.
@@ -2204,7 +1774,7 @@ class SystemProgram_SystemProgram {
 
 
 class Program_Program {
-    constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData, reconstructedSamples) {
+    constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData) {
         this.name = "";
         this.notes = "";
         this.screenshot = "";
@@ -2219,6 +1789,11 @@ class Program_Program {
         this.binary = binary;
         this.bitData = bitData;
         this.byteData = byteData;
+    }
+    /**
+     * Set the high-speed samples reconstructed from the binary.
+     */
+    setReconstructedSamples(reconstructedSamples) {
         this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
     }
     /**
@@ -2346,6 +1921,466 @@ class Program_Program {
         cas[256] = 0xA5;
         cas.set(this.binary, 257);
         return cas;
+    }
+}
+
+// CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
+
+
+
+
+// What distance away from 0 counts as "positive" (or, when negative, "negative").
+const THRESHOLD = 500 / 32768.0;
+// If we go this many frames without any crossing, then we can assume we're done.
+const MIN_SILENCE_FRAMES = 1000;
+/**
+ * Decodes high-speed (1500 baud) cassettes.
+ */
+class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
+    constructor(tape) {
+        this.state = TapeDecoderState.UNDECIDED;
+        this.programBytes = [];
+        this.oldSign = 0;
+        this.cycleSize = 0;
+        this.recentBits = 0;
+        this.bitCount = 0;
+        this.lastCrossingFrame = 0;
+        this.bits = [];
+        this.byteData = [];
+        this.tape = tape;
+    }
+    getName() {
+        return "High speed";
+    }
+    findNextProgram(startFrame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
+        let programStartFrame = -1;
+        for (let frame = startFrame; frame < samples.length; frame++) {
+            this.handleSample(frame);
+            if (this.state === TapeDecoderState.DETECTED && programStartFrame === -1) {
+                programStartFrame = frame;
+            }
+            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
+                return new Program_Program(0, 0, programStartFrame, frame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
+            }
+        }
+        return undefined;
+    }
+    handleSample(frame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
+        const sample = samples[frame];
+        const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
+        // Detect zero-crossing.
+        if (this.oldSign !== 0 && newSign !== 0 && this.oldSign !== newSign) {
+            this.lastCrossingFrame = frame;
+            // Detect positive edge. That's the end of the cycle.
+            if (this.oldSign === -1) {
+                // Only consider cycles in the right range of periods.
+                if (this.cycleSize > 7 && this.cycleSize < 44) {
+                    // Long cycle is "0", short cycle is "1".
+                    const bit = this.cycleSize < 22;
+                    // Bits are MSb to LSb.
+                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
+                    // If we're in the program, add the bit to our stream.
+                    if (this.state === TapeDecoderState.DETECTED) {
+                        this.bitCount += 1;
+                        let bitType;
+                        if (this.bitCount === 1) {
+                            // Just got a start bit. Must be zero.
+                            if (bit) {
+                                bitType = BitType.BAD;
+                            }
+                            else {
+                                bitType = BitType.START;
+                            }
+                        }
+                        else {
+                            bitType = bit ? BitType.ONE : BitType.ZERO;
+                        }
+                        this.bits.push(new BitData(frame - this.cycleSize, frame, bitType));
+                        // Got enough bits for a byte (including the start bit).
+                        if (this.bitCount === 9) {
+                            this.programBytes.push(this.recentBits & 0xFF);
+                            this.bitCount = 0;
+                        }
+                    }
+                    else {
+                        // Detect end of header.
+                        if ((this.recentBits & 0xFFFFFFFF) === 0x5555557F) {
+                            this.state = TapeDecoderState.DETECTED;
+                            // No start bit on first byte.
+                            this.bitCount = 1;
+                            this.recentBits = 0;
+                        }
+                    }
+                }
+                else if (this.state === TapeDecoderState.DETECTED &&
+                    this.programBytes.length > 0 && this.cycleSize > 66) {
+                    // 1.5 ms gap, end of recording.
+                    // TODO pull this out of zero crossing.
+                    this.state = TapeDecoderState.FINISHED;
+                }
+                // End of cycle, start a new one.
+                this.cycleSize = 0;
+            }
+        }
+        else {
+            // Continue current cycle.
+            this.cycleSize += 1;
+        }
+        if (newSign !== 0) {
+            this.oldSign = newSign;
+        }
+        if (this.state === TapeDecoderState.DETECTED && frame - this.lastCrossingFrame > MIN_SILENCE_FRAMES) {
+            this.state = TapeDecoderState.FINISHED;
+        }
+    }
+    getState() {
+        return this.state;
+    }
+    getBinary() {
+        const bytes = new Uint8Array(this.programBytes.length);
+        for (let i = 0; i < bytes.length; i++) {
+            bytes[i] = this.programBytes[i];
+        }
+        return bytes;
+    }
+    getBitData() {
+        return this.bits;
+    }
+    getByteData() {
+        return this.byteData;
+    }
+}
+
+// CONCATENATED MODULE: ./src/Utils.ts
+/**
+ * Convert a number to a string.
+ *
+ * @param n number to convert
+ * @param base base of the number
+ * @param size zero-pad to this many digits
+ */
+function pad(n, base, size) {
+    let s = n.toString(base);
+    if (base === 16) {
+        // I prefer upper case hex.
+        s = s.toUpperCase();
+    }
+    while (s.length < size) {
+        s = "0" + s;
+    }
+    return s;
+}
+/**
+ * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
+ */
+function base64EncodeUint8Array(array) {
+    let s = "";
+    array.forEach(c => s += String.fromCharCode(c));
+    return btoa(s);
+}
+/**
+ * Remove all children from element.
+ */
+function clearElement(e) {
+    while (e.firstChild) {
+        e.removeChild(e.firstChild);
+    }
+}
+/**
+ * Flash the node as if a photo were taken.
+ */
+function flashNode(node) {
+    // Position a semi-transparent white div over the screen, and reduce its transparency over time.
+    const oldNodePosition = node.style.position;
+    node.style.position = "relative";
+    const overlay = document.createElement("div");
+    overlay.style.position = "absolute";
+    overlay.style.left = "0";
+    overlay.style.top = "0";
+    overlay.style.right = "0";
+    overlay.style.bottom = "0";
+    overlay.style.backgroundColor = "#ffffff";
+    // Fade out.
+    let opacity = 1;
+    const updateOpacity = () => {
+        overlay.style.opacity = opacity.toString();
+        opacity -= 0.05;
+        if (opacity >= 0) {
+            window.requestAnimationFrame(updateOpacity);
+        }
+        else {
+            node.removeChild(overlay);
+            node.style.position = oldNodePosition;
+        }
+    };
+    updateOpacity();
+    node.appendChild(overlay);
+}
+
+// CONCATENATED MODULE: ./src/AudioUtils.ts
+
+class AudioFile {
+    constructor(rate, samples) {
+        this.rate = rate;
+        this.samples = samples;
+    }
+}
+/**
+ * Simple high-pass filter.
+ *
+ * @param samples samples to filter.
+ * @param size size of filter
+ * @returns filtered samples.
+ */
+function highPassFilter(samples, size) {
+    const out = new Int16Array(samples.length);
+    let sum = 0;
+    for (let i = 0; i < size; i++) {
+        sum += samples[i];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    for (let i = size; i < samples.length; i++) {
+        sum += samples[i] - samples[i - size];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    return out;
+}
+/**
+ * @param frame the frame number to be described as a timestamp.
+ * @param hz number of frames per second in original recording.
+ * @param brief omit hour if zero, omit milliseconds and frame itself.
+ */
+function frameToTimestamp(frame, hz, brief) {
+    const time = frame / hz;
+    let ms = Math.floor(time * 1000);
+    let sec = Math.floor(ms / 1000);
+    ms -= sec * 1000;
+    let min = Math.floor(sec / 60);
+    sec -= min * 60;
+    const hour = Math.floor(min / 60);
+    min -= hour * 60;
+    if (brief) {
+        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
+    }
+    else {
+        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
+    }
+}
+/**
+ * Concatenate a list of audio samples into one.
+ */
+function concatAudio(samplesList) {
+    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
+    const allSamples = new Int16Array(length);
+    let offset = 0;
+    for (const samples of samplesList) {
+        allSamples.set(samples, offset);
+        offset += samples.length;
+    }
+    return allSamples;
+}
+/**
+ * Clamp the number to the range of signed 16-bit int.
+ */
+function clampToInt16(x) {
+    return Math.max(Math.min(x, 32767), -32768);
+}
+
+// CONCATENATED MODULE: ./src/ByteData.ts
+/**
+ * Information about one particular byte (its position).
+ */
+class ByteData {
+    /**
+     * Create an object representing a byte.
+     *
+     * @param value the byte value (0-255).
+     * @param startFrame the first frame, inclusive.
+     * @param endFrame the last frame, inclusive.
+     */
+    constructor(value, startFrame, endFrame) {
+        this.value = value;
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
+    }
+}
+
+// CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
+
+
+
+
+
+
+/**
+ * Number of consecutive zero bits we require in the header before we're pretty
+ * sure this is a low speed program.
+ */
+const MIN_HEADER_ZEROS = 6;
+class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
+    constructor(tape, invert) {
+        this.programBytes = [];
+        this.byteData = [];
+        this.tape = tape;
+        this.invert = invert;
+        this.state = TapeDecoderState.UNDECIDED;
+        // The frame where we last detected a pulse.
+        this.lastPulseFrame = 0;
+        this.eatNextPulse = false;
+        this.bitCount = 0;
+        this.recentBits = 0;
+        this.lenientFirstBit = false;
+        this.detectedZeros = 0;
+        // Height of the previous pulse. We set each pulse's threshold
+        // to 1/3 of the previous pulse's height.
+        this.pulseHeight = 0;
+        this.bitData = [];
+        this.pulseCount = 0;
+        // Number of samples between start of pulse detection and end of pulse. Once
+        // we detect a pulse, we ignore this number of samples.
+        // TODO make tape.sampleRate-sensitive.
+        this.pulseWidth = 22;
+        // Number of samples that determines a zero (longer) or one (shorter) bit.
+        // TODO make tape.sampleRate-sensitive.
+        this.bitDeterminator = 68;
+        // Number of quiet samples that would indicate the end of the program.
+        this.endOfProgramSilence = tape.sampleRate / 10;
+    }
+    /**
+     * Differentiating filter to accentuate pulses.
+     *
+     * @param samples samples to filter.
+     * @returns filtered samples.
+     */
+    static filterSamples(samples) {
+        const out = new Int16Array(samples.length);
+        // Number of samples between the top of the pulse and the bottom of it.
+        // TODO make tape.sampleRate-sensitive.
+        const pulsePeakDistance = 7;
+        for (let i = 0; i < samples.length; i++) {
+            // Differentiate to accentuate a pulse. Pulse go positive, then negative,
+            // with a space of pulsePeakDistance, so subtracting those generates a large
+            // positive value at the bottom of the pulse.
+            const newSample = i >= pulsePeakDistance ? samples[i - pulsePeakDistance] - samples[i] : 0;
+            out[i] = clampToInt16(newSample);
+        }
+        return out;
+    }
+    getName() {
+        return "Low speed" + (this.invert ? " (Inv)" : "");
+    }
+    findNextProgram(startFrame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
+        let programStartFrame = -1;
+        for (let frame = startFrame; frame < samples.length; frame++) {
+            this.handleSample(frame);
+            if (this.state === TapeDecoderState.DETECTED && programStartFrame === -1) {
+                programStartFrame = frame;
+            }
+            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
+                return new Program_Program(0, 0, programStartFrame, frame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
+            }
+        }
+        return undefined;
+    }
+    handleSample(frame) {
+        const samples = this.tape.lowSpeedSamples.samplesList[0];
+        const pulse = this.invert ? -samples[frame] : samples[frame];
+        const timeDiff = frame - this.lastPulseFrame;
+        const pulsing = timeDiff > this.pulseWidth && pulse >= this.pulseHeight / 3;
+        // Keep track of the height of this pulse, to calibrate for the next one.
+        if (timeDiff < this.pulseWidth) {
+            this.pulseHeight = Math.max(this.pulseHeight, pulse);
+        }
+        if (this.state === TapeDecoderState.DETECTED && timeDiff > this.endOfProgramSilence) {
+            // End of program.
+            this.state = TapeDecoderState.FINISHED;
+        }
+        else if (pulsing) {
+            const bit = timeDiff < this.bitDeterminator;
+            if (this.pulseCount++ === 1000) {
+                // For debugging, forces a detection so we can inspect the bits.
+                /// this.state = TapeDecoderState.DETECTED;
+            }
+            if (this.eatNextPulse) {
+                if (this.state === TapeDecoderState.DETECTED && !bit && !this.lenientFirstBit) {
+                    this.bitData.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
+                }
+                else {
+                    const lastBit = this.bitData[this.bitData.length - 1];
+                    if (lastBit && lastBit.bitType === BitType.ONE && lastBit.endFrame === this.lastPulseFrame) {
+                        // Merge with previous 1 bit.
+                        lastBit.endFrame = frame;
+                    }
+                    const lastByte = this.byteData[this.byteData.length - 1];
+                    if (lastByte && lastByte.endFrame === this.lastPulseFrame) {
+                        // Adjust last bit.
+                        lastByte.endFrame = frame;
+                    }
+                }
+                this.eatNextPulse = false;
+                this.lenientFirstBit = false;
+            }
+            else {
+                // If we see a 1 in the header, reset the count. We want a bunch of consecutive zeros.
+                if (bit && this.state === TapeDecoderState.UNDECIDED && this.detectedZeros < MIN_HEADER_ZEROS) {
+                    // Still not in header. Reset count.
+                    this.detectedZeros = 0;
+                }
+                else {
+                    if (bit) {
+                        this.eatNextPulse = true;
+                    }
+                    else {
+                        this.detectedZeros += 1;
+                    }
+                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
+                    if (this.lastPulseFrame !== 0) {
+                        this.bitData.push(new BitData(this.lastPulseFrame, frame, bit ? BitType.ONE : BitType.ZERO));
+                    }
+                    if (this.state === TapeDecoderState.UNDECIDED) {
+                        // Haven't found end of header yet. Look for it, preceded by zeros.
+                        if (this.recentBits === 0x000000A5) {
+                            this.bitCount = 0;
+                            // For some reason we don't get a clock after this last 1.
+                            this.lenientFirstBit = true;
+                            this.state = TapeDecoderState.DETECTED;
+                        }
+                    }
+                    else {
+                        this.bitCount += 1;
+                        if (this.bitCount === 8) {
+                            let byteValue = this.recentBits & 0xFF;
+                            this.programBytes.push(byteValue);
+                            this.byteData.push(new ByteData(byteValue, this.bitData[this.bitData.length - 8].startFrame, frame));
+                            this.bitCount = 0;
+                        }
+                    }
+                }
+            }
+            this.lastPulseFrame = frame;
+            this.pulseHeight = 0;
+        }
+    }
+    getState() {
+        return this.state;
+    }
+    getBinary() {
+        const bytes = new Uint8Array(this.programBytes.length);
+        for (let i = 0; i < bytes.length; i++) {
+            bytes[i] = this.programBytes[i];
+        }
+        return bytes;
+    }
+    getBitData() {
+        return this.bitData;
+    }
+    getByteData() {
+        return this.byteData;
     }
 }
 
@@ -2490,8 +2525,6 @@ function encodeHighSpeed(bytes, sampleRate) {
 
 
 
-
-
 /**
  * Candidate program. A decoded detected it, but it might not be as good as another candidate.
  */
@@ -2539,75 +2572,76 @@ class Decoder_Decoder {
         let tapeDecoderFactories = [
             () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, true),
             () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, false),
+            // () => new LowSpeedAnteoTapeDecoder(this.tape),
             () => new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
         ];
         // All programs we detect.
         const candidates = [];
         // Try each decoder, feeding it the whole tape.
         for (const tapeDecoderFactory of tapeDecoderFactories) {
-            let tapeDecoder = tapeDecoderFactory();
-            let programStartFrame = -1;
-            for (let frame = 0; frame < sampleLength; frame++) {
-                tapeDecoder.handleSample(frame);
-                const state = tapeDecoder.getState();
-                // See if it detected its encoding.
-                if (state === TapeDecoderState.DETECTED && programStartFrame === -1) {
-                    programStartFrame = frame;
+            let startFrame = 0;
+            while (true) {
+                let tapeDecoder = tapeDecoderFactory();
+                const program = tapeDecoder.findNextProgram(startFrame);
+                if (program === undefined) {
+                    break;
                 }
-                // See if anyone declared victory.
-                if (state === TapeDecoderState.FINISHED) {
-                    candidates.push(new Candidate(tapeDecoder, programStartFrame, frame));
-                    tapeDecoder = tapeDecoderFactory();
-                    programStartFrame = -1;
-                }
-            }
-            // See if decoder had detected but not finished at end of tape.
-            if (tapeDecoder.getState() === TapeDecoderState.DETECTED && programStartFrame !== -1) {
-                candidates.push(new Candidate(tapeDecoder, programStartFrame, sampleLength - 1));
+                candidates.push(program);
+                startFrame = program.endFrame;
             }
         }
-        console.log(candidates); // TODO
+        console.log(candidates); // TODO remove
+        /*
         // Make a sorted list of start/end of candidates.
-        const transitions = [];
+        const transitions: Transition[] = [];
         for (const candidate of candidates) {
             transitions.push(new Transition(candidate, true, candidate.startFrame));
             transitions.push(new Transition(candidate, false, candidate.endFrame));
         }
         transitions.sort((a, b) => a.frame - b.frame);
+
         // Go through them, keeping track of which candidates are active, and deleting
         // clearly bad candidates (those completely nested in others).
         candidates.splice(0, candidates.length);
-        const activeCandidates = [];
+        const activeCandidates: Candidate[] = [];
         for (const transition of transitions) {
             // See if this new one is nested in an active one.
-            let isNested = false;
             if (transition.isStart) {
+                let keepCandidate = true;
                 for (const candidate of activeCandidates) {
                     if (transition.candidate.isNestedIn(candidate, this.tape.sampleRate * 0.1)) {
-                        isNested = true;
+                        keepCandidate = false;
                         break;
                     }
                 }
-                if (!isNested) {
+
+                if (keepCandidate) {
                     activeCandidates.push(transition.candidate);
                     candidates.push(transition.candidate);
                 }
-            }
-            else {
+            } else {
                 const index = activeCandidates.indexOf(transition.candidate);
                 if (index !== -1) {
                     activeCandidates.splice(index, 1);
                 }
             }
         }
+
         // Go through the candidates and eliminate bad ones. TODO remove
         candidates.sort((a, b) => a.startFrame - b.startFrame);
+*/
         // Convert remaining candidates to programs.
         for (const candidate of candidates) {
             // Skip very short programs, they're mis-detects.
             if (candidate.endFrame - candidate.startFrame > this.tape.sampleRate / 10) {
-                const tapeDecoder = candidate.tapeDecoder;
                 let newTrack = false; // TODO
+                /*
+                                    // TODO See how long it took to find it. A large gap means a new track.
+                                    const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
+                                    newTrack = trackNumber === 0 || leadTime > 10;
+                                    programStartFrame = frame;
+                }
+                 */
                 if (newTrack) {
                     trackNumber++;
                     copyNumber = 1;
@@ -2616,17 +2650,12 @@ class Decoder_Decoder {
                 else {
                     copyNumber += 1;
                 }
-                const program = new Program_Program(trackNumber, copyNumber, candidate.startFrame, candidate.endFrame, tapeDecoder.getName(), tapeDecoder.getBinary(), tapeDecoder.getBitData(), tapeDecoder.getByteData(), this.encodeHighSpeed(tapeDecoder.getBinary()));
-                this.tape.addProgram(program);
+                candidate.trackNumber = trackNumber;
+                candidate.copyNumber = copyNumber;
+                candidate.setReconstructedSamples(this.encodeHighSpeed(candidate.binary));
+                this.tape.addProgram(candidate);
             }
         }
-        /*
-                            // See how long it took to find it. A large gap means a new track.
-                            const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
-                            newTrack = trackNumber === 0 || leadTime > 10;
-                            programStartFrame = frame;
-        }
-         */
     }
     /**
      * Tapes a binary (potentially read at low speed) and generates a clean high-speed audio.
@@ -21142,8 +21171,8 @@ class TapeCassette extends TapeBrowser_Int16Cassette {
  * Implementation of Cassette that reads from our high-speed reconstruction.
  */
 class ReconstructedCassette extends TapeBrowser_Int16Cassette {
-    constructor(program, sampleRate) {
-        super(program.reconstructedSamples.samplesList[0], sampleRate);
+    constructor(samples, sampleRate) {
+        super(samples.samplesList[0], sampleRate);
     }
 }
 /**
@@ -21399,13 +21428,13 @@ class TapeBrowser_TapeBrowser {
     /**
      * Make the pane of the audio sample we reconstruct from the bits.
      */
-    makeReconstructedPane(program) {
+    makeReconstructedPane(samples) {
         const div = document.createElement("div");
         div.classList.add("reconstructed_waveform");
         this.makeWaveforms(div, new WaveformDisplay_WaveformDisplay(), [
             {
                 label: "Reconstructed high-speed waveform:",
-                samples: program.reconstructedSamples,
+                samples: samples,
             }
         ]);
         return new Pane(div);
@@ -21603,7 +21632,9 @@ class TapeBrowser_TapeBrowser {
             addPane(metadataLabel, this.makeMetadataPane(program, basicPane, systemPane, edtasmPane));
             // Make the various panes.
             addPane("Binary" + (duplicateCopy ? " (same as copy " + ((_a = firstCopyOfTrack) === null || _a === void 0 ? void 0 : _a.copyNumber) + ")" : ""), this.makeBinaryPane(program));
-            addPane("Reconstructed", this.makeReconstructedPane(program));
+            if (program.reconstructedSamples !== undefined) {
+                addPane("Reconstructed", this.makeReconstructedPane(program.reconstructedSamples));
+            }
             if (basicPane !== undefined) {
                 addPane("Basic program", basicPane);
             }
@@ -21612,7 +21643,9 @@ class TapeBrowser_TapeBrowser {
             }
             if (basicPane !== undefined || systemPane !== undefined) {
                 addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
-                addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new ReconstructedCassette(program, this.tape.sampleRate)));
+                if (program.reconstructedSamples !== undefined) {
+                    addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new ReconstructedCassette(program.reconstructedSamples, this.tape.sampleRate)));
+                }
             }
             if (edtasmPane !== undefined) {
                 addPane("Assembly" + (edtasmPane.programName ? " (" + edtasmPane.programName + ")" : ""), edtasmPane);
