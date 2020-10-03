@@ -1173,48 +1173,278 @@ module.exports = function(originalModule) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./src/BitData.ts
+// CONCATENATED MODULE: ./src/Utils.ts
 /**
- * Information about one particular bit (its position and status).
+ * Convert a number to a string.
+ *
+ * @param n number to convert
+ * @param base base of the number
+ * @param size zero-pad to this many digits
  */
-class BitData {
-    /**
-     * Create an object representing a bit.
-     *
-     * @param startFrame the first frame, inclusive.
-     * @param endFrame the last frame, inclusive.
-     * @param bitType what kind of bit it is.
-     */
-    constructor(startFrame, endFrame, bitType) {
-        this.startFrame = startFrame;
-        this.endFrame = endFrame;
-        this.bitType = bitType;
+function pad(n, base, size) {
+    let s = n.toString(base);
+    if (base === 16) {
+        // I prefer upper case hex.
+        s = s.toUpperCase();
+    }
+    while (s.length < size) {
+        s = "0" + s;
+    }
+    return s;
+}
+/**
+ * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
+ */
+function base64EncodeUint8Array(array) {
+    let s = "";
+    array.forEach(c => s += String.fromCharCode(c));
+    return btoa(s);
+}
+/**
+ * Remove all children from element.
+ */
+function clearElement(e) {
+    while (e.firstChild) {
+        e.removeChild(e.firstChild);
     }
 }
-
-// CONCATENATED MODULE: ./src/BitType.ts
 /**
- * Information about a particular bit.
+ * Flash the node as if a photo were taken.
  */
-var BitType;
-(function (BitType) {
-    /**
-     * Represents a numerical zero (0).
-     */
-    BitType[BitType["ZERO"] = 0] = "ZERO";
-    /**
-     * Represents a numerical one (1).
-     */
-    BitType[BitType["ONE"] = 1] = "ONE";
-    /**
-     * Represents a start bit in a byte.
-     */
-    BitType[BitType["START"] = 2] = "START";
-    /**
-     * Represents an undecoded bit.
-     */
-    BitType[BitType["BAD"] = 3] = "BAD";
-})(BitType || (BitType = {}));
+function flashNode(node) {
+    // Position a semi-transparent white div over the screen, and reduce its transparency over time.
+    const oldNodePosition = node.style.position;
+    node.style.position = "relative";
+    const overlay = document.createElement("div");
+    overlay.style.position = "absolute";
+    overlay.style.left = "0";
+    overlay.style.top = "0";
+    overlay.style.right = "0";
+    overlay.style.bottom = "0";
+    overlay.style.backgroundColor = "#ffffff";
+    // Fade out.
+    let opacity = 1;
+    const updateOpacity = () => {
+        overlay.style.opacity = opacity.toString();
+        opacity -= 0.05;
+        if (opacity >= 0) {
+            window.requestAnimationFrame(updateOpacity);
+        }
+        else {
+            node.removeChild(overlay);
+            node.style.position = oldNodePosition;
+        }
+    };
+    updateOpacity();
+    node.appendChild(overlay);
+}
+
+// CONCATENATED MODULE: ./src/AudioUtils.ts
+
+class AudioFile {
+    constructor(rate, samples) {
+        this.rate = rate;
+        this.samples = samples;
+    }
+}
+/**
+ * Simple high-pass filter.
+ *
+ * @param samples samples to filter.
+ * @param size size of filter
+ * @returns filtered samples.
+ */
+function highPassFilter(samples, size) {
+    const out = new Int16Array(samples.length);
+    let sum = 0;
+    for (let i = 0; i < size; i++) {
+        sum += samples[i];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    for (let i = size; i < samples.length; i++) {
+        sum += samples[i] - samples[i - size];
+        // Subtract out the average of the last "size" samples (to estimate local DC component).
+        out[i] = samples[i] - sum / size;
+    }
+    return out;
+}
+/**
+ * @param frame the frame number to be described as a timestamp.
+ * @param hz number of frames per second in original recording.
+ * @param brief omit hour if zero, omit milliseconds and frame itself.
+ */
+function frameToTimestamp(frame, hz, brief) {
+    const time = frame / hz;
+    let ms = Math.floor(time * 1000);
+    let sec = Math.floor(ms / 1000);
+    ms -= sec * 1000;
+    let min = Math.floor(sec / 60);
+    sec -= min * 60;
+    const hour = Math.floor(min / 60);
+    min -= hour * 60;
+    if (brief) {
+        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
+    }
+    else {
+        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
+    }
+}
+/**
+ * Concatenate a list of audio samples into one.
+ */
+function concatAudio(samplesList) {
+    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
+    const allSamples = new Int16Array(length);
+    let offset = 0;
+    for (const samples of samplesList) {
+        allSamples.set(samples, offset);
+        offset += samples.length;
+    }
+    return allSamples;
+}
+/**
+ * Clamp the number to the range of signed 16-bit int.
+ */
+function clampToInt16(x) {
+    return Math.max(Math.min(x, 32767), -32768);
+}
+
+// CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
+
+/**
+ * Generate one cycle of a sine wave.
+ * @param length number of samples in the full cycle.
+ * @return audio samples for one cycle.
+ */
+function generateCycle(length) {
+    const audio = new Int16Array(length);
+    for (let i = 0; i < length; i++) {
+        const t = 2 * Math.PI * i / length;
+        // -0.5 to 0.5, matches recorded audio.
+        audio[i] = Math.sin(t) * 16384;
+    }
+    return audio;
+}
+/**
+ * Generate a half cycle that fades off to zero instead of coming down hard to zero.
+ *
+ * @param length number of samples to generate.
+ * @param previousBit the previous cycle, so we copy the ending slope.
+ */
+function generateFinalHalfCycle(length, previousBit) {
+    // Copy the slope of the end of the zero bit.
+    const slope = previousBit[previousBit.length - 1] - previousBit[previousBit.length - 2];
+    // Points on the Bezier.
+    const x1 = 0;
+    const y1 = 0;
+    const y2 = 32767;
+    const x2 = (y2 - y1 + x1 * slope) / slope;
+    const x3 = length / 2;
+    const y3 = 0;
+    const x4 = length - 1;
+    const y4 = 0;
+    // Generated audio;
+    const audio = new Int16Array(length);
+    // Go through Bezier in small steps.
+    let position = 0;
+    for (let i = 0; i <= 128; i++) {
+        const t = i / 128.0;
+        // Compute Bezier value.
+        const x12 = x1 + (x2 - x1) * t;
+        const y12 = y1 + (y2 - y1) * t;
+        const x23 = x2 + (x3 - x2) * t;
+        const y23 = y2 + (y3 - y2) * t;
+        const x34 = x3 + (x4 - x3) * t;
+        const y34 = y3 + (y4 - y3) * t;
+        const x123 = x12 + (x23 - x12) * t;
+        const y123 = y12 + (y23 - y12) * t;
+        const x234 = x23 + (x34 - x23) * t;
+        const y234 = y23 + (y34 - y23) * t;
+        const x1234 = x123 + (x234 - x123) * t;
+        const y1234 = y123 + (y234 - y123) * t;
+        // Draw a crude horizontal line from the previous point.
+        const newPosition = Math.min(Math.floor(x1234), length - 1);
+        while (position <= newPosition) {
+            audio[position] = y1234;
+            position += 1;
+        }
+    }
+    // Finish up anything left.
+    while (position <= length - 1) {
+        audio[position] = 0;
+        position += 1;
+    }
+    return audio;
+}
+/**
+ * Adds the byte "b" to the samples list, most significant bit first.
+ * @param samplesList list of samples we're adding to.
+ * @param b byte to generate.
+ * @param zero samples for a zero bit.
+ * @param one samples for a one bit.
+ */
+function addByte(samplesList, b, zero, one) {
+    // MSb first.
+    for (let i = 7; i >= 0; i--) {
+        if ((b & (1 << i)) != 0) {
+            samplesList.push(one);
+        }
+        else {
+            samplesList.push(zero);
+        }
+    }
+}
+/**
+ * Encode the sequence of bytes as an array of audio samples for high-speed (1500 baud) cassettes.
+ */
+function encodeHighSpeed(bytes, sampleRate) {
+    // Length of a zero bit, in samples.
+    const ZERO_LENGTH = Math.round(0.00072 * sampleRate);
+    // Length of a one bit, in samples.
+    const ONE_LENGTH = Math.round(0.00034 * sampleRate);
+    // Samples representing a zero bit.
+    const zero = generateCycle(ZERO_LENGTH);
+    // Samples representing a one bit.
+    const one = generateCycle(ONE_LENGTH);
+    // Samples representing a long zero bit. This is the first start bit
+    // after the end of the header. It's 1 ms longer than a regular zero.
+    const LONG_ZERO = generateCycle(ZERO_LENGTH + sampleRate / 1000);
+    // The final cycle in the entire waveform, which is necessary
+    // to force that last negative-to-positive transition (and interrupt).
+    // We could just use a simple half cycle here, but it's nicer to do
+    // something like the original analog.
+    const FINAL_HALF_CYCLE = generateFinalHalfCycle(ZERO_LENGTH * 3, zero);
+    // List of samples.
+    const samplesList = [];
+    // Start with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    // Header of 0x55.
+    for (let i = 0; i < 256; i++) {
+        addByte(samplesList, 0x55, zero, one);
+    }
+    // End of header.
+    addByte(samplesList, 0x7F, zero, one);
+    // Write program.
+    let firstStartBit = true;
+    for (const b of bytes) {
+        // Start bit.
+        if (firstStartBit) {
+            samplesList.push(LONG_ZERO);
+            firstStartBit = false;
+        }
+        else {
+            samplesList.push(zero);
+        }
+        addByte(samplesList, b, zero, one);
+    }
+    // Finish off the last cycle, so that it generates an interrupt.
+    samplesList.push(FINAL_HALF_CYCLE);
+    // End with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    // Concatenate all samples.
+    return concatAudio(samplesList);
+}
 
 // CONCATENATED MODULE: ./src/TapeDecoderState.ts
 // Enum for the state of a tape decoder.
@@ -1235,6 +1465,44 @@ var TapeDecoderState;
      */
     TapeDecoderState[TapeDecoderState["FINISHED"] = 2] = "FINISHED";
 })(TapeDecoderState || (TapeDecoderState = {}));
+
+// CONCATENATED MODULE: ./src/BitData.ts
+/**
+ * Information about one particular bit (its position and status).
+ */
+class BitData {
+    /**
+     * Create an object representing a bit.
+     *
+     * @param startFrame the first frame, inclusive.
+     * @param endFrame the last frame, inclusive.
+     * @param bitType what kind of bit it is.
+     */
+    constructor(startFrame, endFrame, bitType) {
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
+        this.bitType = bitType;
+    }
+}
+
+// CONCATENATED MODULE: ./src/ByteData.ts
+/**
+ * Information about one particular byte (its position).
+ */
+class ByteData {
+    /**
+     * Create an object representing a byte.
+     *
+     * @param value the byte value (0-255).
+     * @param startFrame the first frame, inclusive.
+     * @param endFrame the last frame, inclusive.
+     */
+    constructor(value, startFrame, endFrame) {
+        this.value = value;
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
+    }
+}
 
 // CONCATENATED MODULE: ./src/DisplaySamples.ts
 /**
@@ -1924,288 +2192,426 @@ class Program_Program {
     }
 }
 
-// CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
-
-
-
-
-// What distance away from 0 counts as "positive" (or, when negative, "negative").
-const THRESHOLD = 500 / 32768.0;
-// If we go this many frames without any crossing, then we can assume we're done.
-const MIN_SILENCE_FRAMES = 1000;
+// CONCATENATED MODULE: ./src/BitType.ts
 /**
- * Decodes high-speed (1500 baud) cassettes.
+ * Information about a particular bit.
  */
-class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
+var BitType;
+(function (BitType) {
+    /**
+     * Represents a numerical zero (0).
+     */
+    BitType[BitType["ZERO"] = 0] = "ZERO";
+    /**
+     * Represents a numerical one (1).
+     */
+    BitType[BitType["ONE"] = 1] = "ONE";
+    /**
+     * Represents a start bit in a byte.
+     */
+    BitType[BitType["START"] = 2] = "START";
+    /**
+     * Represents an undecoded bit.
+     */
+    BitType[BitType["BAD"] = 3] = "BAD";
+})(BitType || (BitType = {}));
+
+// CONCATENATED MODULE: ./src/LowSpeedAnteoTapeDecoder.ts
+// Low speed tape decode based on anteo's version.
+// https://github.com/anteo
+
+
+
+
+
+const SYNC_BYTE = 0xA5;
+// When not finding a pulse, what kind of audio we found.
+var NonPulse;
+(function (NonPulse) {
+    NonPulse[NonPulse["NOISE"] = 0] = "NOISE";
+    NonPulse[NonPulse["SILENCE"] = 1] = "SILENCE";
+})(NonPulse || (NonPulse = {}));
+class Pulse {
+    constructor(value, frame) {
+        this.value = value;
+        this.frame = frame;
+    }
+}
+class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     constructor(tape) {
         this.state = TapeDecoderState.UNDECIDED;
-        this.programBytes = [];
-        this.oldSign = 0;
-        this.cycleSize = 0;
-        this.recentBits = 0;
-        this.bitCount = 0;
-        this.lastCrossingFrame = 0;
-        this.bits = [];
-        this.byteData = [];
+        this.peakThreshold = 4000;
         this.tape = tape;
+        this.samples = this.tape.originalSamples.samplesList[0];
+        this.period = Math.round(this.tape.sampleRate * 0.002); // 2ms period.
+        this.halfPeriod = Math.round(this.period / 2);
+        this.quarterPeriod = Math.round(this.period / 4);
     }
-    getName() {
-        return "High speed";
-    }
-    findNextProgram(startFrame) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        let programStartFrame = -1;
-        for (let frame = startFrame; frame < samples.length; frame++) {
-            this.handleSample(frame);
-            if (this.state === TapeDecoderState.DETECTED && programStartFrame === -1) {
-                programStartFrame = frame;
+    findNextProgram(frame) {
+        let count = 0;
+        while (count++ < 20) {
+            console.log('-------------------------------------');
+            const [_, pulse] = this.findNextPulse(frame, this.peakThreshold);
+            if (pulse === undefined) {
+                // Ran off the end of the tape.
+                return undefined;
             }
-            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
-                return new Program_Program(0, 0, programStartFrame, frame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
+            frame = pulse.frame;
+            const success = this.proofPulseDistance(frame);
+            if (success) {
+                const program = this.loadData(frame);
+                // TODO we should restart somewhere if we failed to load the program.
+                return program;
             }
+            // Jump forward 1/10 second.
+            frame += this.period * 50;
         }
         return undefined;
     }
-    handleSample(frame) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        const sample = samples[frame];
-        const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
-        // Detect zero-crossing.
-        if (this.oldSign !== 0 && newSign !== 0 && this.oldSign !== newSign) {
-            this.lastCrossingFrame = frame;
-            // Detect positive edge. That's the end of the cycle.
-            if (this.oldSign === -1) {
-                // Only consider cycles in the right range of periods.
-                if (this.cycleSize > 7 && this.cycleSize < 44) {
-                    // Long cycle is "0", short cycle is "1".
-                    const bit = this.cycleSize < 22;
-                    // Bits are MSb to LSb.
-                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
-                    // If we're in the program, add the bit to our stream.
-                    if (this.state === TapeDecoderState.DETECTED) {
-                        this.bitCount += 1;
-                        let bitType;
-                        if (this.bitCount === 1) {
-                            // Just got a start bit. Must be zero.
-                            if (bit) {
-                                bitType = BitType.BAD;
-                            }
-                            else {
-                                bitType = BitType.START;
-                            }
-                        }
-                        else {
-                            bitType = bit ? BitType.ONE : BitType.ZERO;
-                        }
-                        this.bits.push(new BitData(frame - this.cycleSize, frame, bitType));
-                        // Got enough bits for a byte (including the start bit).
-                        if (this.bitCount === 9) {
-                            this.programBytes.push(this.recentBits & 0xFF);
-                            this.bitCount = 0;
-                        }
-                    }
-                    else {
-                        // Detect end of header.
-                        if ((this.recentBits & 0xFFFFFFFF) === 0x5555557F) {
-                            this.state = TapeDecoderState.DETECTED;
-                            // No start bit on first byte.
-                            this.bitCount = 1;
-                            this.recentBits = 0;
-                        }
+    /**
+     * Verifies that we have pulses every period starting at frame.
+     */
+    proofPulseDistance(frame) {
+        console.log("Proofing starting at", frame, "with period", this.period);
+        for (let i = 0; i < 200; i++) {
+            const pulse = this.isPulseAt(frame);
+            if (!(pulse instanceof Pulse)) {
+                console.log("Did not find pulse at", frame);
+                return false;
+            }
+            frame = pulse.frame + this.period;
+        }
+        console.log("Proof successful");
+        return true;
+    }
+    loadData(startFrame) {
+        let recentBits = 0;
+        let frame = startFrame;
+        let foundSyncByte = false;
+        let bitCount = 0;
+        const bitData = [];
+        const byteData = [];
+        const binary = [];
+        while (true) {
+            const allowLateZeroPulse = !foundSyncByte && recentBits === SYNC_BYTE >> 1;
+            const bitResult = this.readBit(frame, allowLateZeroPulse);
+            if (bitResult === NonPulse.SILENCE) {
+                // End of program.
+                break;
+            }
+            if (bitResult === NonPulse.NOISE) {
+                const nextFrame = frame + this.period;
+                recentBits = (recentBits << 1) | 0;
+                bitData.push(new BitData(frame + this.quarterPeriod, nextFrame + this.quarterPeriod, BitType.BAD));
+                frame = nextFrame;
+            }
+            else {
+                const [bit, nextFrame] = bitResult;
+                recentBits = (recentBits << 1) | (bit ? 1 : 0);
+                bitData.push(new BitData(frame + this.quarterPeriod, nextFrame + this.quarterPeriod, bit ? BitType.ONE : BitType.ZERO));
+                if (foundSyncByte) {
+                    bitCount += 1;
+                    if (bitCount === 8) {
+                        let byteValue = recentBits & 0xFF;
+                        binary.push(byteValue);
+                        byteData.push(new ByteData(byteValue, bitData[bitData.length - 8].startFrame, bitData[bitData.length - 1].endFrame));
+                        bitCount = 0;
                     }
                 }
-                else if (this.state === TapeDecoderState.DETECTED &&
-                    this.programBytes.length > 0 && this.cycleSize > 66) {
-                    // 1.5 ms gap, end of recording.
-                    // TODO pull this out of zero crossing.
-                    this.state = TapeDecoderState.FINISHED;
+                else {
+                    if (recentBits === SYNC_BYTE) {
+                        foundSyncByte = true;
+                        bitCount = 0;
+                    }
                 }
-                // End of cycle, start a new one.
-                this.cycleSize = 0;
+                frame = nextFrame;
             }
         }
+        if (frame === startFrame) {
+            // Didn't read any bits.
+            return undefined;
+        }
+        // Remove trailing BAD bits, they're probably just think after the last bit.
+        while (bitData.length > 0 && bitData[bitData.length - 1].bitType == BitType.BAD) {
+            bitData.splice(bitData.length - 1, 1);
+        }
+        return new Program_Program(0, 0, startFrame, frame, this.getName(), this.numbersToBytes(binary), bitData, byteData);
+    }
+    /**
+     * Read a bit at position "frame", which should be the position of the previous bit's final pulse.
+     * @return the value of the bit and the new position of the zero pulse, or NonPulse if a bit
+     * couldn't be found.
+     */
+    readBit(frame, allowLateZeroPulse) {
+        // One pulse is half a period away.
+        const onePulse = this.isPulseAt(frame + this.halfPeriod);
+        const bit = onePulse instanceof Pulse;
+        // Zero pulse is one period away.
+        let zeroPulse = this.isPulseAt(frame + this.period);
+        if (!(zeroPulse instanceof Pulse)) {
+            if (allowLateZeroPulse) {
+                const [_, latePulse] = this.findNextPulse(frame + this.period, this.peakThreshold);
+                if (latePulse === undefined || latePulse.frame > frame + this.period * 3) {
+                    return zeroPulse;
+                }
+                zeroPulse = latePulse;
+            }
+            else {
+                return zeroPulse;
+            }
+        }
+        return [bit, zeroPulse.frame];
+    }
+    /**
+     * Converts an array of numbers to an array of bytes of those numbers.
+     */
+    numbersToBytes(numbers) {
+        const bytes = new Uint8Array(numbers.length);
+        for (let i = 0; i < bytes.length; i++) {
+            bytes[i] = numbers[i];
+        }
+        return bytes;
+    }
+    /**
+     * Look for the next pulse in the samples, starting at frame.
+     * @return the frame at the end of the pulse, and an optional pulse if one was found. If one was not
+     * found, then the frame ran off the end of the audio.
+     */
+    findNextPulse(frame, threshold) {
+        // Look for next position above the threshold.
+        while (frame < this.samples.length && this.samples[frame] < threshold) {
+            frame++;
+        }
+        if (frame >= this.samples.length) {
+            return [frame, undefined];
+        }
+        // Look for next position below the threshold. Keep track of peak value.
+        let maxValue = -32769;
+        let maxFrame = 0;
+        while (frame < this.samples.length && this.samples[frame] >= threshold) {
+            if (this.samples[frame] > maxValue) {
+                maxValue = this.samples[frame];
+                maxFrame = frame;
+            }
+            frame++;
+        }
+        if (frame >= this.samples.length) {
+            return [frame, undefined];
+        }
+        if (maxFrame === 0) {
+            throw new Error("Didn't find peak");
+        }
+        return [frame, new Pulse(maxValue, maxFrame)];
+    }
+    /**
+     * Look for a pulse around frame, returning it found, otherwise undefined.
+     */
+    isPulseAt(frame) {
+        const distance = Math.round(this.period / 4);
+        const pulseStart = frame - distance;
+        const pulseEnd = frame + distance;
+        if (pulseStart < 0 || pulseEnd >= this.samples.length) {
+            return NonPulse.SILENCE;
+        }
+        // Find min and max around frame.
+        let minValue = this.samples[pulseStart];
+        let maxValue = this.samples[pulseEnd];
+        let maxFrame = pulseStart;
+        for (let i = pulseStart; i <= pulseEnd; i++) {
+            const value = this.samples[i];
+            if (value < minValue) {
+                minValue = value;
+            }
+            if (value > maxValue) {
+                maxValue = value;
+                maxFrame = i;
+            }
+        }
+        let span = maxValue - minValue;
+        if (span > this.peakThreshold &&
+            this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
+            this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) {
+            return new Pulse(maxValue, maxFrame);
+        }
+        else if (span > this.peakThreshold / 2) {
+            return NonPulse.NOISE;
+        }
         else {
-            // Continue current cycle.
-            this.cycleSize += 1;
+            return NonPulse.SILENCE;
         }
-        if (newSign !== 0) {
-            this.oldSign = newSign;
-        }
-        if (this.state === TapeDecoderState.DETECTED && frame - this.lastCrossingFrame > MIN_SILENCE_FRAMES) {
-            this.state = TapeDecoderState.FINISHED;
-        }
+    }
+    getBinary() {
+        return new Uint8Array(0);
+    }
+    getBitData() {
+        return [];
+    }
+    getByteData() {
+        return [];
+    }
+    getName() {
+        return "Low speed (Anteo)";
     }
     getState() {
         return this.state;
     }
-    getBinary() {
-        const bytes = new Uint8Array(this.programBytes.length);
-        for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = this.programBytes[i];
-        }
-        return bytes;
-    }
-    getBitData() {
-        return this.bits;
-    }
-    getByteData() {
-        return this.byteData;
-    }
 }
 
-// CONCATENATED MODULE: ./src/Utils.ts
-/**
- * Convert a number to a string.
- *
- * @param n number to convert
- * @param base base of the number
- * @param size zero-pad to this many digits
- */
-function pad(n, base, size) {
-    let s = n.toString(base);
-    if (base === 16) {
-        // I prefer upper case hex.
-        s = s.toUpperCase();
-    }
-    while (s.length < size) {
-        s = "0" + s;
-    }
-    return s;
-}
-/**
- * Converts a Uint8Array to base64. Not super efficient, don't use on a huge array.
- */
-function base64EncodeUint8Array(array) {
-    let s = "";
-    array.forEach(c => s += String.fromCharCode(c));
-    return btoa(s);
-}
-/**
- * Remove all children from element.
- */
-function clearElement(e) {
-    while (e.firstChild) {
-        e.removeChild(e.firstChild);
-    }
-}
-/**
- * Flash the node as if a photo were taken.
- */
-function flashNode(node) {
-    // Position a semi-transparent white div over the screen, and reduce its transparency over time.
-    const oldNodePosition = node.style.position;
-    node.style.position = "relative";
-    const overlay = document.createElement("div");
-    overlay.style.position = "absolute";
-    overlay.style.left = "0";
-    overlay.style.top = "0";
-    overlay.style.right = "0";
-    overlay.style.bottom = "0";
-    overlay.style.backgroundColor = "#ffffff";
-    // Fade out.
-    let opacity = 1;
-    const updateOpacity = () => {
-        overlay.style.opacity = opacity.toString();
-        opacity -= 0.05;
-        if (opacity >= 0) {
-            window.requestAnimationFrame(updateOpacity);
-        }
-        else {
-            node.removeChild(overlay);
-            node.style.position = oldNodePosition;
-        }
-    };
-    updateOpacity();
-    node.appendChild(overlay);
-}
+// CONCATENATED MODULE: ./src/Decoder.ts
+// Uses tape decoders to work through the tape, finding programs and decoding them.
 
-// CONCATENATED MODULE: ./src/AudioUtils.ts
 
-class AudioFile {
-    constructor(rate, samples) {
-        this.rate = rate;
-        this.samples = samples;
-    }
-}
 /**
- * Simple high-pass filter.
- *
- * @param samples samples to filter.
- * @param size size of filter
- * @returns filtered samples.
+ * Candidate program. A decoded detected it, but it might not be as good as another candidate.
  */
-function highPassFilter(samples, size) {
-    const out = new Int16Array(samples.length);
-    let sum = 0;
-    for (let i = 0; i < size; i++) {
-        sum += samples[i];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    for (let i = size; i < samples.length; i++) {
-        sum += samples[i] - samples[i - size];
-        // Subtract out the average of the last "size" samples (to estimate local DC component).
-        out[i] = samples[i] - sum / size;
-    }
-    return out;
-}
-/**
- * @param frame the frame number to be described as a timestamp.
- * @param hz number of frames per second in original recording.
- * @param brief omit hour if zero, omit milliseconds and frame itself.
- */
-function frameToTimestamp(frame, hz, brief) {
-    const time = frame / hz;
-    let ms = Math.floor(time * 1000);
-    let sec = Math.floor(ms / 1000);
-    ms -= sec * 1000;
-    let min = Math.floor(sec / 60);
-    sec -= min * 60;
-    const hour = Math.floor(min / 60);
-    min -= hour * 60;
-    if (brief) {
-        return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2);
-    }
-    else {
-        return hour + ":" + pad(min, 10, 2) + ":" + pad(sec, 10, 2) + "." + pad(ms, 10, 3) + " (frame " + frame + ")";
-    }
-}
-/**
- * Concatenate a list of audio samples into one.
- */
-function concatAudio(samplesList) {
-    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
-    const allSamples = new Int16Array(length);
-    let offset = 0;
-    for (const samples of samplesList) {
-        allSamples.set(samples, offset);
-        offset += samples.length;
-    }
-    return allSamples;
-}
-/**
- * Clamp the number to the range of signed 16-bit int.
- */
-function clampToInt16(x) {
-    return Math.max(Math.min(x, 32767), -32768);
-}
-
-// CONCATENATED MODULE: ./src/ByteData.ts
-/**
- * Information about one particular byte (its position).
- */
-class ByteData {
-    /**
-     * Create an object representing a byte.
-     *
-     * @param value the byte value (0-255).
-     * @param startFrame the first frame, inclusive.
-     * @param endFrame the last frame, inclusive.
-     */
-    constructor(value, startFrame, endFrame) {
-        this.value = value;
+class Candidate {
+    constructor(tapeDecoder, startFrame, endFrame) {
+        this.tapeDecoder = tapeDecoder;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
+    }
+    /**
+     * Whether this candidate is strictly nested in the other candidate, with margin to spare.
+     */
+    isNestedIn(candidate, marginFrames) {
+        return this.startFrame > candidate.startFrame &&
+            this.endFrame < candidate.endFrame &&
+            (this.startFrame > candidate.startFrame + marginFrames ||
+                this.endFrame < candidate.endFrame - marginFrames);
+    }
+}
+/**
+ * Represents either the beginning or end of a candidate.
+ */
+class Transition {
+    constructor(candidate, isStart, frame) {
+        this.candidate = candidate;
+        this.isStart = isStart;
+        this.frame = frame;
+    }
+}
+/**
+ * Uses various decoders to decode an audio file.
+ */
+class Decoder_Decoder {
+    constructor(tape) {
+        this.tape = tape;
+    }
+    /**
+     * Decode the tape, populating the tape's "programs" array.
+     */
+    decode() {
+        let sampleLength = this.tape.filteredSamples.samplesList[0].length;
+        let trackNumber = 0;
+        let copyNumber = 0;
+        // All decoders we're interested in.
+        let tapeDecoderFactories = [
+            // () => new LowSpeedTapeDecoder(this.tape, true),
+            // () => new LowSpeedTapeDecoder(this.tape, false),
+            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape),
+        ];
+        // All programs we detect.
+        const candidates = [];
+        // Try each decoder, feeding it the whole tape.
+        for (const tapeDecoderFactory of tapeDecoderFactories) {
+            let startFrame = 0;
+            while (true) {
+                let tapeDecoder = tapeDecoderFactory();
+                const program = tapeDecoder.findNextProgram(startFrame);
+                if (program === undefined) {
+                    break;
+                }
+                candidates.push(program);
+                startFrame = program.endFrame;
+            }
+        }
+        console.log(candidates); // TODO remove
+        /*
+        // Make a sorted list of start/end of candidates.
+        const transitions: Transition[] = [];
+        for (const candidate of candidates) {
+            transitions.push(new Transition(candidate, true, candidate.startFrame));
+            transitions.push(new Transition(candidate, false, candidate.endFrame));
+        }
+        transitions.sort((a, b) => a.frame - b.frame);
+
+        // Go through them, keeping track of which candidates are active, and deleting
+        // clearly bad candidates (those completely nested in others).
+        candidates.splice(0, candidates.length);
+        const activeCandidates: Candidate[] = [];
+        for (const transition of transitions) {
+            // See if this new one is nested in an active one.
+            if (transition.isStart) {
+                let keepCandidate = true;
+                for (const candidate of activeCandidates) {
+                    if (transition.candidate.isNestedIn(candidate, this.tape.sampleRate * 0.1)) {
+                        keepCandidate = false;
+                        break;
+                    }
+                }
+
+                if (keepCandidate) {
+                    activeCandidates.push(transition.candidate);
+                    candidates.push(transition.candidate);
+                }
+            } else {
+                const index = activeCandidates.indexOf(transition.candidate);
+                if (index !== -1) {
+                    activeCandidates.splice(index, 1);
+                }
+            }
+        }
+
+        // Go through the candidates and eliminate bad ones. TODO remove
+        candidates.sort((a, b) => a.startFrame - b.startFrame);
+*/
+        // Convert remaining candidates to programs.
+        for (const candidate of candidates) {
+            // Skip very short programs, they're mis-detects.
+            if (candidate.endFrame - candidate.startFrame > this.tape.sampleRate / 10) {
+                let newTrack = false; // TODO
+                /*
+                                    // TODO See how long it took to find it. A large gap means a new track.
+                                    const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
+                                    newTrack = trackNumber === 0 || leadTime > 10;
+                                    programStartFrame = frame;
+                }
+                 */
+                if (newTrack) {
+                    trackNumber++;
+                    copyNumber = 1;
+                    newTrack = false;
+                }
+                else {
+                    copyNumber += 1;
+                }
+                candidate.trackNumber = trackNumber;
+                candidate.copyNumber = copyNumber;
+                candidate.setReconstructedSamples(this.encodeHighSpeed(candidate.binary));
+                this.tape.addProgram(candidate);
+            }
+        }
+    }
+    /**
+     * Tapes a binary (potentially read at low speed) and generates a clean high-speed audio.
+     */
+    encodeHighSpeed(binary) {
+        // Low-speed programs end in two 0x00, but high-speed programs
+        // end in three 0x00. Add the additional 0x00 since we're
+        // saving high-speed.
+        let highSpeedBytes;
+        if (binary.length >= 3 &&
+            binary[binary.length - 1] === 0x00 &&
+            binary[binary.length - 2] === 0x00 &&
+            binary[binary.length - 3] !== 0x00) {
+            highSpeedBytes = new Uint8Array(binary.length + 1);
+            highSpeedBytes.set(binary);
+            highSpeedBytes[highSpeedBytes.length - 1] = 0x00;
+        }
+        else {
+            highSpeedBytes = binary;
+        }
+        return encodeHighSpeed(highSpeedBytes, this.tape.sampleRate);
     }
 }
 
@@ -2381,302 +2787,6 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     }
     getByteData() {
         return this.byteData;
-    }
-}
-
-// CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
-
-/**
- * Generate one cycle of a sine wave.
- * @param length number of samples in the full cycle.
- * @return audio samples for one cycle.
- */
-function generateCycle(length) {
-    const audio = new Int16Array(length);
-    for (let i = 0; i < length; i++) {
-        const t = 2 * Math.PI * i / length;
-        // -0.5 to 0.5, matches recorded audio.
-        audio[i] = Math.sin(t) * 16384;
-    }
-    return audio;
-}
-/**
- * Generate a half cycle that fades off to zero instead of coming down hard to zero.
- *
- * @param length number of samples to generate.
- * @param previousBit the previous cycle, so we copy the ending slope.
- */
-function generateFinalHalfCycle(length, previousBit) {
-    // Copy the slope of the end of the zero bit.
-    const slope = previousBit[previousBit.length - 1] - previousBit[previousBit.length - 2];
-    // Points on the Bezier.
-    const x1 = 0;
-    const y1 = 0;
-    const y2 = 32767;
-    const x2 = (y2 - y1 + x1 * slope) / slope;
-    const x3 = length / 2;
-    const y3 = 0;
-    const x4 = length - 1;
-    const y4 = 0;
-    // Generated audio;
-    const audio = new Int16Array(length);
-    // Go through Bezier in small steps.
-    let position = 0;
-    for (let i = 0; i <= 128; i++) {
-        const t = i / 128.0;
-        // Compute Bezier value.
-        const x12 = x1 + (x2 - x1) * t;
-        const y12 = y1 + (y2 - y1) * t;
-        const x23 = x2 + (x3 - x2) * t;
-        const y23 = y2 + (y3 - y2) * t;
-        const x34 = x3 + (x4 - x3) * t;
-        const y34 = y3 + (y4 - y3) * t;
-        const x123 = x12 + (x23 - x12) * t;
-        const y123 = y12 + (y23 - y12) * t;
-        const x234 = x23 + (x34 - x23) * t;
-        const y234 = y23 + (y34 - y23) * t;
-        const x1234 = x123 + (x234 - x123) * t;
-        const y1234 = y123 + (y234 - y123) * t;
-        // Draw a crude horizontal line from the previous point.
-        const newPosition = Math.min(Math.floor(x1234), length - 1);
-        while (position <= newPosition) {
-            audio[position] = y1234;
-            position += 1;
-        }
-    }
-    // Finish up anything left.
-    while (position <= length - 1) {
-        audio[position] = 0;
-        position += 1;
-    }
-    return audio;
-}
-/**
- * Adds the byte "b" to the samples list, most significant bit first.
- * @param samplesList list of samples we're adding to.
- * @param b byte to generate.
- * @param zero samples for a zero bit.
- * @param one samples for a one bit.
- */
-function addByte(samplesList, b, zero, one) {
-    // MSb first.
-    for (let i = 7; i >= 0; i--) {
-        if ((b & (1 << i)) != 0) {
-            samplesList.push(one);
-        }
-        else {
-            samplesList.push(zero);
-        }
-    }
-}
-/**
- * Encode the sequence of bytes as an array of audio samples for high-speed (1500 baud) cassettes.
- */
-function encodeHighSpeed(bytes, sampleRate) {
-    // Length of a zero bit, in samples.
-    const ZERO_LENGTH = Math.round(0.00072 * sampleRate);
-    // Length of a one bit, in samples.
-    const ONE_LENGTH = Math.round(0.00034 * sampleRate);
-    // Samples representing a zero bit.
-    const zero = generateCycle(ZERO_LENGTH);
-    // Samples representing a one bit.
-    const one = generateCycle(ONE_LENGTH);
-    // Samples representing a long zero bit. This is the first start bit
-    // after the end of the header. It's 1 ms longer than a regular zero.
-    const LONG_ZERO = generateCycle(ZERO_LENGTH + sampleRate / 1000);
-    // The final cycle in the entire waveform, which is necessary
-    // to force that last negative-to-positive transition (and interrupt).
-    // We could just use a simple half cycle here, but it's nicer to do
-    // something like the original analog.
-    const FINAL_HALF_CYCLE = generateFinalHalfCycle(ZERO_LENGTH * 3, zero);
-    // List of samples.
-    const samplesList = [];
-    // Start with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
-    // Header of 0x55.
-    for (let i = 0; i < 256; i++) {
-        addByte(samplesList, 0x55, zero, one);
-    }
-    // End of header.
-    addByte(samplesList, 0x7F, zero, one);
-    // Write program.
-    let firstStartBit = true;
-    for (const b of bytes) {
-        // Start bit.
-        if (firstStartBit) {
-            samplesList.push(LONG_ZERO);
-            firstStartBit = false;
-        }
-        else {
-            samplesList.push(zero);
-        }
-        addByte(samplesList, b, zero, one);
-    }
-    // Finish off the last cycle, so that it generates an interrupt.
-    samplesList.push(FINAL_HALF_CYCLE);
-    // End with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
-    // Concatenate all samples.
-    return concatAudio(samplesList);
-}
-
-// CONCATENATED MODULE: ./src/Decoder.ts
-// Uses tape decoders to work through the tape, finding programs and decoding them.
-
-
-
-/**
- * Candidate program. A decoded detected it, but it might not be as good as another candidate.
- */
-class Candidate {
-    constructor(tapeDecoder, startFrame, endFrame) {
-        this.tapeDecoder = tapeDecoder;
-        this.startFrame = startFrame;
-        this.endFrame = endFrame;
-    }
-    /**
-     * Whether this candidate is strictly nested in the other candidate, with margin to spare.
-     */
-    isNestedIn(candidate, marginFrames) {
-        return this.startFrame > candidate.startFrame &&
-            this.endFrame < candidate.endFrame &&
-            (this.startFrame > candidate.startFrame + marginFrames ||
-                this.endFrame < candidate.endFrame - marginFrames);
-    }
-}
-/**
- * Represents either the beginning or end of a candidate.
- */
-class Transition {
-    constructor(candidate, isStart, frame) {
-        this.candidate = candidate;
-        this.isStart = isStart;
-        this.frame = frame;
-    }
-}
-/**
- * Uses various decoders to decode an audio file.
- */
-class Decoder_Decoder {
-    constructor(tape) {
-        this.tape = tape;
-    }
-    /**
-     * Decode the tape, populating the tape's "programs" array.
-     */
-    decode() {
-        let sampleLength = this.tape.filteredSamples.samplesList[0].length;
-        let trackNumber = 0;
-        let copyNumber = 0;
-        // All decoders we're interested in.
-        let tapeDecoderFactories = [
-            () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, true),
-            () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, false),
-            // () => new LowSpeedAnteoTapeDecoder(this.tape),
-            () => new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
-        ];
-        // All programs we detect.
-        const candidates = [];
-        // Try each decoder, feeding it the whole tape.
-        for (const tapeDecoderFactory of tapeDecoderFactories) {
-            let startFrame = 0;
-            while (true) {
-                let tapeDecoder = tapeDecoderFactory();
-                const program = tapeDecoder.findNextProgram(startFrame);
-                if (program === undefined) {
-                    break;
-                }
-                candidates.push(program);
-                startFrame = program.endFrame;
-            }
-        }
-        console.log(candidates); // TODO remove
-        /*
-        // Make a sorted list of start/end of candidates.
-        const transitions: Transition[] = [];
-        for (const candidate of candidates) {
-            transitions.push(new Transition(candidate, true, candidate.startFrame));
-            transitions.push(new Transition(candidate, false, candidate.endFrame));
-        }
-        transitions.sort((a, b) => a.frame - b.frame);
-
-        // Go through them, keeping track of which candidates are active, and deleting
-        // clearly bad candidates (those completely nested in others).
-        candidates.splice(0, candidates.length);
-        const activeCandidates: Candidate[] = [];
-        for (const transition of transitions) {
-            // See if this new one is nested in an active one.
-            if (transition.isStart) {
-                let keepCandidate = true;
-                for (const candidate of activeCandidates) {
-                    if (transition.candidate.isNestedIn(candidate, this.tape.sampleRate * 0.1)) {
-                        keepCandidate = false;
-                        break;
-                    }
-                }
-
-                if (keepCandidate) {
-                    activeCandidates.push(transition.candidate);
-                    candidates.push(transition.candidate);
-                }
-            } else {
-                const index = activeCandidates.indexOf(transition.candidate);
-                if (index !== -1) {
-                    activeCandidates.splice(index, 1);
-                }
-            }
-        }
-
-        // Go through the candidates and eliminate bad ones. TODO remove
-        candidates.sort((a, b) => a.startFrame - b.startFrame);
-*/
-        // Convert remaining candidates to programs.
-        for (const candidate of candidates) {
-            // Skip very short programs, they're mis-detects.
-            if (candidate.endFrame - candidate.startFrame > this.tape.sampleRate / 10) {
-                let newTrack = false; // TODO
-                /*
-                                    // TODO See how long it took to find it. A large gap means a new track.
-                                    const leadTime = (frame - searchFrameStart) / this.tape.sampleRate;
-                                    newTrack = trackNumber === 0 || leadTime > 10;
-                                    programStartFrame = frame;
-                }
-                 */
-                if (newTrack) {
-                    trackNumber++;
-                    copyNumber = 1;
-                    newTrack = false;
-                }
-                else {
-                    copyNumber += 1;
-                }
-                candidate.trackNumber = trackNumber;
-                candidate.copyNumber = copyNumber;
-                candidate.setReconstructedSamples(this.encodeHighSpeed(candidate.binary));
-                this.tape.addProgram(candidate);
-            }
-        }
-    }
-    /**
-     * Tapes a binary (potentially read at low speed) and generates a clean high-speed audio.
-     */
-    encodeHighSpeed(binary) {
-        // Low-speed programs end in two 0x00, but high-speed programs
-        // end in three 0x00. Add the additional 0x00 since we're
-        // saving high-speed.
-        let highSpeedBytes;
-        if (binary.length >= 3 &&
-            binary[binary.length - 1] === 0x00 &&
-            binary[binary.length - 2] === 0x00 &&
-            binary[binary.length - 3] !== 0x00) {
-            highSpeedBytes = new Uint8Array(binary.length + 1);
-            highSpeedBytes.set(binary);
-            highSpeedBytes[highSpeedBytes.length - 1] = 0x00;
-        }
-        else {
-            highSpeedBytes = binary;
-        }
-        return encodeHighSpeed(highSpeedBytes, this.tape.sampleRate);
     }
 }
 
@@ -21804,16 +21914,15 @@ function readWavFile(arrayBuffer) {
 // CONCATENATED MODULE: ./src/LowSpeedTapeEncoder.ts
 
 /**
- * Generate one cycle of a sine wave.
- * @param length number of samples in the full cycle.
- * @return audio samples for one cycle.
+ * Generate one pulse for 500 baud audio.
  */
-function LowSpeedTapeEncoder_generateCycle(length) {
+function generatePulse(length) {
     const audio = new Int16Array(length);
-    for (let i = 0; i < length; i++) {
-        const t = 2 * Math.PI * i / length;
+    // Center it in the audio.
+    for (let i = 0; i < length / 2; i++) {
+        const t = 2 * Math.PI * i / (length / 2);
         // -0.5 to 0.5, matches recorded audio.
-        audio[i] = Math.sin(t) * 16384;
+        audio[i + length / 4] = Math.sin(t) * 16384;
     }
     return audio;
 }
@@ -21848,7 +21957,7 @@ function encodeLowSpeed(bytes, sampleRate) {
     // Length of one cycle, in samples. They're all 1ms.
     const CYCLE_LENGTH = Math.round(0.001 * sampleRate);
     // Samples representing one cycle.
-    const cycle = LowSpeedTapeEncoder_generateCycle(CYCLE_LENGTH);
+    const cycle = generatePulse(CYCLE_LENGTH);
     // Samples representing 1ms of silence.
     const silence = new Int16Array(CYCLE_LENGTH);
     // List of samples.
