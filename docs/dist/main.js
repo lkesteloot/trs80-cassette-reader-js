@@ -2224,6 +2224,7 @@ var BitType;
 
 
 
+
 const SYNC_BYTE = 0xA5;
 // When not finding a pulse, what kind of audio we found.
 var NonPulse;
@@ -2247,9 +2248,9 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
     }
-    findNextProgram(frame) {
+    findNextProgram(frame, annotations) {
         let count = 0;
-        while (count++ < 20) {
+        while (count++ < 20) { // TODO is 20 good? We may find 20 false starts?
             console.log('-------------------------------------');
             const [_, pulse] = this.findNextPulse(frame, this.peakThreshold);
             if (pulse === undefined) {
@@ -2257,7 +2258,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 return undefined;
             }
             frame = pulse.frame;
-            const success = this.proofPulseDistance(frame);
+            const success = this.proofPulseDistance(frame, annotations);
             if (success) {
                 const program = this.loadData(frame);
                 // TODO we should restart somewhere if we failed to load the program.
@@ -2271,12 +2272,14 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     /**
      * Verifies that we have pulses every period starting at frame.
      */
-    proofPulseDistance(frame) {
+    proofPulseDistance(frame, annotations) {
+        const initialFrame = frame;
         console.log("Proofing starting at", frame, "with period", this.period);
         for (let i = 0; i < 200; i++) {
             const pulse = this.isPulseAt(frame);
             if (!(pulse instanceof Pulse)) {
                 console.log("Did not find pulse at", frame);
+                annotations.push(new WaveformAnnotation("Failed", initialFrame, frame));
                 return false;
             }
             frame = pulse.frame + this.period;
@@ -2504,7 +2507,8 @@ class Decoder_Decoder {
         let sampleLength = this.tape.filteredSamples.samplesList[0].length;
         let trackNumber = 0;
         let copyNumber = 0;
-        // All decoders we're interested in.
+        // All decoders we're interested in. We use factories because they're created
+        // multiple times, once for each program found.
         let tapeDecoderFactories = [
             // () => new LowSpeedTapeDecoder(this.tape, true),
             // () => new LowSpeedTapeDecoder(this.tape, false),
@@ -2512,12 +2516,14 @@ class Decoder_Decoder {
         ];
         // All programs we detect.
         const candidates = [];
+        // Clear all annotations.
+        this.tape.annotations.splice(0, this.tape.annotations.length);
         // Try each decoder, feeding it the whole tape.
         for (const tapeDecoderFactory of tapeDecoderFactories) {
             let startFrame = 0;
             while (true) {
                 let tapeDecoder = tapeDecoderFactory();
-                const program = tapeDecoder.findNextProgram(startFrame);
+                const program = tapeDecoder.findNextProgram(startFrame, this.tape.annotations);
                 if (program === undefined) {
                     break;
                 }
@@ -2679,7 +2685,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     getName() {
         return "Low speed" + (this.invert ? " (Inv)" : "");
     }
-    findNextProgram(startFrame) {
+    findNextProgram(startFrame, annotations) {
         const samples = this.tape.lowSpeedSamples.samplesList[0];
         let programStartFrame = -1;
         for (let frame = startFrame; frame < samples.length; frame++) {
@@ -2804,6 +2810,7 @@ class Tape_Tape {
      * @param audioFile original samples from the tape.
      */
     constructor(name, audioFile) {
+        this.annotations = [];
         this.name = name;
         this.originalSamples = new DisplaySamples(audioFile.samples);
         this.filteredSamples = new DisplaySamples(highPassFilter(audioFile.samples, 500));
@@ -20560,6 +20567,10 @@ class WaveformDisplay_WaveformDisplay {
          * Listeners of the zoom property.
          */
         this.onZoom = new dist["SimpleEventDispatcher"]();
+        /**
+         * List of annotations to display in the displays.
+         */
+        this.annotations = [];
     }
     /**
      * Add a waveform to display.
@@ -20586,6 +20597,12 @@ class WaveformDisplay_WaveformDisplay {
      */
     addProgram(program) {
         this.programs.push(program);
+    }
+    /**
+     * Set the list of annotations. A reference will be kept to this list.
+     */
+    setAnnotations(annotations) {
+        this.annotations = annotations;
     }
     /**
      * Update the current highlight.
@@ -20791,6 +20808,7 @@ class WaveformDisplay_WaveformDisplay {
         const samples = samplesList[this.zoom];
         const mag = Math.pow(2, this.zoom);
         const centerSample = Math.floor(this.centerSample / mag);
+        // From zoom space sample to X.
         const frameToX = (i) => Math.floor(width / 2) + (i - centerSample);
         // Compute viewing window in zoom space.
         const firstSample = Math.max(centerSample - Math.floor(width / 2), 0);
@@ -20930,7 +20948,42 @@ class WaveformDisplay_WaveformDisplay {
         if (drawingLine) {
             ctx.stroke();
         }
+        // Find entry in annotations just before our first sample.
+        let index = 0; // this.findFirstAnnotation(firstOrigSample);
+        if (index !== undefined) {
+            // Draw annotations.
+            ctx.strokeStyle = braceColor;
+            while (index < this.annotations.length) {
+                const annotation = this.annotations[index];
+                const x1 = frameToX(annotation.firstIndex / mag);
+                const x2 = frameToX(annotation.lastIndex / mag);
+                this.drawBraceAndLabel(ctx, x1, x2, braceColor, annotation.text, labelColor);
+                index++;
+            }
+        }
     }
+    /**
+     * Find the index of the first annotation at or after firstSample, or undefined
+     * if no annotations are at or after it.
+     */
+    /*
+    private findFirstAnnotation(firstSample: number): number | undefined {
+        let low = 0;
+        let high = this.annotations.length - 1;
+        while (low <= high && this.annotations[high].frame >= firstSample) {
+            if (low === high) {
+                return low;
+            }
+            let mid = Math.floor((low + high)/2);
+            if (this.annotations[mid].frame < firstSample) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+
+        return undefined;
+    }*/
     /**
      * Set the zoom level to a particular value.
      */
@@ -21012,11 +21065,16 @@ class WaveformDisplay_WaveformDisplay {
         const lineY = top + 20;
         ctx.beginPath();
         ctx.moveTo(left, bottom);
-        ctx.arcTo(left, lineY, left + radius, lineY, radius);
-        ctx.arcTo(middle, lineY, middle, top, radius);
-        ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
-        ctx.arcTo(right, lineY, right, lineY + radius, radius);
-        ctx.lineTo(right, bottom);
+        if (left === right) {
+            ctx.lineTo(left, top);
+        }
+        else {
+            ctx.arcTo(left, lineY, left + radius, lineY, radius);
+            ctx.arcTo(middle, lineY, middle, top, radius);
+            ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
+            ctx.arcTo(right, lineY, right, lineY + radius, radius);
+            ctx.lineTo(right, bottom);
+        }
         ctx.stroke();
     }
     /**
@@ -21382,6 +21440,7 @@ class TapeBrowser_TapeBrowser {
      * Make the lower-right pane of original waveforms.
      */
     makeOriginalSamplesWaveforms(waveforms) {
+        this.originalWaveformDisplay.setAnnotations(this.tape.annotations);
         this.makeWaveforms(waveforms, this.originalWaveformDisplay, [
             {
                 label: "Original waveform:",
