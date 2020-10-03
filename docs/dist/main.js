@@ -20668,7 +20668,7 @@ class WaveformDisplay_WaveformDisplay {
         this.onMaxZoom.subscribe(maxZoom => input.min = (-maxZoom).toString());
         this.onZoom.subscribe(zoom => input.value = (-zoom).toString());
         input.addEventListener("input", () => {
-            this.setZoom(-parseInt(input.value));
+            this.setZoom(-parseInt(input.value), undefined);
         });
         return label;
     }
@@ -20680,10 +20680,14 @@ class WaveformDisplay_WaveformDisplay {
         let dragInitialX = 0;
         let dragInitialCenterSample = 0;
         let inCanvas = false;
+        let holdingShift = false;
         let holdingAlt = false;
         let selectionStart = undefined;
         const updateCursor = () => {
-            canvas.style.cursor = holdingAlt ? "auto" : dragging ? "grabbing" : "grab";
+            canvas.style.cursor = holdingShift ? (holdingAlt ? "zoom-out" : "zoom-in")
+                : holdingAlt ? "auto"
+                    : dragging ? "grabbing"
+                        : "grab";
         };
         updateCursor();
         // Mouse enter/leave events.
@@ -20697,7 +20701,18 @@ class WaveformDisplay_WaveformDisplay {
         });
         // Mouse click events.
         canvas.addEventListener("mousedown", event => {
-            if (holdingAlt) {
+            if (holdingShift) {
+                if (holdingAlt) {
+                    // Zoom out.
+                    this.setZoom(this.zoom + 1, event.offsetX);
+                }
+                else {
+                    // Zoom in.
+                    this.setZoom(this.zoom - 1, event.offsetX);
+                }
+            }
+            else if (holdingAlt) {
+                // Start selecting.
                 const frame = this.screenXToOriginalFrame(event.offsetX);
                 const highlight = this.highlightAt(frame);
                 if (highlight !== undefined) {
@@ -20706,6 +20721,7 @@ class WaveformDisplay_WaveformDisplay {
                 }
             }
             else {
+                // Start pan.
                 dragging = true;
                 dragInitialX = event.offsetX;
                 dragInitialCenterSample = this.centerSample;
@@ -20749,12 +20765,20 @@ class WaveformDisplay_WaveformDisplay {
                     holdingAlt = true;
                     updateCursor();
                 }
+                if (event.key === "Shift") {
+                    holdingShift = true;
+                    updateCursor();
+                }
             }
         });
         document.addEventListener("keyup", event => {
             if (inCanvas) {
                 if (event.key === "Alt") {
                     holdingAlt = false;
+                    updateCursor();
+                }
+                if (event.key === "Shift") {
+                    holdingShift = false;
                     updateCursor();
                 }
             }
@@ -20986,26 +21010,22 @@ class WaveformDisplay_WaveformDisplay {
     }*/
     /**
      * Set the zoom level to a particular value.
+     *
+     * @param zoom new zoom level.
+     * @param screenX pixel to keep at the same place, or undefined to mean the horizontal center.
      */
-    setZoom(zoom) {
+    setZoom(zoom, screenX) {
+        if (screenX === undefined) {
+            screenX = Math.round(this.displayWidth / 2);
+        }
         const newZoom = Math.min(Math.max(0, zoom), this.maxZoom);
         if (newZoom !== this.zoom) {
+            const frame = this.screenXToOriginalFrame(screenX);
             this.zoom = newZoom;
+            this.centerSample = frame - Math.round((screenX - this.displayWidth / 2) * Math.pow(2, newZoom));
             this.onZoom.dispatch(newZoom);
             this.draw();
         }
-    }
-    /**
-     * Zoom in one level.
-     */
-    zoomIn() {
-        this.setZoom(this.zoom - 1);
-    }
-    /**
-     * Zoom out one level.
-     */
-    zoomOut() {
-        this.setZoom(this.zoom + 1);
     }
     /**
      * Zoom to fit a particular bit.
@@ -21024,7 +21044,7 @@ class WaveformDisplay_WaveformDisplay {
         // Visually centered sample (in level 0).
         this.centerSample = Math.floor((startFrame + endFrame) / 2);
         // Find appropriate zoom.
-        this.setZoom(this.computeFitLevel(sampleCount));
+        this.setZoom(this.computeFitLevel(sampleCount), undefined);
         this.draw();
     }
     /**
@@ -21066,7 +21086,7 @@ class WaveformDisplay_WaveformDisplay {
         ctx.beginPath();
         ctx.moveTo(left, bottom);
         if (left === right) {
-            ctx.lineTo(left, top);
+            ctx.lineTo(left, lineY);
         }
         else {
             ctx.arcTo(left, lineY, left + radius, lineY, radius);
