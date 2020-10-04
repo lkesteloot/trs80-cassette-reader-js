@@ -2249,8 +2249,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         this.quarterPeriod = Math.round(this.period / 4);
     }
     findNextProgram(frame, annotations) {
-        let count = 0;
-        while (count++ < 20) { // TODO is 20 good? We may find 20 false starts?
+        while (true) {
             console.log('-------------------------------------');
             const [_, pulse] = this.findNextPulse(frame, this.peakThreshold);
             if (pulse === undefined) {
@@ -2261,13 +2260,13 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             const success = this.proofPulseDistance(frame, annotations);
             if (success) {
                 const program = this.loadData(frame);
-                // TODO we should restart somewhere if we failed to load the program.
-                return program;
+                if (program != undefined && program.binary.length > 0) {
+                    return program;
+                }
             }
             // Jump forward 1/10 second.
             frame += this.period * 50;
         }
-        return undefined;
     }
     /**
      * Verifies that we have pulses every period starting at frame.
