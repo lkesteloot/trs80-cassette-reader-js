@@ -22141,10 +22141,36 @@ class Uploader_Uploader {
     }
     handleArrayBuffer(pathname, arrayBuffer) {
         const rate = 44100;
-        const audioFile = pathname.toLowerCase().endsWith(".cas")
-            ? new AudioFile(rate, encodeLowSpeed(new Uint8Array(arrayBuffer), rate))
-            : readWavFile(arrayBuffer);
+        let audioFile;
+        if (pathname.toLowerCase().endsWith(".cas")) {
+            audioFile = new AudioFile(rate, encodeLowSpeed(new Uint8Array(arrayBuffer), rate));
+        }
+        else if (pathname.toLowerCase().endsWith(".bas")) {
+            const buffers = [
+                new Uint8Array(256),
+                new Uint8Array([0xA5, 0xD3, 0xD3, 0xD3]),
+                new Uint8Array(arrayBuffer),
+            ];
+            const allBytes = this.concatByteArrays(buffers);
+            audioFile = new AudioFile(rate, encodeLowSpeed(allBytes, rate));
+        }
+        else {
+            audioFile = readWavFile(arrayBuffer);
+        }
         this.handleAudioBuffer(pathname, audioFile);
+    }
+    /**
+     * Concatenate a list of byte arrays into one.
+     */
+    concatByteArrays(samplesList) {
+        const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
+        const allBytes = new Uint8Array(length);
+        let offset = 0;
+        for (const samples of samplesList) {
+            allBytes.set(samples, offset);
+            offset += samples.length;
+        }
+        return allBytes;
     }
     dropHandler(ev) {
         // Prevent default behavior (Prevent file from being opened)
