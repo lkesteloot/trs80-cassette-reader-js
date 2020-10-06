@@ -8472,8 +8472,9 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     let offset = 0;
     let address = systemProgram.chunks[0].loadAddress;
     for (const chunk of systemProgram.chunks) {
-        console.log("Expected", address, "but got", chunk.loadAddress);
         if (chunk.loadAddress !== address) {
+            // If we get this, we need to modify Disasm to get chunks.
+            console.log("Expected", address, "but got", chunk.loadAddress);
             address = chunk.loadAddress;
         }
         binary.set(chunk.data, offset);
@@ -21650,9 +21651,9 @@ class TapeCassette extends TapeBrowser_Int16Cassette {
         const samples = tape.originalSamples.samplesList[0];
         // Start one second before the official program start, so that the machine
         // can detect the header.
-        const begin = Math.max(0, program.startFrame - tape.sampleRate);
+        const begin = program === undefined ? 0 : Math.max(0, program.startFrame - tape.sampleRate);
         // Go until one second after the detected end of our program.
-        const end = Math.min(samples.length, program.endFrame + tape.sampleRate);
+        const end = program === undefined ? samples.length : Math.min(samples.length, program.endFrame + tape.sampleRate);
         super(samples.subarray(begin, end), tape.sampleRate);
     }
 }
@@ -22018,11 +22019,14 @@ class TapeBrowser_TapeBrowser {
         controlPanel.addTapeRewindButton(() => {
             cassette.rewind();
         });
-        controlPanel.addScreenshotButton(() => {
-            const screenshot = trs80.getScreenshot();
-            program.setScreenshot(screenshot);
-            this.tape.saveUserData();
-        });
+        if (program !== undefined) {
+            // TODO: Could add screenshot to tape.
+            controlPanel.addScreenshotButton(() => {
+                const screenshot = trs80.getScreenshot();
+                program.setScreenshot(screenshot);
+                this.tape.saveUserData();
+            });
+        }
         const progressBar = new ProgressBar(screen.getNode());
         cassette.setProgressBar(progressBar);
         trs80.reset();
@@ -22081,6 +22085,20 @@ class TapeBrowser_TapeBrowser {
         // Create panes for each program.
         let previousTrackNumber = -1;
         let firstCopyOfTrack = undefined;
+        // Add a pane to the top-right, register it, and add it to table of contents.
+        const addPane = (label, pane) => {
+            pane.element.classList.add("pane");
+            pane.element.classList.add("hidden");
+            this.topData.appendChild(pane.element);
+            this.panes.push(pane);
+            pane.row = addRow("    " + label, () => {
+                this.showPane(pane);
+            });
+        };
+        // Header for taoe.
+        const row = addRow("Whole tape");
+        row.classList.add("program_title");
+        addPane("Emulator", this.makeEmulatorPane(undefined, new TapeCassette(this.tape, undefined)));
         for (const program of this.tape.programs) {
             let duplicateCopy = false;
             sectionDiv = addSection();
@@ -22101,16 +22119,6 @@ class TapeBrowser_TapeBrowser {
                     duplicateCopy = true;
                 }
             }
-            // Add a pane to the top-right, register it, and add it to table of contents.
-            const addPane = (label, pane) => {
-                pane.element.classList.add("pane");
-                pane.element.classList.add("hidden");
-                this.topData.appendChild(pane.element);
-                this.panes.push(pane);
-                pane.row = addRow("    " + label, () => {
-                    this.showPane(pane);
-                });
-            };
             // Make these panes here so they're accessible from the metadata page.
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
             const systemPane = program.isSystemProgram() ? this.makeSystemPane(program) : undefined;
