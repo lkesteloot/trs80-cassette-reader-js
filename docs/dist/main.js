@@ -2243,10 +2243,15 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         this.state = TapeDecoderState.UNDECIDED;
         this.peakThreshold = 4000;
         this.tape = tape;
-        if (true) {
-            this.samples = this.tape.originalSamples.samplesList[0];
+        if (false) {}
+        else {
+            // Invert samples.
+            const samples = this.tape.originalSamples.samplesList[0];
+            this.samples = new Int16Array(samples.length);
+            for (let i = 0; i < samples.length; i++) {
+                this.samples[i] = -samples[i];
+            }
         }
-        else {}
         this.period = Math.round(this.tape.sampleRate * 0.002); // 2ms period.
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
@@ -7827,10 +7832,287 @@ function toDiv(basicElements, out) {
     return elements;
 }
 
-// EXTERNAL MODULE: ./node_modules/z80-disasm/dist/module/Opcodes.json
+// EXTERNAL MODULE: ../z80-disasm/dist/module/Opcodes.json
 var Opcodes = __webpack_require__(5);
 
-// CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/Instruction.js
+// CONCATENATED MODULE: ../z80-disasm/node_modules/z80-base/dist/module/Register.js
+/**
+ * List of all word registers.
+ */
+const Register_WORD_REG = new Set(["af", "bc", "de", "hl", "af'", "bc'", "de'", "hl'", "ix", "iy", "sp", "pc"]);
+/**
+ * List of all byte registers.
+ */
+const Register_BYTE_REG = new Set(["a", "f", "b", "c", "d", "e", "h", "l", "ixh", "ixl", "iyh", "iyl"]);
+/**
+ * Determine whether a register stores a word.
+ */
+function Register_isWordReg(s) {
+    return Register_WORD_REG.has(s.toLowerCase());
+}
+/**
+ * Determine whether a register stores a byte.
+ */
+function Register_isByteReg(s) {
+    return Register_BYTE_REG.has(s.toLowerCase());
+}
+
+// CONCATENATED MODULE: ../z80-disasm/node_modules/z80-base/dist/module/Utils.js
+// Various utility functions.
+/**
+ * Convert a number to hex and zero-pad to the specified number of hex digits.
+ */
+function Utils_toHex(value, digits) {
+    let s = value.toString(16).toUpperCase();
+    while (s.length < digits) {
+        s = "0" + s;
+    }
+    return s;
+}
+/**
+ * Return the high byte of a word.
+ */
+function Utils_hi(value) {
+    return (value >> 8) & 0xFF;
+}
+/**
+ * Return the low byte of a word.
+ */
+function Utils_lo(value) {
+    return value & 0xFF;
+}
+/**
+ * Create a word from a high and low byte.
+ */
+function Utils_word(highByte, lowByte) {
+    return ((highByte & 0xFF) << 8) | (lowByte & 0xFF);
+}
+/**
+ * Increment a byte.
+ */
+function Utils_inc8(value) {
+    return Utils_add8(value, 1);
+}
+/**
+ * Increment a word.
+ */
+function Utils_inc16(value) {
+    return Utils_add16(value, 1);
+}
+/**
+ * Decrement a byte.
+ */
+function Utils_dec8(value) {
+    return Utils_sub8(value, 1);
+}
+/**
+ * Decrement a word.
+ */
+function Utils_dec16(value) {
+    return Utils_sub16(value, 1);
+}
+/**
+ * Add two bytes together.
+ */
+function Utils_add8(a, b) {
+    return (a + b) & 0xFF;
+}
+/**
+ * Add two words together.
+ */
+function Utils_add16(a, b) {
+    return (a + b) & 0xFFFF;
+}
+/**
+ * Subtract two bytes.
+ */
+function Utils_sub8(a, b) {
+    return (a - b) & 0xFF;
+}
+/**
+ * Subtract two words.
+ */
+function Utils_sub16(a, b) {
+    return (a - b) & 0xFFFF;
+}
+/**
+ * Convert a byte to a signed number (e.g., 0xff to -1).
+ */
+function Utils_signedByte(value) {
+    return value >= 128 ? value - 256 : value;
+}
+
+// CONCATENATED MODULE: ../z80-disasm/node_modules/z80-base/dist/module/RegisterSet.js
+
+/**
+ * All registers in a Z80.
+ */
+class module_RegisterSet_RegisterSet {
+    constructor() {
+        // External state:
+        this.af = 0;
+        this.bc = 0;
+        this.de = 0;
+        this.hl = 0;
+        this.afPrime = 0;
+        this.bcPrime = 0;
+        this.dePrime = 0;
+        this.hlPrime = 0;
+        this.ix = 0;
+        this.iy = 0;
+        this.sp = 0;
+        this.pc = 0;
+        // Internal state:
+        this.memptr = 0;
+        this.i = 0;
+        this.r = 0; // Low 7 bits of R.
+        this.r7 = 0; // Bit 7 of R.
+        this.iff1 = 0;
+        this.iff2 = 0;
+        this.im = 0;
+        this.halted = 0;
+    }
+    get a() {
+        return Utils_hi(this.af);
+    }
+    set a(value) {
+        this.af = Utils_word(value, this.f);
+    }
+    get f() {
+        return Utils_lo(this.af);
+    }
+    set f(value) {
+        this.af = Utils_word(this.a, value);
+    }
+    get b() {
+        return Utils_hi(this.bc);
+    }
+    set b(value) {
+        this.bc = Utils_word(value, this.c);
+    }
+    get c() {
+        return Utils_lo(this.bc);
+    }
+    set c(value) {
+        this.bc = Utils_word(this.b, value);
+    }
+    get d() {
+        return Utils_hi(this.de);
+    }
+    set d(value) {
+        this.de = Utils_word(value, this.e);
+    }
+    get e() {
+        return Utils_lo(this.de);
+    }
+    set e(value) {
+        this.de = Utils_word(this.d, value);
+    }
+    get h() {
+        return Utils_hi(this.hl);
+    }
+    set h(value) {
+        this.hl = Utils_word(value, this.l);
+    }
+    get l() {
+        return Utils_lo(this.hl);
+    }
+    set l(value) {
+        this.hl = Utils_word(this.h, value);
+    }
+    get ixh() {
+        return Utils_hi(this.ix);
+    }
+    set ixh(value) {
+        this.ix = Utils_word(value, this.ixl);
+    }
+    get ixl() {
+        return Utils_lo(this.ix);
+    }
+    set ixl(value) {
+        this.ix = Utils_word(this.ixh, value);
+    }
+    get iyh() {
+        return Utils_hi(this.iy);
+    }
+    set iyh(value) {
+        this.iy = Utils_word(value, this.iyl);
+    }
+    get iyl() {
+        return Utils_lo(this.iy);
+    }
+    set iyl(value) {
+        this.iy = Utils_word(this.iyh, value);
+    }
+    /**
+     * Combine the two R parts together.
+     */
+    get rCombined() {
+        return (this.r7 & 0x80) | (this.r & 0xF7);
+    }
+}
+/**
+ * All real fields of RegisterSet, for enumeration.
+ */
+const RegisterSet_registerSetFields = [
+    "af", "bc", "de", "hl",
+    "afPrime", "bcPrime", "dePrime", "hlPrime",
+    "ix", "iy", "sp", "pc",
+    "memptr", "i", "r", "iff1", "iff2", "im", "halted"
+];
+
+// CONCATENATED MODULE: ../z80-disasm/node_modules/z80-base/dist/module/Flag.js
+/**
+ * The flag bits in the F register.
+ */
+var Flag_Flag;
+(function (Flag) {
+    /**
+     * Carry and borrow. Indicates that the addition or subtraction did not
+     * fit in the register.
+     */
+    Flag[Flag["C"] = 1] = "C";
+    /**
+     * Set if the last operation was a subtraction.
+     */
+    Flag[Flag["N"] = 2] = "N";
+    /**
+     * Parity: Indicates that the result has an even number of bits set.
+     */
+    Flag[Flag["P"] = 4] = "P";
+    /**
+     * Overflow: Indicates that two's complement does not fit in register.
+     */
+    Flag[Flag["V"] = 4] = "V";
+    /**
+     * Undocumented bit, but internal state can leak into it.
+     */
+    Flag[Flag["X3"] = 8] = "X3";
+    /**
+     * Half carry: Carry from bit 3 to bit 4 during BCD operations.
+     */
+    Flag[Flag["H"] = 16] = "H";
+    /**
+     * Undocumented bit, but internal state can leak into it.
+     */
+    Flag[Flag["X5"] = 32] = "X5";
+    /**
+     * Set if value is zero.
+     */
+    Flag[Flag["Z"] = 64] = "Z";
+    /**
+     * Set of value is negative.
+     */
+    Flag[Flag["S"] = 128] = "S";
+})(Flag_Flag || (Flag_Flag = {}));
+
+// CONCATENATED MODULE: ../z80-disasm/node_modules/z80-base/dist/module/index.js
+
+
+
+
+
+// CONCATENATED MODULE: ../z80-disasm/dist/module/Instruction.js
 
 class Instruction_Instruction {
     constructor(address, bin, mnemonic, params, args) {
@@ -7844,7 +8126,7 @@ class Instruction_Instruction {
      * Text version of the binary: two-digit hex numbers separated by a space.
      */
     binText() {
-        return this.bin.map((n) => toHex(n, 2)).join(" ");
+        return this.bin.map((n) => Utils_toHex(n, 2)).join(" ");
     }
     /**
      * Text of the instruction (e.g., "ld hl,0x1234").
@@ -7873,7 +8155,7 @@ class Instruction_Instruction {
     }
 }
 
-// CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/Disasm.js
+// CONCATENATED MODULE: ../z80-disasm/dist/module/Disasm.js
 
 
 
@@ -7913,7 +8195,7 @@ class Disasm_Disasm {
             if (value === undefined) {
                 // TODO
                 // asm.push(".byte 0x" + byte.toString(16));
-                const stringParams = this.bytes.map((n) => "0x" + toHex(n, 2));
+                const stringParams = this.bytes.map((n) => "0x" + Utils_toHex(n, 2));
                 instruction = new Instruction_Instruction(startAddress, this.bytes, ".byte", stringParams, stringParams);
             }
             else if (value.shift !== undefined) {
@@ -7934,14 +8216,14 @@ class Disasm_Disasm {
                         if (pos >= 0) {
                             const lowByte = this.next();
                             const highByte = this.next();
-                            const nnnn = word(highByte, lowByte);
+                            const nnnn = Utils_word(highByte, lowByte);
                             let target;
                             if (value.mnemonic === "call" || value.mnemonic === "jp") {
                                 jumpTarget = nnnn;
                                 target = TARGET;
                             }
                             else {
-                                target = "0x" + toHex(nnnn, 4);
+                                target = "0x" + Utils_toHex(nnnn, 4);
                             }
                             arg = arg.substr(0, pos) + target + arg.substr(pos + 4);
                             changed = true;
@@ -7953,13 +8235,13 @@ class Disasm_Disasm {
                         }
                         if (pos >= 0) {
                             const nn = this.next();
-                            arg = arg.substr(0, pos) + "0x" + toHex(nn, 2) + arg.substr(pos + 2);
+                            arg = arg.substr(0, pos) + "0x" + Utils_toHex(nn, 2) + arg.substr(pos + 2);
                             changed = true;
                         }
                         // Fetch offset argument.
                         pos = arg.indexOf("offset");
                         if (pos >= 0) {
-                            const offset = signedByte(this.next());
+                            const offset = Utils_signedByte(this.next());
                             jumpTarget = this.address + offset;
                             arg = arg.substr(0, pos) + TARGET + arg.substr(pos + 6);
                             changed = true;
@@ -8062,7 +8344,7 @@ class Disasm_Disasm {
         // jumps that go outside our disassembled code.
         for (const instruction of instructions) {
             if (instruction.jumpTarget !== undefined) {
-                instruction.replaceArgVariable(TARGET, "0x" + toHex(instruction.jumpTarget, 4));
+                instruction.replaceArgVariable(TARGET, "0x" + Utils_toHex(instruction.jumpTarget, 4));
             }
         }
         return instructions;
@@ -8077,7 +8359,7 @@ class Disasm_Disasm {
     }
 }
 
-// CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/index.js
+// CONCATENATED MODULE: ../z80-disasm/dist/module/index.js
 
 
 
@@ -8188,9 +8470,15 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     }
     const binary = new Uint8Array(totalLength);
     let offset = 0;
+    let address = systemProgram.chunks[0].loadAddress;
     for (const chunk of systemProgram.chunks) {
+        console.log("Expected", address, "but got", chunk.loadAddress);
+        if (chunk.loadAddress !== address) {
+            address = chunk.loadAddress;
+        }
         binary.set(chunk.data, offset);
         offset += chunk.data.length;
+        address += chunk.data.length;
     }
     const disasm = new Disasm_Disasm(binary);
     // TODO not right in general. See chunks above.
@@ -8349,22 +8637,22 @@ class Cassette {
 /**
  * List of all word registers.
  */
-const Register_WORD_REG = new Set(["af", "bc", "de", "hl", "af'", "bc'", "de'", "hl'", "ix", "iy", "sp", "pc"]);
+const module_Register_WORD_REG = new Set(["af", "bc", "de", "hl", "af'", "bc'", "de'", "hl'", "ix", "iy", "sp", "pc"]);
 /**
  * List of all byte registers.
  */
-const Register_BYTE_REG = new Set(["a", "f", "b", "c", "d", "e", "h", "l", "ixh", "ixl", "iyh", "iyl"]);
+const module_Register_BYTE_REG = new Set(["a", "f", "b", "c", "d", "e", "h", "l", "ixh", "ixl", "iyh", "iyl"]);
 /**
  * Determine whether a register stores a word.
  */
-function Register_isWordReg(s) {
-    return Register_WORD_REG.has(s.toLowerCase());
+function module_Register_isWordReg(s) {
+    return module_Register_WORD_REG.has(s.toLowerCase());
 }
 /**
  * Determine whether a register stores a byte.
  */
-function Register_isByteReg(s) {
-    return Register_BYTE_REG.has(s.toLowerCase());
+function module_Register_isByteReg(s) {
+    return module_Register_BYTE_REG.has(s.toLowerCase());
 }
 
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/node_modules/z80-base/dist/module/Utils.js
@@ -8372,7 +8660,7 @@ function Register_isByteReg(s) {
 /**
  * Convert a number to hex and zero-pad to the specified number of hex digits.
  */
-function Utils_toHex(value, digits) {
+function module_Utils_toHex(value, digits) {
     let s = value.toString(16).toUpperCase();
     while (s.length < digits) {
         s = "0" + s;
@@ -8382,73 +8670,73 @@ function Utils_toHex(value, digits) {
 /**
  * Return the high byte of a word.
  */
-function Utils_hi(value) {
+function module_Utils_hi(value) {
     return (value >> 8) & 0xFF;
 }
 /**
  * Return the low byte of a word.
  */
-function Utils_lo(value) {
+function module_Utils_lo(value) {
     return value & 0xFF;
 }
 /**
  * Create a word from a high and low byte.
  */
-function Utils_word(highByte, lowByte) {
+function module_Utils_word(highByte, lowByte) {
     return ((highByte & 0xFF) << 8) | (lowByte & 0xFF);
 }
 /**
  * Increment a byte.
  */
-function Utils_inc8(value) {
-    return Utils_add8(value, 1);
+function module_Utils_inc8(value) {
+    return module_Utils_add8(value, 1);
 }
 /**
  * Increment a word.
  */
-function Utils_inc16(value) {
-    return Utils_add16(value, 1);
+function module_Utils_inc16(value) {
+    return module_Utils_add16(value, 1);
 }
 /**
  * Decrement a byte.
  */
-function Utils_dec8(value) {
-    return Utils_sub8(value, 1);
+function module_Utils_dec8(value) {
+    return module_Utils_sub8(value, 1);
 }
 /**
  * Decrement a word.
  */
-function Utils_dec16(value) {
-    return Utils_sub16(value, 1);
+function module_Utils_dec16(value) {
+    return module_Utils_sub16(value, 1);
 }
 /**
  * Add two bytes together.
  */
-function Utils_add8(a, b) {
+function module_Utils_add8(a, b) {
     return (a + b) & 0xFF;
 }
 /**
  * Add two words together.
  */
-function Utils_add16(a, b) {
+function module_Utils_add16(a, b) {
     return (a + b) & 0xFFFF;
 }
 /**
  * Subtract two bytes.
  */
-function Utils_sub8(a, b) {
+function module_Utils_sub8(a, b) {
     return (a - b) & 0xFF;
 }
 /**
  * Subtract two words.
  */
-function Utils_sub16(a, b) {
+function module_Utils_sub16(a, b) {
     return (a - b) & 0xFFFF;
 }
 /**
  * Convert a byte to a signed number (e.g., 0xff to -1).
  */
-function Utils_signedByte(value) {
+function module_Utils_signedByte(value) {
     return value >= 128 ? value - 256 : value;
 }
 
@@ -8457,7 +8745,7 @@ function Utils_signedByte(value) {
 /**
  * All registers in a Z80.
  */
-class module_RegisterSet_RegisterSet {
+class dist_module_RegisterSet_RegisterSet {
     constructor() {
         // External state:
         this.af = 0;
@@ -8483,76 +8771,76 @@ class module_RegisterSet_RegisterSet {
         this.halted = 0;
     }
     get a() {
-        return Utils_hi(this.af);
+        return module_Utils_hi(this.af);
     }
     set a(value) {
-        this.af = Utils_word(value, this.f);
+        this.af = module_Utils_word(value, this.f);
     }
     get f() {
-        return Utils_lo(this.af);
+        return module_Utils_lo(this.af);
     }
     set f(value) {
-        this.af = Utils_word(this.a, value);
+        this.af = module_Utils_word(this.a, value);
     }
     get b() {
-        return Utils_hi(this.bc);
+        return module_Utils_hi(this.bc);
     }
     set b(value) {
-        this.bc = Utils_word(value, this.c);
+        this.bc = module_Utils_word(value, this.c);
     }
     get c() {
-        return Utils_lo(this.bc);
+        return module_Utils_lo(this.bc);
     }
     set c(value) {
-        this.bc = Utils_word(this.b, value);
+        this.bc = module_Utils_word(this.b, value);
     }
     get d() {
-        return Utils_hi(this.de);
+        return module_Utils_hi(this.de);
     }
     set d(value) {
-        this.de = Utils_word(value, this.e);
+        this.de = module_Utils_word(value, this.e);
     }
     get e() {
-        return Utils_lo(this.de);
+        return module_Utils_lo(this.de);
     }
     set e(value) {
-        this.de = Utils_word(this.d, value);
+        this.de = module_Utils_word(this.d, value);
     }
     get h() {
-        return Utils_hi(this.hl);
+        return module_Utils_hi(this.hl);
     }
     set h(value) {
-        this.hl = Utils_word(value, this.l);
+        this.hl = module_Utils_word(value, this.l);
     }
     get l() {
-        return Utils_lo(this.hl);
+        return module_Utils_lo(this.hl);
     }
     set l(value) {
-        this.hl = Utils_word(this.h, value);
+        this.hl = module_Utils_word(this.h, value);
     }
     get ixh() {
-        return Utils_hi(this.ix);
+        return module_Utils_hi(this.ix);
     }
     set ixh(value) {
-        this.ix = Utils_word(value, this.ixl);
+        this.ix = module_Utils_word(value, this.ixl);
     }
     get ixl() {
-        return Utils_lo(this.ix);
+        return module_Utils_lo(this.ix);
     }
     set ixl(value) {
-        this.ix = Utils_word(this.ixh, value);
+        this.ix = module_Utils_word(this.ixh, value);
     }
     get iyh() {
-        return Utils_hi(this.iy);
+        return module_Utils_hi(this.iy);
     }
     set iyh(value) {
-        this.iy = Utils_word(value, this.iyl);
+        this.iy = module_Utils_word(value, this.iyl);
     }
     get iyl() {
-        return Utils_lo(this.iy);
+        return module_Utils_lo(this.iy);
     }
     set iyl(value) {
-        this.iy = Utils_word(this.iyh, value);
+        this.iy = module_Utils_word(this.iyh, value);
     }
     /**
      * Combine the two R parts together.
@@ -8564,7 +8852,7 @@ class module_RegisterSet_RegisterSet {
 /**
  * All real fields of RegisterSet, for enumeration.
  */
-const RegisterSet_registerSetFields = [
+const module_RegisterSet_registerSetFields = [
     "af", "bc", "de", "hl",
     "afPrime", "bcPrime", "dePrime", "hlPrime",
     "ix", "iy", "sp", "pc",
@@ -8575,7 +8863,7 @@ const RegisterSet_registerSetFields = [
 /**
  * The flag bits in the F register.
  */
-var Flag_Flag;
+var module_Flag_Flag;
 (function (Flag) {
     /**
      * Carry and borrow. Indicates that the addition or subtraction did not
@@ -8614,7 +8902,7 @@ var Flag_Flag;
      * Set of value is negative.
      */
     Flag[Flag["S"] = 128] = "S";
-})(Flag_Flag || (Flag_Flag = {}));
+})(module_Flag_Flag || (module_Flag_Flag = {}));
 
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/node_modules/z80-base/dist/module/index.js
 
@@ -8626,10 +8914,10 @@ var Flag_Flag;
 // Do not modify. This file is generated by GenerateOpcodes.ts.
 
 // Tables for computing flags after an operation.
-const halfCarryAddTable = [0, Flag_Flag.H, Flag_Flag.H, Flag_Flag.H, 0, 0, 0, Flag_Flag.H];
-const halfCarrySubTable = [0, 0, Flag_Flag.H, 0, Flag_Flag.H, 0, Flag_Flag.H, Flag_Flag.H];
-const overflowAddTable = [0, 0, 0, Flag_Flag.V, Flag_Flag.V, 0, 0, 0];
-const overflowSubTable = [0, Flag_Flag.V, 0, 0, 0, 0, Flag_Flag.V, 0];
+const halfCarryAddTable = [0, module_Flag_Flag.H, module_Flag_Flag.H, module_Flag_Flag.H, 0, 0, 0, module_Flag_Flag.H];
+const halfCarrySubTable = [0, 0, module_Flag_Flag.H, 0, module_Flag_Flag.H, 0, module_Flag_Flag.H, module_Flag_Flag.H];
+const overflowAddTable = [0, 0, 0, module_Flag_Flag.V, module_Flag_Flag.V, 0, 0, 0];
+const overflowSubTable = [0, module_Flag_Flag.V, 0, 0, 0, 0, module_Flag_Flag.V, 0];
 /**
  * Fetch an instruction for decode.
  */
@@ -8652,7 +8940,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -8661,7 +8949,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -8670,7 +8958,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -8679,7 +8967,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -8688,7 +8976,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -8697,7 +8985,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -8707,7 +8995,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -8716,7 +9004,7 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -8725,7 +9013,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -8734,7 +9022,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -8743,7 +9031,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -8752,7 +9040,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -8761,7 +9049,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -8770,7 +9058,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -8780,7 +9068,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -8789,7 +9077,7 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -8797,8 +9085,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.b;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -8806,8 +9094,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.c;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -8815,8 +9103,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.d;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -8824,8 +9112,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.e;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -8833,8 +9121,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.h;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -8842,8 +9130,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.l;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -8852,8 +9140,8 @@ function decodeCB(z80) {
             value = z80.readByte(z80.regs.hl);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -8861,8 +9149,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.a;
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -8870,8 +9158,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.b;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -8879,8 +9167,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.c;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -8888,8 +9176,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.d;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -8897,8 +9185,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.e;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -8906,8 +9194,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.h;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -8915,8 +9203,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.l;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -8925,8 +9213,8 @@ function decodeCB(z80) {
             value = z80.readByte(z80.regs.hl);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -8934,8 +9222,8 @@ function decodeCB(z80) {
             let value;
             value = z80.regs.a;
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -8944,7 +9232,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -8953,7 +9241,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -8962,7 +9250,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -8971,7 +9259,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -8980,7 +9268,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -8989,7 +9277,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -8999,7 +9287,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -9008,7 +9296,7 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -9017,7 +9305,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -9026,7 +9314,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -9035,7 +9323,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -9044,7 +9332,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -9053,7 +9341,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -9062,7 +9350,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -9072,7 +9360,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -9081,7 +9369,7 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -9090,7 +9378,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -9099,7 +9387,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -9108,7 +9396,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -9117,7 +9405,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -9126,7 +9414,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -9135,7 +9423,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -9145,7 +9433,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -9154,7 +9442,7 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
@@ -9163,7 +9451,7 @@ function decodeCB(z80) {
             value = z80.regs.b;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.b = value;
             break;
         }
@@ -9172,7 +9460,7 @@ function decodeCB(z80) {
             value = z80.regs.c;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.c = value;
             break;
         }
@@ -9181,7 +9469,7 @@ function decodeCB(z80) {
             value = z80.regs.d;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.d = value;
             break;
         }
@@ -9190,7 +9478,7 @@ function decodeCB(z80) {
             value = z80.regs.e;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.e = value;
             break;
         }
@@ -9199,7 +9487,7 @@ function decodeCB(z80) {
             value = z80.regs.h;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.h = value;
             break;
         }
@@ -9208,7 +9496,7 @@ function decodeCB(z80) {
             value = z80.regs.l;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.l = value;
             break;
         }
@@ -9218,7 +9506,7 @@ function decodeCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -9227,16 +9515,16 @@ function decodeCB(z80) {
             value = z80.regs.a;
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.regs.a = value;
             break;
         }
         case 0x40: { // bit 0,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9244,9 +9532,9 @@ function decodeCB(z80) {
         case 0x41: { // bit 0,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9254,9 +9542,9 @@ function decodeCB(z80) {
         case 0x42: { // bit 0,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9264,9 +9552,9 @@ function decodeCB(z80) {
         case 0x43: { // bit 0,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9274,9 +9562,9 @@ function decodeCB(z80) {
         case 0x44: { // bit 0,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9284,20 +9572,20 @@ function decodeCB(z80) {
         case 0x45: { // bit 0,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x46: { // bit 0,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9305,9 +9593,9 @@ function decodeCB(z80) {
         case 0x47: { // bit 0,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9315,9 +9603,9 @@ function decodeCB(z80) {
         case 0x48: { // bit 1,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9325,9 +9613,9 @@ function decodeCB(z80) {
         case 0x49: { // bit 1,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9335,9 +9623,9 @@ function decodeCB(z80) {
         case 0x4A: { // bit 1,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9345,9 +9633,9 @@ function decodeCB(z80) {
         case 0x4B: { // bit 1,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9355,9 +9643,9 @@ function decodeCB(z80) {
         case 0x4C: { // bit 1,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9365,20 +9653,20 @@ function decodeCB(z80) {
         case 0x4D: { // bit 1,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x4E: { // bit 1,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9386,9 +9674,9 @@ function decodeCB(z80) {
         case 0x4F: { // bit 1,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9396,9 +9684,9 @@ function decodeCB(z80) {
         case 0x50: { // bit 2,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9406,9 +9694,9 @@ function decodeCB(z80) {
         case 0x51: { // bit 2,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9416,9 +9704,9 @@ function decodeCB(z80) {
         case 0x52: { // bit 2,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9426,9 +9714,9 @@ function decodeCB(z80) {
         case 0x53: { // bit 2,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9436,9 +9724,9 @@ function decodeCB(z80) {
         case 0x54: { // bit 2,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9446,20 +9734,20 @@ function decodeCB(z80) {
         case 0x55: { // bit 2,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x56: { // bit 2,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9467,9 +9755,9 @@ function decodeCB(z80) {
         case 0x57: { // bit 2,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9477,9 +9765,9 @@ function decodeCB(z80) {
         case 0x58: { // bit 3,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9487,9 +9775,9 @@ function decodeCB(z80) {
         case 0x59: { // bit 3,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9497,9 +9785,9 @@ function decodeCB(z80) {
         case 0x5A: { // bit 3,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9507,9 +9795,9 @@ function decodeCB(z80) {
         case 0x5B: { // bit 3,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9517,9 +9805,9 @@ function decodeCB(z80) {
         case 0x5C: { // bit 3,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9527,20 +9815,20 @@ function decodeCB(z80) {
         case 0x5D: { // bit 3,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x5E: { // bit 3,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9548,9 +9836,9 @@ function decodeCB(z80) {
         case 0x5F: { // bit 3,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9558,9 +9846,9 @@ function decodeCB(z80) {
         case 0x60: { // bit 4,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9568,9 +9856,9 @@ function decodeCB(z80) {
         case 0x61: { // bit 4,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9578,9 +9866,9 @@ function decodeCB(z80) {
         case 0x62: { // bit 4,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9588,9 +9876,9 @@ function decodeCB(z80) {
         case 0x63: { // bit 4,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9598,9 +9886,9 @@ function decodeCB(z80) {
         case 0x64: { // bit 4,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9608,20 +9896,20 @@ function decodeCB(z80) {
         case 0x65: { // bit 4,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x66: { // bit 4,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9629,9 +9917,9 @@ function decodeCB(z80) {
         case 0x67: { // bit 4,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9639,9 +9927,9 @@ function decodeCB(z80) {
         case 0x68: { // bit 5,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9649,9 +9937,9 @@ function decodeCB(z80) {
         case 0x69: { // bit 5,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9659,9 +9947,9 @@ function decodeCB(z80) {
         case 0x6A: { // bit 5,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9669,9 +9957,9 @@ function decodeCB(z80) {
         case 0x6B: { // bit 5,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9679,9 +9967,9 @@ function decodeCB(z80) {
         case 0x6C: { // bit 5,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9689,20 +9977,20 @@ function decodeCB(z80) {
         case 0x6D: { // bit 5,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x6E: { // bit 5,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9710,9 +9998,9 @@ function decodeCB(z80) {
         case 0x6F: { // bit 5,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9720,9 +10008,9 @@ function decodeCB(z80) {
         case 0x70: { // bit 6,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9730,9 +10018,9 @@ function decodeCB(z80) {
         case 0x71: { // bit 6,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9740,9 +10028,9 @@ function decodeCB(z80) {
         case 0x72: { // bit 6,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9750,9 +10038,9 @@ function decodeCB(z80) {
         case 0x73: { // bit 6,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9760,9 +10048,9 @@ function decodeCB(z80) {
         case 0x74: { // bit 6,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9770,20 +10058,20 @@ function decodeCB(z80) {
         case 0x75: { // bit 6,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
         }
         case 0x76: { // bit 6,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9791,9 +10079,9 @@ function decodeCB(z80) {
         case 0x77: { // bit 6,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -9801,12 +10089,12 @@ function decodeCB(z80) {
         case 0x78: { // bit 7,b
             const value = z80.regs.b;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9814,12 +10102,12 @@ function decodeCB(z80) {
         case 0x79: { // bit 7,c
             const value = z80.regs.c;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9827,12 +10115,12 @@ function decodeCB(z80) {
         case 0x7A: { // bit 7,d
             const value = z80.regs.d;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9840,12 +10128,12 @@ function decodeCB(z80) {
         case 0x7B: { // bit 7,e
             const value = z80.regs.e;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9853,12 +10141,12 @@ function decodeCB(z80) {
         case 0x7C: { // bit 7,h
             const value = z80.regs.h;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9866,26 +10154,26 @@ function decodeCB(z80) {
         case 0x7D: { // bit 7,l
             const value = z80.regs.l;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
         }
         case 0x7E: { // bit 7,(hl)
             const value = z80.readByte(z80.regs.hl);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -9893,12 +10181,12 @@ function decodeCB(z80) {
         case 0x7F: { // bit 7,a
             const value = z80.regs.a;
             const hiddenValue = value;
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -10448,7 +10736,7 @@ function decodeCB(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode in CB: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in CB: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -10467,9 +10755,9 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.ix & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.ix);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.ix);
             z80.regs.ix = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x19: { // add ix,de
@@ -10480,17 +10768,17 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.ix & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.ix);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.ix);
             z80.regs.ix = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x21: { // ld ix,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.ix = value;
             break;
         }
@@ -10498,20 +10786,20 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ix;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x23: { // inc ix
             let value;
             value = z80.regs.ix;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.ix = value;
             break;
         }
@@ -10519,8 +10807,8 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ixh;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.ixh = value;
             break;
         }
@@ -10528,15 +10816,15 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ixh;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.ixh = value;
             break;
         }
         case 0x26: { // ld ixh,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.ixh = value;
             break;
         }
@@ -10548,20 +10836,20 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.ix & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.ix);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.ix);
             z80.regs.ix = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x2A: { // ld ix,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.ix = value;
             break;
         }
@@ -10569,7 +10857,7 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ix;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.ix = value;
             break;
         }
@@ -10577,8 +10865,8 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ixl;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.ixl = value;
             break;
         }
@@ -10586,15 +10874,15 @@ function decodeDD(z80) {
             let value;
             value = z80.regs.ixl;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.ixl = value;
             break;
         }
         case 0x2E: { // ld ixl,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.ixl = value;
             break;
         }
@@ -10602,13 +10890,13 @@ function decodeDD(z80) {
             let value;
             const offset = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_add16(z80.regs.ix, Utils_signedByte(offset));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_add16(z80.regs.ix, module_Utils_signedByte(offset));
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -10616,23 +10904,23 @@ function decodeDD(z80) {
             let value;
             const offset = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_add16(z80.regs.ix, Utils_signedByte(offset));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_add16(z80.regs.ix, module_Utils_signedByte(offset));
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x36: { // ld (ix+dd),nn
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -10644,9 +10932,9 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.ix & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.ix);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.ix);
             z80.regs.ix = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x44: { // ld b,ixh
@@ -10664,8 +10952,8 @@ function decodeDD(z80) {
         case 0x46: { // ld b,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.b = value;
             break;
@@ -10685,8 +10973,8 @@ function decodeDD(z80) {
         case 0x4E: { // ld c,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.c = value;
             break;
@@ -10706,8 +10994,8 @@ function decodeDD(z80) {
         case 0x56: { // ld d,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.d = value;
             break;
@@ -10727,8 +11015,8 @@ function decodeDD(z80) {
         case 0x5E: { // ld e,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.e = value;
             break;
@@ -10772,8 +11060,8 @@ function decodeDD(z80) {
         case 0x66: { // ld h,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.h = value;
             break;
@@ -10823,8 +11111,8 @@ function decodeDD(z80) {
         case 0x6E: { // ld l,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.l = value;
             break;
@@ -10837,64 +11125,64 @@ function decodeDD(z80) {
         }
         case 0x70: { // ld (ix+dd),b
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.b;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x71: { // ld (ix+dd),c
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.c;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x72: { // ld (ix+dd),d
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.d;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x73: { // ld (ix+dd),e
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.e;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x74: { // ld (ix+dd),h
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.h;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x75: { // ld (ix+dd),l
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.l;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x77: { // ld (ix+dd),a
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.a;
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -10913,8 +11201,8 @@ function decodeDD(z80) {
         case 0x7E: { // ld a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a = value;
             break;
@@ -10922,167 +11210,167 @@ function decodeDD(z80) {
         case 0x84: { // add a,ixh
             let value;
             value = z80.regs.ixh;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x85: { // add a,ixl
             let value;
             value = z80.regs.ixl;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x86: { // add a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8C: { // adc a,ixh
             let value;
             value = z80.regs.ixh;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8D: { // adc a,ixl
             let value;
             value = z80.regs.ixl;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8E: { // adc a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x94: { // sub a,ixh
             let value;
             value = z80.regs.ixh;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x95: { // sub a,ixl
             let value;
             value = z80.regs.ixl;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x96: { // sub a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9C: { // sbc a,ixh
             let value;
             value = z80.regs.ixh;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9D: { // sbc a,ixl
             let value;
             value = z80.regs.ixl;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9E: { // sbc a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xA4: { // and a,ixh
@@ -11090,7 +11378,7 @@ function decodeDD(z80) {
             value = z80.regs.ixh;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA5: { // and a,ixl
@@ -11098,19 +11386,19 @@ function decodeDD(z80) {
             value = z80.regs.ixl;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA6: { // and a,(ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xAC: { // xor a,ixh
@@ -11131,8 +11419,8 @@ function decodeDD(z80) {
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a ^= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
@@ -11156,8 +11444,8 @@ function decodeDD(z80) {
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a |= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
@@ -11170,16 +11458,16 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBD: { // cp ixl
@@ -11189,38 +11477,38 @@ function decodeDD(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBE: { // cp (ix+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.ix + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.ix + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             const diff = (z80.regs.a - value) & 0xFFFF;
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xCB: { // shift ddcb
@@ -11234,13 +11522,13 @@ function decodeDD(z80) {
         case 0xE3: { // ex (sp),ix
             const rightValue = z80.regs.ix;
             const leftValueL = z80.readByte(z80.regs.sp);
-            const leftValueH = z80.readByte(Utils_inc16(z80.regs.sp));
+            const leftValueH = z80.readByte(module_Utils_inc16(z80.regs.sp));
             z80.incTStateCount(1);
-            z80.writeByte(Utils_inc16(z80.regs.sp), Utils_hi(rightValue));
-            z80.writeByte(z80.regs.sp, Utils_lo(rightValue));
+            z80.writeByte(module_Utils_inc16(z80.regs.sp), module_Utils_hi(rightValue));
+            z80.writeByte(z80.regs.sp, module_Utils_lo(rightValue));
             z80.incTStateCount(2);
-            z80.regs.memptr = Utils_word(leftValueH, leftValueL);
-            z80.regs.ix = Utils_word(leftValueH, leftValueL);
+            z80.regs.memptr = module_Utils_word(leftValueH, leftValueL);
+            z80.regs.ix = module_Utils_word(leftValueH, leftValueL);
             break;
         }
         case 0xE5: { // push ix
@@ -11258,7 +11546,7 @@ function decodeDD(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode in DD: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in DD: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -11268,12 +11556,12 @@ function decodeDD(z80) {
 function decodeDDCB(z80) {
     z80.incTStateCount(3);
     const offset = z80.readByteInternal(z80.regs.pc);
-    z80.regs.memptr = Utils_add16(z80.regs.ix, Utils_signedByte(offset));
-    z80.regs.pc = Utils_inc16(z80.regs.pc);
+    z80.regs.memptr = module_Utils_add16(z80.regs.ix, module_Utils_signedByte(offset));
+    z80.regs.pc = module_Utils_inc16(z80.regs.pc);
     z80.incTStateCount(3);
     const inst = z80.readByteInternal(z80.regs.pc);
     z80.incTStateCount(2);
-    z80.regs.pc = Utils_inc16(z80.regs.pc);
+    z80.regs.pc = module_Utils_inc16(z80.regs.pc);
     switch (inst) {
         // The content of this switch is auto-generated by GenerateOpcodes.ts.
         case 0x00: { // ld b,rlc
@@ -11284,7 +11572,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11298,7 +11586,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11312,7 +11600,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11326,7 +11614,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11340,7 +11628,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11354,7 +11642,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11366,7 +11654,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11378,7 +11666,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11392,7 +11680,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11406,7 +11694,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11420,7 +11708,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11434,7 +11722,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11448,7 +11736,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11462,7 +11750,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11474,7 +11762,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11486,7 +11774,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11499,8 +11787,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.b;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11513,8 +11801,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.c;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11527,8 +11815,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.d;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11541,8 +11829,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.e;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11555,8 +11843,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.h;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11569,8 +11857,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.l;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11581,8 +11869,8 @@ function decodeDDCB(z80) {
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11593,8 +11881,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.a;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11607,8 +11895,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.b;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11621,8 +11909,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.c;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11635,8 +11923,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.d;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11649,8 +11937,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.e;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11663,8 +11951,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.h;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11677,8 +11965,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.l;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11689,8 +11977,8 @@ function decodeDDCB(z80) {
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11701,8 +11989,8 @@ function decodeDDCB(z80) {
                 let value;
                 value = z80.regs.a;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11716,7 +12004,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11730,7 +12018,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11744,7 +12032,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11758,7 +12046,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11772,7 +12060,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11786,7 +12074,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11798,7 +12086,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11810,7 +12098,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11824,7 +12112,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11838,7 +12126,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11852,7 +12140,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11866,7 +12154,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11880,7 +12168,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -11894,7 +12182,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -11906,7 +12194,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -11918,7 +12206,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -11932,7 +12220,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -11946,7 +12234,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -11960,7 +12248,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -11974,7 +12262,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -11988,7 +12276,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -12002,7 +12290,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -12014,7 +12302,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -12026,7 +12314,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -12040,7 +12328,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -12054,7 +12342,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -12068,7 +12356,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -12082,7 +12370,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -12096,7 +12384,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -12110,7 +12398,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -12122,7 +12410,7 @@ function decodeDDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -12134,7 +12422,7 @@ function decodeDDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -12149,11 +12437,11 @@ function decodeDDCB(z80) {
         case 0x46:
         case 0x47: { // bit 0,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12167,11 +12455,11 @@ function decodeDDCB(z80) {
         case 0x4E:
         case 0x4F: { // bit 1,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12185,11 +12473,11 @@ function decodeDDCB(z80) {
         case 0x56:
         case 0x57: { // bit 2,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12203,11 +12491,11 @@ function decodeDDCB(z80) {
         case 0x5E:
         case 0x5F: { // bit 3,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12221,11 +12509,11 @@ function decodeDDCB(z80) {
         case 0x66:
         case 0x67: { // bit 4,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12239,11 +12527,11 @@ function decodeDDCB(z80) {
         case 0x6E:
         case 0x6F: { // bit 5,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12257,11 +12545,11 @@ function decodeDDCB(z80) {
         case 0x76:
         case 0x77: { // bit 6,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -12275,14 +12563,14 @@ function decodeDDCB(z80) {
         case 0x7E:
         case 0x7F: { // bit 7,(ix+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -13056,7 +13344,7 @@ function decodeDDCB(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode in DDCB: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in DDCB: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -13068,14 +13356,14 @@ function decodeED(z80) {
     switch (inst) {
         // The content of this switch is auto-generated by GenerateOpcodes.ts.
         case 0x40: { // in b,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.b = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.b];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.b];
             break;
         }
         case 0x41: { // out (c),b
             z80.writePort(z80.regs.bc, z80.regs.b);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x42: { // sbc hl,bc
@@ -13083,28 +13371,28 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.bc;
             let result = z80.regs.hl - value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result -= 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x43: { // ld (nnnn),bc
             let value;
             value = z80.regs.bc;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x44:
@@ -13117,14 +13405,14 @@ function decodeED(z80) {
         case 0x7C: { // neg
             const value = z80.regs.a;
             z80.regs.a = 0;
-            const diff = Utils_sub16(z80.regs.a, value);
+            const diff = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
             z80.regs.a = diff;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
             f |= z80.sz53Table[z80.regs.a];
@@ -13158,14 +13446,14 @@ function decodeED(z80) {
             break;
         }
         case 0x48: { // in c,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.c = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.c];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.c];
             break;
         }
         case 0x49: { // out (c),c
             z80.writePort(z80.regs.bc, z80.regs.c);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x4A: { // adc hl,bc
@@ -13173,26 +13461,26 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.bc;
             let result = z80.regs.hl + value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result += 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x4B: { // ld bc,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.bc = value;
             break;
         }
@@ -13203,14 +13491,14 @@ function decodeED(z80) {
             break;
         }
         case 0x50: { // in d,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.d = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.d];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.d];
             break;
         }
         case 0x51: { // out (c),d
             z80.writePort(z80.regs.bc, z80.regs.d);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x52: { // sbc hl,de
@@ -13218,28 +13506,28 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.de;
             let result = z80.regs.hl - value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result -= 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x53: { // ld (nnnn),de
             let value;
             value = z80.regs.de;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x56:
@@ -13251,18 +13539,18 @@ function decodeED(z80) {
             let value;
             value = z80.regs.i;
             z80.regs.a = value;
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53Table[z80.regs.a] | (z80.regs.iff2 ? Flag_Flag.V : 0);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53Table[z80.regs.a] | (z80.regs.iff2 ? module_Flag_Flag.V : 0);
             break;
         }
         case 0x58: { // in e,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.e = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.e];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.e];
             break;
         }
         case 0x59: { // out (c),e
             z80.writePort(z80.regs.bc, z80.regs.e);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x5A: { // adc hl,de
@@ -13270,26 +13558,26 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.de;
             let result = z80.regs.hl + value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result += 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x5B: { // ld de,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.de = value;
             break;
         }
@@ -13303,18 +13591,18 @@ function decodeED(z80) {
             z80.incTStateCount(1);
             value = z80.regs.rCombined;
             z80.regs.a = value;
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53Table[z80.regs.a] | (z80.regs.iff2 ? Flag_Flag.V : 0);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53Table[z80.regs.a] | (z80.regs.iff2 ? module_Flag_Flag.V : 0);
             break;
         }
         case 0x60: { // in h,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.h = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.h];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.h];
             break;
         }
         case 0x61: { // out (c),h
             z80.writePort(z80.regs.bc, z80.regs.h);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x62: { // sbc hl,hl
@@ -13322,28 +13610,28 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.hl;
             let result = z80.regs.hl - value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result -= 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x63: { // ld (nnnn),hl
             let value;
             value = z80.regs.hl;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x67: { // rrd
@@ -13351,19 +13639,19 @@ function decodeED(z80) {
             z80.incTStateCount(4);
             z80.writeByte(z80.regs.hl, ((z80.regs.a << 4) | (tmp >> 4)) & 0xFF);
             z80.regs.a = (z80.regs.a & 0xF0) | (tmp & 0x0F);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0x68: { // in l,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.l = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.l];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.l];
             break;
         }
         case 0x69: { // out (c),l
             z80.writePort(z80.regs.bc, z80.regs.l);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x6A: { // adc hl,hl
@@ -13371,26 +13659,26 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.hl;
             let result = z80.regs.hl + value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result += 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x6B: { // ld hl,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.hl = value;
             break;
         }
@@ -13399,19 +13687,19 @@ function decodeED(z80) {
             z80.incTStateCount(4);
             z80.writeByte(z80.regs.hl, ((tmp << 4) | (z80.regs.a & 0x0F)) & 0xFF);
             z80.regs.a = (z80.regs.a & 0xF0) | (tmp >> 4);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0x70: { // in f,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.f = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.f];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.f];
             break;
         }
         case 0x71: { // out (c),0
             z80.writePort(z80.regs.bc, 0x00);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x72: { // sbc hl,sp
@@ -13419,39 +13707,39 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.sp;
             let result = z80.regs.hl - value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result -= 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | overflowSubTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarrySubTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x73: { // ld (nnnn),sp
             let value;
             value = z80.regs.sp;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x78: { // in a,(c)
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.regs.a = z80.readPort(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | z80.sz53pTable[z80.regs.a];
             break;
         }
         case 0x79: { // out (c),a
             z80.writePort(z80.regs.bc, z80.regs.a);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             break;
         }
         case 0x7A: { // adc hl,sp
@@ -13459,26 +13747,26 @@ function decodeED(z80) {
             z80.incTStateCount(7);
             value = z80.regs.sp;
             let result = z80.regs.hl + value;
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 result += 1;
             }
             const lookup = (((z80.regs.hl & 0x8800) >> 11) |
                 ((value & 0x8800) >> 10) |
                 ((result & 0x8800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : Flag_Flag.Z);
+            z80.regs.f = ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | overflowAddTable[lookup >> 4] | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S)) | halfCarryAddTable[lookup & 0x07] | (result !== 0 ? 0 : module_Flag_Flag.Z);
             break;
         }
         case 0x7B: { // ld sp,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.sp = value;
             break;
         }
@@ -13486,11 +13774,11 @@ function decodeED(z80) {
             let value = z80.readByte(z80.regs.hl);
             z80.writeByte(z80.regs.de, value);
             z80.incTStateCount(2);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            value = Utils_add16(value, z80.regs.a);
-            z80.regs.f = (z80.regs.f & (Flag_Flag.C | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | (value & Flag_Flag.X3) | ((value & 0x02) !== 0 ? Flag_Flag.X5 : 0);
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
-            z80.regs.de = Utils_inc16(z80.regs.de);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            value = module_Utils_add16(value, z80.regs.a);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.C | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | (value & module_Flag_Flag.X3) | ((value & 0x02) !== 0 ? module_Flag_Flag.X5 : 0);
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
+            z80.regs.de = module_Utils_inc16(z80.regs.de);
             break;
         }
         case 0xA1: { // cpi
@@ -13498,46 +13786,46 @@ function decodeED(z80) {
             let diff = (z80.regs.a - value) & 0xFF;
             const lookup = ((z80.regs.a & 0x08) >> 3) | ((value & 0x08) >> 2) | ((diff & 0x08) >> 1);
             z80.incTStateCount(5);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : Flag_Flag.Z) | (diff & Flag_Flag.S);
-            if ((z80.regs.f & Flag_Flag.H) !== 0)
-                diff = Utils_dec8(diff);
-            z80.regs.f |= (diff & Flag_Flag.X3) | (((diff & 0x02) !== 0) ? Flag_Flag.X5 : 0);
-            z80.regs.memptr = Utils_inc16(z80.regs.memptr);
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : module_Flag_Flag.Z) | (diff & module_Flag_Flag.S);
+            if ((z80.regs.f & module_Flag_Flag.H) !== 0)
+                diff = module_Utils_dec8(diff);
+            z80.regs.f |= (diff & module_Flag_Flag.X3) | (((diff & 0x02) !== 0) ? module_Flag_Flag.X5 : 0);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.memptr);
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0xA2: { // ini
             z80.incTStateCount(1);
             const value = z80.readPort(z80.regs.bc);
             z80.writeByte(z80.regs.hl, value);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            const other = Utils_inc8(Utils_add8(value, z80.regs.c));
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            const other = module_Utils_inc8(module_Utils_add8(value, z80.regs.c));
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0xA3: { // outi
             z80.incTStateCount(1);
             const value = z80.readByte(z80.regs.hl);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.writePort(z80.regs.bc, value);
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
-            const other = Utils_add8(value, z80.regs.l);
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
+            const other = module_Utils_add8(value, z80.regs.l);
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             break;
         }
         case 0xA8: { // ldd
             let value = z80.readByte(z80.regs.hl);
             z80.writeByte(z80.regs.de, value);
             z80.incTStateCount(2);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            value = Utils_add16(value, z80.regs.a);
-            z80.regs.f = (z80.regs.f & (Flag_Flag.C | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | (value & Flag_Flag.X3) | ((value & 0x02) !== 0 ? Flag_Flag.X5 : 0);
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
-            z80.regs.de = Utils_dec16(z80.regs.de);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            value = module_Utils_add16(value, z80.regs.a);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.C | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | (value & module_Flag_Flag.X3) | ((value & 0x02) !== 0 ? module_Flag_Flag.X5 : 0);
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
+            z80.regs.de = module_Utils_dec16(z80.regs.de);
             break;
         }
         case 0xA9: { // cpd
@@ -13545,51 +13833,51 @@ function decodeED(z80) {
             let diff = (z80.regs.a - value) & 0xFF;
             const lookup = ((z80.regs.a & 0x08) >> 3) | ((value & 0x08) >> 2) | ((diff & 0x08) >> 1);
             z80.incTStateCount(5);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : Flag_Flag.Z) | (diff & Flag_Flag.S);
-            if ((z80.regs.f & Flag_Flag.H) !== 0)
-                diff = Utils_dec8(diff);
-            z80.regs.f |= (diff & Flag_Flag.X3) | (((diff & 0x02) !== 0) ? Flag_Flag.X5 : 0);
-            z80.regs.memptr = Utils_dec16(z80.regs.memptr);
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : module_Flag_Flag.Z) | (diff & module_Flag_Flag.S);
+            if ((z80.regs.f & module_Flag_Flag.H) !== 0)
+                diff = module_Utils_dec8(diff);
+            z80.regs.f |= (diff & module_Flag_Flag.X3) | (((diff & 0x02) !== 0) ? module_Flag_Flag.X5 : 0);
+            z80.regs.memptr = module_Utils_dec16(z80.regs.memptr);
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
             break;
         }
         case 0xAA: { // ind
             z80.incTStateCount(1);
             const value = z80.readPort(z80.regs.bc);
             z80.writeByte(z80.regs.hl, value);
-            z80.regs.memptr = Utils_dec16(z80.regs.bc);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            const other = Utils_dec8(Utils_add8(value, z80.regs.c));
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_dec16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            const other = module_Utils_dec8(module_Utils_add8(value, z80.regs.c));
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
             break;
         }
         case 0xAB: { // outd
             z80.incTStateCount(1);
             const value = z80.readByte(z80.regs.hl);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            z80.regs.memptr = Utils_dec16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            z80.regs.memptr = module_Utils_dec16(z80.regs.bc);
             z80.writePort(z80.regs.bc, value);
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
-            const other = Utils_add8(value, z80.regs.l);
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
+            const other = module_Utils_add8(value, z80.regs.l);
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             break;
         }
         case 0xB0: { // ldir
             let value = z80.readByte(z80.regs.hl);
             z80.writeByte(z80.regs.de, value);
             z80.incTStateCount(2);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            value = Utils_add16(value, z80.regs.a);
-            z80.regs.f = (z80.regs.f & (Flag_Flag.C | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | (value & Flag_Flag.X3) | ((value & 0x02) !== 0 ? Flag_Flag.X5 : 0);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            value = module_Utils_add16(value, z80.regs.a);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.C | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | (value & module_Flag_Flag.X3) | ((value & 0x02) !== 0 ? module_Flag_Flag.X5 : 0);
             if (z80.regs.bc !== 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
-                z80.regs.memptr = Utils_add16(z80.regs.pc, 1);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
+                z80.regs.memptr = module_Utils_add16(z80.regs.pc, 1);
             }
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
-            z80.regs.de = Utils_inc16(z80.regs.de);
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
+            z80.regs.de = module_Utils_inc16(z80.regs.de);
             break;
         }
         case 0xB1: { // cpir
@@ -13597,49 +13885,49 @@ function decodeED(z80) {
             let diff = (z80.regs.a - value) & 0xFF;
             const lookup = ((z80.regs.a & 0x08) >> 3) | ((value & 0x08) >> 2) | ((diff & 0x08) >> 1);
             z80.incTStateCount(5);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : Flag_Flag.Z) | (diff & Flag_Flag.S);
-            if ((z80.regs.f & Flag_Flag.H) !== 0)
-                diff = Utils_dec8(diff);
-            z80.regs.f |= (diff & Flag_Flag.X3) | (((diff & 0x02) !== 0) ? Flag_Flag.X5 : 0);
-            if ((z80.regs.f & (Flag_Flag.V | Flag_Flag.Z)) === Flag_Flag.V) {
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : module_Flag_Flag.Z) | (diff & module_Flag_Flag.S);
+            if ((z80.regs.f & module_Flag_Flag.H) !== 0)
+                diff = module_Utils_dec8(diff);
+            z80.regs.f |= (diff & module_Flag_Flag.X3) | (((diff & 0x02) !== 0) ? module_Flag_Flag.X5 : 0);
+            if ((z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z)) === module_Flag_Flag.V) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
-                z80.regs.memptr = Utils_add16(z80.regs.pc, 1);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
+                z80.regs.memptr = module_Utils_add16(z80.regs.pc, 1);
             }
             else {
-                z80.regs.memptr = Utils_inc16(z80.regs.memptr);
+                z80.regs.memptr = module_Utils_inc16(z80.regs.memptr);
             }
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0xB2: { // inir
             z80.incTStateCount(1);
             const value = z80.readPort(z80.regs.bc);
             z80.writeByte(z80.regs.hl, value);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            const other = Utils_inc8(Utils_add8(value, z80.regs.c));
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            const other = module_Utils_inc8(module_Utils_add8(value, z80.regs.c));
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             if (z80.regs.b > 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
             }
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
             break;
         }
         case 0xB3: { // otir
             z80.incTStateCount(1);
             const value = z80.readByte(z80.regs.hl);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             z80.writePort(z80.regs.bc, value);
-            z80.regs.hl = Utils_inc16(z80.regs.hl);
-            const other = Utils_add8(value, z80.regs.l);
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_inc16(z80.regs.hl);
+            const other = module_Utils_add8(value, z80.regs.l);
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             if (z80.regs.b > 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
             }
             break;
         }
@@ -13647,16 +13935,16 @@ function decodeED(z80) {
             let value = z80.readByte(z80.regs.hl);
             z80.writeByte(z80.regs.de, value);
             z80.incTStateCount(2);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            value = Utils_add16(value, z80.regs.a);
-            z80.regs.f = (z80.regs.f & (Flag_Flag.C | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | (value & Flag_Flag.X3) | ((value & 0x02) !== 0 ? Flag_Flag.X5 : 0);
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            value = module_Utils_add16(value, z80.regs.a);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.C | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | (value & module_Flag_Flag.X3) | ((value & 0x02) !== 0 ? module_Flag_Flag.X5 : 0);
             if (z80.regs.bc !== 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
-                z80.regs.memptr = Utils_add16(z80.regs.pc, 1);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
+                z80.regs.memptr = module_Utils_add16(z80.regs.pc, 1);
             }
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
-            z80.regs.de = Utils_dec16(z80.regs.de);
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
+            z80.regs.de = module_Utils_dec16(z80.regs.de);
             break;
         }
         case 0xB9: { // cpdr
@@ -13664,54 +13952,54 @@ function decodeED(z80) {
             let diff = (z80.regs.a - value) & 0xFF;
             const lookup = ((z80.regs.a & 0x08) >> 3) | ((value & 0x08) >> 2) | ((diff & 0x08) >> 1);
             z80.incTStateCount(5);
-            z80.regs.bc = Utils_dec16(z80.regs.bc);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (z80.regs.bc !== 0 ? Flag_Flag.V : 0) | Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : Flag_Flag.Z) | (diff & Flag_Flag.S);
-            if ((z80.regs.f & Flag_Flag.H) !== 0)
-                diff = Utils_dec8(diff);
-            z80.regs.f |= (diff & Flag_Flag.X3) | (((diff & 0x02) !== 0) ? Flag_Flag.X5 : 0);
-            if ((z80.regs.f & (Flag_Flag.V | Flag_Flag.Z)) === Flag_Flag.V) {
+            z80.regs.bc = module_Utils_dec16(z80.regs.bc);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (z80.regs.bc !== 0 ? module_Flag_Flag.V : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup] | (diff !== 0 ? 0 : module_Flag_Flag.Z) | (diff & module_Flag_Flag.S);
+            if ((z80.regs.f & module_Flag_Flag.H) !== 0)
+                diff = module_Utils_dec8(diff);
+            z80.regs.f |= (diff & module_Flag_Flag.X3) | (((diff & 0x02) !== 0) ? module_Flag_Flag.X5 : 0);
+            if ((z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z)) === module_Flag_Flag.V) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
-                z80.regs.memptr = Utils_add16(z80.regs.pc, 1);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
+                z80.regs.memptr = module_Utils_add16(z80.regs.pc, 1);
             }
             else {
-                z80.regs.memptr = Utils_dec16(z80.regs.memptr);
+                z80.regs.memptr = module_Utils_dec16(z80.regs.memptr);
             }
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
             break;
         }
         case 0xBA: { // indr
             z80.incTStateCount(1);
             const value = z80.readPort(z80.regs.bc);
             z80.writeByte(z80.regs.hl, value);
-            z80.regs.memptr = Utils_dec16(z80.regs.bc);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            const other = Utils_dec8(Utils_add8(value, z80.regs.c));
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.memptr = module_Utils_dec16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            const other = module_Utils_dec8(module_Utils_add8(value, z80.regs.c));
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             if (z80.regs.b > 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
             }
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
             break;
         }
         case 0xBB: { // otdr
             z80.incTStateCount(1);
             const value = z80.readByte(z80.regs.hl);
-            z80.regs.b = Utils_dec8(z80.regs.b);
-            z80.regs.memptr = Utils_dec16(z80.regs.bc);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
+            z80.regs.memptr = module_Utils_dec16(z80.regs.bc);
             z80.writePort(z80.regs.bc, value);
-            z80.regs.hl = Utils_dec16(z80.regs.hl);
-            const other = Utils_add8(value, z80.regs.l);
-            z80.regs.f = (value & 0x80 ? Flag_Flag.N : 0) | (other < value ? Flag_Flag.H | Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
+            z80.regs.hl = module_Utils_dec16(z80.regs.hl);
+            const other = module_Utils_add8(value, z80.regs.l);
+            z80.regs.f = (value & 0x80 ? module_Flag_Flag.N : 0) | (other < value ? module_Flag_Flag.H | module_Flag_Flag.C : 0) | (z80.parityTable[(other & 0x07) ^ z80.regs.b] ? module_Flag_Flag.P : 0) | z80.sz53Table[z80.regs.b];
             if (z80.regs.b > 0) {
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, -2);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, -2);
             }
             break;
         }
         default:
-            console.log("Unhandled opcode in ED: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in ED: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -13730,9 +14018,9 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.iy & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.iy);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.iy);
             z80.regs.iy = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x19: { // add iy,de
@@ -13743,17 +14031,17 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.iy & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.iy);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.iy);
             z80.regs.iy = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x21: { // ld iy,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.iy = value;
             break;
         }
@@ -13761,20 +14049,20 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iy;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x23: { // inc iy
             let value;
             value = z80.regs.iy;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.iy = value;
             break;
         }
@@ -13782,8 +14070,8 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iyh;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.iyh = value;
             break;
         }
@@ -13791,15 +14079,15 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iyh;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.iyh = value;
             break;
         }
         case 0x26: { // ld iyh,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.iyh = value;
             break;
         }
@@ -13811,20 +14099,20 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.iy & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.iy);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.iy);
             z80.regs.iy = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x2A: { // ld iy,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.iy = value;
             break;
         }
@@ -13832,7 +14120,7 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iy;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.iy = value;
             break;
         }
@@ -13840,8 +14128,8 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iyl;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.iyl = value;
             break;
         }
@@ -13849,15 +14137,15 @@ function decodeFD(z80) {
             let value;
             value = z80.regs.iyl;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.iyl = value;
             break;
         }
         case 0x2E: { // ld iyl,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.iyl = value;
             break;
         }
@@ -13865,13 +14153,13 @@ function decodeFD(z80) {
             let value;
             const offset = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_add16(z80.regs.iy, Utils_signedByte(offset));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_add16(z80.regs.iy, module_Utils_signedByte(offset));
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -13879,23 +14167,23 @@ function decodeFD(z80) {
             let value;
             const offset = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_add16(z80.regs.iy, Utils_signedByte(offset));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_add16(z80.regs.iy, module_Utils_signedByte(offset));
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x36: { // ld (iy+dd),nn
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -13907,9 +14195,9 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.iy & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.iy);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.iy);
             z80.regs.iy = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x44: { // ld b,iyh
@@ -13927,8 +14215,8 @@ function decodeFD(z80) {
         case 0x46: { // ld b,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.b = value;
             break;
@@ -13948,8 +14236,8 @@ function decodeFD(z80) {
         case 0x4E: { // ld c,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.c = value;
             break;
@@ -13969,8 +14257,8 @@ function decodeFD(z80) {
         case 0x56: { // ld d,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.d = value;
             break;
@@ -13990,8 +14278,8 @@ function decodeFD(z80) {
         case 0x5E: { // ld e,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.e = value;
             break;
@@ -14035,8 +14323,8 @@ function decodeFD(z80) {
         case 0x66: { // ld h,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.h = value;
             break;
@@ -14086,8 +14374,8 @@ function decodeFD(z80) {
         case 0x6E: { // ld l,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.l = value;
             break;
@@ -14100,64 +14388,64 @@ function decodeFD(z80) {
         }
         case 0x70: { // ld (iy+dd),b
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.b;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x71: { // ld (iy+dd),c
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.c;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x72: { // ld (iy+dd),d
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.d;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x73: { // ld (iy+dd),e
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.e;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x74: { // ld (iy+dd),h
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.h;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x75: { // ld (iy+dd),l
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.l;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
         case 0x77: { // ld (iy+dd),a
             const dd = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             let value;
             value = z80.regs.a;
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(dd)) & 0xFFFF;
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(dd)) & 0xFFFF;
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -14176,8 +14464,8 @@ function decodeFD(z80) {
         case 0x7E: { // ld a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a = value;
             break;
@@ -14185,167 +14473,167 @@ function decodeFD(z80) {
         case 0x84: { // add a,iyh
             let value;
             value = z80.regs.iyh;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x85: { // add a,iyl
             let value;
             value = z80.regs.iyl;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x86: { // add a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8C: { // adc a,iyh
             let value;
             value = z80.regs.iyh;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8D: { // adc a,iyl
             let value;
             value = z80.regs.iyl;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8E: { // adc a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x94: { // sub a,iyh
             let value;
             value = z80.regs.iyh;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x95: { // sub a,iyl
             let value;
             value = z80.regs.iyl;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x96: { // sub a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9C: { // sbc a,iyh
             let value;
             value = z80.regs.iyh;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9D: { // sbc a,iyl
             let value;
             value = z80.regs.iyl;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9E: { // sbc a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xA4: { // and a,iyh
@@ -14353,7 +14641,7 @@ function decodeFD(z80) {
             value = z80.regs.iyh;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA5: { // and a,iyl
@@ -14361,19 +14649,19 @@ function decodeFD(z80) {
             value = z80.regs.iyl;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA6: { // and a,(iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xAC: { // xor a,iyh
@@ -14394,8 +14682,8 @@ function decodeFD(z80) {
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a ^= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
@@ -14419,8 +14707,8 @@ function decodeFD(z80) {
             let value;
             value = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             z80.regs.a |= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
@@ -14433,16 +14721,16 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBD: { // cp iyl
@@ -14452,38 +14740,38 @@ function decodeFD(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBE: { // cp (iy+dd)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = (z80.regs.iy + Utils_signedByte(value)) & 0xFFFF;
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = (z80.regs.iy + module_Utils_signedByte(value)) & 0xFFFF;
             value = z80.readByte(z80.regs.memptr);
             const diff = (z80.regs.a - value) & 0xFFFF;
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xCB: { // shift fdcb
@@ -14497,13 +14785,13 @@ function decodeFD(z80) {
         case 0xE3: { // ex (sp),iy
             const rightValue = z80.regs.iy;
             const leftValueL = z80.readByte(z80.regs.sp);
-            const leftValueH = z80.readByte(Utils_inc16(z80.regs.sp));
+            const leftValueH = z80.readByte(module_Utils_inc16(z80.regs.sp));
             z80.incTStateCount(1);
-            z80.writeByte(Utils_inc16(z80.regs.sp), Utils_hi(rightValue));
-            z80.writeByte(z80.regs.sp, Utils_lo(rightValue));
+            z80.writeByte(module_Utils_inc16(z80.regs.sp), module_Utils_hi(rightValue));
+            z80.writeByte(z80.regs.sp, module_Utils_lo(rightValue));
             z80.incTStateCount(2);
-            z80.regs.memptr = Utils_word(leftValueH, leftValueL);
-            z80.regs.iy = Utils_word(leftValueH, leftValueL);
+            z80.regs.memptr = module_Utils_word(leftValueH, leftValueL);
+            z80.regs.iy = module_Utils_word(leftValueH, leftValueL);
             break;
         }
         case 0xE5: { // push iy
@@ -14521,7 +14809,7 @@ function decodeFD(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode in FD: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in FD: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -14531,12 +14819,12 @@ function decodeFD(z80) {
 function decodeFDCB(z80) {
     z80.incTStateCount(3);
     const offset = z80.readByteInternal(z80.regs.pc);
-    z80.regs.memptr = Utils_add16(z80.regs.iy, Utils_signedByte(offset));
-    z80.regs.pc = Utils_inc16(z80.regs.pc);
+    z80.regs.memptr = module_Utils_add16(z80.regs.iy, module_Utils_signedByte(offset));
+    z80.regs.pc = module_Utils_inc16(z80.regs.pc);
     z80.incTStateCount(3);
     const inst = z80.readByteInternal(z80.regs.pc);
     z80.incTStateCount(2);
-    z80.regs.pc = Utils_inc16(z80.regs.pc);
+    z80.regs.pc = module_Utils_inc16(z80.regs.pc);
     switch (inst) {
         // The content of this switch is auto-generated by GenerateOpcodes.ts.
         case 0x00: { // ld b,rlc
@@ -14547,7 +14835,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -14561,7 +14849,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -14575,7 +14863,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -14589,7 +14877,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -14603,7 +14891,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -14617,7 +14905,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -14629,7 +14917,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | (value >> 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -14641,7 +14929,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value << 1) | (value >> 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -14655,7 +14943,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -14669,7 +14957,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -14683,7 +14971,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -14697,7 +14985,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -14711,7 +14999,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -14725,7 +15013,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -14737,7 +15025,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value >> 1) | (value << 7)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -14749,7 +15037,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value >> 1) | (value << 7)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -14762,8 +15050,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.b;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -14776,8 +15064,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.c;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -14790,8 +15078,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.d;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -14804,8 +15092,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.e;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -14818,8 +15106,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.h;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -14832,8 +15120,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.l;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -14844,8 +15132,8 @@ function decodeFDCB(z80) {
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -14856,8 +15144,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.a;
                 const oldValue = value;
-                value = ((value << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = ((value << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 1 : 0)) & 0xFF;
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -14870,8 +15158,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.b;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -14884,8 +15172,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.c;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -14898,8 +15186,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.d;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -14912,8 +15200,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.e;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -14926,8 +15214,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.h;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -14940,8 +15228,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.l;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -14952,8 +15240,8 @@ function decodeFDCB(z80) {
             value = z80.readByte(z80.regs.memptr);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -14964,8 +15252,8 @@ function decodeFDCB(z80) {
                 let value;
                 value = z80.regs.a;
                 const oldValue = value;
-                value = (value >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                value = (value >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -14979,7 +15267,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -14993,7 +15281,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -15007,7 +15295,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -15021,7 +15309,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -15035,7 +15323,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -15049,7 +15337,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -15061,7 +15349,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value << 1) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -15073,7 +15361,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = (value << 1) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -15087,7 +15375,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -15101,7 +15389,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -15115,7 +15403,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -15129,7 +15417,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -15143,7 +15431,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -15157,7 +15445,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -15169,7 +15457,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = (value & 0x80) | (value >> 1);
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -15181,7 +15469,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = (value & 0x80) | (value >> 1);
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -15195,7 +15483,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -15209,7 +15497,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -15223,7 +15511,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -15237,7 +15525,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -15251,7 +15539,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -15265,7 +15553,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -15277,7 +15565,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = ((value << 1) | 0x01) & 0xFF;
-            z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -15289,7 +15577,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = ((value << 1) | 0x01) & 0xFF;
-                z80.regs.f = ((oldValue & 0x80) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x80) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -15303,7 +15591,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.b;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.b = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.b);
@@ -15317,7 +15605,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.c;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.c = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.c);
@@ -15331,7 +15619,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.d;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.d = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.d);
@@ -15345,7 +15633,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.e;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.e = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.e);
@@ -15359,7 +15647,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.h;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.h = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.h);
@@ -15373,7 +15661,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.l;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.l = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.l);
@@ -15385,7 +15673,7 @@ function decodeFDCB(z80) {
             z80.incTStateCount(1);
             const oldValue = value;
             value = value >> 1;
-            z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+            z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
             z80.writeByte(z80.regs.memptr, value);
             break;
         }
@@ -15397,7 +15685,7 @@ function decodeFDCB(z80) {
                 value = z80.regs.a;
                 const oldValue = value;
                 value = value >> 1;
-                z80.regs.f = ((oldValue & 0x01) !== 0 ? Flag_Flag.C : 0) | z80.sz53pTable[value];
+                z80.regs.f = ((oldValue & 0x01) !== 0 ? module_Flag_Flag.C : 0) | z80.sz53pTable[value];
                 z80.regs.a = value;
             }
             z80.writeByte(z80.regs.memptr, z80.regs.a);
@@ -15412,11 +15700,11 @@ function decodeFDCB(z80) {
         case 0x46:
         case 0x47: { // bit 0,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x01) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15430,11 +15718,11 @@ function decodeFDCB(z80) {
         case 0x4E:
         case 0x4F: { // bit 1,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x02) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15448,11 +15736,11 @@ function decodeFDCB(z80) {
         case 0x56:
         case 0x57: { // bit 2,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x04) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15466,11 +15754,11 @@ function decodeFDCB(z80) {
         case 0x5E:
         case 0x5F: { // bit 3,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x08) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15484,11 +15772,11 @@ function decodeFDCB(z80) {
         case 0x66:
         case 0x67: { // bit 4,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x10) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15502,11 +15790,11 @@ function decodeFDCB(z80) {
         case 0x6E:
         case 0x6F: { // bit 5,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x20) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15520,11 +15808,11 @@ function decodeFDCB(z80) {
         case 0x76:
         case 0x77: { // bit 6,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x40) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             z80.regs.f = f;
             break;
@@ -15538,14 +15826,14 @@ function decodeFDCB(z80) {
         case 0x7E:
         case 0x7F: { // bit 7,(iy+dd)
             const value = z80.readByte(z80.regs.memptr);
-            const hiddenValue = Utils_hi(z80.regs.memptr);
+            const hiddenValue = module_Utils_hi(z80.regs.memptr);
             z80.incTStateCount(1);
-            let f = (z80.regs.f & Flag_Flag.C) | Flag_Flag.H | (hiddenValue & (Flag_Flag.X3 | Flag_Flag.X5));
+            let f = (z80.regs.f & module_Flag_Flag.C) | module_Flag_Flag.H | (hiddenValue & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             if ((value & 0x80) === 0) {
-                f |= Flag_Flag.P | Flag_Flag.Z;
+                f |= module_Flag_Flag.P | module_Flag_Flag.Z;
             }
             if ((value & 0x80) !== 0) {
-                f |= Flag_Flag.S;
+                f |= module_Flag_Flag.S;
             }
             z80.regs.f = f;
             break;
@@ -16319,7 +16607,7 @@ function decodeFDCB(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode in FDCB: " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode in FDCB: " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -16336,16 +16624,16 @@ function decode(z80) {
         case 0x01: { // ld bc,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.bc = value;
             break;
         }
         case 0x02: { // ld (bc),a
             let value;
             value = z80.regs.a;
-            z80.regs.memptr = Utils_word(z80.regs.a, Utils_inc16(z80.regs.bc));
+            z80.regs.memptr = module_Utils_word(z80.regs.a, module_Utils_inc16(z80.regs.bc));
             z80.writeByte(z80.regs.bc, value);
             break;
         }
@@ -16353,7 +16641,7 @@ function decode(z80) {
             let value;
             value = z80.regs.bc;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.bc = value;
             break;
         }
@@ -16361,8 +16649,8 @@ function decode(z80) {
             let value;
             value = z80.regs.b;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.b = value;
             break;
         }
@@ -16370,22 +16658,22 @@ function decode(z80) {
             let value;
             value = z80.regs.b;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.b = value;
             break;
         }
         case 0x06: { // ld b,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.b = value;
             break;
         }
         case 0x07: { // rlca
             const oldA = z80.regs.a;
             z80.regs.a = ((z80.regs.a >> 7) | (z80.regs.a << 1)) & 0xFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5)) | ((oldA & 0x80) !== 0 ? Flag_Flag.C : 0);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | ((oldA & 0x80) !== 0 ? module_Flag_Flag.C : 0);
             break;
         }
         case 0x08: { // ex af,af'
@@ -16402,14 +16690,14 @@ function decode(z80) {
             const lookup = (((z80.regs.hl & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x0A: { // ld a,(bc)
             let value;
-            z80.regs.memptr = Utils_inc16(z80.regs.bc);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.bc);
             value = z80.readByte(z80.regs.bc);
             z80.regs.a = value;
             break;
@@ -16418,7 +16706,7 @@ function decode(z80) {
             let value;
             value = z80.regs.bc;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.bc = value;
             break;
         }
@@ -16426,8 +16714,8 @@ function decode(z80) {
             let value;
             value = z80.regs.c;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.c = value;
             break;
         }
@@ -16435,53 +16723,53 @@ function decode(z80) {
             let value;
             value = z80.regs.c;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.c = value;
             break;
         }
         case 0x0E: { // ld c,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.c = value;
             break;
         }
         case 0x0F: { // rrca
             const oldA = z80.regs.a;
             z80.regs.a = ((z80.regs.a >> 1) | (z80.regs.a << 7)) & 0xFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5)) | ((oldA & 0x01) !== 0 ? Flag_Flag.C : 0);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | ((oldA & 0x01) !== 0 ? module_Flag_Flag.C : 0);
             break;
         }
         case 0x10: { // djnz offset
             z80.incTStateCount(1);
-            z80.regs.b = Utils_dec8(z80.regs.b);
+            z80.regs.b = module_Utils_dec8(z80.regs.b);
             if (z80.regs.b !== 0) {
                 const offset = z80.readByte(z80.regs.pc);
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
                 z80.regs.memptr = z80.regs.pc;
             }
             else {
                 z80.incTStateCount(3);
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             }
             break;
         }
         case 0x11: { // ld de,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.de = value;
             break;
         }
         case 0x12: { // ld (de),a
             let value;
             value = z80.regs.a;
-            z80.regs.memptr = Utils_word(z80.regs.a, Utils_inc16(z80.regs.de));
+            z80.regs.memptr = module_Utils_word(z80.regs.a, module_Utils_inc16(z80.regs.de));
             z80.writeByte(z80.regs.de, value);
             break;
         }
@@ -16489,7 +16777,7 @@ function decode(z80) {
             let value;
             value = z80.regs.de;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.de = value;
             break;
         }
@@ -16497,8 +16785,8 @@ function decode(z80) {
             let value;
             value = z80.regs.d;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.d = value;
             break;
         }
@@ -16506,29 +16794,29 @@ function decode(z80) {
             let value;
             value = z80.regs.d;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.d = value;
             break;
         }
         case 0x16: { // ld d,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.d = value;
             break;
         }
         case 0x17: { // rla
             const oldA = z80.regs.a;
-            z80.regs.a = ((z80.regs.a << 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x01 : 0)) & 0xFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5)) | ((oldA & 0x80) !== 0 ? Flag_Flag.C : 0);
+            z80.regs.a = ((z80.regs.a << 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x01 : 0)) & 0xFF;
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | ((oldA & 0x80) !== 0 ? module_Flag_Flag.C : 0);
             break;
         }
         case 0x18: { // jr offset
             const offset = z80.readByte(z80.regs.pc);
             z80.incTStateCount(5);
-            z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.memptr = z80.regs.pc;
             break;
         }
@@ -16540,14 +16828,14 @@ function decode(z80) {
             const lookup = (((z80.regs.hl & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x1A: { // ld a,(de)
             let value;
-            z80.regs.memptr = Utils_inc16(z80.regs.de);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.de);
             value = z80.readByte(z80.regs.de);
             z80.regs.a = value;
             break;
@@ -16556,7 +16844,7 @@ function decode(z80) {
             let value;
             value = z80.regs.de;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.de = value;
             break;
         }
@@ -16564,8 +16852,8 @@ function decode(z80) {
             let value;
             value = z80.regs.e;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.e = value;
             break;
         }
@@ -16573,44 +16861,44 @@ function decode(z80) {
             let value;
             value = z80.regs.e;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.e = value;
             break;
         }
         case 0x1E: { // ld e,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.e = value;
             break;
         }
         case 0x1F: { // rra
             const oldA = z80.regs.a;
-            z80.regs.a = (z80.regs.a >> 1) | ((z80.regs.f & Flag_Flag.C) !== 0 ? 0x80 : 0);
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5)) | ((oldA & 0x01) !== 0 ? Flag_Flag.C : 0);
+            z80.regs.a = (z80.regs.a >> 1) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? 0x80 : 0);
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | ((oldA & 0x01) !== 0 ? module_Flag_Flag.C : 0);
             break;
         }
         case 0x20: { // jr nz,offset
-            if ((z80.regs.f & Flag_Flag.Z) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.Z) === 0) {
                 const offset = z80.readByte(z80.regs.pc);
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
                 z80.regs.memptr = z80.regs.pc;
             }
             else {
                 z80.incTStateCount(3);
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             }
             break;
         }
         case 0x21: { // ld hl,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.hl = value;
             break;
         }
@@ -16618,20 +16906,20 @@ function decode(z80) {
             let value;
             value = z80.regs.hl;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.writeByte(addr, Utils_lo(value));
-            addr = Utils_inc16(addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.writeByte(addr, module_Utils_lo(value));
+            addr = module_Utils_inc16(addr);
             z80.regs.memptr = addr;
-            z80.writeByte(addr, Utils_hi(value));
+            z80.writeByte(addr, module_Utils_hi(value));
             break;
         }
         case 0x23: { // inc hl
             let value;
             value = z80.regs.hl;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.hl = value;
             break;
         }
@@ -16639,8 +16927,8 @@ function decode(z80) {
             let value;
             value = z80.regs.h;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.h = value;
             break;
         }
@@ -16648,60 +16936,60 @@ function decode(z80) {
             let value;
             value = z80.regs.h;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.h = value;
             break;
         }
         case 0x26: { // ld h,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.h = value;
             break;
         }
         case 0x27: { // daa
             let value = 0;
-            let carry = z80.regs.f & Flag_Flag.C;
-            if ((z80.regs.f & Flag_Flag.H) !== 0 || ((z80.regs.a & 0x0F) > 9)) {
+            let carry = z80.regs.f & module_Flag_Flag.C;
+            if ((z80.regs.f & module_Flag_Flag.H) !== 0 || ((z80.regs.a & 0x0F) > 9)) {
                 value = 6; // Skip over hex digits in lower nybble.
             }
             if (carry !== 0 || z80.regs.a > 0x99) {
                 value |= 0x60; // Skip over hex digits in upper nybble.
             }
             if (z80.regs.a > 0x99) {
-                carry = Flag_Flag.C;
+                carry = module_Flag_Flag.C;
             }
-            if ((z80.regs.f & Flag_Flag.N) !== 0) {
-                let result = Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.N) !== 0) {
+                let result = module_Utils_sub16(z80.regs.a, value);
                 const lookup = (((z80.regs.a & 0x88) >> 3) |
                     ((value & 0x88) >> 2) |
                     ((result & 0x88) >> 1)) & 0xFF;
                 z80.regs.a = result & 0xFF;
-                z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+                z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             }
             else {
-                let result = Utils_add16(z80.regs.a, value);
+                let result = module_Utils_add16(z80.regs.a, value);
                 const lookup = (((z80.regs.a & 0x88) >> 3) |
                     ((value & 0x88) >> 2) |
                     ((result & 0x88) >> 1)) & 0xFF;
                 z80.regs.a = result & 0xFF;
-                z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+                z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             }
-            z80.regs.f = (z80.regs.f & ~(Flag_Flag.C | Flag_Flag.P)) | carry | z80.parityTable[z80.regs.a];
+            z80.regs.f = (z80.regs.f & ~(module_Flag_Flag.C | module_Flag_Flag.P)) | carry | z80.parityTable[z80.regs.a];
             break;
         }
         case 0x28: { // jr z,offset
-            if ((z80.regs.f & Flag_Flag.Z) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.Z) !== 0) {
                 const offset = z80.readByte(z80.regs.pc);
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
                 z80.regs.memptr = z80.regs.pc;
             }
             else {
                 z80.incTStateCount(3);
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             }
             break;
         }
@@ -16713,20 +17001,20 @@ function decode(z80) {
             const lookup = (((z80.regs.hl & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x2A: { // ld hl,(nnnn)
             let value;
             let addr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            addr = Utils_word(z80.readByte(z80.regs.pc), addr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            addr = module_Utils_word(z80.readByte(z80.regs.pc), addr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             value = z80.readByte(addr);
-            z80.regs.memptr = Utils_inc16(addr);
-            value = Utils_word(z80.readByte(z80.regs.memptr), value);
+            z80.regs.memptr = module_Utils_inc16(addr);
+            value = module_Utils_word(z80.readByte(z80.regs.memptr), value);
             z80.regs.hl = value;
             break;
         }
@@ -16734,7 +17022,7 @@ function decode(z80) {
             let value;
             value = z80.regs.hl;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.hl = value;
             break;
         }
@@ -16742,8 +17030,8 @@ function decode(z80) {
             let value;
             value = z80.regs.l;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.l = value;
             break;
         }
@@ -16751,43 +17039,43 @@ function decode(z80) {
             let value;
             value = z80.regs.l;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.l = value;
             break;
         }
         case 0x2E: { // ld l,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.l = value;
             break;
         }
         case 0x2F: { // cpl
             z80.regs.a ^= 0xFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.C | Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5)) | Flag_Flag.N | Flag_Flag.H;
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.C | module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | module_Flag_Flag.N | module_Flag_Flag.H;
             break;
         }
         case 0x30: { // jr nc,offset
-            if ((z80.regs.f & Flag_Flag.C) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) === 0) {
                 const offset = z80.readByte(z80.regs.pc);
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
                 z80.regs.memptr = z80.regs.pc;
             }
             else {
                 z80.incTStateCount(3);
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             }
             break;
         }
         case 0x31: { // ld sp,nnnn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.sp = value;
             break;
         }
@@ -16795,10 +17083,10 @@ function decode(z80) {
             let value;
             value = z80.regs.a;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.regs.a, Utils_inc16(value));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.regs.a, module_Utils_inc16(value));
             z80.writeByte(value, z80.regs.a);
             break;
         }
@@ -16806,7 +17094,7 @@ function decode(z80) {
             let value;
             value = z80.regs.sp;
             const oldValue = value;
-            value = Utils_inc16(value);
+            value = module_Utils_inc16(value);
             z80.regs.sp = value;
             break;
         }
@@ -16815,8 +17103,8 @@ function decode(z80) {
             value = z80.readByte(z80.regs.hl);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
@@ -16825,33 +17113,33 @@ function decode(z80) {
             value = z80.readByte(z80.regs.hl);
             z80.incTStateCount(1);
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.writeByte(z80.regs.hl, value);
             break;
         }
         case 0x36: { // ld (hl),nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.writeByte(z80.regs.hl, value);
             break;
         }
         case 0x37: { // scf
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | Flag_Flag.C | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5));
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | module_Flag_Flag.C | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             break;
         }
         case 0x38: { // jr c,offset
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 const offset = z80.readByte(z80.regs.pc);
                 z80.incTStateCount(5);
-                z80.regs.pc = Utils_add16(z80.regs.pc, Utils_signedByte(offset));
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_add16(z80.regs.pc, module_Utils_signedByte(offset));
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
                 z80.regs.memptr = z80.regs.pc;
             }
             else {
                 z80.incTStateCount(3);
-                z80.regs.pc = Utils_inc16(z80.regs.pc);
+                z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             }
             break;
         }
@@ -16863,18 +17151,18 @@ function decode(z80) {
             const lookup = (((z80.regs.hl & 0x0800) >> 11) |
                 ((value & 0x0800) >> 10) |
                 ((result & 0x0800) >> 9)) & 0xFF;
-            z80.regs.memptr = Utils_inc16(z80.regs.hl);
+            z80.regs.memptr = module_Utils_inc16(z80.regs.hl);
             z80.regs.hl = result & 0xFFFF;
-            z80.regs.f = (z80.regs.f & (Flag_Flag.V | Flag_Flag.Z | Flag_Flag.S)) | ((result & 0x10000) !== 0 ? Flag_Flag.C : 0) | ((result >> 8) & (Flag_Flag.X3 | Flag_Flag.X5)) | halfCarryAddTable[lookup];
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.V | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((result & 0x10000) !== 0 ? module_Flag_Flag.C : 0) | ((result >> 8) & (module_Flag_Flag.X3 | module_Flag_Flag.X5)) | halfCarryAddTable[lookup];
             break;
         }
         case 0x3A: { // ld a,(nnnn)
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            value = Utils_word(z80.readByte(z80.regs.pc), value);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_inc16(value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            value = module_Utils_word(z80.readByte(z80.regs.pc), value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_inc16(value);
             value = z80.readByte(value);
             z80.regs.a = value;
             break;
@@ -16883,7 +17171,7 @@ function decode(z80) {
             let value;
             value = z80.regs.sp;
             const oldValue = value;
-            value = Utils_dec16(value);
+            value = module_Utils_dec16(value);
             z80.regs.sp = value;
             break;
         }
@@ -16891,8 +17179,8 @@ function decode(z80) {
             let value;
             value = z80.regs.a;
             const oldValue = value;
-            value = Utils_inc8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x80 ? Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : Flag_Flag.H) | z80.sz53Table[value];
+            value = module_Utils_inc8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x80 ? module_Flag_Flag.V : 0) | ((value & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | z80.sz53Table[value];
             z80.regs.a = value;
             break;
         }
@@ -16900,20 +17188,20 @@ function decode(z80) {
             let value;
             value = z80.regs.a;
             const oldValue = value;
-            value = Utils_dec8(value);
-            z80.regs.f = (z80.regs.f & Flag_Flag.C) | (value === 0x7F ? Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : Flag_Flag.H) | Flag_Flag.N | z80.sz53Table[value];
+            value = module_Utils_dec8(value);
+            z80.regs.f = (z80.regs.f & module_Flag_Flag.C) | (value === 0x7F ? module_Flag_Flag.V : 0) | ((oldValue & 0x0F) !== 0 ? 0 : module_Flag_Flag.H) | module_Flag_Flag.N | z80.sz53Table[value];
             z80.regs.a = value;
             break;
         }
         case 0x3E: { // ld a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.a = value;
             break;
         }
         case 0x3F: { // ccf
-            z80.regs.f = (z80.regs.f & (Flag_Flag.P | Flag_Flag.Z | Flag_Flag.S)) | ((z80.regs.f & Flag_Flag.C) !== 0 ? Flag_Flag.H : Flag_Flag.C) | (z80.regs.a & (Flag_Flag.X3 | Flag_Flag.X5));
+            z80.regs.f = (z80.regs.f & (module_Flag_Flag.P | module_Flag_Flag.Z | module_Flag_Flag.S)) | ((z80.regs.f & module_Flag_Flag.C) !== 0 ? module_Flag_Flag.H : module_Flag_Flag.C) | (z80.regs.a & (module_Flag_Flag.X3 | module_Flag_Flag.X5));
             break;
         }
         case 0x40: { // ld b,b
@@ -17242,7 +17530,7 @@ function decode(z80) {
         }
         case 0x76: { // halt
             z80.regs.halted = 1;
-            z80.regs.pc = Utils_dec16(z80.regs.pc);
+            z80.regs.pc = module_Utils_dec16(z80.regs.pc);
             break;
         }
         case 0x77: { // ld (hl),a
@@ -17302,401 +17590,401 @@ function decode(z80) {
         case 0x80: { // add a,b
             let value;
             value = z80.regs.b;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x81: { // add a,c
             let value;
             value = z80.regs.c;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x82: { // add a,d
             let value;
             value = z80.regs.d;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x83: { // add a,e
             let value;
             value = z80.regs.e;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x84: { // add a,h
             let value;
             value = z80.regs.h;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x85: { // add a,l
             let value;
             value = z80.regs.l;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x86: { // add a,(hl)
             let value;
             value = z80.readByte(z80.regs.hl);
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x87: { // add a,a
             let value;
             value = z80.regs.a;
-            let result = Utils_add16(z80.regs.a, value);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x88: { // adc a,b
             let value;
             value = z80.regs.b;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x89: { // adc a,c
             let value;
             value = z80.regs.c;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8A: { // adc a,d
             let value;
             value = z80.regs.d;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8B: { // adc a,e
             let value;
             value = z80.regs.e;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8C: { // adc a,h
             let value;
             value = z80.regs.h;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8D: { // adc a,l
             let value;
             value = z80.regs.l;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8E: { // adc a,(hl)
             let value;
             value = z80.readByte(z80.regs.hl);
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x8F: { // adc a,a
             let value;
             value = z80.regs.a;
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x90: { // sub a,b
             let value;
             value = z80.regs.b;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x91: { // sub a,c
             let value;
             value = z80.regs.c;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x92: { // sub a,d
             let value;
             value = z80.regs.d;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x93: { // sub a,e
             let value;
             value = z80.regs.e;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x94: { // sub a,h
             let value;
             value = z80.regs.h;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x95: { // sub a,l
             let value;
             value = z80.regs.l;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x96: { // sub a,(hl)
             let value;
             value = z80.readByte(z80.regs.hl);
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x97: { // sub a,a
             let value;
             value = z80.regs.a;
-            let result = Utils_sub16(z80.regs.a, value);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x98: { // sbc a,b
             let value;
             value = z80.regs.b;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x99: { // sbc a,c
             let value;
             value = z80.regs.c;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9A: { // sbc a,d
             let value;
             value = z80.regs.d;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9B: { // sbc a,e
             let value;
             value = z80.regs.e;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9C: { // sbc a,h
             let value;
             value = z80.regs.h;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9D: { // sbc a,l
             let value;
             value = z80.regs.l;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9E: { // sbc a,(hl)
             let value;
             value = z80.readByte(z80.regs.hl);
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0x9F: { // sbc a,a
             let value;
             value = z80.regs.a;
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xA0: { // and a,b
@@ -17704,7 +17992,7 @@ function decode(z80) {
             value = z80.regs.b;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA1: { // and a,c
@@ -17712,7 +18000,7 @@ function decode(z80) {
             value = z80.regs.c;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA2: { // and a,d
@@ -17720,7 +18008,7 @@ function decode(z80) {
             value = z80.regs.d;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA3: { // and a,e
@@ -17728,7 +18016,7 @@ function decode(z80) {
             value = z80.regs.e;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA4: { // and a,h
@@ -17736,7 +18024,7 @@ function decode(z80) {
             value = z80.regs.h;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA5: { // and a,l
@@ -17744,7 +18032,7 @@ function decode(z80) {
             value = z80.regs.l;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA6: { // and a,(hl)
@@ -17752,7 +18040,7 @@ function decode(z80) {
             value = z80.readByte(z80.regs.hl);
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA7: { // and a,a
@@ -17760,7 +18048,7 @@ function decode(z80) {
             value = z80.regs.a;
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xA8: { // xor a,b
@@ -17882,16 +18170,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xB9: { // cp c
@@ -17901,16 +18189,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBA: { // cp d
@@ -17920,16 +18208,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBB: { // cp e
@@ -17939,16 +18227,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBC: { // cp h
@@ -17958,16 +18246,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBD: { // cp l
@@ -17977,16 +18265,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBE: { // cp (hl)
@@ -17996,16 +18284,16 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xBF: { // cp a
@@ -18015,21 +18303,21 @@ function decode(z80) {
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xC0: { // ret nz
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.Z) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.Z) === 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18041,28 +18329,28 @@ function decode(z80) {
         }
         case 0xC2: { // jp nz,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.Z) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.Z) === 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
         }
         case 0xC3: { // jp nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.pc = z80.regs.memptr;
             break;
         }
         case 0xC4: { // call nz,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.Z) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.Z) === 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18075,13 +18363,13 @@ function decode(z80) {
         case 0xC6: { // add a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            let result = Utils_add16(z80.regs.a, value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            let result = module_Utils_add16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xC7: { // rst 00
@@ -18093,7 +18381,7 @@ function decode(z80) {
         }
         case 0xC8: { // ret z
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.Z) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.Z) !== 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18107,10 +18395,10 @@ function decode(z80) {
         }
         case 0xCA: { // jp z,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.Z) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.Z) !== 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
@@ -18121,10 +18409,10 @@ function decode(z80) {
         }
         case 0xCC: { // call z,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.Z) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.Z) !== 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18132,9 +18420,9 @@ function decode(z80) {
         }
         case 0xCD: { // call nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.pushWord(z80.regs.pc);
             z80.regs.pc = z80.regs.memptr;
             break;
@@ -18142,16 +18430,16 @@ function decode(z80) {
         case 0xCE: { // adc a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            let result = Utils_add16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_inc16(result);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            let result = module_Utils_add16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_inc16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | halfCarryAddTable[lookup & 0x07] | overflowAddTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xCF: { // rst 8
@@ -18163,7 +18451,7 @@ function decode(z80) {
         }
         case 0xD0: { // ret nc
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.C) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) === 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18175,27 +18463,27 @@ function decode(z80) {
         }
         case 0xD2: { // jp nc,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.C) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.C) === 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
         }
         case 0xD3: { // out (nn),a
             const port = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.regs.a, Utils_inc8(port));
-            z80.writePort(Utils_word(z80.regs.a, port), z80.regs.a);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.regs.a, module_Utils_inc8(port));
+            z80.writePort(module_Utils_word(z80.regs.a, port), z80.regs.a);
             break;
         }
         case 0xD4: { // call nc,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.C) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.C) === 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18208,13 +18496,13 @@ function decode(z80) {
         case 0xD6: { // sub a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            let result = Utils_sub16(z80.regs.a, value);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            let result = module_Utils_sub16(z80.regs.a, value);
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xD7: { // rst 10
@@ -18226,7 +18514,7 @@ function decode(z80) {
         }
         case 0xD8: { // ret c
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18247,27 +18535,27 @@ function decode(z80) {
         }
         case 0xDA: { // jp c,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
         }
         case 0xDB: { // in a,(nn)
-            const port = Utils_word(z80.regs.a, z80.readByte(z80.regs.pc));
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            const port = module_Utils_word(z80.regs.a, z80.readByte(z80.regs.pc));
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.a = z80.readPort(port);
-            z80.regs.memptr = Utils_inc16(port);
+            z80.regs.memptr = module_Utils_inc16(port);
             break;
         }
         case 0xDC: { // call c,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18280,16 +18568,16 @@ function decode(z80) {
         case 0xDE: { // sbc a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            let result = Utils_sub16(z80.regs.a, value);
-            if ((z80.regs.f & Flag_Flag.C) !== 0) {
-                result = Utils_dec16(result);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            let result = module_Utils_sub16(z80.regs.a, value);
+            if ((z80.regs.f & module_Flag_Flag.C) !== 0) {
+                result = module_Utils_dec16(result);
             }
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((result & 0x88) >> 1)) & 0xFF;
             z80.regs.a = result & 0xFF;
-            z80.regs.f = (((result & 0x100) !== 0) ? Flag_Flag.C : 0) | Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
+            z80.regs.f = (((result & 0x100) !== 0) ? module_Flag_Flag.C : 0) | module_Flag_Flag.N | halfCarrySubTable[lookup & 0x07] | overflowSubTable[lookup >> 4] | z80.sz53Table[z80.regs.a];
             break;
         }
         case 0xDF: { // rst 18
@@ -18301,7 +18589,7 @@ function decode(z80) {
         }
         case 0xE0: { // ret po
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.P) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.P) === 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18313,10 +18601,10 @@ function decode(z80) {
         }
         case 0xE2: { // jp po,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.P) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.P) === 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
@@ -18324,21 +18612,21 @@ function decode(z80) {
         case 0xE3: { // ex (sp),hl
             const rightValue = z80.regs.hl;
             const leftValueL = z80.readByte(z80.regs.sp);
-            const leftValueH = z80.readByte(Utils_inc16(z80.regs.sp));
+            const leftValueH = z80.readByte(module_Utils_inc16(z80.regs.sp));
             z80.incTStateCount(1);
-            z80.writeByte(Utils_inc16(z80.regs.sp), Utils_hi(rightValue));
-            z80.writeByte(z80.regs.sp, Utils_lo(rightValue));
+            z80.writeByte(module_Utils_inc16(z80.regs.sp), module_Utils_hi(rightValue));
+            z80.writeByte(z80.regs.sp, module_Utils_lo(rightValue));
             z80.incTStateCount(2);
-            z80.regs.memptr = Utils_word(leftValueH, leftValueL);
-            z80.regs.hl = Utils_word(leftValueH, leftValueL);
+            z80.regs.memptr = module_Utils_word(leftValueH, leftValueL);
+            z80.regs.hl = module_Utils_word(leftValueH, leftValueL);
             break;
         }
         case 0xE4: { // call po,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.P) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.P) === 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18351,10 +18639,10 @@ function decode(z80) {
         case 0xE6: { // and nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.a &= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
-            z80.regs.f |= Flag_Flag.H;
+            z80.regs.f |= module_Flag_Flag.H;
             break;
         }
         case 0xE7: { // rst 20
@@ -18366,7 +18654,7 @@ function decode(z80) {
         }
         case 0xE8: { // ret pe
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.P) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.P) !== 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18378,10 +18666,10 @@ function decode(z80) {
         }
         case 0xEA: { // jp pe,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.P) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.P) !== 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
@@ -18394,10 +18682,10 @@ function decode(z80) {
         }
         case 0xEC: { // call pe,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.P) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.P) !== 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18410,7 +18698,7 @@ function decode(z80) {
         case 0xEE: { // xor a,nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.a ^= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
             break;
@@ -18424,7 +18712,7 @@ function decode(z80) {
         }
         case 0xF0: { // ret p
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.S) === 0) {
+            if ((z80.regs.f & module_Flag_Flag.S) === 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18436,10 +18724,10 @@ function decode(z80) {
         }
         case 0xF2: { // jp p,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.S) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.S) === 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
@@ -18451,10 +18739,10 @@ function decode(z80) {
         }
         case 0xF4: { // call p,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.S) === 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.S) === 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18467,7 +18755,7 @@ function decode(z80) {
         case 0xF6: { // or nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             z80.regs.a |= value;
             z80.regs.f = z80.sz53pTable[z80.regs.a];
             break;
@@ -18481,7 +18769,7 @@ function decode(z80) {
         }
         case 0xF8: { // ret m
             z80.incTStateCount(1);
-            if ((z80.regs.f & Flag_Flag.S) !== 0) {
+            if ((z80.regs.f & module_Flag_Flag.S) !== 0) {
                 z80.regs.pc = z80.popWord();
                 z80.regs.memptr = z80.regs.pc;
             }
@@ -18495,10 +18783,10 @@ function decode(z80) {
         }
         case 0xFA: { // jp m,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.S) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.S) !== 0) {
                 z80.regs.pc = z80.regs.memptr;
             }
             break;
@@ -18510,10 +18798,10 @@ function decode(z80) {
         }
         case 0xFC: { // call m,nnnn
             z80.regs.memptr = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            z80.regs.memptr = Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
-            if ((z80.regs.f & Flag_Flag.S) !== 0) {
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            z80.regs.memptr = module_Utils_word(z80.readByte(z80.regs.pc), z80.regs.memptr);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
+            if ((z80.regs.f & module_Flag_Flag.S) !== 0) {
                 z80.pushWord(z80.regs.pc);
                 z80.regs.pc = z80.regs.memptr;
             }
@@ -18526,21 +18814,21 @@ function decode(z80) {
         case 0xFE: { // cp nn
             let value;
             value = z80.readByte(z80.regs.pc);
-            z80.regs.pc = Utils_inc16(z80.regs.pc);
+            z80.regs.pc = module_Utils_inc16(z80.regs.pc);
             const diff = (z80.regs.a - value) & 0xFFFF;
             const lookup = (((z80.regs.a & 0x88) >> 3) |
                 ((value & 0x88) >> 2) |
                 ((diff & 0x88) >> 1)) & 0xFF;
-            let f = Flag_Flag.N;
+            let f = module_Flag_Flag.N;
             if ((diff & 0x100) != 0)
-                f |= Flag_Flag.C;
+                f |= module_Flag_Flag.C;
             if (diff == 0)
-                f |= Flag_Flag.Z;
+                f |= module_Flag_Flag.Z;
             f |= halfCarrySubTable[lookup & 0x07];
             f |= overflowSubTable[lookup >> 4];
-            f |= value & (Flag_Flag.X3 | Flag_Flag.X5);
-            f |= diff & Flag_Flag.S;
-            z80.regs.af = Utils_word(z80.regs.a, f);
+            f |= value & (module_Flag_Flag.X3 | module_Flag_Flag.X5);
+            f |= diff & module_Flag_Flag.S;
+            z80.regs.af = module_Utils_word(z80.regs.a, f);
             break;
         }
         case 0xFF: { // rst 38
@@ -18551,7 +18839,7 @@ function decode(z80) {
             break;
         }
         default:
-            console.log("Unhandled opcode " + Utils_toHex(inst, 2));
+            console.log("Unhandled opcode " + module_Utils_toHex(inst, 2));
             break;
     }
 }
@@ -18567,7 +18855,7 @@ class Z80_Z80 {
         /**
          * Full set of registers.
          */
-        this.regs = new module_RegisterSet_RegisterSet();
+        this.regs = new dist_module_RegisterSet_RegisterSet();
         /**
          * Tables for computing flags. Public so that the decoding function
          * can access them.
@@ -18582,7 +18870,7 @@ class Z80_Z80 {
      * Reset the Z80 to a known state.
      */
     reset() {
-        this.regs = new module_RegisterSet_RegisterSet();
+        this.regs = new dist_module_RegisterSet_RegisterSet();
     }
     /**
      * Execute one instruction.
@@ -18623,7 +18911,7 @@ class Z80_Z80 {
     readWord(address) {
         const lowByte = this.readByte(address);
         const highByte = this.readByte(address + 1);
-        return Utils_word(highByte, lowByte);
+        return module_Utils_word(highByte, lowByte);
     }
     /**
      * Read a byte from memory (not affecting clock).
@@ -18665,8 +18953,8 @@ class Z80_Z80 {
      * Push a word on the stack.
      */
     pushWord(value) {
-        this.pushByte(Utils_hi(value));
-        this.pushByte(Utils_lo(value));
+        this.pushByte(module_Utils_hi(value));
+        this.pushByte(module_Utils_lo(value));
     }
     /**
      * Push a byte on the stack.
@@ -18681,14 +18969,14 @@ class Z80_Z80 {
     popWord() {
         const lowByte = this.popByte();
         const highByte = this.popByte();
-        return Utils_word(highByte, lowByte);
+        return module_Utils_word(highByte, lowByte);
     }
     /**
      * Pop a byte from the stack.
      */
     popByte() {
         const value = this.readByte(this.regs.sp);
-        this.regs.sp = Utils_inc16(this.regs.sp);
+        this.regs.sp = module_Utils_inc16(this.regs.sp);
         return value;
     }
     /**
@@ -18715,7 +19003,7 @@ class Z80_Z80 {
                 case 2: {
                     // The LSB here is taken from the data bus, so it's
                     // unpredictable. We use 0xFF but any value would do.
-                    const address = Utils_word(this.regs.i, 0xFF);
+                    const address = module_Utils_word(this.regs.i, 0xFF);
                     this.regs.pc = this.readWord(address);
                     break;
                 }
@@ -18729,18 +19017,18 @@ class Z80_Z80 {
     }
     initTables() {
         for (let i = 0; i < 0x100; i++) {
-            this.sz53Table.push(i & (Flag_Flag.X3 | Flag_Flag.X5 | Flag_Flag.S));
+            this.sz53Table.push(i & (module_Flag_Flag.X3 | module_Flag_Flag.X5 | module_Flag_Flag.S));
             let bits = i;
             let parity = 0;
             for (let bit = 0; bit < 8; bit++) {
                 parity ^= bits & 1;
                 bits >>= 1;
             }
-            this.parityTable.push(parity ? 0 : Flag_Flag.P);
+            this.parityTable.push(parity ? 0 : module_Flag_Flag.P);
             this.sz53pTable.push(this.sz53Table[i] | this.parityTable[i]);
         }
-        this.sz53Table[0] |= Flag_Flag.Z;
-        this.sz53pTable[0] |= Flag_Flag.Z;
+        this.sz53Table[0] |= module_Flag_Flag.Z;
+        this.sz53pTable[0] |= module_Flag_Flag.Z;
     }
 }
 
@@ -19198,7 +19486,7 @@ class Trs80_Trs80 {
         }
         else {
             // Unmapped memory.
-            console.log("Reading from unmapped memory at 0x" + Utils_toHex(address, 4));
+            console.log("Reading from unmapped memory at 0x" + module_Utils_toHex(address, 4));
             return 0xFF;
         }
     }
@@ -19235,7 +19523,7 @@ class Trs80_Trs80 {
                 value = (this.modeImage & 0x7E) | this.getCassetteByte();
                 break;
             default:
-                console.log("Reading from unknown port 0x" + Utils_toHex(Utils_lo(address), 2));
+                console.log("Reading from unknown port 0x" + module_Utils_toHex(module_Utils_lo(address), 2));
                 return 0;
         }
         // console.log("Reading 0x" + toHex(value, 2) + " from port 0x" + toHex(lo(address), 2));
@@ -19283,7 +19571,7 @@ class Trs80_Trs80 {
             case 0xFF:
                 if ((value & 0x20) !== 0) {
                     // Model III Micro Labs graphics card.
-                    console.log("Sending 0x" + Utils_toHex(value, 2) + " to Micro Labs graphics card");
+                    console.log("Sending 0x" + module_Utils_toHex(value, 2) + " to Micro Labs graphics card");
                 }
                 else {
                     // Do cassette emulation.
@@ -19291,21 +19579,21 @@ class Trs80_Trs80 {
                 }
                 break;
             default:
-                console.log("Writing 0x" + Utils_toHex(value, 2) + " to unknown port 0x" + Utils_toHex(port, 2));
+                console.log("Writing 0x" + module_Utils_toHex(value, 2) + " to unknown port 0x" + module_Utils_toHex(port, 2));
                 return;
         }
         // console.log("Wrote 0x" + toHex(value, 2) + " to port 0x" + toHex(port, 2));
     }
     writeMemory(address, value) {
         if (address < ROM_SIZE) {
-            console.log("Warning: Writing to ROM location 0x" + Utils_toHex(address, 4));
+            console.log("Warning: Writing to ROM location 0x" + module_Utils_toHex(address, 4));
         }
         else {
             if (address >= SCREEN_BEGIN && address < SCREEN_END) {
                 this.screen.writeChar(address, value);
             }
             else if (address < RAM_START) {
-                console.log("Writing to unmapped memory at 0x" + Utils_toHex(address, 4));
+                console.log("Writing to unmapped memory at 0x" + module_Utils_toHex(address, 4));
             }
             this.memory[address] = value;
         }
@@ -22146,6 +22434,7 @@ class Uploader_Uploader {
             audioFile = new AudioFile(rate, encodeLowSpeed(new Uint8Array(arrayBuffer), rate));
         }
         else if (pathname.toLowerCase().endsWith(".bas")) {
+            // Add tape header.
             const buffers = [
                 new Uint8Array(256),
                 new Uint8Array([0xA5, 0xD3, 0xD3, 0xD3]),
