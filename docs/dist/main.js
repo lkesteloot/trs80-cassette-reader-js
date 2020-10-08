@@ -2300,17 +2300,17 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         let frame = startFrame;
         let foundSyncByte = false;
         let bitCount = 0;
-        let allowLateZeroPulse = false;
+        let allowLateClockPulse = false;
         const bitData = [];
         const byteData = [];
         const binary = [];
         while (true) {
-            // console.log("recentBits", recentBits.toString(16).padStart(8, "0"), allowLateZeroPulse, foundSyncByte);
-            if (allowLateZeroPulse) {
+            // console.log("recentBits", recentBits.toString(16).padStart(8, "0"), allowLateClockPulse, foundSyncByte);
+            if (allowLateClockPulse) {
                 annotations.push(new WaveformAnnotation("!", frame, frame));
             }
-            const bitResult = this.readBit(frame, allowLateZeroPulse);
-            allowLateZeroPulse = false;
+            const bitResult = this.readBit(frame, allowLateClockPulse);
+            allowLateClockPulse = false;
             if (bitResult === NonPulse.SILENCE) {
                 // End of program.
                 break;
@@ -2337,7 +2337,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 else {
                     if (recentBits === SYNC_BYTE) {
                         foundSyncByte = true;
-                        allowLateZeroPulse = true;
+                        allowLateClockPulse = true;
                         bitCount = 0;
                     }
                 }
@@ -2357,31 +2357,31 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         return new Program_Program(0, 0, startFrame, frame, this.getName(), this.numbersToBytes(binary), bitData, byteData);
     }
     /**
-     * Read a bit at position "frame", which should be the position of the previous bit's zero pulse.
-     * @return the value of the bit and the new position of the zero pulse, or NonPulse if a bit
+     * Read a bit at position "frame", which should be the position of the previous bit's clock pulse.
+     * @return the value of the bit and the new position of the clock pulse, or NonPulse if a bit
      * couldn't be found.
      */
-    readBit(frame, allowLateZeroPulse) {
-        // Zero pulse is one period away.
-        let zeroPulse = this.isPulseAt(frame + this.period);
-        // console.log("readbit", bit, onePulse, zeroPulse);
-        if (!(zeroPulse instanceof Pulse)) {
-            if (allowLateZeroPulse) {
+    readBit(frame, allowLateClockPulse) {
+        // Clock pulse is one period away.
+        let clockPulse = this.isPulseAt(frame + this.period);
+        // console.log("readbit", bit, dataPulse, clockPulse);
+        if (!(clockPulse instanceof Pulse)) {
+            if (allowLateClockPulse) {
                 const [_, latePulse] = this.findNextPulse(frame + this.period, this.peakThreshold);
                 if (latePulse === undefined || latePulse.frame > frame + this.period * 3) {
                     // Failed to find late pulse.
-                    return zeroPulse;
+                    return clockPulse;
                 }
-                zeroPulse = latePulse;
+                clockPulse = latePulse;
             }
             else {
-                return zeroPulse;
+                return clockPulse;
             }
         }
-        // One pulse is half a period after the zero pulse.
-        const onePulse = this.isPulseAt(zeroPulse.frame + this.halfPeriod);
-        const bit = onePulse instanceof Pulse;
-        return [bit, zeroPulse.frame];
+        // Data pulse is half a period after the clock pulse.
+        const dataPulse = this.isPulseAt(clockPulse.frame + this.halfPeriod);
+        const bit = dataPulse instanceof Pulse;
+        return [bit, clockPulse.frame];
     }
     /**
      * Converts an array of numbers to an array of bytes of those numbers.
@@ -21879,6 +21879,7 @@ class TapeBrowser_TapeBrowser {
             input.classList.add("name");
             program.onName.subscribe(name => input.value = name);
             input.value = program.name;
+            // Spec says "off", but Chrome ignores that, so use "chrome-off".
             input.autocomplete = "chrome-off";
             if (program instanceof Tape_Tape) {
                 input.disabled = true;
@@ -21898,6 +21899,7 @@ class TapeBrowser_TapeBrowser {
             input.rows = 5;
             program.onNotes.subscribe(notes => input.value = notes);
             input.value = program.notes;
+            // Spec says "off", but Chrome ignores that, so use "chrome-off".
             input.autocomplete = "chrome-off";
             td.appendChild(input);
             const keyElement = addKeyElement("Notes", td);
@@ -22368,21 +22370,16 @@ function generatePulse(length) {
 function LowSpeedTapeEncoder_addByte(samplesList, b, cycle, silence) {
     // MSb first.
     for (let i = 7; i >= 0; i--) {
-        if ((b & (1 << i)) != 0) {
-            // One.
-            samplesList.push(cycle);
-            samplesList.push(cycle);
-        }
-        else {
-            // Zero.
-            samplesList.push(silence);
-            samplesList.push(cycle);
-        }
+        // Clock pulse.
+        samplesList.push(cycle);
+        // Data pulse.
+        const bit = (b & (1 << i)) != 0;
+        samplesList.push(bit ? cycle : silence);
     }
 }
 /**
  * Encode the sequence of bytes as an array of audio samples for low-speed (500 baud) cassettes.
- * @param bytes cas-style array of bytes, including 256 zero bytes, sync bytes, and trailing zero bytes.
+ * @param bytes cas-style array of bytes, including 256 zero bytes, sync byte, and trailing zero bytes.
  * @param sampleRate number of samples per second in the generated audio.
  */
 function encodeLowSpeed(bytes, sampleRate) {
@@ -22396,6 +22393,7 @@ function encodeLowSpeed(bytes, sampleRate) {
     const samplesList = [];
     // Start with half a second of silence.
     samplesList.push(new Int16Array(sampleRate / 2));
+    // All data bytes.
     for (let i = 0; i < bytes.length; i++) {
         LowSpeedTapeEncoder_addByte(samplesList, bytes[i], cycle, silence);
     }
