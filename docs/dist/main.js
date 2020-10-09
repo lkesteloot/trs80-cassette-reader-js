@@ -2243,15 +2243,10 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         this.state = TapeDecoderState.UNDECIDED;
         this.peakThreshold = 4000;
         this.tape = tape;
-        if (false) {}
-        else {
-            // Invert samples.
-            const samples = this.tape.originalSamples.samplesList[0];
-            this.samples = new Int16Array(samples.length);
-            for (let i = 0; i < samples.length; i++) {
-                this.samples[i] = -samples[i];
-            }
+        if (true) {
+            this.samples = this.tape.lowSpeedSamples.samplesList[0];
         }
+        else {}
         this.period = Math.round(this.tape.sampleRate * 0.002); // 2ms period.
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
@@ -2306,9 +2301,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         const binary = [];
         while (true) {
             // console.log("recentBits", recentBits.toString(16).padStart(8, "0"), allowLateClockPulse, foundSyncByte);
-            if (allowLateClockPulse) {
-                annotations.push(new WaveformAnnotation("!", frame, frame));
-            }
             const bitResult = this.readBit(frame, allowLateClockPulse);
             allowLateClockPulse = false;
             if (bitResult === NonPulse.SILENCE) {
@@ -2318,7 +2310,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             if (bitResult === NonPulse.NOISE) {
                 const nextFrame = frame + this.period;
                 recentBits = (recentBits << 1) | 0;
-                bitData.push(new BitData(frame + this.quarterPeriod, nextFrame + this.quarterPeriod, BitType.BAD));
+                bitData.push(new BitData(nextFrame - this.quarterPeriod, nextFrame + this.period - this.quarterPeriod, BitType.BAD));
                 frame = nextFrame;
             }
             else {
@@ -2336,6 +2328,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 }
                 else {
                     if (recentBits === SYNC_BYTE) {
+                        annotations.push(new WaveformAnnotation("Sync", bitData[bitData.length - 8].startFrame, bitData[bitData.length - 1].endFrame));
                         foundSyncByte = true;
                         allowLateClockPulse = true;
                         bitCount = 0;
@@ -2344,12 +2337,14 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 frame = nextFrame;
             }
         }
+        /*
         if (frame === startFrame || !foundSyncByte) {
             // Didn't read any bits.
             annotations.push(new WaveformAnnotation("E", startFrame, frame));
             return undefined;
         }
         annotations.push(new WaveformAnnotation("" + foundSyncByte, startFrame, frame));
+        */
         // Remove trailing BAD bits, they're probably just think after the last bit.
         while (bitData.length > 0 && bitData[bitData.length - 1].bitType === BitType.BAD) {
             bitData.splice(bitData.length - 1, 1);
@@ -2450,8 +2445,10 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         }
         let span = maxValue - minValue;
         if (span > this.peakThreshold &&
-            this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
-            this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) {
+            (this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
+                this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) ||
+            (this.samples[pulseStart] > minValue + this.peakThreshold / 2 &&
+                this.samples[pulseEnd] > minValue + this.peakThreshold / 2)) {
             return new Pulse(maxValue, maxFrame);
         }
         else if (span > this.peakThreshold / 2) {
@@ -21181,6 +21178,12 @@ class WaveformDisplay_WaveformDisplay {
             const x2 = frameToX(this.endHighlightFrame / mag);
             ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
         }
+        // Y=0 axis.
+        ctx.strokeStyle = selectionColor;
+        ctx.beginPath();
+        ctx.moveTo(0, height / 2);
+        ctx.lineTo(width, height / 2);
+        ctx.stroke();
         // Programs and bits.
         for (const program of this.programs) {
             if (drawingLine) {
@@ -21214,7 +21217,7 @@ class WaveformDisplay_WaveformDisplay {
                                 label = "BAD";
                                 break;
                         }
-                        this.drawBraceAndLabel(ctx, x1, x2, bitBraceColor, label, bitLabelColor);
+                        this.drawBraceAndLabel(ctx, height, x1, x2, bitBraceColor, label, bitLabelColor, true);
                     }
                 }
             }
@@ -21241,7 +21244,7 @@ class WaveformDisplay_WaveformDisplay {
                             endFrame >= firstOrigSample && startFrame <= lastOrigSample) {
                             const x1 = frameToX(startFrame / mag);
                             const x2 = frameToX(endFrame / mag);
-                            this.drawBraceAndLabel(ctx, x1, x2, braceColor, annotation.text, labelColor);
+                            this.drawBraceAndLabel(ctx, height, x1, x2, braceColor, annotation.text, labelColor, true);
                         }
                     }
                 }
@@ -21258,7 +21261,7 @@ class WaveformDisplay_WaveformDisplay {
                                     : byteValue < 128 ? String.fromCodePoint(byteValue)
                                         : program.isBasicProgram() && basicToken !== undefined ? basicToken
                                             : toHexByte(byteValue);
-                            this.drawBraceAndLabel(ctx, x1, x2, braceColor, label, labelColor);
+                            this.drawBraceAndLabel(ctx, height, x1, x2, braceColor, label, labelColor, true);
                         }
                     }
                 }
@@ -21267,7 +21270,7 @@ class WaveformDisplay_WaveformDisplay {
                 // Highlight the whole program.
                 const x1 = frameToX(program.startFrame / mag);
                 const x2 = frameToX(program.endFrame / mag);
-                this.drawBraceAndLabel(ctx, x1, x2, braceColor, program.getShortLabel(), labelColor);
+                this.drawBraceAndLabel(ctx, height, x1, x2, braceColor, program.getShortLabel(), labelColor, true);
             }
         }
         // Draw waveform.
@@ -21304,9 +21307,10 @@ class WaveformDisplay_WaveformDisplay {
             ctx.strokeStyle = braceColor;
             while (index < this.annotations.length) {
                 const annotation = this.annotations[index];
+                // TODO these are supposed to be byte indices, but they're being treated like frames:
                 const x1 = frameToX(annotation.firstIndex / mag);
                 const x2 = frameToX(annotation.lastIndex / mag);
-                this.drawBraceAndLabel(ctx, x1, x2, braceColor, annotation.text, labelColor);
+                this.drawBraceAndLabel(ctx, height, x1, x2, braceColor, annotation.text, labelColor, false);
                 index++;
             }
         }
@@ -21383,9 +21387,9 @@ class WaveformDisplay_WaveformDisplay {
     /**
      * Draw a down-facing brace withe specified label.
      */
-    drawBraceAndLabel(ctx, left, right, braceColor, label, labelColor) {
+    drawBraceAndLabel(ctx, height, left, right, braceColor, label, labelColor, drawOnTop) {
         const middle = (left + right) / 2;
-        const ledding = 16;
+        const leading = 16;
         // Don't have more than two lines, there's no space for it.
         const lines = label.split("\n");
         for (let i = 0; i < lines.length; i++) {
@@ -21396,29 +21400,32 @@ class WaveformDisplay_WaveformDisplay {
             ctx.fillStyle = labelColor;
             ctx.textAlign = "center";
             ctx.textBaseline = "alphabetic";
-            ctx.fillText(line, middle, 38 - (lines.length - i - 1) * ledding);
+            const y = drawOnTop ? 38 - (lines.length - i - 1) * leading : height - 35 + i * leading;
+            ctx.fillText(line, middle, y);
         }
         ctx.strokeStyle = braceColor;
         ctx.lineWidth = 1;
-        this.drawBrace(ctx, left, middle, right, 40, 380);
+        this.drawBrace(ctx, left, middle, right, 40, height - 40, drawOnTop);
     }
     /**
      * Draw a horizontal brace, pointing up, facing down.
      */
-    drawBrace(ctx, left, middle, right, top, bottom) {
+    drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
         const radius = Math.min(10, (right - left) / 4);
-        const lineY = top + 20;
+        const lineY = drawOnTop ? top + 20 : bottom - 20;
+        const pointY = drawOnTop ? top : bottom;
+        const otherY = drawOnTop ? bottom - 40 : top + 40;
         ctx.beginPath();
-        ctx.moveTo(left, bottom);
+        ctx.moveTo(left, otherY);
         if (left === right) {
             ctx.lineTo(left, lineY);
         }
         else {
             ctx.arcTo(left, lineY, left + radius, lineY, radius);
-            ctx.arcTo(middle, lineY, middle, top, radius);
+            ctx.arcTo(middle, lineY, middle, pointY, radius);
             ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
-            ctx.arcTo(right, lineY, right, lineY + radius, radius);
-            ctx.lineTo(right, bottom);
+            ctx.arcTo(right, lineY, right, lineY + (drawOnTop ? radius : -radius), radius);
+            ctx.lineTo(right, otherY);
         }
         ctx.stroke();
     }
@@ -21871,7 +21878,7 @@ class TapeBrowser_TapeBrowser {
             }
         }
         // Add editable fields.
-        {
+        if (program instanceof Program_Program) {
             const td = document.createElement("td");
             td.classList.add("value");
             const input = document.createElement("input");
