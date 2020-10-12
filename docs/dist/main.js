@@ -1307,7 +1307,7 @@ function concatAudio(samplesList) {
  * Clamp the number to the range of signed 16-bit int.
  */
 function clampToInt16(x) {
-    return Math.max(Math.min(x, 32767), -32768);
+    return Math.max(Math.min(Math.round(x), 32767), -32768);
 }
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
@@ -2681,19 +2681,29 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
      * Differentiating filter to accentuate pulses.
      *
      * @param samples samples to filter.
+     * @param sampleRate number of samples per second in the recording.
      * @returns filtered samples.
      */
-    static filterSamples(samples) {
+    static filterSamples(samples, sampleRate) {
         const out = new Int16Array(samples.length);
-        // Number of samples between the top of the pulse and the bottom of it.
-        // TODO make tape.sampleRate-sensitive.
-        const pulsePeakDistance = 7;
-        for (let i = 0; i < samples.length; i++) {
-            // Differentiate to accentuate a pulse. Pulse go positive, then negative,
-            // with a space of pulsePeakDistance, so subtracting those generates a large
-            // positive value at the bottom of the pulse.
-            const newSample = i >= pulsePeakDistance ? samples[i - pulsePeakDistance] - samples[i] : 0;
-            out[i] = clampToInt16(newSample);
+        // Number of samples between the top of the pulse and the bottom of it. Each pulse
+        // lasts 125µs, so assume the distance between crest and trough is 125µs.
+        const pulseWidth = Math.round(125e-6 * sampleRate);
+        if (false) {}
+        else {
+            // Convolution with a pulse similar to what the original should have looked like (125 µs pulse
+            // up, then 125 µs pulse down).
+            let posSum = 0;
+            let negSum = 0;
+            let denom = pulseWidth * 2;
+            for (let i = 0; i < samples.length; i++) {
+                let aheadSample = i + pulseWidth >= samples.length ? 0 : samples[i + pulseWidth];
+                let nowSample = samples[i];
+                let behindSample = i - pulseWidth < 0 ? 0 : samples[i - pulseWidth];
+                posSum += nowSample - behindSample;
+                negSum += aheadSample - nowSample;
+                out[i] = clampToInt16((posSum - negSum) / denom);
+            }
         }
         return out;
     }
@@ -2833,7 +2843,7 @@ class Tape_Tape {
         this.name = name;
         this.originalSamples = new DisplaySamples(audioFile.samples);
         this.filteredSamples = new DisplaySamples(highPassFilter(audioFile.samples, 500));
-        this.lowSpeedSamples = new DisplaySamples(LowSpeedTapeDecoder_LowSpeedTapeDecoder.filterSamples(this.filteredSamples.samplesList[0]));
+        this.lowSpeedSamples = new DisplaySamples(LowSpeedTapeDecoder_LowSpeedTapeDecoder.filterSamples(this.filteredSamples.samplesList[0], audioFile.rate));
         this.sampleRate = audioFile.rate;
         this.programs = [];
     }
@@ -8490,7 +8500,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     }
     const binary = new Uint8Array(totalLength);
     let offset = 0;
-    let address = systemProgram.chunks[0].loadAddress;
+    let address = systemProgram.chunks.length === 0 ? 0 : systemProgram.chunks[0].loadAddress;
     for (const chunk of systemProgram.chunks) {
         if (chunk.loadAddress !== address) {
             // If we get this, we need to modify Disasm to get chunks.
