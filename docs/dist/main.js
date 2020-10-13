@@ -2241,7 +2241,7 @@ class Pulse {
 class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     constructor(tape) {
         this.state = TapeDecoderState.UNDECIDED;
-        this.peakThreshold = 4000;
+        this.peakThreshold = 2000;
         this.tape = tape;
         if (true) {
             this.samples = this.tape.lowSpeedSamples.samplesList[0];
