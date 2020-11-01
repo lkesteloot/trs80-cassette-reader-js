@@ -20081,7 +20081,7 @@ class WaveformDisplay_WaveformDisplay {
         controls.appendChild(this.makeZoomControls());
         // Instructions.
         const instructions = document.createElement("span");
-        instructions.innerHTML = "<b>Shift</b>: Zoom in; <b>Alt-Shift</b>: Zoom out; <b>Alt</b>: Select";
+        instructions.innerHTML = "<b>Shift</b>: Zoom in&nbsp;&nbsp;&nbsp;&nbsp;<b>Alt-Shift</b>: Zoom out&nbsp;&nbsp;&nbsp;&nbsp;<b>Alt</b>: Select";
         instructions.style.marginLeft = "30px";
         controls.appendChild(instructions);
         // Selection type.
