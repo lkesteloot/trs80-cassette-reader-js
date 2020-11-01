@@ -2401,12 +2401,12 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     constructor(tape) {
         this.state = TapeDecoderState.UNDECIDED;
         this.peakThreshold = 2000;
-        this.tape = tape;
+        const samples = tape.lowSpeedSamples.samplesList[0];
         if (true) {
-            this.samples = this.tape.lowSpeedSamples.samplesList[0];
+            this.samples = samples;
         }
         else {}
-        this.period = Math.round(this.tape.sampleRate * 0.002); // 2ms period.
+        this.period = Math.round(tape.sampleRate * 0.002); // 2ms period.
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
     }
@@ -19939,6 +19939,15 @@ class Waveform {
     }
 }
 /**
+ * A point to be drawn on the waveform.
+ */
+class PointAnnotation {
+    constructor(frame, value) {
+        this.frame = frame;
+        this.value = value;
+    }
+}
+/**
  * Displays a list of different waveforms, synchronizing their pan and zoom.
  */
 class WaveformDisplay_WaveformDisplay {
@@ -19991,6 +20000,10 @@ class WaveformDisplay_WaveformDisplay {
          * What the user wants to select.
          */
         this.selectionMode = SelectionMode.BYTES;
+        /**
+         * Point annotations to draw.
+         */
+        this.pointAnnotations = [];
         this.sampleRate = sampleRate;
     }
     /**
@@ -20014,6 +20027,29 @@ class WaveformDisplay_WaveformDisplay {
         this.configureCanvas(canvas);
     }
     /**
+     * Make the canvas and its surrounding elements to display a waveform.
+     */
+    static makeWaveformDisplay(label, samples, parent, waveformDisplay) {
+        let labelElement = document.createElement("p");
+        labelElement.innerText = label;
+        parent.appendChild(labelElement);
+        let container = document.createElement("div");
+        container.style.display = "flex";
+        container.style.flexFlow = "row nowrap";
+        container.style.justifyContent = "flex-start";
+        container.style.alignItems = "flex-start";
+        parent.appendChild(container);
+        let canvas = document.createElement("canvas");
+        canvas.classList.add("waveform");
+        canvas.width = 800;
+        canvas.height = 400;
+        container.appendChild(canvas);
+        let infoPanel = document.createElement("div");
+        infoPanel.style.marginLeft = "30px";
+        container.appendChild(infoPanel);
+        waveformDisplay.addWaveform(canvas, infoPanel, samples);
+    }
+    /**
      * Add a program to highlight in the waveform.
      */
     addProgram(program) {
@@ -20024,6 +20060,13 @@ class WaveformDisplay_WaveformDisplay {
      */
     setAnnotations(annotations) {
         this.annotations = annotations;
+    }
+    /**
+     * Add a point annotation to draw.
+     */
+    addPointAnnotation(frame, value) {
+        this.pointAnnotations.push(new PointAnnotation(frame, value));
+        this.draw();
     }
     /**
      * Update the current highlight.
@@ -20565,6 +20608,15 @@ class WaveformDisplay_WaveformDisplay {
                 this.drawBraceAndLabel(ctx, height, x1, x2, braceColor, annotation.text, labelColor, false);
                 index++;
             }
+        }
+        // Draw point annotations.
+        ctx.fillStyle = badColor;
+        for (const pointAnnotation of this.pointAnnotations) {
+            const x = frameToX(pointAnnotation.frame / mag);
+            const y = height / 2 - pointAnnotation.value * height / 65536;
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.fill();
         }
     }
     /**
@@ -21111,24 +21163,7 @@ class TapeBrowser_TapeBrowser {
         clearElement(parent);
         parent.appendChild(waveformDisplay.makeControls(showSelectionType));
         for (const sampleSet of sampleSets) {
-            let label = document.createElement("p");
-            label.innerText = sampleSet.label;
-            parent.appendChild(label);
-            let container = document.createElement("div");
-            container.style.display = "flex";
-            container.style.flexFlow = "row nowrap";
-            container.style.justifyContent = "flex-start";
-            container.style.alignItems = "flex-start";
-            let canvas = document.createElement("canvas");
-            canvas.classList.add("waveform");
-            canvas.width = 800;
-            canvas.height = 400;
-            container.appendChild(canvas);
-            let infoPanel = document.createElement("div");
-            infoPanel.style.marginLeft = "30px";
-            container.appendChild(infoPanel);
-            waveformDisplay.addWaveform(canvas, infoPanel, sampleSet.samples);
-            parent.appendChild(container);
+            WaveformDisplay_WaveformDisplay.makeWaveformDisplay(sampleSet.label, sampleSet.samples, parent, waveformDisplay);
         }
         this.onHighlight.subscribe(highlight => waveformDisplay.setHighlight(highlight));
         this.onSelection.subscribe(selection => waveformDisplay.setSelection(selection));
@@ -22567,7 +22602,51 @@ var Split = function (idsOption, options) {
 
 /* harmony default export */ var split_es = (Split);
 
+// CONCATENATED MODULE: ./src/Test.ts
+var TestType;
+(function (TestType) {
+    TestType[TestType["PULSE"] = 0] = "PULSE";
+    TestType[TestType["NO_PULSE"] = 1] = "NO_PULSE";
+    TestType[TestType["BITS"] = 2] = "BITS";
+})(TestType || (TestType = {}));
+const STRING_TO_TEST_TYPE = {
+    "pulse": TestType.PULSE,
+    "no-pulse": TestType.NO_PULSE,
+    "bits": TestType.BITS,
+};
+class Test {
+    constructor(jsonTest) {
+        this.wavUrl = jsonTest.wavUrl;
+        this.type = STRING_TO_TEST_TYPE[jsonTest.type];
+        this.bin = jsonTest.bin;
+        this.binUrl = jsonTest.binUrl;
+    }
+}
+class TestFile {
+    constructor(url, json) {
+        this.tests = [];
+        this.includes = [];
+        this.url = url;
+        const jsonTests = json.tests;
+        if (jsonTests === undefined) {
+            throw new Error("file does not have top-level \"tests\" key");
+        }
+        for (const jsonTest of jsonTests) {
+            if (typeof jsonTest === "string") {
+                this.includes.push(jsonTest);
+            }
+            else {
+                this.tests.push(new Test(jsonTest));
+            }
+        }
+    }
+}
+
 // CONCATENATED MODULE: ./src/Main.ts
+
+
+
+
 
 
 
@@ -22718,6 +22797,72 @@ function handleAudioBuffer(pathname, audioFile) {
         direction: "vertical",
     });
 }
+function runTests(testFile) {
+    const screen = showScreen("test_screen");
+    const pageHeader = document.createElement("h1");
+    pageHeader.innerText = "Test Results";
+    screen.appendChild(pageHeader);
+    for (const test of testFile.tests) {
+        const testResult = document.createElement("div");
+        testResult.classList.add("test");
+        screen.append(testResult);
+        const url = new URL(test.wavUrl, testFile.url).href;
+        fetch(url, { cache: "reload" })
+            .then(req => req.arrayBuffer())
+            .then(arrayBuffer => {
+            const wavFile = readWavFile(arrayBuffer);
+            const tape = new Tape_Tape(url, wavFile);
+            const waveformDisplay = new WaveformDisplay_WaveformDisplay(wavFile.rate);
+            const title = document.createElement("span");
+            title.innerText = url;
+            const header = document.createElement("div");
+            header.appendChild(title);
+            header.classList.add("test_header");
+            testResult.append(header);
+            const panel = document.createElement("div");
+            panel.classList.add("expandable_panel");
+            testResult.append(panel);
+            header.addEventListener("click", () => {
+                testResult.classList.toggle("expanded");
+            });
+            WaveformDisplay_WaveformDisplay.makeWaveformDisplay("Original samples", tape.originalSamples, panel, waveformDisplay);
+            WaveformDisplay_WaveformDisplay.makeWaveformDisplay("Low speed filter", tape.lowSpeedSamples, panel, waveformDisplay);
+            waveformDisplay.draw();
+            switch (test.type) {
+                case TestType.PULSE:
+                case TestType.NO_PULSE:
+                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
+                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2));
+                    if (pulse instanceof Pulse) {
+                        waveformDisplay.addPointAnnotation(pulse.frame, pulse.value);
+                    }
+                    const result = document.createElement("span");
+                    result.classList.add("test_result");
+                    if ((pulse instanceof Pulse) === (test.type === TestType.PULSE)) {
+                        result.innerText = "Pass";
+                        result.classList.add("test_pass");
+                    }
+                    else {
+                        result.innerText = "Fail";
+                        result.classList.add("test_fail");
+                    }
+                    header.appendChild(result);
+                    break;
+                case TestType.BITS:
+                    break;
+            }
+        });
+    }
+}
+function loadAndRunTests() {
+    const url = new URL("tests/pulses/pulses.json", document.baseURI).href;
+    fetch(url, { cache: "reload" })
+        .then(req => req.json())
+        .then(json => {
+        const testFile = new TestFile(url, json);
+        runTests(testFile);
+    });
+}
 function main() {
     showScreen("drop_screen");
     // Configure uploading box.
@@ -22730,6 +22875,7 @@ function main() {
     const exportDataButton = document.getElementById("export_data_button");
     const importDataButton = document.getElementById("import_data_button");
     const browseDataButton = document.getElementById("browse_data_button");
+    const runTestsButton = document.getElementById("run_tests_button");
     const copyToClipboardButton = document.getElementById("copy_to_clipboard_button");
     const importButton = document.getElementById("import_button");
     exportDataButton.addEventListener("click", event => showExportData());
@@ -22738,6 +22884,7 @@ function main() {
         const browseScreen = showScreen("browse_screen");
         populateBrowseScreen(browseScreen);
     });
+    runTestsButton.addEventListener("click", loadAndRunTests);
     copyToClipboardButton.addEventListener("click", event => copyToClipboard());
     importButton.addEventListener("click", event => importData());
 }
