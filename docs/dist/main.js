@@ -2086,9 +2086,11 @@ function pad(n, base, size) {
  * Generate the string version of a number, in base 10, with commas for thousands groups.
  */
 function withCommas(n) {
-    let s = typeof n === "number" ? n.toString(10) : n;
-    if (s.length > 4) {
-        for (let i = s.length - 3; i > 0; i -= 3) {
+    let s = typeof n === "number" ? Math.round(n).toString(10) : n;
+    const negative = s.length >= 1 && s.charAt(0) === "-";
+    const firstDigit = negative ? 1 : 0;
+    if (s.length - firstDigit > 4) {
+        for (let i = s.length - 3; i > firstDigit; i -= 3) {
             s = s.substring(0, i) + "," + s.substring(i);
         }
     }
@@ -2384,17 +2386,25 @@ class ByteData {
 
 
 
+
 const SYNC_BYTE = 0xA5;
 // When not finding a pulse, what kind of audio we found.
-var NonPulse;
-(function (NonPulse) {
-    NonPulse[NonPulse["NOISE"] = 0] = "NOISE";
-    NonPulse[NonPulse["SILENCE"] = 1] = "SILENCE";
-})(NonPulse || (NonPulse = {}));
+var PulseResultType;
+(function (PulseResultType) {
+    // Pulse found.
+    PulseResultType[PulseResultType["PULSE"] = 0] = "PULSE";
+    // No pulse found but there was audio there. Could be a mis-read.
+    PulseResultType[PulseResultType["NOISE"] = 1] = "NOISE";
+    // Mostly just silence.
+    PulseResultType[PulseResultType["SILENCE"] = 2] = "SILENCE";
+})(PulseResultType || (PulseResultType = {}));
+// Result of a pulse detection.
 class Pulse {
-    constructor(value, frame) {
+    constructor(resultType, value, frame, explanation) {
+        this.resultType = resultType;
         this.value = value;
         this.frame = frame;
+        this.explanation = explanation;
     }
 }
 class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
@@ -2462,15 +2472,19 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             // console.log("recentBits", recentBits.toString(16).padStart(8, "0"), allowLateClockPulse, foundSyncByte);
             const bitResult = this.readBit(frame, allowLateClockPulse);
             allowLateClockPulse = false;
-            if (bitResult === NonPulse.SILENCE) {
+            if (bitResult === PulseResultType.SILENCE) {
                 // End of program.
                 break;
             }
-            if (bitResult === NonPulse.NOISE) {
+            if (bitResult === PulseResultType.NOISE) {
                 const nextFrame = frame + this.period;
                 recentBits = (recentBits << 1) | 0;
                 bitData.push(new BitData(nextFrame - this.quarterPeriod, nextFrame + this.period - this.quarterPeriod, BitType.BAD));
                 frame = nextFrame;
+            }
+            else if (bitResult === PulseResultType.PULSE) {
+                // Can't happen.
+                throw new Error("read bit can't be PULSE");
             }
             else {
                 const [bit, nextFrame] = bitResult;
@@ -2519,22 +2533,22 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         // Clock pulse is one period away.
         let clockPulse = this.isPulseAt(frame + this.period);
         // console.log("readbit", bit, dataPulse, clockPulse);
-        if (!(clockPulse instanceof Pulse)) {
+        if (clockPulse.resultType !== PulseResultType.PULSE) {
             if (allowLateClockPulse) {
                 const [_, latePulse] = this.findNextPulse(frame + this.period, this.peakThreshold);
                 if (latePulse === undefined || latePulse.frame > frame + this.period * 3) {
                     // Failed to find late pulse.
-                    return clockPulse;
+                    return clockPulse.resultType;
                 }
                 clockPulse = latePulse;
             }
             else {
-                return clockPulse;
+                return clockPulse.resultType;
             }
         }
         // Data pulse is half a period after the clock pulse.
         const dataPulse = this.isPulseAt(clockPulse.frame + this.halfPeriod);
-        const bit = dataPulse instanceof Pulse;
+        const bit = dataPulse.resultType === PulseResultType.PULSE;
         return [bit, clockPulse.frame];
     }
     /**
@@ -2576,17 +2590,17 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         if (maxFrame === -1) {
             throw new Error("Didn't find peak");
         }
-        return [frame, new Pulse(maxValue, maxFrame)];
+        return [frame, new Pulse(PulseResultType.PULSE, maxValue, maxFrame, "")];
     }
     /**
-     * Look for a pulse around frame, returning it found, otherwise undefined.
+     * Look for a pulse around frame.
      */
-    isPulseAt(frame) {
+    isPulseAt(frame, includeExplanation) {
         const distance = Math.round(this.period / 6);
         const pulseStart = frame - distance;
         const pulseEnd = frame + distance;
         if (pulseStart < 0 || pulseEnd >= this.samples.length) {
-            return NonPulse.SILENCE;
+            return new Pulse(PulseResultType.SILENCE, 0, 0, "too close to edge of audio");
         }
         // Find min and max around frame.
         let maxFrame = pulseStart;
@@ -2602,19 +2616,37 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 maxFrame = i;
             }
         }
-        let span = maxValue - minValue;
-        if (span > this.peakThreshold &&
-            (this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
-                this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) ||
-            (this.samples[pulseStart] > minValue + this.peakThreshold / 2 &&
-                this.samples[pulseEnd] > minValue + this.peakThreshold / 2)) {
-            return new Pulse(maxValue, maxFrame);
+        let range = maxValue - minValue;
+        if (range > this.peakThreshold &&
+            this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
+            this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) {
+            const explanation = includeExplanation ?
+                "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(maxFrame) +
+                    ", which is within the search radius of " + withCommas(distance) + ". " +
+                    "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(this.peakThreshold) +
+                    ", start " + withCommas(this.samples[pulseStart]) + " < " + withCommas(maxValue - this.peakThreshold / 2) +
+                    ", and end " + withCommas(this.samples[pulseEnd]) + " < " + withCommas(maxValue - this.peakThreshold / 2) : "";
+            return new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
         }
-        else if (span > this.peakThreshold / 2) {
-            return NonPulse.NOISE;
+        else if (range > this.peakThreshold &&
+            this.samples[pulseStart] > minValue + this.peakThreshold / 2 &&
+            this.samples[pulseEnd] > minValue + this.peakThreshold / 2) {
+            const explanation = includeExplanation ?
+                "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(maxFrame) +
+                    ", which is within the search radius of " + withCommas(distance) + ". " +
+                    "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(this.peakThreshold) +
+                    ", start " + withCommas(this.samples[pulseStart]) + " > " + withCommas(minValue + this.peakThreshold / 2) +
+                    ", and end " + withCommas(this.samples[pulseEnd]) + " > " + withCommas(minValue + this.peakThreshold / 2) : "";
+            return new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
+        }
+        else if (range > this.peakThreshold / 2) {
+            const explanation = includeExplanation ? "Range " + range + " is less than pulse threshold " + withCommas(this.peakThreshold) +
+                " but greater than noise threshold " + (this.peakThreshold / 2) : "";
+            return new Pulse(PulseResultType.NOISE, 0, 0, explanation);
         }
         else {
-            return NonPulse.SILENCE;
+            const explanation = includeExplanation ? "Range " + range + " is less than or equal to noise threshold " + (this.peakThreshold / 2) : "";
+            return new Pulse(PulseResultType.SILENCE, 0, 0, explanation);
         }
     }
     getBinary() {
@@ -22823,6 +22855,8 @@ function runTests(testFile) {
             const panel = document.createElement("div");
             panel.classList.add("expandable_panel");
             testResult.append(panel);
+            const explanation = document.createElement("p");
+            panel.append(explanation);
             header.addEventListener("click", () => {
                 testResult.classList.toggle("expanded");
             });
@@ -22833,13 +22867,19 @@ function runTests(testFile) {
                 case TestType.PULSE:
                 case TestType.NO_PULSE:
                     const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
-                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2));
-                    if (pulse instanceof Pulse) {
+                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), true);
+                    if (pulse.resultType === PulseResultType.PULSE) {
                         waveformDisplay.addPointAnnotation(pulse.frame, pulse.value);
+                    }
+                    if (pulse.explanation !== "") {
+                        explanation.innerText = pulse.explanation;
+                    }
+                    else {
+                        explanation.remove();
                     }
                     const result = document.createElement("span");
                     result.classList.add("test_result");
-                    if ((pulse instanceof Pulse) === (test.type === TestType.PULSE)) {
+                    if (pulse.resultType === PulseResultType.PULSE === (test.type === TestType.PULSE)) {
                         result.innerText = "Pass";
                         result.classList.add("test_pass");
                     }
