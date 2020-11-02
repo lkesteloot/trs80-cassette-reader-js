@@ -22616,6 +22616,7 @@ const STRING_TO_TEST_TYPE = {
 };
 class Test {
     constructor(jsonTest) {
+        this.name = jsonTest.name;
         this.wavUrl = jsonTest.wavUrl;
         this.type = STRING_TO_TEST_TYPE[jsonTest.type];
         this.bin = jsonTest.bin;
@@ -22814,7 +22815,7 @@ function runTests(testFile) {
             const tape = new Tape_Tape(url, wavFile);
             const waveformDisplay = new WaveformDisplay_WaveformDisplay(wavFile.rate);
             const title = document.createElement("span");
-            title.innerText = url;
+            title.innerText = test.name;
             const header = document.createElement("div");
             header.appendChild(title);
             header.classList.add("test_header");
