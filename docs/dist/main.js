@@ -1621,11 +1621,11 @@ var Flag;
 
 
 
-// CONCATENATED MODULE: ./src/WaveformAnnotation.ts
+// CONCATENATED MODULE: ./src/Annotations.ts
 /**
- * Information about one particular section of the waveform.
+ * Information about one particular section of a program.
  */
-class WaveformAnnotation {
+class ProgramAnnotation {
     /**
      * Create an object representing a section to annotate.
      *
@@ -1637,6 +1637,55 @@ class WaveformAnnotation {
         this.text = text;
         this.firstIndex = firstIndex;
         this.lastIndex = lastIndex;
+    }
+}
+/**
+ * Annotation to draw a point.
+ */
+class PointAnnotation {
+    constructor(frame, value) {
+        this.frame = frame;
+        this.value = value;
+    }
+    draw(ctx) {
+        const x = ctx.frameToX(this.frame);
+        const y = ctx.valueToY(this.value);
+        ctx.context.fillStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.context.fill();
+    }
+}
+/**
+ * Annotation to draw a horizontal line.
+ */
+class HorizontalLineAnnotation {
+    constructor(value) {
+        this.value = value;
+    }
+    draw(ctx) {
+        const y = ctx.valueToY(this.value);
+        ctx.context.strokeStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.moveTo(0, y);
+        ctx.context.lineTo(ctx.width, y);
+        ctx.context.stroke();
+    }
+}
+/**
+ * Annotation to draw a vertical line.
+ */
+class VerticalLineAnnotation {
+    constructor(frame) {
+        this.frame = frame;
+    }
+    draw(ctx) {
+        const x = ctx.frameToX(this.frame);
+        ctx.context.strokeStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.moveTo(x, 0);
+        ctx.context.lineTo(x, ctx.height);
+        ctx.context.stroke();
     }
 }
 
@@ -1682,7 +1731,7 @@ class SystemProgram_SystemProgram {
         this.entryPointAddress = 0;
         this.annotations = [];
         const b = new ByteReader(binary);
-        this.annotations.push(new WaveformAnnotation("File\nHead", b.addr(), b.addr()));
+        this.annotations.push(new ProgramAnnotation("File\nHead", b.addr(), b.addr()));
         const headerByte = b.read();
         if (headerByte === EOF) {
             this.error = "File is empty";
@@ -1699,9 +1748,9 @@ class SystemProgram_SystemProgram {
             return;
         }
         this.filename = this.filename.trim();
-        this.annotations.push(new WaveformAnnotation("Filename\n\"" + this.filename + "\"", b.addr() - FILENAME_LENGTH, b.addr() - 1));
+        this.annotations.push(new ProgramAnnotation("Filename\n\"" + this.filename + "\"", b.addr() - FILENAME_LENGTH, b.addr() - 1));
         while (true) {
-            this.annotations.push(new WaveformAnnotation("Data\nHead", b.addr(), b.addr()));
+            this.annotations.push(new ProgramAnnotation("Data\nHead", b.addr(), b.addr()));
             const marker = b.read();
             if (marker === EOF) {
                 this.error = "File is truncated at start of block";
@@ -1723,13 +1772,13 @@ class SystemProgram_SystemProgram {
             if (length === 0) {
                 length = 256;
             }
-            this.annotations.push(new WaveformAnnotation("Length\n" + length, b.addr() - 1, b.addr() - 1));
+            this.annotations.push(new ProgramAnnotation("Length\n" + length, b.addr() - 1, b.addr() - 1));
             const loadAddress = b.readShort(false);
             if (loadAddress === EOF) {
                 this.error = "File is truncated at load address";
                 return;
             }
-            this.annotations.push(new WaveformAnnotation("Address\n" + toHexWord(loadAddress), b.addr() - 2, b.addr() - 1));
+            this.annotations.push(new ProgramAnnotation("Address\n" + toHexWord(loadAddress), b.addr() - 2, b.addr() - 1));
             const data = b.readBytes(length);
             if (data.length < length) {
                 this.error = "File is truncated at data";
@@ -1740,7 +1789,7 @@ class SystemProgram_SystemProgram {
                 this.error = "File is truncated at checksum";
                 return;
             }
-            this.annotations.push(new WaveformAnnotation("XSum\n0x" + toHexByte(checksum), b.addr() - 1, b.addr() - 1));
+            this.annotations.push(new ProgramAnnotation("XSum\n0x" + toHexByte(checksum), b.addr() - 1, b.addr() - 1));
             this.chunks.push(new SystemChunk(loadAddress, data, checksum));
         }
         this.entryPointAddress = b.readShort(false);
@@ -1749,7 +1798,7 @@ class SystemProgram_SystemProgram {
             this.entryPointAddress = 0;
             return;
         }
-        this.annotations.push(new WaveformAnnotation("Run\n" + toHexWord(this.entryPointAddress), b.addr() - 2, b.addr() - 1));
+        this.annotations.push(new ProgramAnnotation("Run\n" + toHexWord(this.entryPointAddress), b.addr() - 2, b.addr() - 1));
     }
     /**
      * Convert an address in memory to the original byte offset in the binary. Returns undefined if
@@ -2401,6 +2450,7 @@ var PulseResultType;
 // Result of a pulse detection.
 class Pulse {
     constructor(resultType, value, frame, explanation) {
+        this.waveformAnnotations = [];
         this.resultType = resultType;
         this.value = value;
         this.frame = frame;
@@ -2450,7 +2500,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             const pulse = this.isPulseAt(frame);
             if (!(pulse instanceof Pulse)) {
                 // console.log("Did not find pulse at", frame);
-                annotations.push(new WaveformAnnotation("Failed", initialFrame, frame));
+                annotations.push(new ProgramAnnotation("Failed", initialFrame, frame));
                 return false;
             }
             frame = pulse.frame + this.period;
@@ -2501,7 +2551,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 }
                 else {
                     if (recentBits === SYNC_BYTE) {
-                        annotations.push(new WaveformAnnotation("Sync", bitData[bitData.length - 8].startFrame, bitData[bitData.length - 1].endFrame));
+                        annotations.push(new ProgramAnnotation("Sync", bitData[bitData.length - 8].startFrame, bitData[bitData.length - 1].endFrame));
                         foundSyncByte = true;
                         allowLateClockPulse = true;
                         bitCount = 0;
@@ -2617,16 +2667,24 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             }
         }
         let range = maxValue - minValue;
+        let posPulseEndThreshold = maxValue - this.peakThreshold / 2;
         if (range > this.peakThreshold &&
-            this.samples[pulseStart] < maxValue - this.peakThreshold / 2 &&
-            this.samples[pulseEnd] < maxValue - this.peakThreshold / 2) {
+            this.samples[pulseStart] < posPulseEndThreshold &&
+            this.samples[pulseEnd] < posPulseEndThreshold) {
             const explanation = includeExplanation ?
                 "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(maxFrame) +
                     ", which is within the search radius of " + withCommas(distance) + ". " +
                     "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(this.peakThreshold) +
-                    ", start " + withCommas(this.samples[pulseStart]) + " < " + withCommas(maxValue - this.peakThreshold / 2) +
-                    ", and end " + withCommas(this.samples[pulseEnd]) + " < " + withCommas(maxValue - this.peakThreshold / 2) : "";
-            return new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
+                    ", start " + withCommas(this.samples[pulseStart]) + " < " + withCommas(posPulseEndThreshold) +
+                    ", and end " + withCommas(this.samples[pulseEnd]) + " < " + withCommas(posPulseEndThreshold) : "";
+            let pulse = new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
+            if (includeExplanation) {
+                pulse.waveformAnnotations.push(new PointAnnotation(pulseStart, this.samples[pulseStart]));
+                pulse.waveformAnnotations.push(new PointAnnotation(pulseEnd, this.samples[pulseEnd]));
+                pulse.waveformAnnotations.push(new HorizontalLineAnnotation(posPulseEndThreshold));
+                pulse.waveformAnnotations.push(new VerticalLineAnnotation(frame));
+            }
+            return pulse;
         }
         else if (range > this.peakThreshold &&
             this.samples[pulseStart] > minValue + this.peakThreshold / 2 &&
@@ -2637,6 +2695,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                     "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(this.peakThreshold) +
                     ", start " + withCommas(this.samples[pulseStart]) + " > " + withCommas(minValue + this.peakThreshold / 2) +
                     ", and end " + withCommas(this.samples[pulseEnd]) + " > " + withCommas(minValue + this.peakThreshold / 2) : "";
+            // TODO should use minFrame, not maxFrame.
             return new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
         }
         else if (range > this.peakThreshold / 2) {
@@ -8419,7 +8478,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         if (byteOffset !== undefined) {
             let lastIndex = byteOffset + instruction.bin.length - 1;
             elements.push(new Highlightable(byteOffset, lastIndex, line));
-            annotations.push(new WaveformAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+            annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
         }
     }
     return [elements, annotations];
@@ -19971,15 +20030,6 @@ class Waveform {
     }
 }
 /**
- * A point to be drawn on the waveform.
- */
-class PointAnnotation {
-    constructor(frame, value) {
-        this.frame = frame;
-        this.value = value;
-    }
-}
-/**
  * Displays a list of different waveforms, synchronizing their pan and zoom.
  */
 class WaveformDisplay_WaveformDisplay {
@@ -20033,9 +20083,13 @@ class WaveformDisplay_WaveformDisplay {
          */
         this.selectionMode = SelectionMode.BYTES;
         /**
-         * Point annotations to draw.
+         * Waveform annotations to draw.
          */
-        this.pointAnnotations = [];
+        this.waveformAnnotations = [];
+        /**
+         * Handle to the timeout to redraw.
+         */
+        this.drawTimeout = undefined;
         this.sampleRate = sampleRate;
     }
     /**
@@ -20080,6 +20134,7 @@ class WaveformDisplay_WaveformDisplay {
         infoPanel.style.marginLeft = "30px";
         container.appendChild(infoPanel);
         waveformDisplay.addWaveform(canvas, infoPanel, samples);
+        waveformDisplay.queueDraw();
     }
     /**
      * Add a program to highlight in the waveform.
@@ -20096,9 +20151,9 @@ class WaveformDisplay_WaveformDisplay {
     /**
      * Add a point annotation to draw.
      */
-    addPointAnnotation(frame, value) {
-        this.pointAnnotations.push(new PointAnnotation(frame, value));
-        this.draw();
+    addWaveformAnnotation(waveformAnnotation) {
+        this.waveformAnnotations.push(waveformAnnotation);
+        this.queueDraw();
     }
     /**
      * Update the current highlight.
@@ -20117,7 +20172,7 @@ class WaveformDisplay_WaveformDisplay {
                 this.endHighlightFrame = byteData.endFrame;
             }
         }
-        this.draw();
+        this.queueDraw();
     }
     /**
      * Update the current highlight.
@@ -20413,9 +20468,27 @@ class WaveformDisplay_WaveformDisplay {
         });
     }
     /**
+     * Queue a redraw to happen as soon as possible. This is useful if many of these might be called
+     * synchronously -- they will be collapsed.
+     */
+    queueDraw() {
+        this.cancelQueuedDraw();
+        this.drawTimeout = window.setTimeout(() => this.draw(), 0);
+    }
+    /**
+     * Cancel any queued draw.
+     */
+    cancelQueuedDraw() {
+        if (this.drawTimeout !== undefined) {
+            window.clearTimeout(this.drawTimeout);
+            this.drawTimeout = undefined;
+        }
+    }
+    /**
      * Draw all the waveforms.
      */
     draw() {
+        this.cancelQueuedDraw();
         for (const waveform of this.waveforms) {
             this.drawInCanvas(waveform.canvas, waveform.samples);
         }
@@ -20642,13 +20715,20 @@ class WaveformDisplay_WaveformDisplay {
             }
         }
         // Draw point annotations.
-        ctx.fillStyle = badColor;
-        for (const pointAnnotation of this.pointAnnotations) {
-            const x = frameToX(pointAnnotation.frame / mag);
-            const y = height / 2 - pointAnnotation.value * height / 65536;
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, 2 * Math.PI);
-            ctx.fill();
+        const annotationContext = {
+            width: width,
+            height: height,
+            frameToX(frame) {
+                return frameToX(frame / mag);
+            },
+            valueToY(value) {
+                return height / 2 - value * height / 65536;
+            },
+            context: ctx,
+            highlightColor: badColor,
+        };
+        for (const pointAnnotation of this.waveformAnnotations) {
+            pointAnnotation.draw(annotationContext);
         }
     }
     /**
@@ -22687,6 +22767,7 @@ class TestFile {
 
 
 
+
 function nameFromPathname(pathname) {
     let name = pathname;
     // Keep only last component.
@@ -22862,15 +22943,15 @@ function runTests(testFile) {
             });
             WaveformDisplay_WaveformDisplay.makeWaveformDisplay("Original samples", tape.originalSamples, panel, waveformDisplay);
             WaveformDisplay_WaveformDisplay.makeWaveformDisplay("Low speed filter", tape.lowSpeedSamples, panel, waveformDisplay);
-            waveformDisplay.draw();
             switch (test.type) {
                 case TestType.PULSE:
                 case TestType.NO_PULSE:
                     const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
                     const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), true);
                     if (pulse.resultType === PulseResultType.PULSE) {
-                        waveformDisplay.addPointAnnotation(pulse.frame, pulse.value);
+                        waveformDisplay.addWaveformAnnotation(new PointAnnotation(pulse.frame, pulse.value));
                     }
+                    pulse.waveformAnnotations.forEach(a => waveformDisplay.addWaveformAnnotation(a));
                     if (pulse.explanation !== "") {
                         explanation.innerText = pulse.explanation;
                     }
