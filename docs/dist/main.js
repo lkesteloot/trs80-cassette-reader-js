@@ -2666,8 +2666,8 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 maxFrame = i;
             }
         }
-        let range = maxValue - minValue;
-        let posPulseEndThreshold = maxValue - this.peakThreshold / 2;
+        const range = maxValue - minValue;
+        const posPulseEndThreshold = maxValue - this.peakThreshold / 2;
         if (range > this.peakThreshold &&
             this.samples[pulseStart] < posPulseEndThreshold &&
             this.samples[pulseEnd] < posPulseEndThreshold) {
@@ -2679,6 +2679,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                     ", and end " + withCommas(this.samples[pulseEnd]) + " < " + withCommas(posPulseEndThreshold) : "";
             let pulse = new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
             if (includeExplanation) {
+                pulse.waveformAnnotations.push(new PointAnnotation(pulse.frame, pulse.value));
                 pulse.waveformAnnotations.push(new PointAnnotation(pulseStart, this.samples[pulseStart]));
                 pulse.waveformAnnotations.push(new PointAnnotation(pulseEnd, this.samples[pulseEnd]));
                 pulse.waveformAnnotations.push(new HorizontalLineAnnotation(posPulseEndThreshold));
@@ -2686,27 +2687,26 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             }
             return pulse;
         }
-        else if (range > this.peakThreshold &&
-            this.samples[pulseStart] > minValue + this.peakThreshold / 2 &&
-            this.samples[pulseEnd] > minValue + this.peakThreshold / 2) {
+        let negPulseEndThreshold = minValue + this.peakThreshold / 2;
+        if (range > this.peakThreshold &&
+            this.samples[pulseStart] > negPulseEndThreshold &&
+            this.samples[pulseEnd] > negPulseEndThreshold) {
             const explanation = includeExplanation ?
                 "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(maxFrame) +
                     ", which is within the search radius of " + withCommas(distance) + ". " +
                     "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(this.peakThreshold) +
-                    ", start " + withCommas(this.samples[pulseStart]) + " > " + withCommas(minValue + this.peakThreshold / 2) +
-                    ", and end " + withCommas(this.samples[pulseEnd]) + " > " + withCommas(minValue + this.peakThreshold / 2) : "";
+                    ", start " + withCommas(this.samples[pulseStart]) + " > " + withCommas(negPulseEndThreshold) +
+                    ", and end " + withCommas(this.samples[pulseEnd]) + " > " + withCommas(negPulseEndThreshold) : "";
             // TODO should use minFrame, not maxFrame.
             return new Pulse(PulseResultType.PULSE, maxValue, maxFrame, explanation);
         }
-        else if (range > this.peakThreshold / 2) {
+        if (range > this.peakThreshold / 2) {
             const explanation = includeExplanation ? "Range " + range + " is less than pulse threshold " + withCommas(this.peakThreshold) +
                 " but greater than noise threshold " + (this.peakThreshold / 2) : "";
             return new Pulse(PulseResultType.NOISE, 0, 0, explanation);
         }
-        else {
-            const explanation = includeExplanation ? "Range " + range + " is less than or equal to noise threshold " + (this.peakThreshold / 2) : "";
-            return new Pulse(PulseResultType.SILENCE, 0, 0, explanation);
-        }
+        const explanation = includeExplanation ? "Range " + range + " is less than or equal to noise threshold " + (this.peakThreshold / 2) : "";
+        return new Pulse(PulseResultType.SILENCE, 0, 0, explanation);
     }
     getBinary() {
         return new Uint8Array(0);
@@ -22767,7 +22767,6 @@ class TestFile {
 
 
 
-
 function nameFromPathname(pathname) {
     let name = pathname;
     // Keep only last component.
@@ -22913,6 +22912,7 @@ function handleAudioBuffer(pathname, audioFile) {
 }
 function runTests(testFile) {
     const screen = showScreen("test_screen");
+    clearElement(screen);
     const pageHeader = document.createElement("h1");
     pageHeader.innerText = "Test Results";
     screen.appendChild(pageHeader);
@@ -22948,9 +22948,6 @@ function runTests(testFile) {
                 case TestType.NO_PULSE:
                     const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
                     const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), true);
-                    if (pulse.resultType === PulseResultType.PULSE) {
-                        waveformDisplay.addWaveformAnnotation(new PointAnnotation(pulse.frame, pulse.value));
-                    }
                     pulse.waveformAnnotations.forEach(a => waveformDisplay.addWaveformAnnotation(a));
                     if (pulse.explanation !== "") {
                         explanation.innerText = pulse.explanation;
@@ -22976,7 +22973,10 @@ function runTests(testFile) {
         });
     }
 }
-function loadAndRunTests() {
+/**
+ * Show the test screen and start loading the test JSON file.
+ */
+function showTestScreen() {
     const url = new URL("tests/pulses/pulses.json", document.baseURI).href;
     fetch(url, { cache: "reload" })
         .then(req => req.json())
@@ -22984,6 +22984,22 @@ function loadAndRunTests() {
         const testFile = new TestFile(url, json);
         runTests(testFile);
     });
+}
+/**
+ * Handle the browser's back and forward history buttons.
+ */
+function handleNewLocation() {
+    const hash = window.location.hash;
+    switch (hash) {
+        case "":
+        case "#":
+        default:
+            showScreen("drop_screen");
+            break;
+        case "#test":
+            showTestScreen();
+            break;
+    }
 }
 function main() {
     showScreen("drop_screen");
@@ -23006,9 +23022,10 @@ function main() {
         const browseScreen = showScreen("browse_screen");
         populateBrowseScreen(browseScreen);
     });
-    runTestsButton.addEventListener("click", loadAndRunTests);
+    runTestsButton.addEventListener("click", () => window.location.href = "#test");
     copyToClipboardButton.addEventListener("click", event => copyToClipboard());
     importButton.addEventListener("click", event => importData());
+    window.addEventListener("popstate", handleNewLocation);
 }
 
 // CONCATENATED MODULE: ./src/index.ts
