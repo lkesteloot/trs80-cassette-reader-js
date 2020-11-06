@@ -2634,7 +2634,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     readBit(frame, allowLateClockPulse) {
         // Clock pulse is one period away.
         let clockPulse = this.isPulseAt(frame + this.period);
-        // console.log("readbit", bit, dataPulse, clockPulse);
         if (clockPulse.resultType !== PulseResultType.PULSE) {
             if (allowLateClockPulse) {
                 const [_, latePulse] = this.findNextPulse(frame + this.period, this.peakThreshold);
@@ -2660,6 +2659,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     readBits(frame) {
         let bits = "";
         const waveformAnnotation = [];
+        waveformAnnotation.push(new LabelAnnotation("Previous", frame, frame, true));
         while (true) {
             const expectedNextFrame = frame + this.period;
             const bitResult = this.readBit(frame, false);
