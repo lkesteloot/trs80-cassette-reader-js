@@ -21280,6 +21280,7 @@ class TapeBrowser_TapeBrowser {
         waveformDisplay.onSelection.subscribe(selection => this.setSelection(selection));
         waveformDisplay.onDoneSelecting.subscribe(source => this.doneSelecting(source));
         waveformDisplay.zoomToFitAll();
+        waveformDisplay.queueDraw();
     }
     /**
      * Make the lower-right pane of original waveforms.
