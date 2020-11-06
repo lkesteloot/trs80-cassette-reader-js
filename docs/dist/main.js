@@ -1702,11 +1702,11 @@ class LabelAnnotation {
     draw(ctx) {
         const x1 = ctx.frameToX(this.left);
         const x2 = ctx.frameToX(this.right);
-        drawBraceAndLabel(ctx.context, ctx.height, x1, x2, ctx.secondaryForegroundColor, this.label, ctx.foregroundColor, false);
+        drawBraceAndLabel(ctx.context, ctx.height, x1, x2, ctx.secondaryForegroundColor, this.label, ctx.foregroundColor, this.onTop);
     }
 }
 /**
- * Draw a down-facing brace withe specified label.
+ * Draw a brace with specified label.
  */
 function drawBraceAndLabel(ctx, height, left, right, braceColor, label, labelColor, drawOnTop) {
     const middle = (left + right) / 2;
@@ -1729,7 +1729,7 @@ function drawBraceAndLabel(ctx, height, left, right, braceColor, label, labelCol
     drawBrace(ctx, left, middle, right, 40, height - 40, drawOnTop);
 }
 /**
- * Draw a horizontal brace, pointing up, facing down.
+ * Draw a horizontal brace.
  */
 function drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
     const radius = Math.min(10, (right - left) / 4);
@@ -2557,7 +2557,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
      */
     proofPulseDistance(frame, waveformAnnotations) {
         const initialFrame = frame;
-        // console.log("Proofing starting at", frame, "with period", this.period);
         for (let i = 0; i < 200; i++) {
             const pulse = this.isPulseAt(frame);
             if (!(pulse instanceof Pulse)) {
@@ -2567,8 +2566,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             }
             frame = pulse.frame + this.period;
         }
-        // console.log("Proof successful");
-        // waveformAnnotations.push(new WaveformAnnotation("P", initialFrame, frame - this.period));
         return true;
     }
     /**
@@ -2584,7 +2581,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         const byteData = [];
         const binary = [];
         while (true) {
-            // console.log("recentBits", recentBits.toString(16).padStart(8, "0"), allowLateClockPulse, foundSyncByte);
             const bitResult = this.readBit(frame, allowLateClockPulse);
             allowLateClockPulse = false;
             if (bitResult === PulseResultType.SILENCE) {
@@ -2625,14 +2621,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 frame = nextFrame;
             }
         }
-        /*
-        if (frame === startFrame || !foundSyncByte) {
-            // Didn't read any bits.
-            waveformAnnotations.push(new WaveformAnnotation("E", startFrame, frame));
-            return undefined;
-        }
-        waveformAnnotations.push(new WaveformAnnotation("" + foundSyncByte, startFrame, frame));
-        */
         // Remove trailing BAD bits, they're probably just think after the last bit.
         while (bitData.length > 0 && bitData[bitData.length - 1].bitType === BitType.BAD) {
             bitData.splice(bitData.length - 1, 1);
@@ -18835,6 +18823,7 @@ class CssScreen_CssScreen extends Trs80Screen_Trs80Screen {
         return this.node;
     }
     setExpandedCharacters(expanded) {
+        super.setExpandedCharacters(expanded);
         if (expanded) {
             this.node.classList.remove(CSS_PREFIX + "-narrow");
             this.node.classList.add(CSS_PREFIX + "-expanded");
@@ -18843,9 +18832,6 @@ class CssScreen_CssScreen extends Trs80Screen_Trs80Screen {
             this.node.classList.remove(CSS_PREFIX + "-expanded");
             this.node.classList.add(CSS_PREFIX + "-narrow");
         }
-    }
-    isExpandedCharacters() {
-        return this.node.classList.contains(CSS_PREFIX + "-expanded");
     }
     /**
      * Create and configure the DOM node that we're rendering into.
@@ -18990,6 +18976,7 @@ class FontScreen_FontScreen extends Trs80Screen_Trs80Screen {
         return this.node;
     }
     setExpandedCharacters(expanded) {
+        super.setExpandedCharacters(expanded);
         if (expanded) {
             this.node.classList.remove(cssPrefix + "-narrow");
             this.node.classList.add(cssPrefix + "-expanded");
@@ -18998,9 +18985,6 @@ class FontScreen_FontScreen extends Trs80Screen_Trs80Screen {
             this.node.classList.remove(cssPrefix + "-expanded");
             this.node.classList.add(cssPrefix + "-narrow");
         }
-    }
-    isExpandedCharacters() {
-        return this.node.classList.contains(cssPrefix + "-expanded");
     }
     /**
      * Create and configure the DOM node that we're rendering into.
@@ -19123,6 +19107,7 @@ class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
         return this.node;
     }
     setExpandedCharacters(expanded) {
+        super.setExpandedCharacters(expanded);
         this.narrowCanvas.style.display = expanded ? "none" : "block";
         this.expandedCanvas.style.display = !expanded ? "none" : "block";
         this.scheduleUpdateThumbnail();
@@ -19540,12 +19525,6 @@ class WebGlScreen_WebGlScreen extends Trs80Screen_Trs80Screen {
     }
     getNode() {
         return this.node;
-    }
-    setExpandedCharacters(expanded) {
-        super.setExpandedCharacters(expanded);
-    }
-    isExpandedCharacters() {
-        return super.isExpandedCharacters();
     }
     draw() {
         this.gl.viewport(0, 0, this.node.width, this.node.height);
