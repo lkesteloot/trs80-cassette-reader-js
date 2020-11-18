@@ -3045,10 +3045,12 @@ class Decoder_Decoder {
         }
     }
     /**
-     * Tapes a binary (potentially read at low speed) and generates a clean high-speed audio.
+     * Re-encodes a binary as a clean low-speed audio.
      */
     reencode(binary) {
-        if (true) { // also fix comment above
+        // Here we could re-encode in either low speed or high speed. Do low speed so that
+        // the audio is usable on a Model I.
+        if (true) {
             return encodeLowSpeed(wrapLowSpeed(binary), this.tape.sampleRate);
         }
         else {}
@@ -24904,6 +24906,22 @@ function escapeHtml(unsafe) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+/**
+ * Makes a pill to show pass or fail for a test.
+ */
+function makePassFailLabel(pass) {
+    const result = document.createElement("span");
+    result.classList.add("test_result");
+    if (pass) {
+        result.innerText = "Pass";
+        result.classList.add("test_pass");
+    }
+    else {
+        result.innerText = "Fail";
+        result.classList.add("test_fail");
+    }
+    return result;
+}
 function runTests(testFile) {
     const screen = showScreen("test_screen");
     clearElement(screen);
@@ -24916,7 +24934,12 @@ function runTests(testFile) {
         screen.append(testResult);
         const url = new URL(test.wavUrl, testFile.url).href;
         fetch(url, { cache: "reload" })
-            .then(req => req.arrayBuffer())
+            .then(response => {
+            if (response.ok) {
+                return response.arrayBuffer();
+            }
+            throw new Error(response.statusText);
+        })
             .then(arrayBuffer => {
             const wavFile = readWavFile(arrayBuffer);
             const tape = new Tape_Tape(url, wavFile);
@@ -24982,18 +25005,16 @@ function runTests(testFile) {
                     break;
                 }
             }
-            // Show pass/fail label.
-            const result = document.createElement("span");
-            result.classList.add("test_result");
-            if (pass) {
-                result.innerText = "Pass";
-                result.classList.add("test_pass");
-            }
-            else {
-                result.innerText = "Fail";
-                result.classList.add("test_fail");
-            }
-            header.appendChild(result);
+            header.appendChild(makePassFailLabel(pass));
+        })
+            .catch(reason => {
+            const title = document.createElement("span");
+            title.innerText = test.name + " (" + reason + ")";
+            const header = document.createElement("div");
+            header.appendChild(title);
+            // header.classList.add("test_header");
+            testResult.append(header);
+            header.appendChild(makePassFailLabel(false));
         });
     }
 }
