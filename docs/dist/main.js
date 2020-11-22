@@ -8785,6 +8785,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     let h1 = document.createElement("h1");
     h1.innerText = "Chunks";
     out.appendChild(h1);
+    let programAddress = undefined;
     for (const chunk of systemProgram.chunks) {
         const line = document.createElement("div");
         out.appendChild(line);
@@ -8799,7 +8800,6 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < length ? " ..." : "");
         text = text.padEnd(14, " ");
         SystemProgramRender_add(line, text, classes.hex);
-        text = "Program code";
         if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
             text = "Screen";
         }
@@ -8808,6 +8808,13 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         }
         else if (chunk.loadAddress === 0x401E) {
             text = "Video driver pointer";
+        }
+        else {
+            text = "Program code";
+            if (programAddress !== undefined && chunk.loadAddress !== programAddress) {
+                text += " (not contiguous, expected " + toHexWord(programAddress) + ")";
+            }
+            programAddress = chunk.loadAddress + length;
         }
         SystemProgramRender_add(line, text, classes.opcodes);
         if (!chunk.isChecksumValid()) {
