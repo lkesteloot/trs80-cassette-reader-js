@@ -8670,315 +8670,6 @@ class Disasm_Disasm {
 
 
 
-// CONCATENATED MODULE: ./src/SystemProgramRender.ts
-
-
-
-
-
-// RAM address range of screen.
-const SCREEN_BEGIN = 15 * 1024;
-const SCREEN_END = 16 * 1024;
-/**
- * Add text to the line with the specified class.
- *
- * @param out the enclosing element to add to.
- * @param text the text to add.
- * @param className the name of the class for the item.
- */
-function SystemProgramRender_add(out, text, className) {
-    const e = document.createElement("span");
-    e.innerText = text;
-    e.classList.add(className);
-    out.appendChild(e);
-    return e;
-}
-// Stylesheet.
-const SystemProgramRender_BACKGROUND_COLOR = "var(--background)";
-const SystemProgramRender_STYLE = {
-    error: {
-        color: "var(--red)",
-    },
-    address: {
-        color: "var(--foreground-secondary)",
-    },
-    hex: {
-        color: "var(--blue)",
-    },
-    opcodes: {
-        color: "var(--cyan)",
-    },
-    label: {
-        color: "var(--orange)",
-    },
-    space: {
-        color: "var(--foreground-secondary)",
-    },
-    punctuation: {
-        color: "var(--foreground-secondary)",
-    },
-    selected: {
-        backgroundColor: "var(--background-highlights)",
-    },
-    highlighted: {
-        backgroundColor: "var(--foreground-secondary)",
-        "& $hex": {
-            backgroundColor: "var(--blue)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $punctuation": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $space": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $label": {
-            backgroundColor: "var(--orange)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $opcodes": {
-            backgroundColor: "var(--cyan)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $address": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-        "& $error": {
-            backgroundColor: "var(--red)",
-            color: SystemProgramRender_BACKGROUND_COLOR,
-        },
-    },
-};
-const SystemProgramRender_sheet = src_Jss.createStyleSheet(SystemProgramRender_STYLE);
-const SystemProgramRender_highlightClassName = SystemProgramRender_sheet.classes.highlighted;
-const SystemProgramRender_selectClassName = SystemProgramRender_sheet.classes.selected;
-/**
- * Render a disassembled system program.
- *
- * @return array of the elements added, with the index being the offset into the original bytes array.
- */
-function SystemProgramRender_toDiv(systemProgram, out) {
-    SystemProgramRender_sheet.attach();
-    const classes = SystemProgramRender_sheet.classes;
-    // Every element we render that maps to a byte in the program.
-    const elements = [];
-    // Waveform annotations.
-    const annotations = [];
-    if (systemProgram.error !== undefined) {
-        const line = document.createElement("div");
-        out.appendChild(line);
-        SystemProgramRender_add(line, systemProgram.error, classes.error);
-    }
-    function okChunk(chunk) {
-        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
-            return false;
-        }
-        if (chunk.loadAddress === 0x4210) {
-            return false;
-        }
-        return true;
-    }
-    // Display a row for each chunk.
-    let h1 = document.createElement("h1");
-    h1.innerText = "Chunks";
-    out.appendChild(h1);
-    let programAddress = undefined;
-    for (const chunk of systemProgram.chunks) {
-        const line = document.createElement("div");
-        out.appendChild(line);
-        // Address and length.
-        let length = chunk.data.length;
-        let text = toHexWord(chunk.loadAddress) + "-" + toHexWord(chunk.loadAddress + length - 1) +
-            " (" + length + " byte" + (length === 1 ? "" : "s") + ")";
-        text = text.padEnd(23, " ");
-        SystemProgramRender_add(line, text, classes.address);
-        // First few bytes.
-        const bytes = chunk.data.slice(0, Math.min(3, length));
-        text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < length ? " ..." : "");
-        text = text.padEnd(14, " ");
-        SystemProgramRender_add(line, text, classes.hex);
-        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
-            text = "Screen";
-        }
-        else if (chunk.loadAddress === 0x4210) {
-            text = "Port 0xEC bitmask";
-        }
-        else if (chunk.loadAddress === 0x401E) {
-            text = "Video driver pointer";
-        }
-        else {
-            text = "Program code";
-            if (programAddress !== undefined && chunk.loadAddress !== programAddress) {
-                text += " (not contiguous, expected " + toHexWord(programAddress) + ")";
-            }
-            programAddress = chunk.loadAddress + length;
-        }
-        SystemProgramRender_add(line, text, classes.opcodes);
-        if (!chunk.isChecksumValid()) {
-            SystemProgramRender_add(line, " (invalid checksum)", classes.error);
-        }
-    }
-    const entryPointDiv = document.createElement("div");
-    entryPointDiv.style.marginTop = "10px";
-    out.appendChild(entryPointDiv);
-    SystemProgramRender_add(entryPointDiv, "Entry point: ", classes.label);
-    SystemProgramRender_add(entryPointDiv, toHexWord(systemProgram.entryPointAddress), classes.address);
-    h1 = document.createElement("h1");
-    h1.innerText = "Disassembly";
-    out.appendChild(h1);
-    // Make single binary with all bytes.
-    // TODO pass each chunk to disassembler, since it may not be continuous.
-    let totalLength = 0;
-    for (const chunk of systemProgram.chunks) {
-        if (okChunk(chunk)) {
-            totalLength += chunk.data.length;
-        }
-    }
-    const binary = new Uint8Array(totalLength);
-    let offset = 0;
-    let address = undefined;
-    let loadAddress = 0;
-    for (const chunk of systemProgram.chunks) {
-        console.log(chunk.loadAddress.toString(16), chunk.data.length);
-        if (okChunk(chunk)) {
-            if (address === undefined) {
-                address = chunk.loadAddress;
-                loadAddress = address;
-            }
-            if (chunk.loadAddress !== address) {
-                // If we get this, we need to modify Disasm to get chunks.
-                console.log("Expected", address.toString(16), "but got", chunk.loadAddress.toString(16));
-                address = chunk.loadAddress;
-            }
-            binary.set(chunk.data, offset);
-            offset += chunk.data.length;
-            address += chunk.data.length;
-        }
-    }
-    console.log("Start address: " + systemProgram.entryPointAddress.toString(16));
-    const disasm = new Disasm_Disasm(binary);
-    // TODO not right in general. See chunks above.
-    disasm.org = loadAddress;
-    const instructions = disasm.disassembleAll();
-    for (const instruction of instructions) {
-        if (instruction.label !== undefined) {
-            const line = document.createElement("div");
-            out.appendChild(line);
-            SystemProgramRender_add(line, "                  ", classes.space);
-            SystemProgramRender_add(line, instruction.label, classes.label);
-            SystemProgramRender_add(line, ":", classes.punctuation);
-        }
-        const line = document.createElement("div");
-        out.appendChild(line);
-        SystemProgramRender_add(line, toHexWord(instruction.address), classes.address);
-        SystemProgramRender_add(line, "  ", classes.space);
-        SystemProgramRender_add(line, instruction.binText(), classes.hex);
-        SystemProgramRender_add(line, "".padEnd(12 - instruction.binText().length + 8), classes.space);
-        SystemProgramRender_add(line, instruction.toText(), classes.opcodes);
-        const byteOffset = systemProgram.addressToByteOffset(instruction.address);
-        if (byteOffset !== undefined) {
-            let lastIndex = byteOffset + instruction.bin.length - 1;
-            elements.push(new Highlightable(byteOffset, lastIndex, line));
-            annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
-        }
-    }
-    return [elements, annotations];
-}
-
-// CONCATENATED MODULE: ./src/Hexdump.ts
-// Tools for generating a hex dump of a binary file.
-
-
-
-// Stylesheet.
-const Hexdump_BACKGROUND_COLOR = "var(--background)";
-const Hexdump_STYLE = {
-    address: {
-        color: "var(--foreground-secondary)",
-        "&$highlighted": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: Hexdump_BACKGROUND_COLOR,
-        },
-    },
-    hex: {
-        color: "var(--blue)",
-        "&$highlighted": {
-            backgroundColor: "var(--blue)",
-            color: Hexdump_BACKGROUND_COLOR,
-        },
-    },
-    ascii: {
-        color: "var(--cyan)",
-        "&$highlighted": {
-            backgroundColor: "var(--cyan)",
-            color: Hexdump_BACKGROUND_COLOR,
-        },
-    },
-    asciiUnprintable: {
-        color: "var(--foreground-secondary)",
-        "&$highlighted": {
-            backgroundColor: "var(--foreground-secondary)",
-            color: Hexdump_BACKGROUND_COLOR,
-        },
-    },
-    selected: {
-        backgroundColor: "var(--background-highlights)",
-    },
-    highlighted: {
-    // Empty style that's referenced above as $highlighted.
-    },
-};
-const Hexdump_sheet = src_Jss.createStyleSheet(Hexdump_STYLE);
-const Hexdump_highlightClassName = Hexdump_sheet.classes.highlighted;
-const Hexdump_selectClassName = Hexdump_sheet.classes.selected;
-function Hexdump_create(binary, div) {
-    Hexdump_sheet.attach();
-    const classes = Hexdump_sheet.classes;
-    const hexElements = [];
-    const asciiElements = [];
-    for (let addr = 0; addr < binary.length; addr += 16) {
-        const line = document.createElement("div");
-        let e = document.createElement("span");
-        e.classList.add(classes.address);
-        e.innerText = pad(addr, 16, 4) + "  ";
-        line.appendChild(e);
-        // Hex.
-        let subAddr;
-        for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
-            e = document.createElement("span");
-            e.classList.add(classes.hex);
-            e.innerText = pad(binary[subAddr], 16, 2);
-            hexElements.push(new Highlightable(hexElements.length, hexElements.length, e));
-            line.appendChild(e);
-            line.appendChild(document.createTextNode(" "));
-        }
-        for (; subAddr < addr + 16; subAddr++) {
-            line.appendChild(document.createTextNode("   "));
-        }
-        line.appendChild(document.createTextNode("  "));
-        // ASCII.
-        for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
-            const c = binary[subAddr];
-            e = document.createElement("span");
-            if (c >= 32 && c < 127) {
-                e.classList.add(classes.ascii);
-                e.innerText = String.fromCharCode(c);
-            }
-            else {
-                e.classList.add(classes.asciiUnprintable);
-                e.innerText = ".";
-            }
-            asciiElements.push(new Highlightable(asciiElements.length, asciiElements.length, e));
-            line.appendChild(e);
-        }
-        div.appendChild(line);
-    }
-    return [hexElements, asciiElements];
-}
-
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/module/Cassette.js
 /**
  * Interface for fetching cassette audio data. We make this a concrete
@@ -18365,8 +18056,8 @@ const model3Rom = `
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/module/Utils.js
 const CSS_PREFIX = "trs80-emulator";
 // RAM address range of screen.
-const Utils_SCREEN_BEGIN = 15 * 1024;
-const Utils_SCREEN_END = 16 * 1024;
+const SCREEN_BEGIN = 15 * 1024;
+const SCREEN_END = 16 * 1024;
 /**
  * Remove all children from element.
  */
@@ -18556,7 +18247,7 @@ var CassetteValue;
  * Whether the memory address maps to a screen location.
  */
 function isScreenAddress(address) {
-    return address >= Utils_SCREEN_BEGIN && address < Utils_SCREEN_END;
+    return address >= SCREEN_BEGIN && address < SCREEN_END;
 }
 /**
  * See the FONT.md file for an explanation of this, but basically bit 6 is the NOR of bits 5 and 7.
@@ -18899,7 +18590,7 @@ class Trs80_Trs80 {
             console.log("Warning: Writing to ROM location 0x" + toHex(address, 4));
         }
         else {
-            if (address >= Utils_SCREEN_BEGIN && address < Utils_SCREEN_END) {
+            if (address >= SCREEN_BEGIN && address < SCREEN_END) {
                 if (this.config.cgChip === CGChip.ORIGINAL) {
                     // No bit 6 in video memory, need to compute it.
                     value = computeVideoBit6(value);
@@ -18929,7 +18620,7 @@ class Trs80_Trs80 {
         buf.push(this.screen.isExpandedCharacters() ? 1 : 0);
         // Run-length encode bytes with (value,count) pairs, with a max count of 255. Bytes
         // in the range 33 to 127 inclusive have an implicit count of 1.
-        for (let address = Utils_SCREEN_BEGIN; address < Utils_SCREEN_END; address++) {
+        for (let address = SCREEN_BEGIN; address < SCREEN_END; address++) {
             const value = this.memory[address];
             if (value > 32 && value < 128) {
                 // Bytes in this range don't store a count.
@@ -19287,7 +18978,7 @@ class Trs80Screen_Trs80Screen {
         }
         // Set expanded mode.
         this.setExpandedCharacters(s.charCodeAt(0) === 1);
-        let address = Utils_SCREEN_BEGIN;
+        let address = SCREEN_BEGIN;
         for (let i = 1; i < s.length; i++) {
             const value = s.charCodeAt(i);
             let count = 1;
@@ -19306,7 +18997,7 @@ class Trs80Screen_Trs80Screen {
                 this.writeChar(address++, value);
             }
         }
-        if (address !== Utils_SCREEN_END) {
+        if (address !== SCREEN_END) {
             throw new Error("Screenshot was of the wrong length");
         }
     }
@@ -20003,7 +19694,7 @@ const GREEN_PHOSPHOR = [122, 244, 96];
 class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
     constructor(parentNode, isThumbnail) {
         super();
-        this.memory = new Uint8Array(Utils_SCREEN_END - Utils_SCREEN_BEGIN);
+        this.memory = new Uint8Array(SCREEN_END - SCREEN_BEGIN);
         this.glyphs = [];
         this.config = Config.makeDefault();
         this.glyphWidth = 0;
@@ -20080,7 +19771,7 @@ class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
         this.refresh();
     }
     writeChar(address, value) {
-        const offset = address - Utils_SCREEN_BEGIN;
+        const offset = address - SCREEN_BEGIN;
         this.memory[offset] = value;
         this.drawChar(offset, value);
         this.scheduleUpdateThumbnail();
@@ -20787,6 +20478,334 @@ class ProgressBar {
 
 
 
+
+// CONCATENATED MODULE: ./src/SystemProgramRender.ts
+
+
+
+
+
+
+// RAM address range of screen.
+const SystemProgramRender_SCREEN_BEGIN = 15 * 1024;
+const SystemProgramRender_SCREEN_END = 16 * 1024;
+/**
+ * Add text to the line with the specified class.
+ *
+ * @param out the enclosing element to add to.
+ * @param text the text to add.
+ * @param className the name of the class for the item.
+ */
+function SystemProgramRender_add(out, text, className) {
+    const e = document.createElement("span");
+    e.innerText = text;
+    e.classList.add(className);
+    out.appendChild(e);
+    return e;
+}
+// Stylesheet.
+const SystemProgramRender_BACKGROUND_COLOR = "var(--background)";
+const SystemProgramRender_STYLE = {
+    error: {
+        color: "var(--red)",
+    },
+    address: {
+        color: "var(--foreground-secondary)",
+    },
+    hex: {
+        color: "var(--blue)",
+    },
+    opcodes: {
+        color: "var(--cyan)",
+    },
+    label: {
+        color: "var(--orange)",
+    },
+    space: {
+        color: "var(--foreground-secondary)",
+    },
+    punctuation: {
+        color: "var(--foreground-secondary)",
+    },
+    selected: {
+        backgroundColor: "var(--background-highlights)",
+    },
+    highlighted: {
+        backgroundColor: "var(--foreground-secondary)",
+        "& $hex": {
+            backgroundColor: "var(--blue)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $punctuation": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $space": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $label": {
+            backgroundColor: "var(--orange)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $opcodes": {
+            backgroundColor: "var(--cyan)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $address": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+        "& $error": {
+            backgroundColor: "var(--red)",
+            color: SystemProgramRender_BACKGROUND_COLOR,
+        },
+    },
+};
+const SystemProgramRender_sheet = src_Jss.createStyleSheet(SystemProgramRender_STYLE);
+const SystemProgramRender_highlightClassName = SystemProgramRender_sheet.classes.highlighted;
+const SystemProgramRender_selectClassName = SystemProgramRender_sheet.classes.selected;
+/**
+ * Render a disassembled system program.
+ *
+ * @return array of the elements added, with the index being the offset into the original bytes array.
+ */
+function SystemProgramRender_toDiv(systemProgram, out) {
+    SystemProgramRender_sheet.attach();
+    const classes = SystemProgramRender_sheet.classes;
+    // Every element we render that maps to a byte in the program.
+    const elements = [];
+    // Waveform annotations.
+    const annotations = [];
+    if (systemProgram.error !== undefined) {
+        const line = document.createElement("div");
+        out.appendChild(line);
+        SystemProgramRender_add(line, systemProgram.error, classes.error);
+    }
+    function okChunk(chunk) {
+        if (chunk.loadAddress >= SystemProgramRender_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SystemProgramRender_SCREEN_END) {
+            return false;
+        }
+        if (chunk.loadAddress === 0x4210) {
+            return false;
+        }
+        return true;
+    }
+    // Prepare screenshot, in case loading process writes to screen.
+    const screenDiv = document.createElement("div");
+    const screen = new CanvasScreen_CanvasScreen(screenDiv, false);
+    let wroteToScreen = false;
+    // List chunks on tape.
+    let h1 = document.createElement("h1");
+    h1.innerText = "Chunks";
+    out.appendChild(h1);
+    // Display a row for each chunk.
+    let programAddress = undefined;
+    for (const chunk of systemProgram.chunks) {
+        const line = document.createElement("div");
+        out.appendChild(line);
+        // Address and length.
+        let length = chunk.data.length;
+        let text = toHexWord(chunk.loadAddress) + "-" + toHexWord(chunk.loadAddress + length - 1) +
+            " (" + length + " byte" + (length === 1 ? "" : "s") + ")";
+        text = text.padEnd(23, " ");
+        SystemProgramRender_add(line, text, classes.address);
+        // First few bytes.
+        const bytes = chunk.data.slice(0, Math.min(3, length));
+        text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < length ? " ..." : "");
+        text = text.padEnd(14, " ");
+        SystemProgramRender_add(line, text, classes.hex);
+        // Write explanation.
+        if (chunk.loadAddress >= SystemProgramRender_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SystemProgramRender_SCREEN_END) {
+            SystemProgramRender_add(line, "Screen", classes.opcodes);
+            if (!wroteToScreen) {
+                SystemProgramRender_add(line, " (see screenshot below)", classes.error);
+            }
+            for (let i = 0; i < length; i++) {
+                screen.writeChar(chunk.loadAddress + i, chunk.data[i]);
+            }
+            wroteToScreen = true;
+        }
+        else if (chunk.loadAddress === 0x4210) {
+            SystemProgramRender_add(line, "Port 0xEC bitmask", classes.opcodes);
+        }
+        else if (chunk.loadAddress === 0x401E) {
+            SystemProgramRender_add(line, "Video driver pointer", classes.opcodes);
+        }
+        else {
+            SystemProgramRender_add(line, "Program code", classes.opcodes);
+            if (programAddress !== undefined && chunk.loadAddress !== programAddress) {
+                SystemProgramRender_add(line, " (not contiguous, expected " + toHexWord(programAddress) + ")", classes.error);
+            }
+            programAddress = chunk.loadAddress + length;
+        }
+        if (!chunk.isChecksumValid()) {
+            SystemProgramRender_add(line, " (invalid checksum)", classes.error);
+        }
+    }
+    const entryPointDiv = document.createElement("div");
+    entryPointDiv.style.marginTop = "10px";
+    out.appendChild(entryPointDiv);
+    SystemProgramRender_add(entryPointDiv, "Entry point: ", classes.label);
+    SystemProgramRender_add(entryPointDiv, toHexWord(systemProgram.entryPointAddress), classes.address);
+    if (wroteToScreen) {
+        h1 = document.createElement("h1");
+        h1.innerText = "Loading Screen";
+        out.appendChild(h1);
+        out.appendChild(screenDiv);
+    }
+    h1 = document.createElement("h1");
+    h1.innerText = "Disassembly";
+    out.appendChild(h1);
+    // Make single binary with all bytes.
+    // TODO pass each chunk to disassembler, since it may not be continuous.
+    let totalLength = 0;
+    for (const chunk of systemProgram.chunks) {
+        if (okChunk(chunk)) {
+            totalLength += chunk.data.length;
+        }
+    }
+    const binary = new Uint8Array(totalLength);
+    let offset = 0;
+    let address = undefined;
+    let loadAddress = 0;
+    for (const chunk of systemProgram.chunks) {
+        console.log(chunk.loadAddress.toString(16), chunk.data.length);
+        if (okChunk(chunk)) {
+            if (address === undefined) {
+                address = chunk.loadAddress;
+                loadAddress = address;
+            }
+            if (chunk.loadAddress !== address) {
+                // If we get this, we need to modify Disasm to get chunks.
+                console.log("Expected", address.toString(16), "but got", chunk.loadAddress.toString(16));
+                address = chunk.loadAddress;
+            }
+            binary.set(chunk.data, offset);
+            offset += chunk.data.length;
+            address += chunk.data.length;
+        }
+    }
+    console.log("Start address: " + systemProgram.entryPointAddress.toString(16));
+    const disasm = new Disasm_Disasm(binary);
+    // TODO not right in general. See chunks above.
+    disasm.org = loadAddress;
+    const instructions = disasm.disassembleAll();
+    for (const instruction of instructions) {
+        if (instruction.label !== undefined) {
+            const line = document.createElement("div");
+            out.appendChild(line);
+            SystemProgramRender_add(line, "                  ", classes.space);
+            SystemProgramRender_add(line, instruction.label, classes.label);
+            SystemProgramRender_add(line, ":", classes.punctuation);
+        }
+        const line = document.createElement("div");
+        out.appendChild(line);
+        SystemProgramRender_add(line, toHexWord(instruction.address), classes.address);
+        SystemProgramRender_add(line, "  ", classes.space);
+        SystemProgramRender_add(line, instruction.binText(), classes.hex);
+        SystemProgramRender_add(line, "".padEnd(12 - instruction.binText().length + 8), classes.space);
+        SystemProgramRender_add(line, instruction.toText(), classes.opcodes);
+        const byteOffset = systemProgram.addressToByteOffset(instruction.address);
+        if (byteOffset !== undefined) {
+            let lastIndex = byteOffset + instruction.bin.length - 1;
+            elements.push(new Highlightable(byteOffset, lastIndex, line));
+            annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+        }
+    }
+    return [elements, annotations];
+}
+
+// CONCATENATED MODULE: ./src/Hexdump.ts
+// Tools for generating a hex dump of a binary file.
+
+
+
+// Stylesheet.
+const Hexdump_BACKGROUND_COLOR = "var(--background)";
+const Hexdump_STYLE = {
+    address: {
+        color: "var(--foreground-secondary)",
+        "&$highlighted": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: Hexdump_BACKGROUND_COLOR,
+        },
+    },
+    hex: {
+        color: "var(--blue)",
+        "&$highlighted": {
+            backgroundColor: "var(--blue)",
+            color: Hexdump_BACKGROUND_COLOR,
+        },
+    },
+    ascii: {
+        color: "var(--cyan)",
+        "&$highlighted": {
+            backgroundColor: "var(--cyan)",
+            color: Hexdump_BACKGROUND_COLOR,
+        },
+    },
+    asciiUnprintable: {
+        color: "var(--foreground-secondary)",
+        "&$highlighted": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: Hexdump_BACKGROUND_COLOR,
+        },
+    },
+    selected: {
+        backgroundColor: "var(--background-highlights)",
+    },
+    highlighted: {
+    // Empty style that's referenced above as $highlighted.
+    },
+};
+const Hexdump_sheet = src_Jss.createStyleSheet(Hexdump_STYLE);
+const Hexdump_highlightClassName = Hexdump_sheet.classes.highlighted;
+const Hexdump_selectClassName = Hexdump_sheet.classes.selected;
+function Hexdump_create(binary, div) {
+    Hexdump_sheet.attach();
+    const classes = Hexdump_sheet.classes;
+    const hexElements = [];
+    const asciiElements = [];
+    for (let addr = 0; addr < binary.length; addr += 16) {
+        const line = document.createElement("div");
+        let e = document.createElement("span");
+        e.classList.add(classes.address);
+        e.innerText = pad(addr, 16, 4) + "  ";
+        line.appendChild(e);
+        // Hex.
+        let subAddr;
+        for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
+            e = document.createElement("span");
+            e.classList.add(classes.hex);
+            e.innerText = pad(binary[subAddr], 16, 2);
+            hexElements.push(new Highlightable(hexElements.length, hexElements.length, e));
+            line.appendChild(e);
+            line.appendChild(document.createTextNode(" "));
+        }
+        for (; subAddr < addr + 16; subAddr++) {
+            line.appendChild(document.createTextNode("   "));
+        }
+        line.appendChild(document.createTextNode("  "));
+        // ASCII.
+        for (subAddr = addr; subAddr < binary.length && subAddr < addr + 16; subAddr++) {
+            const c = binary[subAddr];
+            e = document.createElement("span");
+            if (c >= 32 && c < 127) {
+                e.classList.add(classes.ascii);
+                e.innerText = String.fromCharCode(c);
+            }
+            else {
+                e.classList.add(classes.asciiUnprintable);
+                e.innerText = ".";
+            }
+            asciiElements.push(new Highlightable(asciiElements.length, asciiElements.length, e));
+            line.appendChild(e);
+        }
+        div.appendChild(line);
+    }
+    return [hexElements, asciiElements];
+}
 
 // CONCATENATED MODULE: ./src/WavFile.ts
 
