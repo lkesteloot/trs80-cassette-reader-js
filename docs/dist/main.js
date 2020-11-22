@@ -1759,7 +1759,7 @@ function drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
     const otherY = drawOnTop ? bottom - 40 : top + 40;
     ctx.beginPath();
     ctx.moveTo(left, otherY);
-    if (left === right) {
+    if (left === right || radius <= 0) {
         ctx.lineTo(left, lineY);
     }
     else {
@@ -2664,7 +2664,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     }
     findNextProgram(frame, waveformAnnotations) {
         while (true) {
-            // console.log('-------------------------------------');
             const [_, pulse] = this.findNextPulse(frame, this.peakThreshold);
             if (pulse === undefined) {
                 // Ran off the end of the tape.
@@ -2686,14 +2685,18 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
      * Verifies that we have pulses every period starting at frame.
      */
     proofPulseDistance(frame, waveformAnnotations) {
-        const initialFrame = frame;
         for (let i = 0; i < 200; i++) {
-            const pulse = this.isPulseAt(frame);
-            if (pulse.resultType !== PulseResultType.PULSE) {
-                waveformAnnotations.push(new LabelAnnotation("Failed", initialFrame, frame, false));
+            // We expect a pulse every period.
+            const expectedPulse = this.isPulseAt(frame);
+            if (expectedPulse.resultType !== PulseResultType.PULSE) {
                 return false;
             }
-            frame = pulse.frame + this.period;
+            // And no pulse in between, which would indicate a "1" bit.
+            const expectedNoPulse = this.isPulseAt(frame + this.halfPeriod);
+            if (expectedNoPulse.resultType === PulseResultType.PULSE) {
+                return false;
+            }
+            frame = expectedPulse.frame + this.period;
         }
         return true;
     }
@@ -3089,7 +3092,6 @@ class Decoder_Decoder {
                 startFrame = Math.round(program.endFrame + this.tape.sampleRate * 0.01);
             }
         }
-        console.log(candidates); // TODO remove
         // Make a sorted list of start/end of candidates.
         const transitions = [];
         for (const candidate of candidates) {
@@ -23657,7 +23659,7 @@ function importData() {
     }
 }
 function handleAudioBuffer(pathname, audioFile) {
-    console.log("Audio is " + audioFile.rate + " Hz");
+    // console.log("Audio is " + audioFile.rate + " Hz");
     // TODO check that there's 1 channel.
     const tape = new Tape_Tape(nameFromPathname(pathname), audioFile);
     const decoder = new Decoder_Decoder(tape);
