@@ -2110,10 +2110,10 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         return "High speed";
     }
     findNextProgram(startFrame, waveformAnnotationnnotations) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
+        const samples = this.tape.filteredSamples.samplesList[0];
         let programStartFrame = -1;
         for (let frame = startFrame; frame < samples.length; frame++) {
-            this.handleSample(frame, waveformAnnotationnnotations);
+            this.handleSample(samples, frame, waveformAnnotationnnotations);
             if (this.state === TapeDecoderState.DETECTED && programStartFrame === -1) {
                 programStartFrame = frame;
             }
@@ -2123,8 +2123,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         }
         return undefined;
     }
-    handleSample(frame, waveformAnnotations) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
+    handleSample(samples, frame, waveformAnnotations) {
         const sample = samples[frame];
         const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
         // Detect zero-crossing.
@@ -2132,8 +2131,9 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
             this.lastCrossingFrame = frame;
             // Detect positive edge. That's the end of the cycle.
             if (this.oldSign === -1) {
-                // Only consider cycles in the right range of periods.
-                if (this.cycleSize > 7 && this.cycleSize < 44) {
+                // Only consider cycles in the right range of periods. We allow up to 100 samples
+                // to handle the long zero bit right after the sync byte.
+                if (this.cycleSize > 7 && this.cycleSize < 100) {
                     // Long cycle is "0", short cycle is "1".
                     const bit = this.cycleSize < 22;
                     // Bits are MSb to LSb.
@@ -3032,7 +3032,7 @@ class Decoder_Decoder {
         for (const tapeDecoderFactory of tapeDecoderFactories) {
             let startFrame = 0;
             while (true) {
-                let tapeDecoder = tapeDecoderFactory();
+                const tapeDecoder = tapeDecoderFactory();
                 const program = tapeDecoder.findNextProgram(startFrame, this.tape.waveformAnnotations);
                 if (program === undefined) {
                     break;
