@@ -1794,6 +1794,20 @@ class SystemChunk {
         this.data = data;
         this.checksum = checksum;
     }
+    /**
+     * Whether the checksum supplied on tape matches what we compute.
+     */
+    isChecksumValid() {
+        let checksum = 0;
+        // Include load address and data.
+        checksum += (this.loadAddress >> 8) & 0xFF;
+        checksum += this.loadAddress & 0xFF;
+        for (const b of this.data) {
+            checksum += b;
+        }
+        checksum &= 0xFF;
+        return checksum === this.checksum;
+    }
 }
 /**
  * Whether this is a program that can be loaded with the SYSTEM command.
@@ -1855,13 +1869,13 @@ class SystemProgram_SystemProgram {
             if (length === 0) {
                 length = 256;
             }
-            this.annotations.push(new ProgramAnnotation("Length\n" + length, b.addr() - 1, b.addr() - 1));
+            this.annotations.push(new ProgramAnnotation("Len\n" + length, b.addr() - 1, b.addr() - 1));
             const loadAddress = b.readShort(false);
             if (loadAddress === EOF) {
                 this.error = "File is truncated at load address";
                 return;
             }
-            this.annotations.push(new ProgramAnnotation("Address\n" + toHexWord(loadAddress), b.addr() - 2, b.addr() - 1));
+            this.annotations.push(new ProgramAnnotation("Addr\n" + toHexWord(loadAddress), b.addr() - 2, b.addr() - 1));
             const data = b.readBytes(length);
             if (data.length < length) {
                 this.error = "File is truncated at data";
@@ -8662,6 +8676,9 @@ class Disasm_Disasm {
 
 
 
+// RAM address range of screen.
+const SCREEN_BEGIN = 15 * 1024;
+const SCREEN_END = 16 * 1024;
 /**
  * Add text to the line with the specified class.
  *
@@ -8755,28 +8772,84 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         out.appendChild(line);
         SystemProgramRender_add(line, systemProgram.error, classes.error);
     }
+    function okChunk(chunk) {
+        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
+            return false;
+        }
+        if (chunk.loadAddress === 0x4210) {
+            return false;
+        }
+        return true;
+    }
+    // Display a row for each chunk.
+    let h1 = document.createElement("h1");
+    h1.innerText = "Chunks";
+    out.appendChild(h1);
+    for (const chunk of systemProgram.chunks) {
+        const line = document.createElement("div");
+        out.appendChild(line);
+        // Address and length.
+        let length = chunk.data.length;
+        let text = toHexWord(chunk.loadAddress) + "-" + toHexWord(chunk.loadAddress + length - 1) +
+            " (" + length + " byte" + (length === 1 ? "" : "s") + ")";
+        text = text.padEnd(23, " ");
+        SystemProgramRender_add(line, text, classes.address);
+        // First few bytes.
+        const bytes = chunk.data.slice(0, Math.min(3, length));
+        text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < length ? " ..." : "");
+        text = text.padEnd(14, " ");
+        SystemProgramRender_add(line, text, classes.hex);
+        text = "Program code";
+        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
+            text = "Screen";
+        }
+        else if (chunk.loadAddress === 0x4210) {
+            text = "Port 0xEC bitmask";
+        }
+        else if (chunk.loadAddress === 0x401E) {
+            text = "Video driver pointer";
+        }
+        SystemProgramRender_add(line, text, classes.opcodes);
+        if (!chunk.isChecksumValid()) {
+            SystemProgramRender_add(line, " (invalid checksum)", classes.error);
+        }
+    }
+    h1 = document.createElement("h1");
+    h1.innerText = "Disassembly";
+    out.appendChild(h1);
     // Make single binary with all bytes.
     // TODO pass each chunk to disassembler, since it may not be continuous.
     let totalLength = 0;
     for (const chunk of systemProgram.chunks) {
-        totalLength += chunk.data.length;
+        if (okChunk(chunk)) {
+            totalLength += chunk.data.length;
+        }
     }
     const binary = new Uint8Array(totalLength);
     let offset = 0;
-    let address = systemProgram.chunks.length === 0 ? 0 : systemProgram.chunks[0].loadAddress;
+    let address = undefined;
+    let loadAddress = 0;
     for (const chunk of systemProgram.chunks) {
-        if (chunk.loadAddress !== address) {
-            // If we get this, we need to modify Disasm to get chunks.
-            console.log("Expected", address, "but got", chunk.loadAddress);
-            address = chunk.loadAddress;
+        console.log(chunk.loadAddress.toString(16), chunk.data.length);
+        if (okChunk(chunk)) {
+            if (address === undefined) {
+                address = chunk.loadAddress;
+                loadAddress = address;
+            }
+            if (chunk.loadAddress !== address) {
+                // If we get this, we need to modify Disasm to get chunks.
+                console.log("Expected", address.toString(16), "but got", chunk.loadAddress.toString(16));
+                address = chunk.loadAddress;
+            }
+            binary.set(chunk.data, offset);
+            offset += chunk.data.length;
+            address += chunk.data.length;
         }
-        binary.set(chunk.data, offset);
-        offset += chunk.data.length;
-        address += chunk.data.length;
     }
+    console.log("Start address: " + systemProgram.entryPointAddress.toString(16));
     const disasm = new Disasm_Disasm(binary);
     // TODO not right in general. See chunks above.
-    disasm.org = systemProgram.chunks.length === 0 ? 0 : systemProgram.chunks[0].loadAddress;
+    disasm.org = loadAddress;
     const instructions = disasm.disassembleAll();
     for (const instruction of instructions) {
         if (instruction.label !== undefined) {
@@ -18280,8 +18353,8 @@ const model3Rom = `
 // CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/module/Utils.js
 const CSS_PREFIX = "trs80-emulator";
 // RAM address range of screen.
-const SCREEN_BEGIN = 15 * 1024;
-const SCREEN_END = 16 * 1024;
+const Utils_SCREEN_BEGIN = 15 * 1024;
+const Utils_SCREEN_END = 16 * 1024;
 /**
  * Remove all children from element.
  */
@@ -18471,7 +18544,7 @@ var CassetteValue;
  * Whether the memory address maps to a screen location.
  */
 function isScreenAddress(address) {
-    return address >= SCREEN_BEGIN && address < SCREEN_END;
+    return address >= Utils_SCREEN_BEGIN && address < Utils_SCREEN_END;
 }
 /**
  * See the FONT.md file for an explanation of this, but basically bit 6 is the NOR of bits 5 and 7.
@@ -18814,7 +18887,7 @@ class Trs80_Trs80 {
             console.log("Warning: Writing to ROM location 0x" + toHex(address, 4));
         }
         else {
-            if (address >= SCREEN_BEGIN && address < SCREEN_END) {
+            if (address >= Utils_SCREEN_BEGIN && address < Utils_SCREEN_END) {
                 if (this.config.cgChip === CGChip.ORIGINAL) {
                     // No bit 6 in video memory, need to compute it.
                     value = computeVideoBit6(value);
@@ -18844,7 +18917,7 @@ class Trs80_Trs80 {
         buf.push(this.screen.isExpandedCharacters() ? 1 : 0);
         // Run-length encode bytes with (value,count) pairs, with a max count of 255. Bytes
         // in the range 33 to 127 inclusive have an implicit count of 1.
-        for (let address = SCREEN_BEGIN; address < SCREEN_END; address++) {
+        for (let address = Utils_SCREEN_BEGIN; address < Utils_SCREEN_END; address++) {
             const value = this.memory[address];
             if (value > 32 && value < 128) {
                 // Bytes in this range don't store a count.
@@ -19202,7 +19275,7 @@ class Trs80Screen_Trs80Screen {
         }
         // Set expanded mode.
         this.setExpandedCharacters(s.charCodeAt(0) === 1);
-        let address = SCREEN_BEGIN;
+        let address = Utils_SCREEN_BEGIN;
         for (let i = 1; i < s.length; i++) {
             const value = s.charCodeAt(i);
             let count = 1;
@@ -19221,7 +19294,7 @@ class Trs80Screen_Trs80Screen {
                 this.writeChar(address++, value);
             }
         }
-        if (address !== SCREEN_END) {
+        if (address !== Utils_SCREEN_END) {
             throw new Error("Screenshot was of the wrong length");
         }
     }
@@ -19918,7 +19991,7 @@ const GREEN_PHOSPHOR = [122, 244, 96];
 class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
     constructor(parentNode, isThumbnail) {
         super();
-        this.memory = new Uint8Array(SCREEN_END - SCREEN_BEGIN);
+        this.memory = new Uint8Array(Utils_SCREEN_END - Utils_SCREEN_BEGIN);
         this.glyphs = [];
         this.config = Config.makeDefault();
         this.glyphWidth = 0;
@@ -19995,7 +20068,7 @@ class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
         this.refresh();
     }
     writeChar(address, value) {
-        const offset = address - SCREEN_BEGIN;
+        const offset = address - Utils_SCREEN_BEGIN;
         this.memory[offset] = value;
         this.drawChar(offset, value);
         this.scheduleUpdateThumbnail();
@@ -22360,6 +22433,7 @@ class TapeBrowser_TapeBrowser {
     makeSystemPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
+        div.classList.add("system-program");
         const systemProgram = new SystemProgram_SystemProgram(program.binary);
         const [highlightables, annotations] = SystemProgramRender_toDiv(systemProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
