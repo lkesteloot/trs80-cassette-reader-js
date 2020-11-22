@@ -8821,6 +8821,11 @@ function SystemProgramRender_toDiv(systemProgram, out) {
             SystemProgramRender_add(line, " (invalid checksum)", classes.error);
         }
     }
+    const entryPointDiv = document.createElement("div");
+    entryPointDiv.style.marginTop = "10px";
+    out.appendChild(entryPointDiv);
+    SystemProgramRender_add(entryPointDiv, "Entry point: ", classes.label);
+    SystemProgramRender_add(entryPointDiv, toHexWord(systemProgram.entryPointAddress), classes.address);
     h1 = document.createElement("h1");
     h1.innerText = "Disassembly";
     out.appendChild(h1);
