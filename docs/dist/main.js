@@ -2106,11 +2106,11 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
     }
     findNextProgram(startFrame, waveformAnnotations) {
         const samples = this.tape.filteredSamples.samplesList[0];
-        let programStartFrame = -1;
+        let programStartFrame = undefined;
         let oldSign = 0;
         let lastCrossingFrame = 0;
         let bitCount = 0;
-        let cycleSize = 0;
+        let cycleSize = undefined;
         let recentBits = 0;
         for (let frame = startFrame; frame < samples.length; frame++) {
             const sample = samples[frame];
@@ -2120,10 +2120,10 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
                 // Crossed the horizontal axis.
                 lastCrossingFrame = frame;
                 // Detect positive edge. That's the end of the cycle.
-                if (oldSign === -1) {
+                if (newSign === 1) {
                     // Only consider cycles in the right range of periods. We allow up to 100 samples
                     // to handle the long zero bit right after the sync byte.
-                    if (cycleSize > 7 && cycleSize < 100) {
+                    if (cycleSize !== undefined && cycleSize > 7 && cycleSize < 100) {
                         // Long cycle is "0", short cycle is "1".
                         const bit = cycleSize < 22;
                         // Bits are MSb to LSb.
@@ -2173,7 +2173,9 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
             }
             else {
                 // Continue current cycle.
-                cycleSize += 1;
+                if (cycleSize !== undefined) {
+                    cycleSize += 1;
+                }
             }
             if (newSign !== 0) {
                 oldSign = newSign;
@@ -2181,12 +2183,18 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
             if (this.state === TapeDecoderState.DETECTED && frame - lastCrossingFrame > MIN_SILENCE_FRAMES) {
                 this.state = TapeDecoderState.FINISHED;
             }
-            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
+            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== undefined) {
                 return new Program_Program(0, 0, programStartFrame, frame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
             }
         }
         // Ran off the end of the cassette. Here we could maybe return a partial program, if that would be useful.
         return undefined;
+    }
+    /**
+     * Read a sequence of bits (the characters "0" and "1"). This is for testing.
+     */
+    readBits(frame) {
+        return ["", [], []];
     }
     getState() {
         return this.state;
@@ -2730,7 +2738,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     }
     /**
      * Read a sequence of bits (the characters "0" and "1"). Frame is the position of the previous clock bit.
-     * This is a for testing.
+     * This is for testing.
      */
     readBits(frame) {
         let bits = "";
@@ -23425,16 +23433,19 @@ var Split = function (idsOption, options) {
 var TestType;
 (function (TestType) {
     // Expect a pulse half-way through the WAV file.
-    TestType[TestType["PULSE"] = 0] = "PULSE";
+    TestType[TestType["LOW_SPEED_PULSE"] = 0] = "LOW_SPEED_PULSE";
     // Expect no pulse half-way through the WAV file.
-    TestType[TestType["NO_PULSE"] = 1] = "NO_PULSE";
+    TestType[TestType["LOW_SPEED_NO_PULSE"] = 1] = "LOW_SPEED_NO_PULSE";
     // Expect a sequence of bits (in "bin" or "binUrl"). First sample of WAV is previous bit's clock pulse.
-    TestType[TestType["BITS"] = 2] = "BITS";
+    TestType[TestType["LOW_SPEED_BITS"] = 2] = "LOW_SPEED_BITS";
+    // Expect a sequence of bits (in "bin" or "binUrl"). Start and end WAV file part-way through pulses.
+    TestType[TestType["HIGH_SPEED_BITS"] = 3] = "HIGH_SPEED_BITS";
 })(TestType || (TestType = {}));
 const STRING_TO_TEST_TYPE = {
-    "pulse": TestType.PULSE,
-    "no-pulse": TestType.NO_PULSE,
-    "bits": TestType.BITS,
+    "low-speed-pulse": TestType.LOW_SPEED_PULSE,
+    "low-speed-no-pulse": TestType.LOW_SPEED_NO_PULSE,
+    "low-speed-bits": TestType.LOW_SPEED_BITS,
+    "high-speed-bits": TestType.HIGH_SPEED_BITS,
 };
 /**
  * Individual test to run.
@@ -23473,6 +23484,7 @@ class TestFile {
 }
 
 // CONCATENATED MODULE: ./src/Main.ts
+
 
 
 
@@ -23692,8 +23704,8 @@ function runTests(parent, testFile) {
             WaveformDisplay_WaveformDisplay.makeWaveformDisplay("Low speed filter", tape.lowSpeedSamples, panel, waveformDisplay);
             let pass;
             switch (test.type) {
-                case TestType.PULSE:
-                case TestType.NO_PULSE: {
+                case TestType.LOW_SPEED_PULSE:
+                case TestType.LOW_SPEED_NO_PULSE: {
                     const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
                     const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), true);
                     waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
@@ -23703,11 +23715,14 @@ function runTests(parent, testFile) {
                     else {
                         explanation.remove();
                     }
-                    pass = pulse.resultType === PulseResultType.PULSE === (test.type === TestType.PULSE);
+                    pass = pulse.resultType === PulseResultType.PULSE === (test.type === TestType.LOW_SPEED_PULSE);
                     break;
                 }
-                case TestType.BITS: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
+                case TestType.LOW_SPEED_BITS:
+                case TestType.HIGH_SPEED_BITS: {
+                    const decoder = test.type === TestType.LOW_SPEED_BITS
+                        ? new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape)
+                        : new HighSpeedTapeDecoder_HighSpeedTapeDecoder(tape);
                     const [actualBits, waveformAnnotations, explanations] = decoder.readBits(0);
                     if (test.bin === undefined) {
                         // We don't yet support binUrl.
@@ -23748,7 +23763,9 @@ function runTests(parent, testFile) {
         });
     }
     for (const include of testFile.includes) {
-        loadTestFile(parent, include, testFile.url);
+        const testFileDiv = document.createElement("div");
+        parent.appendChild(testFileDiv);
+        loadTestFile(testFileDiv, include, testFile.url);
     }
 }
 function loadTestFile(parent, relativeUrl, parentUrl) {
