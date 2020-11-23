@@ -3361,6 +3361,9 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     getByteData() {
         return this.byteData;
     }
+    readBits(frame) {
+        throw new Error("Method not implemented.");
+    }
 }
 
 // CONCATENATED MODULE: ./src/Tape.ts
@@ -8419,6 +8422,291 @@ function toDiv(basicElements, out) {
 // EXTERNAL MODULE: ./node_modules/z80-disasm/dist/module/Opcodes.json
 var Opcodes = __webpack_require__(5);
 
+// CONCATENATED MODULE: ./node_modules/z80-disasm/node_modules/z80-base/dist/module/Register.js
+/**
+ * List of all word registers.
+ */
+const Register_WORD_REG = new Set(["af", "bc", "de", "hl", "af'", "bc'", "de'", "hl'", "ix", "iy", "sp", "pc"]);
+/**
+ * List of all byte registers.
+ */
+const Register_BYTE_REG = new Set(["a", "f", "b", "c", "d", "e", "h", "l", "ixh", "ixl", "iyh", "iyl", "i", "r"]);
+/**
+ * Determine whether a register stores a word.
+ */
+function Register_isWordReg(s) {
+    return Register_WORD_REG.has(s.toLowerCase());
+}
+/**
+ * Determine whether a register stores a byte.
+ */
+function Register_isByteReg(s) {
+    return Register_BYTE_REG.has(s.toLowerCase());
+}
+
+// CONCATENATED MODULE: ./node_modules/z80-disasm/node_modules/z80-base/dist/module/Utils.js
+// Various utility functions.
+/**
+ * Convert a number to hex and zero-pad to the specified number of hex digits.
+ */
+function Utils_toHex(value, digits) {
+    return value.toString(16).toUpperCase().padStart(digits, "0");
+}
+/**
+ * Convert a byte to hex.
+ */
+function Utils_toHexByte(value) {
+    return Utils_toHex(value, 2);
+}
+/**
+ * Convert a word to hex.
+ */
+function Utils_toHexWord(value) {
+    return Utils_toHex(value, 4);
+}
+/**
+ * Return the high byte of a word.
+ */
+function Utils_hi(value) {
+    return (value >> 8) & 0xFF;
+}
+/**
+ * Return the low byte of a word.
+ */
+function Utils_lo(value) {
+    return value & 0xFF;
+}
+/**
+ * Create a word from a high and low byte.
+ */
+function Utils_word(highByte, lowByte) {
+    return ((highByte & 0xFF) << 8) | (lowByte & 0xFF);
+}
+/**
+ * Increment a byte.
+ */
+function Utils_inc8(value) {
+    return Utils_add8(value, 1);
+}
+/**
+ * Increment a word.
+ */
+function Utils_inc16(value) {
+    return Utils_add16(value, 1);
+}
+/**
+ * Decrement a byte.
+ */
+function Utils_dec8(value) {
+    return Utils_sub8(value, 1);
+}
+/**
+ * Decrement a word.
+ */
+function Utils_dec16(value) {
+    return Utils_sub16(value, 1);
+}
+/**
+ * Add two bytes together.
+ */
+function Utils_add8(a, b) {
+    return (a + b) & 0xFF;
+}
+/**
+ * Add two words together.
+ */
+function Utils_add16(a, b) {
+    return (a + b) & 0xFFFF;
+}
+/**
+ * Subtract two bytes.
+ */
+function Utils_sub8(a, b) {
+    return (a - b) & 0xFF;
+}
+/**
+ * Subtract two words.
+ */
+function Utils_sub16(a, b) {
+    return (a - b) & 0xFFFF;
+}
+/**
+ * Convert a byte to a signed number (e.g., 0xff to -1).
+ */
+function Utils_signedByte(value) {
+    return value >= 128 ? value - 256 : value;
+}
+
+// CONCATENATED MODULE: ./node_modules/z80-disasm/node_modules/z80-base/dist/module/RegisterSet.js
+
+/**
+ * All registers in a Z80.
+ */
+class module_RegisterSet_RegisterSet {
+    constructor() {
+        // External state:
+        this.af = 0;
+        this.bc = 0;
+        this.de = 0;
+        this.hl = 0;
+        this.afPrime = 0;
+        this.bcPrime = 0;
+        this.dePrime = 0;
+        this.hlPrime = 0;
+        this.ix = 0;
+        this.iy = 0;
+        this.sp = 0;
+        this.pc = 0;
+        // Internal state:
+        this.memptr = 0;
+        this.i = 0;
+        this.r = 0; // Low 7 bits of R.
+        this.r7 = 0; // Bit 7 of R.
+        this.iff1 = 0;
+        this.iff2 = 0;
+        this.im = 0;
+        this.halted = 0;
+    }
+    get a() {
+        return Utils_hi(this.af);
+    }
+    set a(value) {
+        this.af = Utils_word(value, this.f);
+    }
+    get f() {
+        return Utils_lo(this.af);
+    }
+    set f(value) {
+        this.af = Utils_word(this.a, value);
+    }
+    get b() {
+        return Utils_hi(this.bc);
+    }
+    set b(value) {
+        this.bc = Utils_word(value, this.c);
+    }
+    get c() {
+        return Utils_lo(this.bc);
+    }
+    set c(value) {
+        this.bc = Utils_word(this.b, value);
+    }
+    get d() {
+        return Utils_hi(this.de);
+    }
+    set d(value) {
+        this.de = Utils_word(value, this.e);
+    }
+    get e() {
+        return Utils_lo(this.de);
+    }
+    set e(value) {
+        this.de = Utils_word(this.d, value);
+    }
+    get h() {
+        return Utils_hi(this.hl);
+    }
+    set h(value) {
+        this.hl = Utils_word(value, this.l);
+    }
+    get l() {
+        return Utils_lo(this.hl);
+    }
+    set l(value) {
+        this.hl = Utils_word(this.h, value);
+    }
+    get ixh() {
+        return Utils_hi(this.ix);
+    }
+    set ixh(value) {
+        this.ix = Utils_word(value, this.ixl);
+    }
+    get ixl() {
+        return Utils_lo(this.ix);
+    }
+    set ixl(value) {
+        this.ix = Utils_word(this.ixh, value);
+    }
+    get iyh() {
+        return Utils_hi(this.iy);
+    }
+    set iyh(value) {
+        this.iy = Utils_word(value, this.iyl);
+    }
+    get iyl() {
+        return Utils_lo(this.iy);
+    }
+    set iyl(value) {
+        this.iy = Utils_word(this.iyh, value);
+    }
+    /**
+     * Combine the two R parts together.
+     */
+    get rCombined() {
+        return (this.r7 & 0x80) | (this.r & 0xF7);
+    }
+}
+/**
+ * All real fields of RegisterSet, for enumeration.
+ */
+const RegisterSet_registerSetFields = [
+    "af", "bc", "de", "hl",
+    "afPrime", "bcPrime", "dePrime", "hlPrime",
+    "ix", "iy", "sp", "pc",
+    "memptr", "i", "r", "iff1", "iff2", "im", "halted"
+];
+
+// CONCATENATED MODULE: ./node_modules/z80-disasm/node_modules/z80-base/dist/module/Flag.js
+/**
+ * The flag bits in the F register.
+ */
+var Flag_Flag;
+(function (Flag) {
+    /**
+     * Carry and borrow. Indicates that the addition or subtraction did not
+     * fit in the register.
+     */
+    Flag[Flag["C"] = 1] = "C";
+    /**
+     * Set if the last operation was a subtraction.
+     */
+    Flag[Flag["N"] = 2] = "N";
+    /**
+     * Parity: Indicates that the result has an even number of bits set.
+     */
+    Flag[Flag["P"] = 4] = "P";
+    /**
+     * Overflow: Indicates that two's complement does not fit in register.
+     */
+    Flag[Flag["V"] = 4] = "V";
+    /**
+     * Undocumented bit, but internal state can leak into it.
+     */
+    Flag[Flag["X3"] = 8] = "X3";
+    /**
+     * Half carry: Carry from bit 3 to bit 4 during BCD operations.
+     */
+    Flag[Flag["H"] = 16] = "H";
+    /**
+     * Undocumented bit, but internal state can leak into it.
+     */
+    Flag[Flag["X5"] = 32] = "X5";
+    /**
+     * Set if value is zero.
+     */
+    Flag[Flag["Z"] = 64] = "Z";
+    /**
+     * Set of value is negative.
+     */
+    Flag[Flag["S"] = 128] = "S";
+})(Flag_Flag || (Flag_Flag = {}));
+
+// CONCATENATED MODULE: ./node_modules/z80-disasm/node_modules/z80-base/dist/module/index.js
+
+
+
+
+
 // CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/Instruction.js
 
 class Instruction_Instruction {
@@ -8433,7 +8721,7 @@ class Instruction_Instruction {
      * Text version of the binary: two-digit hex numbers separated by a space.
      */
     binText() {
-        return this.bin.map(toHexByte).join(" ");
+        return this.bin.map(Utils_toHexByte).join(" ");
     }
     /**
      * Text of the instruction (e.g., "ld hl,0x1234").
@@ -8496,6 +8784,7 @@ class Disasm_Disasm {
         this.hasContent = new Uint8Array(MEM_SIZE);
         this.isDecoded = new Uint8Array(MEM_SIZE);
         this.instructions = new Array(MEM_SIZE);
+        this.knownLabels = new Map();
         /**
          * Addresses that might be jumped to when running the code.
          */
@@ -8528,7 +8817,7 @@ class Disasm_Disasm {
         const next = () => {
             const byte = this.memory[address];
             bytes.push(byte);
-            address = inc16(address);
+            address = Utils_inc16(address);
             return byte;
         };
         const startAddress = address;
@@ -8542,7 +8831,7 @@ class Disasm_Disasm {
             if (value === undefined) {
                 // TODO
                 // asm.push(".byte 0x" + byte.toString(16));
-                const stringParams = bytes.map((n) => "0x" + toHex(n, 2));
+                const stringParams = bytes.map((n) => "0x" + Utils_toHex(n, 2));
                 instruction = new Instruction_Instruction(startAddress, bytes, ".byte", stringParams, stringParams);
             }
             else if (value.shift !== undefined) {
@@ -8563,14 +8852,14 @@ class Disasm_Disasm {
                         if (pos >= 0) {
                             const lowByte = next();
                             const highByte = next();
-                            const nnnn = word(highByte, lowByte);
+                            const nnnn = Utils_word(highByte, lowByte);
                             let target;
                             if (value.mnemonic === "call" || value.mnemonic === "jp") {
                                 jumpTarget = nnnn;
                                 target = TARGET;
                             }
                             else {
-                                target = "0x" + toHex(nnnn, 4);
+                                target = "0x" + Utils_toHex(nnnn, 4);
                             }
                             arg = arg.substr(0, pos) + target + arg.substr(pos + 4);
                             changed = true;
@@ -8582,13 +8871,13 @@ class Disasm_Disasm {
                         }
                         if (pos >= 0) {
                             const nn = next();
-                            arg = arg.substr(0, pos) + "0x" + toHex(nn, 2) + arg.substr(pos + 2);
+                            arg = arg.substr(0, pos) + "0x" + Utils_toHex(nn, 2) + arg.substr(pos + 2);
                             changed = true;
                         }
                         // Fetch offset argument.
                         pos = arg.indexOf("offset");
                         if (pos >= 0) {
-                            const offset = signedByte(next());
+                            const offset = Utils_signedByte(next());
                             jumpTarget = address + offset;
                             arg = arg.substr(0, pos) + TARGET + arg.substr(pos + 6);
                             changed = true;
@@ -8636,7 +8925,7 @@ class Disasm_Disasm {
                     }
                 }
                 else {
-                    parts.push("0x" + toHexByte(byte));
+                    parts.push("0x" + Utils_toHexByte(byte));
                 }
                 address += 1;
             }
@@ -8649,7 +8938,7 @@ class Disasm_Disasm {
             else {
                 // Allow terminating NUL.
                 if (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] && this.memory[address] === 0) {
-                    parts.push("0x" + toHexByte(0));
+                    parts.push("0x" + Utils_toHexByte(0));
                     address += 1;
                 }
             }
@@ -8657,12 +8946,20 @@ class Disasm_Disasm {
         if (mnemonic === undefined) {
             mnemonic = ".byte";
             while (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] && address - startAddress < 8) {
-                parts.push("0x" + toHexByte(this.memory[address]));
+                parts.push("0x" + Utils_toHexByte(this.memory[address]));
                 address += 1;
             }
         }
         const bytes = Array.from(this.memory.slice(startAddress, address));
         return new Instruction_Instruction(startAddress, bytes, mnemonic, parts, parts);
+    }
+    /**
+     * Add an array of known label ([address, label] pairs).
+     */
+    addLabels(labels) {
+        for (const [address, label] of labels) {
+            this.knownLabels.set(address, label);
+        }
     }
     /**
      * Disassemble all instructions and assign labels.
@@ -8730,50 +9027,10 @@ class Disasm_Disasm {
                 address += instruction.bin.length - 1;
             }
         }
-        // Known labels.
-        const knownLabels = new Map([
-            // Generic Z80:
-            [0x0000, "rst00"],
-            [0x0008, "rst08"],
-            [0x0010, "rst10"],
-            [0x0018, "rst18"],
-            [0x0020, "rst20"],
-            [0x0028, "rst28"],
-            [0x0030, "rst30"],
-            [0x0038, "rst38"],
-            // TRS-80 Model III specific:
-            [0x0298, "clkon"],
-            [0x02a1, "clkoff"],
-            [0x0296, "cshin"],
-            [0x0235, "csin"],
-            [0x0287, "cshwr"],
-            [0x01f8, "csoff"],
-            [0x0264, "csout"],
-            [0x3033, "date"],
-            [0x0060, "delay"],
-            [0x0069, "initio"],
-            [0x002b, "kbchar"],
-            [0x0040, "kbline"],
-            [0x0049, "kbwait"],
-            [0x028d, "kbbrk"],
-            [0x003b, "prchar"],
-            [0x01d9, "prscn"],
-            [0x1a19, "ready"],
-            [0x0000, "reset"],
-            [0x006c, "route"],
-            [0x005a, "rsinit"],
-            [0x0050, "rsrcv"],
-            [0x0055, "rstx"],
-            [0x3042, "setcas"],
-            [0x3036, "time"],
-            [0x0033, "vdchar"],
-            [0x01c9, "vdcls"],
-            [0x021b, "vdline"],
-        ]);
         // Assign labels.
         let labelCounter = 1;
         for (const instruction of instructions) {
-            let label = knownLabels.get(instruction.address);
+            let label = this.knownLabels.get(instruction.address);
             const sources = (_a = jumpTargetMap.get(instruction.address), (_a !== null && _a !== void 0 ? _a : []));
             if (sources.length !== 0) {
                 if (label === undefined) {
@@ -8793,14 +9050,56 @@ class Disasm_Disasm {
         // jumps that go outside our disassembled code.
         for (const instruction of instructions) {
             if (instruction.jumpTarget !== undefined) {
-                instruction.replaceArgVariable(TARGET, "0x" + toHexWord(instruction.jumpTarget));
+                instruction.replaceArgVariable(TARGET, "0x" + Utils_toHexWord(instruction.jumpTarget));
             }
         }
         return instructions;
     }
 }
 
+// CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/KnownLabels.js
+const Z80_KNOWN_LABELS = [
+    [0x0000, "rst00"],
+    [0x0008, "rst08"],
+    [0x0010, "rst10"],
+    [0x0018, "rst18"],
+    [0x0020, "rst20"],
+    [0x0028, "rst28"],
+    [0x0030, "rst30"],
+    [0x0038, "rst38"],
+];
+const TRS80_MODEL_III_KNOWN_LABELS = [
+    [0x0298, "clkon"],
+    [0x02a1, "clkoff"],
+    [0x0296, "cshin"],
+    [0x0235, "csin"],
+    [0x0287, "cshwr"],
+    [0x01f8, "csoff"],
+    [0x0264, "csout"],
+    [0x3033, "date"],
+    [0x0060, "delay"],
+    [0x0069, "initio"],
+    [0x002b, "kbchar"],
+    [0x0040, "kbline"],
+    [0x0049, "kbwait"],
+    [0x028d, "kbbrk"],
+    [0x003b, "prchar"],
+    [0x01d9, "prscn"],
+    [0x1a19, "ready"],
+    [0x0000, "reset"],
+    [0x006c, "route"],
+    [0x005a, "rsinit"],
+    [0x0050, "rsrcv"],
+    [0x0055, "rstx"],
+    [0x3042, "setcas"],
+    [0x3036, "time"],
+    [0x0033, "vdchar"],
+    [0x01c9, "vdcls"],
+    [0x021b, "vdline"],
+];
+
 // CONCATENATED MODULE: ./node_modules/z80-disasm/dist/module/index.js
+
 
 
 
@@ -20792,6 +21091,9 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     h1.innerText = "Disassembly";
     out.appendChild(h1);
     const disasm = new Disasm_Disasm();
+    disasm.addLabels(Z80_KNOWN_LABELS);
+    disasm.addLabels(TRS80_MODEL_III_KNOWN_LABELS);
+    disasm.addLabels([[systemProgram.entryPointAddress, "MAIN"]]);
     for (const chunk of systemProgram.chunks) {
         if (okChunk(chunk)) {
             disasm.addChunk(chunk.data, chunk.loadAddress);
