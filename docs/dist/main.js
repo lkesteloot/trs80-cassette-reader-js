@@ -1921,7 +1921,7 @@ class SystemProgram_SystemProgram {
 
 
 class Program_Program {
-    constructor(trackNumber, copyNumber, startFrame, endFrame, decoderName, binary, bitData, byteData) {
+    constructor(trackNumber, copyNumber, startFrame, endFrame, decoder, binary, bitData, byteData) {
         this.name = "";
         this.notes = "";
         this.screenshot = "";
@@ -1932,7 +1932,7 @@ class Program_Program {
         this.copyNumber = copyNumber;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
-        this.decoderName = decoderName;
+        this.decoder = decoder;
         this.binary = binary;
         this.bitData = bitData;
         this.byteData = byteData;
@@ -1947,7 +1947,7 @@ class Program_Program {
      * Get a generic label for the program.
      */
     getLabel() {
-        return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoderName;
+        return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoder.getName();
     }
     /**
      * Get a generic short label for the program.
@@ -2116,6 +2116,9 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
     getName() {
         return "High speed";
     }
+    isHighSpeed() {
+        return true;
+    }
     findNextProgram(startFrame, waveformAnnotations) {
         const samples = this.tape.filteredSamples.samplesList[0];
         let programStartFrame = undefined;
@@ -2176,7 +2179,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         if (programStartFrame === undefined) {
             return undefined;
         }
-        return new Program_Program(0, 0, programStartFrame, startFrame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
+        return new Program_Program(0, 0, programStartFrame, startFrame, this, this.getBinary(), this.getBitData(), this.getByteData());
     }
     /**
      * Find the next bit, starting at the positive crossing of the end of the previous bit. Returns
@@ -2772,7 +2775,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         while (bitData.length > 0 && bitData[bitData.length - 1].bitType === BitType.BAD) {
             bitData.splice(bitData.length - 1, 1);
         }
-        return new Program_Program(0, 0, startFrame, frame, this.getName(), this.numbersToBytes(binary), bitData, byteData);
+        return new Program_Program(0, 0, startFrame, frame, this, this.numbersToBytes(binary), bitData, byteData);
     }
     /**
      * Read a bit at position "frame", which should be the position of the previous bit's clock pulse.
@@ -2978,6 +2981,9 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     }
     getName() {
         return "Low speed (Anteo)";
+    }
+    isHighSpeed() {
+        return false;
     }
     getState() {
         return this.state;
@@ -3252,6 +3258,9 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     getName() {
         return "Low speed" + (this.invert ? " (Inv)" : "");
     }
+    isHighSpeed() {
+        return false;
+    }
     findNextProgram(startFrame, waveformAnnotation) {
         const samples = this.tape.lowSpeedSamples.samplesList[0];
         let programStartFrame = -1;
@@ -3261,7 +3270,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                 programStartFrame = frame;
             }
             if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
-                return new Program_Program(0, 0, programStartFrame, frame, this.getName(), this.getBinary(), this.getBitData(), this.getByteData());
+                return new Program_Program(0, 0, programStartFrame, frame, this, this.getBinary(), this.getBitData(), this.getByteData());
             }
         }
         return undefined;
@@ -22657,7 +22666,7 @@ class TapeBrowser_TapeBrowser {
                 samples: this.tape.filteredSamples,
             },
             {
-                label: "Differentiated for low-speed decoding:",
+                label: "Pre-processed for low-speed decoding:",
                 samples: this.tape.lowSpeedSamples,
             },
         ]);
@@ -22701,7 +22710,7 @@ class TapeBrowser_TapeBrowser {
             addKeyElement(key, valueElement);
         };
         if (program instanceof Program_Program) {
-            addKeyValue("Decoder", program.decoderName);
+            addKeyValue("Decoder", program.decoder.getName());
         }
         const startFrame = program instanceof Program_Program ? program.startFrame : 0;
         const endFrame = program instanceof Program_Program ? program.endFrame : program.originalSamples.samplesList[0].length;
@@ -22852,7 +22861,7 @@ class TapeBrowser_TapeBrowser {
         div.classList.add("reconstructed_waveform");
         this.makeWaveforms(div, new WaveformDisplay_WaveformDisplay(this.tape.sampleRate), false, [
             {
-                label: "Reconstructed high-speed waveform:",
+                label: "Reconstructed low-speed waveform:",
                 samples: samples,
             }
         ]);
@@ -23093,9 +23102,10 @@ class TapeBrowser_TapeBrowser {
                 addPane("System program" + (systemPane.programName ? " (" + systemPane.programName + ")" : ""), systemPane);
             }
             if (basicPane !== undefined || systemPane !== undefined) {
-                addPane("Emulator (original)", this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
+                let emulatorLabel = "Emulator (original, " + (program.decoder.isHighSpeed() ? "high" : "low") + " speed)";
+                addPane(emulatorLabel, this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
                 if (program.reconstructedSamples !== undefined) {
-                    addPane("Emulator (reconstructed)", this.makeEmulatorPane(program, new ReconstructedCassette(program.reconstructedSamples, this.tape.sampleRate)));
+                    addPane("Emulator (reconstructed, low speed)", this.makeEmulatorPane(program, new ReconstructedCassette(program.reconstructedSamples, this.tape.sampleRate)));
                 }
             }
             if (edtasmPane !== undefined) {
