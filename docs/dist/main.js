@@ -1915,368 +1915,6 @@ class SystemProgram_SystemProgram {
     }
 }
 
-// CONCATENATED MODULE: ./src/Program.ts
-
-
-
-
-class Program_Program {
-    constructor(trackNumber, copyNumber, startFrame, endFrame, decoder, binary, bitData, byteData) {
-        this.name = "";
-        this.notes = "";
-        this.screenshot = "";
-        this.onName = new dist["SimpleEventDispatcher"]();
-        this.onNotes = new dist["SimpleEventDispatcher"]();
-        this.onScreenshot = new dist["SimpleEventDispatcher"]();
-        this.trackNumber = trackNumber;
-        this.copyNumber = copyNumber;
-        this.startFrame = startFrame;
-        this.endFrame = endFrame;
-        this.decoder = decoder;
-        this.binary = binary;
-        this.bitData = bitData;
-        this.byteData = byteData;
-    }
-    /**
-     * Set the high-speed samples reconstructed from the binary.
-     */
-    setReconstructedSamples(reconstructedSamples) {
-        this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
-    }
-    /**
-     * Get a generic label for the program.
-     */
-    getLabel() {
-        return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoder.getName();
-    }
-    /**
-     * Get a generic short label for the program.
-     */
-    getShortLabel() {
-        return "T" + this.trackNumber + " C" + this.copyNumber;
-    }
-    /**
-     * Whether the binary represents a Basic program.
-     */
-    isBasicProgram() {
-        return this.binary != null &&
-            this.binary.length >= 3 &&
-            this.binary[0] === 0xD3 &&
-            this.binary[1] === 0xD3 &&
-            this.binary[2] === 0xD3;
-    }
-    /**
-     * Set the name of the program, as set by the user.
-     */
-    setName(name) {
-        if (name !== this.name) {
-            this.name = name;
-            this.onName.dispatch(name);
-        }
-    }
-    /**
-     * Set the notes for the program, as set by the user.
-     */
-    setNotes(notes) {
-        if (notes !== this.notes) {
-            this.notes = notes;
-            this.onNotes.dispatch(notes);
-        }
-    }
-    /**
-     * Set the screenshot for the program.
-     */
-    setScreenshot(screenshot) {
-        if (screenshot !== this.screenshot) {
-            this.screenshot = screenshot;
-            this.onScreenshot.dispatch(screenshot);
-        }
-    }
-    /**
-     * Get a representative timestamp for this program, in seconds.
-     */
-    getTimestamp(sampleRate) {
-        return (this.startFrame + this.endFrame) / 2 / sampleRate;
-    }
-    /**
-     * Whether the given timestamp (in seconds) could apply to this program.
-     */
-    isForTimestamp(timestamp, sampleRate) {
-        const startTimestamp = this.startFrame / sampleRate;
-        const endTimestamp = this.endFrame / sampleRate;
-        return startTimestamp <= timestamp && timestamp <= endTimestamp;
-    }
-    /**
-     * Whether the binary represents an EDTASM program.
-     *
-     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/edtasm-file-format/
-     */
-    isEdtasmProgram() {
-        function isValidProgramNameChar(n) {
-            return (n >= 0x41 && n <= 0x5A) || n === 0x20;
-        }
-        function isValidLineNumberChar(n) {
-            return n >= 0xB0 && n <= 0xB9;
-        }
-        return this.binary != null &&
-            this.binary.length >= 13 &&
-            this.binary[0] === 0xD3 &&
-            isValidProgramNameChar(this.binary[1]) &&
-            isValidProgramNameChar(this.binary[2]) &&
-            isValidProgramNameChar(this.binary[3]) &&
-            isValidProgramNameChar(this.binary[4]) &&
-            isValidProgramNameChar(this.binary[5]) &&
-            isValidProgramNameChar(this.binary[6]) &&
-            isValidLineNumberChar(this.binary[7]) &&
-            isValidLineNumberChar(this.binary[8]) &&
-            isValidLineNumberChar(this.binary[9]) &&
-            isValidLineNumberChar(this.binary[10]) &&
-            isValidLineNumberChar(this.binary[11]) &&
-            this.binary[12] === 0x20;
-    }
-    /**
-     * Whether this is a program that can be loaded with the SYSTEM command.
-     *
-     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
-     */
-    isSystemProgram() {
-        return isSystemProgram(this.binary);
-    }
-    /**
-     * Whether these two programs have the same binaries.
-     */
-    sameBinaryAs(other) {
-        if (this.binary.length !== other.binary.length) {
-            return false;
-        }
-        for (let i = 0; i < this.binary.length; i++) {
-            if (this.binary[i] !== other.binary[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-    /**
-     * Return a .cas file version of the binary.
-     *
-     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
-     */
-    asCasFile() {
-        // 256 zero bytes, 0xA5 byte, binary contents, then two zero bytes.
-        const cas = new Uint8Array(this.binary.length + 256 + 1 + 2);
-        // Don't need to explicitly fill in the zeros.
-        cas[256] = 0xA5;
-        cas.set(this.binary, 257);
-        return cas;
-    }
-    /**
-     * Whether this program is strictly nested in the other program, with margin to spare.
-     */
-    isNestedIn(candidate, marginFrames) {
-        // Full nested, but also with margin on at least one side.
-        return this.startFrame > candidate.startFrame &&
-            this.endFrame < candidate.endFrame &&
-            (this.startFrame > candidate.startFrame + marginFrames ||
-                this.endFrame < candidate.endFrame - marginFrames);
-    }
-    /**
-     * Return the number of bit errors we've found. This is not super cheap, cache if you need it a lot.
-     */
-    countBitErrors() {
-        let count = 0;
-        for (const bitData of this.bitData) {
-            if (bitData.bitType === BitType.BAD) {
-                count += 1;
-            }
-        }
-        return count;
-    }
-}
-
-// CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
-
-
-
-
-
-
-// What distance away from 0 counts as "positive" (or, when negative, "negative").
-const THRESHOLD = 500 / 32768.0;
-/**
- * Decodes high-speed (1500 baud) cassettes.
- */
-class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
-    constructor(tape) {
-        this.state = TapeDecoderState.UNDECIDED;
-        this.programBytes = [];
-        this.bits = [];
-        this.byteData = [];
-        this.tape = tape;
-    }
-    getName() {
-        return "High speed";
-    }
-    isHighSpeed() {
-        return true;
-    }
-    findNextProgram(startFrame, waveformAnnotations) {
-        const samples = this.tape.filteredSamples.samplesList[0];
-        let programStartFrame = undefined;
-        let bitCount = 0;
-        let recentBits = 0;
-        while (this.state !== TapeDecoderState.FINISHED) {
-            const bitInfo = this.findBit(samples, startFrame);
-            if (bitInfo === undefined) {
-                // Ran off the end of the cassette.
-                this.state = TapeDecoderState.FINISHED;
-            }
-            else {
-                const [crossing, bit] = bitInfo;
-                if (bit === undefined) {
-                    // Bad bit. If we've not started decoding yet, then it's noise we ignore. Otherwise it indicates
-                    // the end of the recording.
-                    if (this.state === TapeDecoderState.DETECTED) {
-                        this.state = TapeDecoderState.FINISHED;
-                    }
-                }
-                else {
-                    // Bits are MSb to LSb.
-                    recentBits = (recentBits << 1) | (bit ? 1 : 0);
-                    bitCount += 1;
-                    let bitType;
-                    if (bitCount === 1 && this.state === TapeDecoderState.DETECTED) {
-                        // Just got a start bit. Must be zero.
-                        bitType = bit ? BitType.BAD : BitType.START;
-                    }
-                    else {
-                        bitType = bit ? BitType.ONE : BitType.ZERO;
-                    }
-                    this.bits.push(new BitData(startFrame, crossing, bitType));
-                    // If we're in the program, add the bit to our stream.
-                    if (this.state === TapeDecoderState.DETECTED) {
-                        // Got enough bits for a byte (including the start bit).
-                        if (bitCount === 9) {
-                            let byteValue = recentBits & 0xFF;
-                            this.programBytes.push(byteValue);
-                            this.byteData.push(new ByteData(byteValue, this.bits[this.bits.length - 8].startFrame, this.bits[this.bits.length - 1].endFrame));
-                            bitCount = 0;
-                        }
-                    }
-                    else {
-                        // Detect end of header.
-                        if ((recentBits & 0xFFFFFFFF) === 0x5555557F) {
-                            this.state = TapeDecoderState.DETECTED;
-                            bitCount = 0;
-                            recentBits = 0;
-                            programStartFrame = startFrame;
-                            waveformAnnotations.push(new LabelAnnotation("Sync", this.bits[this.bits.length - 8].startFrame, this.bits[this.bits.length - 1].endFrame, false));
-                        }
-                    }
-                }
-                startFrame = crossing;
-            }
-        }
-        if (programStartFrame === undefined) {
-            return undefined;
-        }
-        return new Program_Program(0, 0, programStartFrame, startFrame, this, this.getBinary(), this.getBitData(), this.getByteData());
-    }
-    /**
-     * Find the next bit, starting at the positive crossing of the end of the previous bit. Returns
-     * the positive crossing at the end of this bit, and the value of the bit. The bit is undefined
-     * if the length was too short or too long. Returns undefined if we ran off the end of the tape.
-     */
-    findBit(samples, startFrame) {
-        const crossing = this.findPositiveCrossing(samples, startFrame);
-        if (crossing === undefined) {
-            // Ran off the end of the cassette.
-            return undefined;
-        }
-        const cycleSize = crossing - startFrame;
-        if (cycleSize > 7 && cycleSize < 100) {
-            // Long cycle is "0", short cycle is "1".
-            const bit = cycleSize < 22;
-            return [crossing, bit];
-        }
-        else {
-            return [crossing, undefined];
-        }
-    }
-    /**
-     * Find the next positive crossing, starting at startFrame. If none is found, returns undefined.
-     */
-    findPositiveCrossing(samples, startFrame) {
-        let oldSign = 0;
-        for (let frame = startFrame; frame < samples.length; frame++) {
-            const sample = samples[frame];
-            const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
-            if (oldSign === -1 && newSign === 1) {
-                // Positive edge.
-                return frame;
-            }
-            if (newSign !== 0) {
-                oldSign = newSign;
-            }
-        }
-        return undefined;
-    }
-    /**
-     * Read a sequence of bits (the characters "0" and "1"). This is for testing.
-     */
-    readBits(frame) {
-        const samples = this.tape.filteredSamples.samplesList[0];
-        let bits = "";
-        const waveformAnnotation = [];
-        const explanations = [];
-        let firstBit = true;
-        while (true) {
-            const bitInfo = this.findBit(samples, frame);
-            if (bitInfo === undefined) {
-                // Ran off the end of the cassette.
-                break;
-            }
-            else {
-                const [crossing, bit] = bitInfo;
-                if (bit === undefined) {
-                    waveformAnnotation.push(new LabelAnnotation("Bad", frame, crossing, true));
-                    if (bits.length !== 0) {
-                        break;
-                    }
-                }
-                else {
-                    if (firstBit) {
-                        waveformAnnotation.push(new LabelAnnotation("Ign", frame, crossing, true));
-                        firstBit = false;
-                    }
-                    else {
-                        const bitChar = bit ? "1" : "0";
-                        waveformAnnotation.push(new LabelAnnotation(bitChar, frame, crossing, true));
-                        bits += bitChar;
-                    }
-                }
-                frame = crossing;
-            }
-        }
-        return [bits, waveformAnnotation, explanations];
-    }
-    getState() {
-        return this.state;
-    }
-    getBinary() {
-        const bytes = new Uint8Array(this.programBytes.length);
-        for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = this.programBytes[i];
-        }
-        return bytes;
-    }
-    getBitData() {
-        return this.bits;
-    }
-    getByteData() {
-        return this.byteData;
-    }
-}
-
 // CONCATENATED MODULE: ./src/Utils.ts
 /**
  * Convert a number to a string.
@@ -2537,22 +2175,43 @@ function addByte(samplesList, b, zero, one) {
     }
 }
 /**
- * Adds the header bytes necessary for writing high-speed cassettes.
+ * Adds the header bytes and start bits necessary for writing high-speed cassettes. The input bytes
+ * must not have the start bits already inserted.
  */
 function wrapHighSpeed(bytes) {
     // Add tape header.
     const buffers = [
         new Uint8Array(256).fill(0x55),
         new Uint8Array([SYNC_BYTE]),
-        bytes,
+        insertStartBits(bytes),
     ];
     return concatByteArrays(buffers);
+}
+/**
+ * Inserts a zero start bit before every byte.
+ */
+function insertStartBits(inBytes) {
+    const outBytes = new Uint8Array(Math.ceil(inBytes.length * 9 / 8));
+    for (let i = 0; i < inBytes.length; i++) {
+        const byte = inBytes[i];
+        const bitPos = i * 9 + 1;
+        const bytePos = Math.floor(bitPos / 8);
+        const bitOffset = bitPos % 8;
+        outBytes[bytePos] |= byte >> bitOffset;
+        if (bitOffset !== 0) {
+            outBytes[bytePos + 1] |= byte << (8 - bitOffset);
+        }
+    }
+    return outBytes;
 }
 /**
  * High-speed CAS files have start bits built-in. Strip these out because
  * we re-insert them below when encoding. We could also remove the
  * writing of start bits below, but we don't really know how many bits
  * there are at the end that we shouldn't write.
+ *
+ * Update: We no longer insert start bits in encodeHighSpeed(), so this
+ * routine is no longer necessary, but we keep it around anyway.
  */
 function stripStartBits(inBytes) {
     // Find sync byte.
@@ -2587,7 +2246,7 @@ function stripStartBits(inBytes) {
 }
 /**
  * Encode the sequence of bytes as an array of audio samples for high-speed (1500 baud) cassettes.
- * @param bytes cas-style array of bytes, including 256 0x55 bytes and sync byte.
+ * @param bytes cas-style array of bytes, including 256 0x55 bytes, sync byte, and start bits.
  * @param sampleRate number of samples per second in the generated audio.
  */
 function encodeHighSpeed(bytes, sampleRate) {
@@ -2599,9 +2258,6 @@ function encodeHighSpeed(bytes, sampleRate) {
     const zero = generateCycle(zeroLength);
     // Samples representing a one bit.
     const one = generateCycle(oneLength);
-    // Samples representing a long zero bit. This is the first start bit
-    // after the end of the header. It's 1 ms longer than a regular zero.
-    const longZero = generateCycle(zeroLength + sampleRate / 1000);
     // The final cycle in the entire waveform, which is necessary
     // to force that last negative-to-positive transition (and interrupt).
     // We could just use a simple half cycle here, but it's nicer to do
@@ -2612,19 +2268,8 @@ function encodeHighSpeed(bytes, sampleRate) {
     // Start with half a second of silence.
     samplesList.push(new Int16Array(sampleRate / 2));
     // Write program.
-    let sawSyncByte = false;
     for (const b of bytes) {
-        if (!sawSyncByte && b === SYNC_BYTE) {
-            sawSyncByte = true;
-        }
-        else if (sawSyncByte) {
-            // Start bit.
-            samplesList.push(zero);
-        }
         addByte(samplesList, b, zero, one);
-    }
-    if (!sawSyncByte) {
-        console.log("Warning: Didn't see sync byte when generating high-speed audio");
     }
     // Finish off the last cycle, so that it generates an interrupt.
     samplesList.push(finalHalfCycle);
@@ -2632,6 +2277,440 @@ function encodeHighSpeed(bytes, sampleRate) {
     samplesList.push(new Int16Array(sampleRate / 2));
     // Concatenate all samples.
     return concatAudio(samplesList);
+}
+
+// CONCATENATED MODULE: ./src/LowSpeedTapeEncoder.ts
+
+
+const LowSpeedTapeEncoder_SYNC_BYTE = 0xA5;
+/**
+ * Generate one pulse for 500 baud audio.
+ */
+function generatePulse(length) {
+    const audio = new Int16Array(length);
+    // Center it in the audio.
+    for (let i = 0; i < length / 2; i++) {
+        const t = 2 * Math.PI * i / (length / 2);
+        // -0.5 to 0.5, matches recorded audio.
+        audio[i + length / 4] = Math.sin(t) * 16384;
+    }
+    return audio;
+}
+/**
+ * Adds the byte "b" to the samples list, most significant bit first.
+ * @param samplesList list of samples we're adding to.
+ * @param b byte to generate.
+ * @param cycle samples for a cycle.
+ * @param silence samples for silence.
+ */
+function LowSpeedTapeEncoder_addByte(samplesList, b, cycle, silence) {
+    // MSb first.
+    for (let i = 7; i >= 0; i--) {
+        // Clock pulse.
+        samplesList.push(cycle);
+        // Data pulse.
+        const bit = (b & (1 << i)) != 0;
+        samplesList.push(bit ? cycle : silence);
+    }
+}
+/**
+ * Adds the header bytes necessary for writing low-speed cassettes.
+ */
+function wrapLowSpeed(bytes) {
+    // Add tape header.
+    const buffers = [
+        new Uint8Array(256),
+        new Uint8Array([LowSpeedTapeEncoder_SYNC_BYTE]),
+        bytes,
+    ];
+    return concatByteArrays(buffers);
+}
+/**
+ * Encode the sequence of bytes as an array of audio samples for low-speed (500 baud) cassettes.
+ * @param bytes cas-style array of bytes, including 256 zero bytes, sync byte, and trailing zero bytes.
+ * @param sampleRate number of samples per second in the generated audio.
+ */
+function encodeLowSpeed(bytes, sampleRate) {
+    // Length of one cycle, in samples. They're all 1ms.
+    const cycleLength = Math.round(0.001 * sampleRate);
+    // Samples representing one cycle.
+    const cycle = generatePulse(cycleLength);
+    // Samples representing 1ms of silence.
+    const silence = new Int16Array(cycleLength);
+    // List of samples.
+    const samplesList = [];
+    // Start with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    // All data bytes.
+    for (let i = 0; i < bytes.length; i++) {
+        LowSpeedTapeEncoder_addByte(samplesList, bytes[i], cycle, silence);
+    }
+    // End with half a second of silence.
+    samplesList.push(new Int16Array(sampleRate / 2));
+    // Concatenate all samples.
+    return concatAudio(samplesList);
+}
+
+// CONCATENATED MODULE: ./src/Program.ts
+
+
+
+
+
+
+class Program_Program {
+    constructor(trackNumber, copyNumber, startFrame, endFrame, decoder, binary, bitData, byteData) {
+        this.name = "";
+        this.notes = "";
+        this.screenshot = "";
+        this.onName = new dist["SimpleEventDispatcher"]();
+        this.onNotes = new dist["SimpleEventDispatcher"]();
+        this.onScreenshot = new dist["SimpleEventDispatcher"]();
+        this.trackNumber = trackNumber;
+        this.copyNumber = copyNumber;
+        this.startFrame = startFrame;
+        this.endFrame = endFrame;
+        this.decoder = decoder;
+        this.binary = binary;
+        this.bitData = bitData;
+        this.byteData = byteData;
+    }
+    /**
+     * Set the high-speed samples reconstructed from the binary.
+     */
+    setReconstructedSamples(reconstructedSamples) {
+        this.reconstructedSamples = new DisplaySamples(reconstructedSamples);
+    }
+    /**
+     * Get a generic label for the program.
+     */
+    getLabel() {
+        return "Track " + this.trackNumber + ", copy " + this.copyNumber + ", " + this.decoder.getName();
+    }
+    /**
+     * Get a generic short label for the program.
+     */
+    getShortLabel() {
+        return "T" + this.trackNumber + " C" + this.copyNumber;
+    }
+    /**
+     * Whether the binary represents a Basic program.
+     */
+    isBasicProgram() {
+        return this.binary != null &&
+            this.binary.length >= 3 &&
+            this.binary[0] === 0xD3 &&
+            this.binary[1] === 0xD3 &&
+            this.binary[2] === 0xD3;
+    }
+    /**
+     * Set the name of the program, as set by the user.
+     */
+    setName(name) {
+        if (name !== this.name) {
+            this.name = name;
+            this.onName.dispatch(name);
+        }
+    }
+    /**
+     * Set the notes for the program, as set by the user.
+     */
+    setNotes(notes) {
+        if (notes !== this.notes) {
+            this.notes = notes;
+            this.onNotes.dispatch(notes);
+        }
+    }
+    /**
+     * Set the screenshot for the program.
+     */
+    setScreenshot(screenshot) {
+        if (screenshot !== this.screenshot) {
+            this.screenshot = screenshot;
+            this.onScreenshot.dispatch(screenshot);
+        }
+    }
+    /**
+     * Get a representative timestamp for this program, in seconds.
+     */
+    getTimestamp(sampleRate) {
+        return (this.startFrame + this.endFrame) / 2 / sampleRate;
+    }
+    /**
+     * Whether the given timestamp (in seconds) could apply to this program.
+     */
+    isForTimestamp(timestamp, sampleRate) {
+        const startTimestamp = this.startFrame / sampleRate;
+        const endTimestamp = this.endFrame / sampleRate;
+        return startTimestamp <= timestamp && timestamp <= endTimestamp;
+    }
+    /**
+     * Whether the binary represents an EDTASM program.
+     *
+     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/edtasm-file-format/
+     */
+    isEdtasmProgram() {
+        function isValidProgramNameChar(n) {
+            return (n >= 0x41 && n <= 0x5A) || n === 0x20;
+        }
+        function isValidLineNumberChar(n) {
+            return n >= 0xB0 && n <= 0xB9;
+        }
+        return this.binary != null &&
+            this.binary.length >= 13 &&
+            this.binary[0] === 0xD3 &&
+            isValidProgramNameChar(this.binary[1]) &&
+            isValidProgramNameChar(this.binary[2]) &&
+            isValidProgramNameChar(this.binary[3]) &&
+            isValidProgramNameChar(this.binary[4]) &&
+            isValidProgramNameChar(this.binary[5]) &&
+            isValidProgramNameChar(this.binary[6]) &&
+            isValidLineNumberChar(this.binary[7]) &&
+            isValidLineNumberChar(this.binary[8]) &&
+            isValidLineNumberChar(this.binary[9]) &&
+            isValidLineNumberChar(this.binary[10]) &&
+            isValidLineNumberChar(this.binary[11]) &&
+            this.binary[12] === 0x20;
+    }
+    /**
+     * Whether this is a program that can be loaded with the SYSTEM command.
+     *
+     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
+     */
+    isSystemProgram() {
+        return isSystemProgram(this.binary);
+    }
+    /**
+     * Whether these two programs have the same binaries.
+     */
+    sameBinaryAs(other) {
+        if (this.binary.length !== other.binary.length) {
+            return false;
+        }
+        for (let i = 0; i < this.binary.length; i++) {
+            if (this.binary[i] !== other.binary[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * Return a .cas file version of the binary.
+     */
+    asCasFile() {
+        if (this.decoder.isHighSpeed()) {
+            return wrapHighSpeed(this.binary);
+        }
+        else {
+            return wrapLowSpeed(this.binary);
+        }
+    }
+    /**
+     * Whether this program is strictly nested in the other program, with margin to spare.
+     */
+    isNestedIn(candidate, marginFrames) {
+        // Full nested, but also with margin on at least one side.
+        return this.startFrame > candidate.startFrame &&
+            this.endFrame < candidate.endFrame &&
+            (this.startFrame > candidate.startFrame + marginFrames ||
+                this.endFrame < candidate.endFrame - marginFrames);
+    }
+    /**
+     * Return the number of bit errors we've found. This is not super cheap, cache if you need it a lot.
+     */
+    countBitErrors() {
+        let count = 0;
+        for (const bitData of this.bitData) {
+            if (bitData.bitType === BitType.BAD) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+}
+
+// CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
+
+
+
+
+
+
+// What distance away from 0 counts as "positive" (or, when negative, "negative").
+const THRESHOLD = 500 / 32768.0;
+/**
+ * Decodes high-speed (1500 baud) cassettes.
+ */
+class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
+    constructor(tape) {
+        this.state = TapeDecoderState.UNDECIDED;
+        this.programBytes = [];
+        this.bits = [];
+        this.byteData = [];
+        this.tape = tape;
+    }
+    getName() {
+        return "High speed";
+    }
+    isHighSpeed() {
+        return true;
+    }
+    findNextProgram(startFrame, waveformAnnotations) {
+        const samples = this.tape.filteredSamples.samplesList[0];
+        let programStartFrame = undefined;
+        let bitCount = 0;
+        let recentBits = 0;
+        while (this.state !== TapeDecoderState.FINISHED) {
+            const bitInfo = this.findBit(samples, startFrame);
+            if (bitInfo === undefined) {
+                // Ran off the end of the cassette.
+                this.state = TapeDecoderState.FINISHED;
+            }
+            else {
+                const [crossing, bit] = bitInfo;
+                if (bit === undefined) {
+                    // Bad bit. If we've not started decoding yet, then it's noise we ignore. Otherwise it indicates
+                    // the end of the recording.
+                    if (this.state === TapeDecoderState.DETECTED) {
+                        this.state = TapeDecoderState.FINISHED;
+                    }
+                }
+                else {
+                    // Bits are MSb to LSb.
+                    recentBits = (recentBits << 1) | (bit ? 1 : 0);
+                    bitCount += 1;
+                    let bitType;
+                    if (bitCount === 1 && this.state === TapeDecoderState.DETECTED) {
+                        // Just got a start bit. Must be zero.
+                        bitType = bit ? BitType.BAD : BitType.START;
+                    }
+                    else {
+                        bitType = bit ? BitType.ONE : BitType.ZERO;
+                    }
+                    this.bits.push(new BitData(startFrame, crossing, bitType));
+                    // If we're in the program, add the bit to our stream.
+                    if (this.state === TapeDecoderState.DETECTED) {
+                        // Got enough bits for a byte (including the start bit).
+                        if (bitCount === 9) {
+                            let byteValue = recentBits & 0xFF;
+                            this.programBytes.push(byteValue);
+                            this.byteData.push(new ByteData(byteValue, this.bits[this.bits.length - 8].startFrame, this.bits[this.bits.length - 1].endFrame));
+                            bitCount = 0;
+                        }
+                    }
+                    else {
+                        // Detect end of header.
+                        if ((recentBits & 0xFFFFFFFF) === 0x5555557F) {
+                            this.state = TapeDecoderState.DETECTED;
+                            bitCount = 0;
+                            recentBits = 0;
+                            programStartFrame = startFrame;
+                            waveformAnnotations.push(new LabelAnnotation("Sync", this.bits[this.bits.length - 8].startFrame, this.bits[this.bits.length - 1].endFrame, false));
+                        }
+                    }
+                }
+                startFrame = crossing;
+            }
+        }
+        if (programStartFrame === undefined) {
+            return undefined;
+        }
+        return new Program_Program(0, 0, programStartFrame, startFrame, this, this.getBinary(), this.getBitData(), this.getByteData());
+    }
+    /**
+     * Find the next bit, starting at the positive crossing of the end of the previous bit. Returns
+     * the positive crossing at the end of this bit, and the value of the bit. The bit is undefined
+     * if the length was too short or too long. Returns undefined if we ran off the end of the tape.
+     */
+    findBit(samples, startFrame) {
+        const crossing = this.findPositiveCrossing(samples, startFrame);
+        if (crossing === undefined) {
+            // Ran off the end of the cassette.
+            return undefined;
+        }
+        const cycleSize = crossing - startFrame;
+        if (cycleSize > 7 && cycleSize < 100) {
+            // Long cycle is "0", short cycle is "1".
+            const bit = cycleSize < 22;
+            return [crossing, bit];
+        }
+        else {
+            return [crossing, undefined];
+        }
+    }
+    /**
+     * Find the next positive crossing, starting at startFrame. If none is found, returns undefined.
+     */
+    findPositiveCrossing(samples, startFrame) {
+        let oldSign = 0;
+        for (let frame = startFrame; frame < samples.length; frame++) {
+            const sample = samples[frame];
+            const newSign = sample > THRESHOLD ? 1 : sample < -THRESHOLD ? -1 : 0;
+            if (oldSign === -1 && newSign === 1) {
+                // Positive edge.
+                return frame;
+            }
+            if (newSign !== 0) {
+                oldSign = newSign;
+            }
+        }
+        return undefined;
+    }
+    /**
+     * Read a sequence of bits (the characters "0" and "1"). This is for testing.
+     */
+    readBits(frame) {
+        const samples = this.tape.filteredSamples.samplesList[0];
+        let bits = "";
+        const waveformAnnotation = [];
+        const explanations = [];
+        let firstBit = true;
+        while (true) {
+            const bitInfo = this.findBit(samples, frame);
+            if (bitInfo === undefined) {
+                // Ran off the end of the cassette.
+                break;
+            }
+            else {
+                const [crossing, bit] = bitInfo;
+                if (bit === undefined) {
+                    waveformAnnotation.push(new LabelAnnotation("Bad", frame, crossing, true));
+                    if (bits.length !== 0) {
+                        break;
+                    }
+                }
+                else {
+                    if (firstBit) {
+                        waveformAnnotation.push(new LabelAnnotation("Ign", frame, crossing, true));
+                        firstBit = false;
+                    }
+                    else {
+                        const bitChar = bit ? "1" : "0";
+                        waveformAnnotation.push(new LabelAnnotation(bitChar, frame, crossing, true));
+                        bits += bitChar;
+                    }
+                }
+                frame = crossing;
+            }
+        }
+        return [bits, waveformAnnotation, explanations];
+    }
+    getState() {
+        return this.state;
+    }
+    getBinary() {
+        const bytes = new Uint8Array(this.programBytes.length);
+        for (let i = 0; i < bytes.length; i++) {
+            bytes[i] = this.programBytes[i];
+        }
+        return bytes;
+    }
+    getBitData() {
+        return this.bits;
+    }
+    getByteData() {
+        return this.byteData;
+    }
 }
 
 // CONCATENATED MODULE: ./src/LowSpeedAnteoTapeDecoder.ts
@@ -2988,78 +3067,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     getState() {
         return this.state;
     }
-}
-
-// CONCATENATED MODULE: ./src/LowSpeedTapeEncoder.ts
-
-
-const LowSpeedTapeEncoder_SYNC_BYTE = 0xA5;
-/**
- * Generate one pulse for 500 baud audio.
- */
-function generatePulse(length) {
-    const audio = new Int16Array(length);
-    // Center it in the audio.
-    for (let i = 0; i < length / 2; i++) {
-        const t = 2 * Math.PI * i / (length / 2);
-        // -0.5 to 0.5, matches recorded audio.
-        audio[i + length / 4] = Math.sin(t) * 16384;
-    }
-    return audio;
-}
-/**
- * Adds the byte "b" to the samples list, most significant bit first.
- * @param samplesList list of samples we're adding to.
- * @param b byte to generate.
- * @param cycle samples for a cycle.
- * @param silence samples for silence.
- */
-function LowSpeedTapeEncoder_addByte(samplesList, b, cycle, silence) {
-    // MSb first.
-    for (let i = 7; i >= 0; i--) {
-        // Clock pulse.
-        samplesList.push(cycle);
-        // Data pulse.
-        const bit = (b & (1 << i)) != 0;
-        samplesList.push(bit ? cycle : silence);
-    }
-}
-/**
- * Adds the header bytes necessary for writing low-speed cassettes.
- */
-function wrapLowSpeed(bytes) {
-    // Add tape header.
-    const buffers = [
-        new Uint8Array(256),
-        new Uint8Array([LowSpeedTapeEncoder_SYNC_BYTE]),
-        bytes,
-    ];
-    return concatByteArrays(buffers);
-}
-/**
- * Encode the sequence of bytes as an array of audio samples for low-speed (500 baud) cassettes.
- * @param bytes cas-style array of bytes, including 256 zero bytes, sync byte, and trailing zero bytes.
- * @param sampleRate number of samples per second in the generated audio.
- */
-function encodeLowSpeed(bytes, sampleRate) {
-    // Length of one cycle, in samples. They're all 1ms.
-    const cycleLength = Math.round(0.001 * sampleRate);
-    // Samples representing one cycle.
-    const cycle = generatePulse(cycleLength);
-    // Samples representing 1ms of silence.
-    const silence = new Int16Array(cycleLength);
-    // List of samples.
-    const samplesList = [];
-    // Start with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
-    // All data bytes.
-    for (let i = 0; i < bytes.length; i++) {
-        LowSpeedTapeEncoder_addByte(samplesList, bytes[i], cycle, silence);
-    }
-    // End with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
-    // Concatenate all samples.
-    return concatAudio(samplesList);
 }
 
 // CONCATENATED MODULE: ./src/Decoder.ts
@@ -22892,6 +22899,20 @@ class TapeBrowser_TapeBrowser {
             }
             addKeyElement(key, valueElement);
         };
+        const addKeyValues = (key, values, click) => {
+            const valuesElement = document.createElement("td");
+            valuesElement.classList.add("value");
+            for (const value of values) {
+                const valueElement = document.createElement("span");
+                valueElement.innerText = value;
+                if (click !== undefined) {
+                    valueElement.classList.add("clickable");
+                    valueElement.addEventListener("click", () => click(value));
+                }
+                valuesElement.appendChild(valueElement);
+            }
+            addKeyElement(key, valuesElement);
+        };
         if (program instanceof Program_Program) {
             addKeyValue("Decoder", program.decoder.getName());
         }
@@ -22901,12 +22922,13 @@ class TapeBrowser_TapeBrowser {
         addKeyValue("End time", frameToTimestamp(endFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToFit(endFrame - 100, endFrame + 100));
         addKeyValue("Duration", frameToTimestamp(endFrame - startFrame, this.tape.sampleRate, true), () => this.originalWaveformDisplay.zoomToFit(startFrame, endFrame));
         if (program instanceof Program_Program) {
-            addKeyValue("Binary", "Download " + program.binary.length + " bytes", () => {
+            addKeyValues("Download", [".BIN", ".CAS"], (value) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const blob = new Blob([program.binary], { type: "application/octet-stream" });
+                const contents = value === ".BIN" ? program.binary : program.asCasFile();
+                const blob = new Blob([contents], { type: "application/octet-stream" });
                 a.href = window.URL.createObjectURL(blob);
-                a.download = program.getShortLabel().replace(" ", "-") + ".bin";
+                a.download = program.getShortLabel().replace(" ", "-") + value.toLowerCase();
                 a.click();
             });
             if (basicPane !== undefined) {
@@ -23386,7 +23408,7 @@ class Uploader_Uploader {
         if (pathname.toLowerCase().endsWith(".cas")) {
             let bytes = new Uint8Array(arrayBuffer);
             const highSpeed = bytes.length > 0 && bytes[0] === 0x55;
-            const audio = highSpeed ? encodeHighSpeed(stripStartBits(bytes), rate) : encodeLowSpeed(bytes, rate);
+            const audio = highSpeed ? encodeHighSpeed(bytes, rate) : encodeLowSpeed(bytes, rate);
             audioFile = new AudioFile(rate, audio);
         }
         else if (pathname.toLowerCase().endsWith(".bas")) {
