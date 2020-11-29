@@ -2086,6 +2086,12 @@ function concatAudio(samplesList) {
 function clampToInt16(x) {
     return Math.max(Math.min(Math.round(x), 32767), -32768);
 }
+/**
+ * Generate a certain amount of silence.
+ */
+function makeSilence(seconds, sampleRate) {
+    return new Int16Array(Math.round(seconds * sampleRate));
+}
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeEncoder.ts
 
@@ -2340,18 +2346,221 @@ function encodeLowSpeed(bytes, sampleRate) {
     // List of samples.
     const samplesList = [];
     // Start with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
+    samplesList.push(makeSilence(0.5, sampleRate));
     // All data bytes.
     for (let i = 0; i < bytes.length; i++) {
         LowSpeedTapeEncoder_addByte(samplesList, bytes[i], cycle, silence);
     }
     // End with half a second of silence.
-    samplesList.push(new Int16Array(sampleRate / 2));
+    samplesList.push(makeSilence(0.5, sampleRate));
     // Concatenate all samples.
     return concatAudio(samplesList);
 }
 
+// CONCATENATED MODULE: ./src/WavFile.ts
+
+/**
+ * Rate used for writing files.
+ */
+const DEFAULT_SAMPLE_RATE = 44100;
+/**
+ * Values for the "audioFormat" field.
+ */
+const WAVE_FORMAT_UNKNOWN = 0x0000; // Microsoft Unknown Wave Format
+const WAVE_FORMAT_PCM = 0x0001; // Microsoft PCM Format
+const WAVE_FORMAT_ADPCM = 0x0002; // Microsoft ADPCM Format
+const WAVE_FORMAT_IEEE_FLOAT = 0x0003; // IEEE float
+const WAVE_FORMAT_VSELP = 0x0004; // Compaq Computer's VSELP
+const WAVE_FORMAT_IBM_CVSD = 0x0005; // IBM CVSD
+const WAVE_FORMAT_ALAW = 0x0006; // 8-bit ITU-T G.711 A-law
+const WAVE_FORMAT_MULAW = 0x0007; // 8-bit ITU-T G.711 µ-law
+const WAVE_FORMAT_EXTENSIBLE = 0xFFFE; // Determined by SubFormat
+/**
+ * Reads strings, numbers, and arrays from a buffer.
+ */
+class ArrayBufferReader {
+    constructor(arrayBuffer) {
+        this.littleEndian = false;
+        this.arrayBuffer = arrayBuffer;
+        this.dataView = new DataView(arrayBuffer);
+        this.index = 0;
+    }
+    /**
+     * Whether we've reached the end of the buffer.
+     */
+    eof() {
+        return this.index >= this.arrayBuffer.byteLength;
+    }
+    /**
+     * Read an ASCII string of length "length" from the input file.
+     */
+    readString(length) {
+        let s = "";
+        for (let i = 0; i < length; i++) {
+            s += String.fromCharCode(this.dataView.getInt8(this.index++));
+        }
+        return s;
+    }
+    /**
+     * Read an unsigned 16-bit value.
+     */
+    readUint16() {
+        const value = this.dataView.getUint16(this.index, this.littleEndian);
+        this.index += 2;
+        return value;
+    }
+    /**
+     * Read an unsigned 32-bit value.
+     */
+    readUint32() {
+        const value = this.dataView.getUint32(this.index, this.littleEndian);
+        this.index += 4;
+        return value;
+    }
+    /**
+     * Read a buffer of Int16 numbers.
+     */
+    readInt16Array(byteLength) {
+        const array = new Int16Array(this.arrayBuffer, this.index, byteLength / 2);
+        this.index += byteLength;
+        return array;
+    }
+}
+/**
+ * Reads a WAV file from a buffer, returning an AudioFile object.
+*/
+function readWavFile(arrayBuffer) {
+    const reader = new ArrayBufferReader(arrayBuffer);
+    let rate = undefined;
+    let samples = undefined;
+    // Read ID.
+    const riffId = reader.readString(4);
+    if (riffId === "RIFF") {
+        reader.littleEndian = true;
+    }
+    else if (riffId === "RIFX") {
+        reader.littleEndian = false;
+    }
+    else {
+        throw new Error('bad "chunk id": expected "RIFF" or "RIFX", got ' + riffId);
+    }
+    // Read chunk size. This is really how much is left in the entire file.
+    const chunkSize = reader.readUint32();
+    // Read format.
+    const waveId = reader.readString(4);
+    if (waveId !== "WAVE") {
+        throw new Error('bad "format": expected "WAVE", got ' + waveId);
+    }
+    // Keep reading chunks.
+    while (!reader.eof()) {
+        // Chunk ID.
+        const chunkId = reader.readString(4);
+        const chunkSize = reader.readUint32();
+        switch (chunkId) {
+            case "fmt ": {
+                if (chunkSize !== 16) {
+                    throw new Error("Expected fmt size of 16, got " + chunkSize);
+                }
+                const audioFormat = reader.readUint16();
+                const channels = reader.readUint16();
+                rate = reader.readUint32();
+                const byteRate = reader.readUint32(); // useless...
+                const blockAlign = reader.readUint16(); // useless...
+                const bitDepth = reader.readUint16();
+                const signed = bitDepth !== 8;
+                if (audioFormat !== WAVE_FORMAT_PCM) {
+                    throw new Error("Can only handle PCM, not " + audioFormat);
+                }
+                break;
+            }
+            case "fact": {
+                if (chunkSize !== 4) {
+                    throw new Error("Expected fact size of 4, got " + chunkSize);
+                }
+                // There is currently only one field defined for the format dependant data.
+                // It is a single 4-byte value that specifies the number of samples in the
+                // waveform data chunk.
+                //
+                // The number of samples field is redundant for sampled data, since the Data
+                // chunk indicates the length of the data. The number of samples can be
+                // determined from the length of the data and the container size as determined
+                // from the Format chunk.
+                const numSamples = reader.readUint32();
+                break;
+            }
+            case "data": {
+                if (chunkSize === 0) {
+                    // If we run into this, just read the rest of the array.
+                    throw new Error("We don't handle 0-sized data");
+                }
+                samples = reader.readInt16Array(chunkSize);
+                break;
+            }
+        }
+    }
+    if (samples === undefined || rate === undefined) {
+        throw new Error("didn't get all the fields we need from WAV file");
+    }
+    return new AudioFile(rate, samples);
+}
+/**
+ * Convert samples to a WAV file.
+ *
+ * http://soundfile.sapp.org/doc/WaveFormat/
+ */
+function writeWavFile(samples, sampleRate) {
+    const channelCount = 1;
+    const bitDepth = 16;
+    // Total size of WAV file.
+    const totalSize = 11 * 4 + samples.length * 2;
+    const wav = new ArrayBuffer(totalSize);
+    const wavData = new DataView(wav);
+    let index = 0;
+    const writeString = (s) => {
+        for (let i = 0; i < s.length; i++) {
+            wavData.setUint8(index, s.charCodeAt(i));
+            index += 1;
+        }
+    };
+    const writeUint16 = (n) => {
+        wavData.setUint16(index, n, true);
+        index += 2;
+    };
+    const writeInt16 = (n) => {
+        wavData.setInt16(index, n, true);
+        index += 2;
+    };
+    const writeUint32 = (n) => {
+        wavData.setUint32(index, n, true);
+        index += 4;
+    };
+    // Main header.
+    writeString("RIFF");
+    writeUint32(totalSize - 8);
+    writeString("WAVE");
+    // Format chunk.
+    writeString("fmt ");
+    writeUint32(16);
+    writeUint16(WAVE_FORMAT_PCM);
+    writeUint16(channelCount);
+    writeUint32(sampleRate);
+    writeUint32(sampleRate * channelCount * bitDepth / 8); // Byte rate.
+    writeUint16(channelCount * bitDepth / 8); // Block align.
+    writeUint16(bitDepth);
+    // Data chunk.
+    writeString("data");
+    writeUint32(samples.length * 2);
+    for (let i = 0; i < samples.length; i++) {
+        writeInt16(samples[i]);
+    }
+    if (index !== totalSize) {
+        throw new Error("wrote " + index + " but expected " + totalSize);
+    }
+    return new Uint8Array(wav);
+}
+
 // CONCATENATED MODULE: ./src/Program.ts
+
 
 
 
@@ -2504,6 +2713,21 @@ class Program_Program {
         else {
             return wrapLowSpeed(this.binary);
         }
+    }
+    /**
+     * Return just the audio portion of a WAV file for this program.
+     */
+    asAudio() {
+        const bytes = this.asCasFile();
+        return this.decoder.isHighSpeed()
+            ? encodeHighSpeed(bytes, DEFAULT_SAMPLE_RATE)
+            : encodeLowSpeed(bytes, DEFAULT_SAMPLE_RATE);
+    }
+    /**
+     * Return a .wav file version of the binary.
+     */
+    asWavFile() {
+        return writeWavFile(this.asAudio(), DEFAULT_SAMPLE_RATE);
     }
     /**
      * Whether this program is strictly nested in the other program, with margin to spare.
@@ -21442,204 +21666,6 @@ function Hexdump_create(binary, div) {
     return [hexElements, asciiElements];
 }
 
-// CONCATENATED MODULE: ./src/WavFile.ts
-
-/**
- * Values for the "audioFormat" field.
- */
-const WAVE_FORMAT_UNKNOWN = 0x0000; // Microsoft Unknown Wave Format
-const WAVE_FORMAT_PCM = 0x0001; // Microsoft PCM Format
-const WAVE_FORMAT_ADPCM = 0x0002; // Microsoft ADPCM Format
-const WAVE_FORMAT_IEEE_FLOAT = 0x0003; // IEEE float
-const WAVE_FORMAT_VSELP = 0x0004; // Compaq Computer's VSELP
-const WAVE_FORMAT_IBM_CVSD = 0x0005; // IBM CVSD
-const WAVE_FORMAT_ALAW = 0x0006; // 8-bit ITU-T G.711 A-law
-const WAVE_FORMAT_MULAW = 0x0007; // 8-bit ITU-T G.711 µ-law
-const WAVE_FORMAT_EXTENSIBLE = 0xFFFE; // Determined by SubFormat
-/**
- * Reads strings, numbers, and arrays from a buffer.
- */
-class ArrayBufferReader {
-    constructor(arrayBuffer) {
-        this.littleEndian = false;
-        this.arrayBuffer = arrayBuffer;
-        this.dataView = new DataView(arrayBuffer);
-        this.index = 0;
-    }
-    /**
-     * Whether we've reached the end of the buffer.
-     */
-    eof() {
-        return this.index >= this.arrayBuffer.byteLength;
-    }
-    /**
-     * Read an ASCII string of length "length" from the input file.
-     */
-    readString(length) {
-        let s = "";
-        for (let i = 0; i < length; i++) {
-            s += String.fromCharCode(this.dataView.getInt8(this.index++));
-        }
-        return s;
-    }
-    /**
-     * Read an unsigned 16-bit value.
-     */
-    readUint16() {
-        const value = this.dataView.getUint16(this.index, this.littleEndian);
-        this.index += 2;
-        return value;
-    }
-    /**
-     * Read an unsigned 32-bit value.
-     */
-    readUint32() {
-        const value = this.dataView.getUint32(this.index, this.littleEndian);
-        this.index += 4;
-        return value;
-    }
-    /**
-     * Read a buffer of Int16 numbers.
-     */
-    readInt16Array(byteLength) {
-        const array = new Int16Array(this.arrayBuffer, this.index, byteLength / 2);
-        this.index += byteLength;
-        return array;
-    }
-}
-/**
- * Reads a WAV file from a buffer, returning an AudioFile object.
-*/
-function readWavFile(arrayBuffer) {
-    const reader = new ArrayBufferReader(arrayBuffer);
-    let rate = undefined;
-    let samples = undefined;
-    // Read ID.
-    const riffId = reader.readString(4);
-    if (riffId === "RIFF") {
-        reader.littleEndian = true;
-    }
-    else if (riffId === "RIFX") {
-        reader.littleEndian = false;
-    }
-    else {
-        throw new Error('bad "chunk id": expected "RIFF" or "RIFX", got ' + riffId);
-    }
-    // Read chunk size. This is really how much is left in the entire file.
-    const chunkSize = reader.readUint32();
-    // Read format.
-    const waveId = reader.readString(4);
-    if (waveId !== "WAVE") {
-        throw new Error('bad "format": expected "WAVE", got ' + waveId);
-    }
-    // Keep reading chunks.
-    while (!reader.eof()) {
-        // Chunk ID.
-        const chunkId = reader.readString(4);
-        const chunkSize = reader.readUint32();
-        switch (chunkId) {
-            case "fmt ": {
-                if (chunkSize !== 16) {
-                    throw new Error("Expected fmt size of 16, got " + chunkSize);
-                }
-                const audioFormat = reader.readUint16();
-                const channels = reader.readUint16();
-                rate = reader.readUint32();
-                const byteRate = reader.readUint32(); // useless...
-                const blockAlign = reader.readUint16(); // useless...
-                const bitDepth = reader.readUint16();
-                const signed = bitDepth !== 8;
-                if (audioFormat !== WAVE_FORMAT_PCM) {
-                    throw new Error("Can only handle PCM, not " + audioFormat);
-                }
-                break;
-            }
-            case "fact": {
-                if (chunkSize !== 4) {
-                    throw new Error("Expected fact size of 4, got " + chunkSize);
-                }
-                // There is currently only one field defined for the format dependant data.
-                // It is a single 4-byte value that specifies the number of samples in the
-                // waveform data chunk.
-                //
-                // The number of samples field is redundant for sampled data, since the Data
-                // chunk indicates the length of the data. The number of samples can be
-                // determined from the length of the data and the container size as determined
-                // from the Format chunk.
-                const numSamples = reader.readUint32();
-                break;
-            }
-            case "data": {
-                if (chunkSize === 0) {
-                    // If we run into this, just read the rest of the array.
-                    throw new Error("We don't handle 0-sized data");
-                }
-                samples = reader.readInt16Array(chunkSize);
-                break;
-            }
-        }
-    }
-    if (samples === undefined || rate === undefined) {
-        throw new Error("didn't get all the fields we need from WAV file");
-    }
-    return new AudioFile(rate, samples);
-}
-/**
- * Convert samples to a WAV file.
- *
- * http://soundfile.sapp.org/doc/WaveFormat/
- */
-function writeWavFile(samples, sampleRate) {
-    const channelCount = 1;
-    const bitDepth = 16;
-    // Total size of WAV file.
-    const totalSize = 11 * 4 + samples.length * 2;
-    const wav = new ArrayBuffer(totalSize);
-    const wavData = new DataView(wav);
-    let index = 0;
-    const writeString = (s) => {
-        for (let i = 0; i < s.length; i++) {
-            wavData.setUint8(index, s.charCodeAt(i));
-            index += 1;
-        }
-    };
-    const writeUint16 = (n) => {
-        wavData.setUint16(index, n, true);
-        index += 2;
-    };
-    const writeInt16 = (n) => {
-        wavData.setInt16(index, n, true);
-        index += 2;
-    };
-    const writeUint32 = (n) => {
-        wavData.setUint32(index, n, true);
-        index += 4;
-    };
-    // Main header.
-    writeString("RIFF");
-    writeUint32(totalSize - 8);
-    writeString("WAVE");
-    // Format chunk.
-    writeString("fmt ");
-    writeUint32(16);
-    writeUint16(WAVE_FORMAT_PCM);
-    writeUint16(channelCount);
-    writeUint32(sampleRate);
-    writeUint32(sampleRate * channelCount * bitDepth / 8); // Byte rate.
-    writeUint16(channelCount * bitDepth / 8); // Block align.
-    writeUint16(bitDepth);
-    // Data chunk.
-    writeString("data");
-    writeUint32(samples.length * 2);
-    for (let i = 0; i < samples.length; i++) {
-        writeInt16(samples[i]);
-    }
-    if (index !== totalSize) {
-        throw new Error("wrote " + index + " but expected " + totalSize);
-    }
-    return wav;
-}
-
 // CONCATENATED MODULE: ./src/WaveformDisplay.ts
 
 
@@ -23415,16 +23441,15 @@ class Uploader_Uploader {
         this.progressBar.max = event.total;
     }
     handleArrayBuffer(pathname, arrayBuffer) {
-        const rate = 44100;
         let audioFile;
         if (pathname.toLowerCase().endsWith(".cas")) {
             let bytes = new Uint8Array(arrayBuffer);
             const highSpeed = bytes.length > 0 && bytes[0] === 0x55;
-            const audio = highSpeed ? encodeHighSpeed(bytes, rate) : encodeLowSpeed(bytes, rate);
-            audioFile = new AudioFile(rate, audio);
+            const audio = highSpeed ? encodeHighSpeed(bytes, DEFAULT_SAMPLE_RATE) : encodeLowSpeed(bytes, DEFAULT_SAMPLE_RATE);
+            audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, audio);
         }
         else if (pathname.toLowerCase().endsWith(".bas")) {
-            audioFile = new AudioFile(rate, encodeLowSpeed(wrapLowSpeed(wrapBasic(new Uint8Array(arrayBuffer))), rate));
+            audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(wrapBasic(new Uint8Array(arrayBuffer))), DEFAULT_SAMPLE_RATE));
         }
         else {
             audioFile = readWavFile(arrayBuffer);
