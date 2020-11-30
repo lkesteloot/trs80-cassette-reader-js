@@ -23419,7 +23419,6 @@ class Uploader_Uploader {
         this.uploadInput.value = "";
     }
     handleDroppedFile(file) {
-        console.log("File " + file.name + " has size " + file.size);
         // We could use file.arrayBuffer() here, but as of writing it's buggy
         // in Firefox 70. https://bugzilla.mozilla.org/show_bug.cgi?id=1585284
         const fileReader = new FileReader();
