@@ -2529,7 +2529,7 @@ function readWavFile(arrayBuffer) {
                     // Convert from 8-bit unsigned to 16-bit signed.
                     samples = new Int16Array(samples8.length);
                     for (let i = 0; i < samples.length; i++) {
-                        samples[i] = (samples8[i] - 127) * 255;
+                        samples[i] = -(samples8[i] - 128) * 255;
                     }
                 }
                 else if (bitDepth === 16) {
@@ -2804,8 +2804,9 @@ class Program_Program {
 
 
 
+
 // What distance away from 0 counts as "positive" (or, when negative, "negative").
-const THRESHOLD = 500 / 32768.0;
+const THRESHOLD = 500;
 /**
  * Decodes high-speed (1500 baud) cassettes.
  */
@@ -2816,6 +2817,8 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.bits = [];
         this.byteData = [];
         this.tape = tape;
+        // Our "number of samples" comparisons assume DEFAULT_SAMPLE_RATE, so adjust for that.
+        this.lengthMultiplier = tape.sampleRate / DEFAULT_SAMPLE_RATE;
     }
     getName() {
         return "High speed";
@@ -2897,9 +2900,9 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
             return undefined;
         }
         const cycleSize = crossing - startFrame;
-        if (cycleSize > 7 && cycleSize < 100) {
+        if (cycleSize > 7 * this.lengthMultiplier && cycleSize < 100 * this.lengthMultiplier) {
             // Long cycle is "0", short cycle is "1".
-            const bit = cycleSize < 22;
+            const bit = cycleSize < 22 * this.lengthMultiplier;
             return [crossing, bit];
         }
         else {
