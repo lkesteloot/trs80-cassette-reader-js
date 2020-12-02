@@ -2359,6 +2359,7 @@ function encodeLowSpeed(bytes, sampleRate) {
 
 // CONCATENATED MODULE: ./src/WavFile.ts
 
+
 /**
  * Rate used for writing files.
  */
@@ -2402,6 +2403,14 @@ class ArrayBufferReader {
         return s;
     }
     /**
+     * Read an unsigned 8-bit value.
+     */
+    readUint8() {
+        const value = this.dataView.getUint8(this.index);
+        this.index += 1;
+        return value;
+    }
+    /**
      * Read an unsigned 16-bit value.
      */
     readUint16() {
@@ -2416,6 +2425,14 @@ class ArrayBufferReader {
         const value = this.dataView.getUint32(this.index, this.littleEndian);
         this.index += 4;
         return value;
+    }
+    /**
+     * Read a buffer of Uint8 numbers.
+     */
+    readUint8Array(byteLength) {
+        const array = new Uint8Array(this.arrayBuffer, this.index, byteLength);
+        this.index += byteLength;
+        return array;
     }
     /**
      * Read a buffer of Int16 numbers.
@@ -2433,6 +2450,7 @@ function readWavFile(arrayBuffer) {
     const reader = new ArrayBufferReader(arrayBuffer);
     let rate = undefined;
     let samples = undefined;
+    let bitDepth = undefined;
     // Read ID.
     const riffId = reader.readString(4);
     if (riffId === "RIFF") {
@@ -2458,18 +2476,30 @@ function readWavFile(arrayBuffer) {
         const chunkSize = reader.readUint32();
         switch (chunkId) {
             case "fmt ": {
-                if (chunkSize !== 16) {
-                    throw new Error("Expected fmt size of 16, got " + chunkSize);
+                if (chunkSize < 16) {
+                    throw new Error("Expected fmt size of at least 16, got " + chunkSize);
                 }
                 const audioFormat = reader.readUint16();
                 const channels = reader.readUint16();
                 rate = reader.readUint32();
                 const byteRate = reader.readUint32(); // useless...
                 const blockAlign = reader.readUint16(); // useless...
-                const bitDepth = reader.readUint16();
-                const signed = bitDepth !== 8;
+                bitDepth = reader.readUint16();
                 if (audioFormat !== WAVE_FORMAT_PCM) {
                     throw new Error("Can only handle PCM, not " + audioFormat);
+                }
+                if (channels !== 1) {
+                    throw new Error("Can only handle mono streams, not " + channels + " channels");
+                }
+                const expectBlockAlign = Math.ceil(bitDepth / 8);
+                if (blockAlign !== expectBlockAlign) {
+                    throw new Error("Expected block align of " + expectBlockAlign + ", not " + blockAlign);
+                }
+                // Read the rest of the optional parameters. These are allowed but we don't do anything
+                // with them.
+                for (let i = 16; i < chunkSize; i++) {
+                    const byte = reader.readUint8();
+                    console.log("Got extra byte in wav fmt chunk: 0x" + toHexByte(byte));
                 }
                 break;
             }
@@ -2493,7 +2523,20 @@ function readWavFile(arrayBuffer) {
                     // If we run into this, just read the rest of the array.
                     throw new Error("We don't handle 0-sized data");
                 }
-                samples = reader.readInt16Array(chunkSize);
+                if (bitDepth === 8) {
+                    const samples8 = reader.readUint8Array(chunkSize);
+                    // Convert from 8-bit unsigned to 16-bit signed.
+                    samples = new Int16Array(samples8.length);
+                    for (let i = 0; i < samples.length; i++) {
+                        samples[i] = (samples8[i] - 127) * 255;
+                    }
+                }
+                else if (bitDepth === 16) {
+                    samples = reader.readInt16Array(chunkSize);
+                }
+                else {
+                    throw new Error("Can only handle bit depths of 8 and 16, not " + bitDepth);
+                }
                 break;
             }
         }
