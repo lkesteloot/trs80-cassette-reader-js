@@ -2603,7 +2603,144 @@ function writeWavFile(samples, sampleRate) {
     return new Uint8Array(wav);
 }
 
+// CONCATENATED MODULE: ./src/CmdProgram.ts
+/**
+ * Tools for dealing with CMD (machine language) programs.
+ *
+ * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/#cmdfile
+ */
+
+// Chunk types.
+const CMD_LOAD_BLOCK = 0x01;
+const CMD_TRANSFER_ADDRESS = 0x02;
+const CMD_LOAD_MODULE_HEADER = 0x05;
+const CMD_MAX_TYPE = 0x1F;
+/**
+ * Represents a chunk of bytes from the file.
+ */
+class CmdChunk {
+    constructor(type, data) {
+        this.type = type;
+        this.rawData = data;
+    }
+}
+/**
+ * A chunk for loading data into memory.
+ */
+class CmdLoadBlockChunk extends CmdChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.address = data[0] + data[1] * 256;
+        this.loadData = data.slice(2);
+    }
+}
+/**
+ * A chunk for jumping to the start of the program.
+ */
+class CmdTransferAddressChunk extends CmdChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.address = data.length === 2 ? (data[0] + data[1] * 256) : 0;
+    }
+}
+/**
+ * A header chunk for the filename.
+ */
+class CmdLoadModuleHeaderChunk extends CmdChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.filename = new TextDecoder("ascii").decode(data).trim().replace(/ +/g, " ");
+    }
+}
+/**
+ * Whether this is a CMD program.
+ */
+function isCmdProgram(binary) {
+    return binary != null &&
+        binary.length >= 1 &&
+        binary[0] <= CMD_MAX_TYPE;
+}
+/**
+ * Class representing a CMD (machine language) program. If the "error" field is set, then something
+ * went wrong with the program and the data may be partially loaded.
+ */
+class CmdProgram_CmdProgram {
+    constructor(binary) {
+        this.chunks = [];
+        this.annotations = [];
+        this.filename = "";
+        this.entryPointAddress = 0;
+        const b = new ByteReader(binary);
+        // Read each chunk.
+        while (true) {
+            // First byte is type.
+            const type = b.read();
+            if (type === EOF || type > CMD_MAX_TYPE) {
+                return;
+            }
+            // Second byte is length, in bytes.
+            let length = b.read();
+            if (length === EOF) {
+                this.error = "File is truncated at length";
+                return;
+            }
+            // Adjust load block length.
+            if (type === CMD_LOAD_BLOCK && length <= 2) {
+                length += 256;
+            }
+            // Read the raw bytes.
+            const data = b.readBytes(length);
+            if (data.length < length) {
+                this.error = "File is truncated at data";
+            }
+            // Create chunk type-specific objects.
+            let chunk;
+            switch (type) {
+                case CMD_LOAD_BLOCK:
+                    chunk = new CmdLoadBlockChunk(type, data);
+                    break;
+                case CMD_TRANSFER_ADDRESS: {
+                    const cmdTransferAddressChunk = new CmdTransferAddressChunk(type, data);
+                    this.entryPointAddress = cmdTransferAddressChunk.address;
+                    chunk = cmdTransferAddressChunk;
+                    break;
+                }
+                case CMD_LOAD_MODULE_HEADER: {
+                    const cmdLoadModuleHeaderChunk = new CmdLoadModuleHeaderChunk(type, data);
+                    this.filename = cmdLoadModuleHeaderChunk.filename;
+                    chunk = cmdLoadModuleHeaderChunk;
+                    break;
+                }
+                default:
+                    chunk = new CmdChunk(type, data);
+                    break;
+            }
+            this.chunks.push(chunk);
+        }
+    }
+    /**
+     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
+     * not found in any chunk.
+     */
+    addressToByteOffset(address) {
+        // Offset in the binary of first byte of chunk.
+        let offset = 0;
+        for (const chunk of this.chunks) {
+            if (chunk instanceof CmdLoadBlockChunk) {
+                if (address >= chunk.address && address < chunk.address + chunk.loadData.length) {
+                    // Skip type, length, and address.
+                    return offset + 4 + (address - chunk.address);
+                }
+            }
+            // Skip type, length and data.
+            offset += 2 + chunk.rawData.length;
+        }
+        return undefined;
+    }
+}
+
 // CONCATENATED MODULE: ./src/Program.ts
+
 
 
 
@@ -2732,6 +2869,12 @@ class Program_Program {
      */
     isSystemProgram() {
         return isSystemProgram(this.binary);
+    }
+    /**
+     * Whether this is a CMD program.
+     */
+    isCmdProgram() {
+        return isCmdProgram(this.binary);
     }
     /**
      * Whether these two programs have the same binaries.
@@ -21622,6 +21765,200 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     return [elements, annotations];
 }
 
+// CONCATENATED MODULE: ./src/CmdProgramRender.ts
+
+
+
+
+
+
+/**
+ * Add text to the line with the specified class.
+ *
+ * @param out the enclosing element to add to.
+ * @param text the text to add.
+ * @param className the name of the class for the item.
+ */
+function CmdProgramRender_add(out, text, className) {
+    const e = document.createElement("span");
+    e.innerText = text;
+    e.classList.add(className);
+    out.appendChild(e);
+    return e;
+}
+// Stylesheet.
+const CmdProgramRender_BACKGROUND_COLOR = "var(--background)";
+const CmdProgramRender_STYLE = {
+    error: {
+        color: "var(--red)",
+    },
+    address: {
+        color: "var(--foreground-secondary)",
+    },
+    hex: {
+        color: "var(--blue)",
+    },
+    opcodes: {
+        color: "var(--cyan)",
+    },
+    label: {
+        color: "var(--orange)",
+    },
+    space: {
+        color: "var(--foreground-secondary)",
+    },
+    punctuation: {
+        color: "var(--foreground-secondary)",
+    },
+    selected: {
+        backgroundColor: "var(--background-highlights)",
+    },
+    highlighted: {
+        backgroundColor: "var(--foreground-secondary)",
+        "& $hex": {
+            backgroundColor: "var(--blue)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $punctuation": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $space": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $label": {
+            backgroundColor: "var(--orange)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $opcodes": {
+            backgroundColor: "var(--cyan)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $address": {
+            backgroundColor: "var(--foreground-secondary)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+        "& $error": {
+            backgroundColor: "var(--red)",
+            color: CmdProgramRender_BACKGROUND_COLOR,
+        },
+    },
+};
+const CmdProgramRender_sheet = src_Jss.createStyleSheet(CmdProgramRender_STYLE);
+const CmdProgramRender_highlightClassName = CmdProgramRender_sheet.classes.highlighted;
+const CmdProgramRender_selectClassName = CmdProgramRender_sheet.classes.selected;
+/**
+ * Render a disassembled system program.
+ *
+ * @return array of the elements added, with the index being the offset into the original bytes array.
+ */
+function CmdProgramRender_toDiv(cmdProgram, out) {
+    CmdProgramRender_sheet.attach();
+    const classes = CmdProgramRender_sheet.classes;
+    // Every element we render that maps to a byte in the program.
+    const elements = [];
+    // Waveform annotations.
+    const annotations = [];
+    if (cmdProgram.error !== undefined) {
+        const line = document.createElement("div");
+        out.appendChild(line);
+        CmdProgramRender_add(line, cmdProgram.error, classes.error);
+    }
+    // List chunks in file.
+    let h1 = document.createElement("h1");
+    h1.innerText = "Chunks";
+    out.appendChild(h1);
+    // Display a row for each chunk.
+    let programAddress = undefined;
+    for (const chunk of cmdProgram.chunks) {
+        const line = document.createElement("div");
+        out.appendChild(line);
+        // Chunk type.
+        CmdProgramRender_add(line, toHexByte(chunk.type) + "  ", classes.address);
+        if (chunk instanceof CmdLoadBlockChunk) {
+            CmdProgramRender_add(line, "Load at ", classes.opcodes);
+            CmdProgramRender_add(line, toHexWord(chunk.address), classes.address);
+            CmdProgramRender_add(line, ": ", classes.opcodes);
+            const bytes = chunk.loadData.slice(0, Math.min(3, chunk.loadData.length));
+            const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.loadData.length ? " ..." : "");
+            CmdProgramRender_add(line, text, classes.hex);
+            CmdProgramRender_add(line, " (" + chunk.loadData.length + " byte" + (chunk.loadData.length == 1 ? "" : "s") + ")", classes.address);
+            if (programAddress !== undefined && chunk.address !== programAddress) {
+                CmdProgramRender_add(line, " (not contiguous, expected " + toHexWord(programAddress) + ")", classes.error);
+            }
+            programAddress = chunk.address + chunk.loadData.length;
+        }
+        else if (chunk instanceof CmdTransferAddressChunk) {
+            if (chunk.rawData.length !== 2) {
+                CmdProgramRender_add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
+            }
+            else {
+                CmdProgramRender_add(line, "Jump to ", classes.opcodes);
+                CmdProgramRender_add(line, toHexWord(chunk.address), classes.address);
+            }
+        }
+        else if (chunk instanceof CmdLoadModuleHeaderChunk) {
+            CmdProgramRender_add(line, "Load module header: ", classes.opcodes);
+            CmdProgramRender_add(line, chunk.filename, classes.hex);
+        }
+        else {
+            CmdProgramRender_add(line, "Unknown type: ", classes.opcodes);
+            const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
+            const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
+            CmdProgramRender_add(line, text, classes.hex);
+        }
+    }
+    h1 = document.createElement("h1");
+    h1.innerText = "Disassembly";
+    out.appendChild(h1);
+    const disasm = new Disasm_Disasm();
+    disasm.addLabels(Z80_KNOWN_LABELS);
+    disasm.addLabels(TRS80_MODEL_III_KNOWN_LABELS);
+    disasm.addLabels([[cmdProgram.entryPointAddress, "MAIN"]]);
+    for (const chunk of cmdProgram.chunks) {
+        if (chunk.type === CMD_LOAD_BLOCK) {
+            const address = chunk.rawData[0] + chunk.rawData[1] * 256;
+            disasm.addChunk(chunk.rawData.slice(2), address);
+        }
+    }
+    disasm.addEntryPoint(cmdProgram.entryPointAddress);
+    const instructions = disasm.disassemble();
+    for (const instruction of instructions) {
+        if (instruction.label !== undefined) {
+            const line = document.createElement("div");
+            out.appendChild(line);
+            CmdProgramRender_add(line, "                  ", classes.space);
+            CmdProgramRender_add(line, instruction.label, classes.label);
+            CmdProgramRender_add(line, ":", classes.punctuation);
+        }
+        let address = instruction.address;
+        const bytes = instruction.bin;
+        while (bytes.length > 0) {
+            const subbytes = bytes.slice(0, Math.min(4, bytes.length));
+            const subbytesText = subbytes.map(toHexByte).join(" ");
+            const line = document.createElement("div");
+            out.appendChild(line);
+            CmdProgramRender_add(line, toHexWord(instruction.address), classes.address);
+            CmdProgramRender_add(line, "  ", classes.space);
+            CmdProgramRender_add(line, subbytesText, classes.hex);
+            if (address === instruction.address) {
+                CmdProgramRender_add(line, "".padEnd(12 - subbytesText.length + 8), classes.space);
+                CmdProgramRender_add(line, instruction.toText(), classes.opcodes);
+            }
+            const byteOffset = cmdProgram.addressToByteOffset(address);
+            if (byteOffset !== undefined) {
+                const lastIndex = byteOffset + subbytes.length - 1;
+                elements.push(new Highlightable(byteOffset, lastIndex, line));
+                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+            }
+            address += subbytes.length;
+            bytes.splice(0, subbytes.length);
+        }
+    }
+    return [elements, annotations];
+}
+
 // CONCATENATED MODULE: ./src/Hexdump.ts
 // Tools for generating a hex dump of a binary file.
 
@@ -22747,6 +23084,8 @@ function decodeEdtasm(bytes, out) {
 
 
 
+
+
 /**
  * Generic cassette that reads from a Int16Array.
  */
@@ -22952,7 +23291,7 @@ class TapeBrowser_TapeBrowser {
     /**
      * Make pane of metadata for a program.
      */
-    makeMetadataPane(program, basicPane, systemPane, edtasmPane, onProgramClick) {
+    makeMetadataPane(program, basicPane, systemPane, edtasmPane, cmdPane, onProgramClick) {
         const div = document.createElement("div");
         div.classList.add("metadata");
         div.style.display = "flex";
@@ -23027,6 +23366,9 @@ class TapeBrowser_TapeBrowser {
             }
             else if (edtasmPane !== undefined) {
                 addKeyValue("Type", "Assembly program" + (edtasmPane.programName ? " (" + edtasmPane.programName + ")" : ""), () => this.showPane(edtasmPane));
+            }
+            else if (cmdPane !== undefined) {
+                addKeyValue("Type", "CMD program" + (cmdPane.programName ? " (" + cmdPane.programName + ")" : ""), () => this.showPane(cmdPane));
             }
             else {
                 addKeyValue("Type", "Unknown");
@@ -23212,6 +23554,38 @@ class TapeBrowser_TapeBrowser {
         };
         return pane;
     }
+    makeCmdPane(program) {
+        const div = document.createElement("div");
+        div.classList.add("program");
+        div.classList.add("cmd-program");
+        const cmdProgram = new CmdProgram_CmdProgram(program.binary);
+        const [highlightables, annotations] = CmdProgramRender_toDiv(cmdProgram, div);
+        const highlighter = new Highlighter_Highlighter(this, program, div);
+        highlighter.addHighlightables(highlightables);
+        if (program.annotations === undefined) {
+            program.annotations = [];
+        }
+        program.annotations.push(...cmdProgram.annotations, ...annotations);
+        this.onHighlight.subscribe(highlight => {
+            highlighter.highlight(highlight, program, CmdProgramRender_highlightClassName);
+        });
+        this.onSelection.subscribe(selection => {
+            highlighter.select(selection, program, CmdProgramRender_selectClassName);
+        });
+        this.onDoneSelecting.subscribe(source => {
+            if (source !== highlighter) {
+                highlighter.doneSelecting();
+            }
+        });
+        let pane = new Pane(div);
+        if (cmdProgram.filename !== "") {
+            pane.programName = cmdProgram.filename;
+        }
+        pane.didShow = () => {
+            highlighter.didShow();
+        };
+        return pane;
+    }
     makeEdtasmPane(program) {
         const div = document.createElement("div");
         div.classList.add("program");
@@ -23334,7 +23708,7 @@ class TapeBrowser_TapeBrowser {
         row.classList.add("program_title");
         let metadataLabel = frameToTimestamp(0, this.tape.sampleRate, true) + " to " +
             frameToTimestamp(this.tape.originalSamples.samplesList[0].length, this.tape.sampleRate, true);
-        addPane(metadataLabel, this.makeMetadataPane(this.tape, undefined, undefined, undefined, (program) => {
+        addPane(metadataLabel, this.makeMetadataPane(this.tape, undefined, undefined, undefined, undefined, (program) => {
             var _a;
             (_a = screenshotClickAction.get(program)) === null || _a === void 0 ? void 0 : _a();
         }));
@@ -23364,6 +23738,7 @@ class TapeBrowser_TapeBrowser {
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
             const systemPane = program.isSystemProgram() ? this.makeSystemPane(program) : undefined;
             const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
+            const cmdPane = program.isCmdProgram() ? this.makeCmdPane(program) : undefined;
             // Metadata pane.
             let metadataLabel = frameToTimestamp(program.startFrame, this.tape.sampleRate, true) + " to " +
                 frameToTimestamp(program.endFrame, this.tape.sampleRate, true) + " (" +
@@ -23372,7 +23747,7 @@ class TapeBrowser_TapeBrowser {
             if (bitErrorCount > 0) {
                 metadataLabel += ", " + bitErrorCount + " error" + (bitErrorCount === 1 ? "" : "s");
             }
-            let metadataPane = this.makeMetadataPane(program, basicPane, systemPane, edtasmPane, undefined);
+            let metadataPane = this.makeMetadataPane(program, basicPane, systemPane, edtasmPane, cmdPane, undefined);
             addPane(metadataLabel, metadataPane);
             screenshotClickAction.set(program, () => {
                 var _a;
@@ -23392,6 +23767,9 @@ class TapeBrowser_TapeBrowser {
             }
             if (systemPane !== undefined) {
                 addPane("System program" + (systemPane.programName ? " (" + systemPane.programName + ")" : ""), systemPane);
+            }
+            if (cmdPane !== undefined) {
+                addPane("CMD program" + (cmdPane.programName ? " (" + cmdPane.programName + ")" : ""), cmdPane);
             }
             if (basicPane !== undefined || systemPane !== undefined) {
                 let emulatorLabel = "Emulator (original, " + (program.decoder.isHighSpeed() ? "high" : "low") + " speed)";
@@ -23496,6 +23874,9 @@ class Uploader_Uploader {
         }
         else if (pathname.toLowerCase().endsWith(".bas")) {
             audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(wrapBasic(new Uint8Array(arrayBuffer))), DEFAULT_SAMPLE_RATE));
+        }
+        else if (pathname.toLowerCase().endsWith(".cmd")) {
+            audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(new Uint8Array(arrayBuffer)), DEFAULT_SAMPLE_RATE));
         }
         else {
             audioFile = readWavFile(arrayBuffer);
@@ -24743,6 +25124,15 @@ function showTestScreen() {
     screen.appendChild(pageHeader);
     loadTestFile(screen, "tests/tests.json", document.baseURI);
 }
+function showRetroStoreScreen() {
+    const screen = showScreen("retrostore_screen");
+    clearElement(screen);
+    fetch("http://retrostore.org/rpc?m=pubapplist")
+        .then(response => response.json())
+        .then(json => {
+        console.log(json);
+    });
+}
 /**
  * Handle the browser's back and forward history buttons.
  */
@@ -24756,6 +25146,9 @@ function handleNewLocation() {
             break;
         case "#test":
             showTestScreen();
+            break;
+        case "#retrostore":
+            showRetroStoreScreen();
             break;
     }
 }
@@ -24772,6 +25165,7 @@ function main() {
     const importDataButton = document.getElementById("import_data_button");
     const browseDataButton = document.getElementById("browse_data_button");
     const runTestsButton = document.getElementById("run_tests_button");
+    const retroStoreButton = document.getElementById("retrostore_button");
     const copyToClipboardButton = document.getElementById("copy_to_clipboard_button");
     const importButton = document.getElementById("import_button");
     exportDataButton.addEventListener("click", event => showExportData());
@@ -24781,6 +25175,7 @@ function main() {
         populateBrowseScreen(browseScreen);
     });
     runTestsButton.addEventListener("click", () => window.location.href = "#test");
+    retroStoreButton.addEventListener("click", () => window.location.href = "#retrostore");
     copyToClipboardButton.addEventListener("click", event => copyToClipboard());
     importButton.addEventListener("click", event => importData());
     window.addEventListener("popstate", handleNewLocation);
