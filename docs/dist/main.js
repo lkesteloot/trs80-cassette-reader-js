@@ -19162,6 +19162,16 @@ function computeVideoBit6(value) {
     return (value & 0xBF) | (bit6 << 6);
 }
 /**
+ * An event scheduled for the future.
+ */
+class ScheduledEvent {
+    constructor(handle, tStateCount, callback) {
+        this.handle = handle;
+        this.tStateCount = tStateCount;
+        this.callback = callback;
+    }
+}
+/**
  * HAL for the TRS-80 Model III.
  */
 class Trs80_Trs80 {
@@ -19202,6 +19212,9 @@ class Trs80_Trs80 {
         this.cassetteSamplesRead = 0;
         this.cassetteRiseInterruptCount = 0;
         this.cassetteFallInterruptCount = 0;
+        // The list is sorted by tStateCount.
+        this.scheduledEventCounter = 1;
+        this.scheduledEvents = [];
         this.screen = screen;
         this.cassette = cassette;
         this.config = Config.makeDefault();
@@ -19282,6 +19295,9 @@ class Trs80_Trs80 {
         this.setTimerInterrupt(false);
         this.z80.reset();
     }
+    jumpTo(address) {
+        this.z80.regs.pc = address;
+    }
     /**
      * Start the CPU and intercept browser keys.
      */
@@ -19343,6 +19359,10 @@ class Trs80_Trs80 {
         }
         // Update cassette state.
         this.updateCassette();
+        while (this.scheduledEvents.length > 0 && this.tStateCount >= this.scheduledEvents[0].tStateCount) {
+            const scheduledEvent = this.scheduledEvents.shift();
+            scheduledEvent.callback();
+        }
     }
     contendMemory(address) {
         // Ignore.
@@ -19586,10 +19606,13 @@ class Trs80_Trs80 {
      * Run a certain number of CPU instructions and schedule another tick.
      */
     tick() {
-        for (let i = 0; i < this.clocksPerTick; i++) {
+        for (let i = 0; i < this.clocksPerTick && this.started; i++) {
             this.step();
         }
-        this.scheduleNextTick();
+        // We might have stopped in the step() routine (e.g., with scheduled event).
+        if (this.started) {
+            this.scheduleNextTick();
+        }
     }
     /**
      * Figure out how many CPU cycles we should optimally run and how long
@@ -19629,6 +19652,39 @@ class Trs80_Trs80 {
             this.tickHandle = undefined;
             this.tick();
         }, delay);
+    }
+    /**
+     * Schedule an event to happen tStateCount clocks in the future. The callback will be called
+     * at the end of an instruction step.
+     *
+     * @return a handle that can be passed to cancelScheduledEvent().
+     */
+    setScheduledEvent(tStateCount, callback) {
+        let handle = this.scheduledEventCounter++;
+        this.scheduledEvents.push(new ScheduledEvent(handle, this.tStateCount + tStateCount, callback));
+        this.scheduledEvents.sort((a, b) => {
+            if (a.tStateCount < b.tStateCount) {
+                return -1;
+            }
+            else if (a.tStateCount > b.tStateCount) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+        return handle;
+    }
+    /**
+     * Cancel an event scheduled by setScheduledEvent().
+     */
+    cancelScheduledEvent(handle) {
+        for (let i = 0; i < this.scheduledEvents.length; i++) {
+            if (this.scheduledEvents[i].handle === handle) {
+                this.scheduledEvents.splice(i, 1);
+                break;
+            }
+        }
     }
     /**
      * Stop the tick timeout, if it's running.
@@ -21903,10 +21959,11 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
             CmdProgramRender_add(line, chunk.filename, classes.hex);
         }
         else {
-            CmdProgramRender_add(line, "Unknown type: ", classes.opcodes);
+            CmdProgramRender_add(line, "Unknown type: ", classes.error);
             const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
             const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
             CmdProgramRender_add(line, text, classes.hex);
+            CmdProgramRender_add(line, " (" + chunk.rawData.length + " byte" + (chunk.rawData.length == 1 ? "" : "s") + ")", classes.address);
         }
     }
     h1 = document.createElement("h1");
@@ -23086,6 +23143,7 @@ function decodeEdtasm(bytes, out) {
 
 
 
+
 /**
  * Generic cassette that reads from a Int16Array.
  */
@@ -23181,6 +23239,14 @@ class TapeCassette extends TapeBrowser_Int16Cassette {
 class ReconstructedCassette extends TapeBrowser_Int16Cassette {
     constructor(samples, sampleRate) {
         super(samples.samplesList[0], sampleRate);
+    }
+}
+/**
+ * Empty cassette for when there's nothing to read.
+ */
+class TapeBrowser_EmptyCassette extends TapeBrowser_Int16Cassette {
+    constructor() {
+        super(new Int16Array(0), DEFAULT_SAMPLE_RATE);
     }
 }
 /**
@@ -23610,21 +23676,57 @@ class TapeBrowser_TapeBrowser {
         };
         return pane;
     }
-    makeEmulatorPane(program, cassette) {
+    loadProgram(trs80, program) {
+        if (program.isCmdProgram()) {
+            const cmdProgram = new CmdProgram_CmdProgram(program.binary);
+            for (const chunk of cmdProgram.chunks) {
+                if (chunk instanceof CmdLoadBlockChunk) {
+                    for (let i = 0; i < chunk.loadData.length; i++) {
+                        trs80.writeMemory(chunk.address + i, chunk.loadData[i]);
+                    }
+                }
+                else if (chunk instanceof CmdTransferAddressChunk) {
+                    trs80.jumpTo(chunk.address);
+                }
+            }
+        }
+        else if (program.isSystemProgram()) {
+            const systemProgram = new SystemProgram_SystemProgram(program.binary);
+            for (const chunk of systemProgram.chunks) {
+                for (let i = 0; i < chunk.data.length; i++) {
+                    trs80.writeMemory(chunk.loadAddress + i, chunk.data[i]);
+                }
+            }
+            trs80.jumpTo(systemProgram.entryPointAddress);
+        }
+    }
+    /**
+     * Create a pane with an emulator pointing at the cassette and program.
+     */
+    makeEmulatorPane(program, cassette, autoRun) {
         const div = document.createElement("div");
         const screenDiv = document.createElement("div");
         div.appendChild(screenDiv);
         const screen = new CanvasScreen_CanvasScreen(screenDiv, false);
-        const trs80 = new Trs80_Trs80(screen, cassette);
+        const trs80 = new Trs80_Trs80(screen, (cassette !== null && cassette !== void 0 ? cassette : new TapeBrowser_EmptyCassette()));
+        const reboot = () => {
+            trs80.reset();
+            if (autoRun && program !== undefined) {
+                trs80.setScheduledEvent(trs80.clockHz / 30, () => {
+                    this.loadProgram(trs80, program);
+                });
+            }
+        };
         const hardwareSettingsPanel = new SettingsPanel(screen.getNode(), trs80, PanelType.HARDWARE);
         const viewPanel = new SettingsPanel(screen.getNode(), trs80, PanelType.VIEW);
         const controlPanel = new ControlPanel_ControlPanel(screen.getNode());
-        controlPanel.addResetButton(() => trs80.reset());
-        controlPanel.addTapeRewindButton(() => {
-            cassette.rewind();
-        });
+        controlPanel.addResetButton(reboot);
+        if (cassette !== undefined) {
+            controlPanel.addTapeRewindButton(() => {
+                cassette.rewind();
+            });
+        }
         if (program !== undefined) {
-            // TODO: Could add screenshot to tape.
             controlPanel.addScreenshotButton(() => {
                 const screenshot = trs80.getScreenshot();
                 program.setScreenshot(screenshot);
@@ -23633,9 +23735,11 @@ class TapeBrowser_TapeBrowser {
         }
         controlPanel.addSettingsButton(hardwareSettingsPanel);
         controlPanel.addSettingsButton(viewPanel);
-        const progressBar = new ProgressBar(screen.getNode());
-        cassette.setProgressBar(progressBar);
-        trs80.reset();
+        if (cassette !== undefined) {
+            const progressBar = new ProgressBar(screen.getNode());
+            cassette.setProgressBar(progressBar);
+        }
+        reboot();
         let pane = new Pane(div);
         pane.didShow = () => trs80.start();
         pane.didHide = () => trs80.stop();
@@ -23771,6 +23875,9 @@ class TapeBrowser_TapeBrowser {
             if (cmdPane !== undefined) {
                 addPane("CMD program" + (cmdPane.programName ? " (" + cmdPane.programName + ")" : ""), cmdPane);
             }
+            if (edtasmPane !== undefined) {
+                addPane("Assembly" + (edtasmPane.programName ? " (" + edtasmPane.programName + ")" : ""), edtasmPane);
+            }
             if (basicPane !== undefined || systemPane !== undefined) {
                 let emulatorLabel = "Emulator (original, " + (program.decoder.isHighSpeed() ? "high" : "low") + " speed)";
                 addPane(emulatorLabel, this.makeEmulatorPane(program, new TapeCassette(this.tape, program)));
@@ -23778,8 +23885,8 @@ class TapeBrowser_TapeBrowser {
                     addPane("Emulator (reconstructed, low speed)", this.makeEmulatorPane(program, new ReconstructedCassette(program.reconstructedSamples, this.tape.sampleRate)));
                 }
             }
-            if (edtasmPane !== undefined) {
-                addPane("Assembly" + (edtasmPane.programName ? " (" + edtasmPane.programName + ")" : ""), edtasmPane);
+            if (cmdPane !== undefined || systemPane !== undefined) {
+                addPane("Emulator (auto-run)", this.makeEmulatorPane(program, undefined, true));
             }
         }
         // Show the first pane.
