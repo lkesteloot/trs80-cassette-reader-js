@@ -8499,7 +8499,6 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 if (program.binary.length > 0) {
                     return program;
                 }
-                return undefined; // TODO remove
             }
             // Jump forward 1/10 second.
             frame += this.period * 50;
@@ -16686,13 +16685,13 @@ class TapeBrowser_TapeBrowser {
         addKeyValue("End time", frameToTimestamp(endFrame, this.tape.sampleRate), () => this.originalWaveformDisplay.zoomToFit(endFrame - 100, endFrame + 100));
         addKeyValue("Duration", frameToTimestamp(endFrame - startFrame, this.tape.sampleRate, true), () => this.originalWaveformDisplay.zoomToFit(startFrame, endFrame));
         if (program instanceof Program_Program) {
-            addKeyValues("Download", [".BIN", ".CAS"], (value) => {
+            addKeyValues("Download", [".BIN", ".CAS"], (extension) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const contents = value === ".BIN" ? program.binary : program.asCasFile();
+                const contents = extension === ".BIN" ? program.binary : program.asCasFile();
                 const blob = new Blob([contents], { type: "application/octet-stream" });
                 a.href = window.URL.createObjectURL(blob);
-                a.download = program.getShortLabel().replace(" ", "-") + value.toLowerCase();
+                a.download = (this.tape.name + " " + program.getShortLabel()).replace(/ /g, "-") + extension.toLowerCase();
                 a.click();
             });
             if (basicPane !== undefined) {
@@ -17056,7 +17055,6 @@ class TapeBrowser_TapeBrowser {
      * Create the panes and the table of contents for them on the left.
      */
     updateTapeContents() {
-        var _a;
         // Add a new section that we can style all at once.
         const addSection = () => {
             const sectionDiv = document.createElement("div");
@@ -17081,7 +17079,7 @@ class TapeBrowser_TapeBrowser {
         title.classList.add("tape_title");
         // Create panes for each program.
         let previousTrackNumber = -1;
-        let firstCopyOfTrack = undefined;
+        let copiesOfTrack = [];
         // Add a pane to the top-right, register it, and add it to table of contents.
         const addPane = (label, pane) => {
             pane.element.classList.add("pane");
@@ -17106,7 +17104,7 @@ class TapeBrowser_TapeBrowser {
         addPane("Emulator", this.makeEmulatorPane(undefined, new TapeCassette(this.tape, undefined)));
         // Section for each program.
         for (const program of this.tape.programs) {
-            let duplicateCopy = false;
+            let duplicateOfCopy = undefined;
             sectionDiv = addSection();
             // Header for program.
             const row = addRow(program.name || program.getLabel());
@@ -17116,15 +17114,19 @@ class TapeBrowser_TapeBrowser {
             if (program.trackNumber !== previousTrackNumber) {
                 row.classList.add("new_track");
                 previousTrackNumber = program.trackNumber;
-                firstCopyOfTrack = program;
+                copiesOfTrack = [];
             }
-            else if (firstCopyOfTrack !== undefined) {
-                // Non-first copies.
-                if (program.sameBinaryAs(firstCopyOfTrack)) {
-                    sectionDiv.classList.add("duplicate_copy");
-                    duplicateCopy = true;
+            else {
+                // See if this is an exact version of a previous copy.
+                for (const previousProgram of copiesOfTrack) {
+                    if (program.sameBinaryAs(previousProgram)) {
+                        sectionDiv.classList.add("duplicate_copy");
+                        duplicateOfCopy = previousProgram;
+                        break;
+                    }
                 }
             }
+            copiesOfTrack.push(program);
             // Make these panes here so they're accessible from the metadata page.
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
             const systemPane = program.isSystemProgram() ? this.makeSystemPane(program) : undefined;
@@ -17149,7 +17151,7 @@ class TapeBrowser_TapeBrowser {
                 });
             });
             // Make the various panes.
-            addPane("Binary" + (duplicateCopy ? " (same as copy " + ((_a = firstCopyOfTrack) === null || _a === void 0 ? void 0 : _a.copyNumber) + ")" : ""), this.makeBinaryPane(program));
+            addPane("Binary" + (duplicateOfCopy !== undefined ? " (same as copy " + duplicateOfCopy.copyNumber + ")" : ""), this.makeBinaryPane(program));
             if (program.reconstructedSamples !== undefined) {
                 addPane("Reconstructed", this.makeReconstructedPane(program.reconstructedSamples));
             }
