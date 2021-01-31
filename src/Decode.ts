@@ -3,22 +3,25 @@ import * as path from "path";
 import {DEFAULT_SAMPLE_RATE, readWavFile, writeWavFile} from "./WavFile";
 import {Tape} from "./Tape";
 import {Decoder} from "./Decoder";
-import * as Basic from "./Basic";
 import * as program from "commander";
 import {concatByteArrays} from "./Utils";
 import {concatAudio, makeSilence} from "./AudioUtils";
 import * as pkg from "../package.json";
+import {decodeBasicProgram, ElementType} from "trs80-base";
 
 /**
  * Create a plain text version of the Basic program described by the binary.
  */
 function makeBasicText(binary: Uint8Array): string {
-    const basicElements = Basic.fromTokenized(binary);
+    const basicProgram = decodeBasicProgram(binary);
+    if (basicProgram === undefined) {
+        return "";
+    }
 
     const parts: string[] = [];
 
-    for (const basicElement of basicElements) {
-        if (parts.length > 0 && basicElement.elementType === Basic.ElementType.LINE_NUMBER) {
+    for (const basicElement of basicProgram.elements) {
+        if (parts.length > 0 && basicElement.elementType === ElementType.LINE_NUMBER) {
             parts.push("\n");
         }
 

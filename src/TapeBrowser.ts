@@ -1,5 +1,4 @@
 import {frameToTimestamp} from "./AudioUtils";
-import * as Basic from "./Basic";
 import * as BasicRender from "./BasicRender";
 import * as SystemProgramRender from "./SystemProgramRender";
 import * as CmdProgramRender from "./CmdProgramRender";
@@ -18,6 +17,7 @@ import {SystemProgram} from "./SystemProgram";
 import {Highlighter} from "./Highlighter";
 import {CmdLoadBlockChunk, CmdProgram, CmdTransferAddressChunk} from "./CmdProgram";
 import {DEFAULT_SAMPLE_RATE} from "./WavFile";
+import {decodeBasicProgram} from "trs80-base";
 
 /**
  * Generic cassette that reads from a Int16Array.
@@ -559,7 +559,7 @@ export class TapeBrowser {
         const div = document.createElement("div");
         div.classList.add("program");
 
-        const highlightables = BasicRender.toDiv(Basic.fromTokenized(program.binary), div);
+        const highlightables = BasicRender.toDiv(decodeBasicProgram(program.binary), div);
 
         const highlighter = new Highlighter(this, program, div);
         highlighter.addHighlightables(highlightables);

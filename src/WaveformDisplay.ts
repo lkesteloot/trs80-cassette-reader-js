@@ -3,13 +3,13 @@ import {BitType} from "./BitType";
 import {BitData} from "./BitData";
 import {Program} from "./Program";
 import {Highlight} from "./Highlight";
-import * as Basic from "./Basic";
 import {SimpleEventDispatcher} from "strongly-typed-events";
 import {toHexByte} from "z80-base";
 import {AnnotationContext, drawBraceAndLabel, WaveformAnnotation} from "./Annotations";
 import {clearElement, withCommas} from "./Utils";
 import {frameDurationToString, frameToTimestamp} from "./AudioUtils";
 import {writeWavFile} from "./WavFile";
+import {getToken} from "trs80-base";
 
 let gRadioButtonCounter = 1;
 
@@ -743,7 +743,7 @@ export class WaveformDisplay {
                             const x1 = frameToX(byteInfo.startFrame / mag);
                             const x2 = frameToX(byteInfo.endFrame / mag);
                             let byteValue = byteInfo.value;
-                            const basicToken = Basic.getToken(byteValue);
+                            const basicToken = getToken(byteValue);
                             const label = byteValue < 32 ? "^" + String.fromCodePoint(byteValue + 64)
                                 : byteValue === 32 ? '\u2423' // Open box to represent space.
                                     : byteValue < 128 ? String.fromCodePoint(byteValue)
