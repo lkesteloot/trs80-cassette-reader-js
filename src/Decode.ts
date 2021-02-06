@@ -8,6 +8,7 @@ import {concatByteArrays} from "./Utils";
 import {concatAudio, makeSilence} from "./AudioUtils";
 import * as pkg from "../package.json";
 import {decodeBasicProgram, ElementType} from "trs80-base";
+import {Program} from "./Program";
 
 /**
  * Create a plain text version of the Basic program described by the binary.
@@ -37,12 +38,11 @@ function main() {
     program
         .storeOptionsAsProperties(false)
         .option("--force", "overwrite existing output files")
-        .option("--split", "split tape into programs")
+        .option("--all", "write a single output file for the whole tape, instead of one per program")
         .option("--wav", "output clean WAV file")
         .option("--cas", "output CAS file")
-        .option("--bin", "output BIN file")
-        .option("--bas", "output BAS file")
-        .description("Reads a TRS-80 cassette audio file and generates cleaned-up files.")
+        .option("--detokenize", "make BAS files detokenized")
+        .description("Extracts programs from a TRS-80 cassette audio file.")
         .usage("[options] original.wav")
         .version(pkg.version)
         .parse(process.argv);
@@ -53,21 +53,13 @@ function main() {
     }
 
     const force = program.opts().force;
-    const split = program.opts().split;
+    const all = program.opts().all;
     const wav = program.opts().wav;
     const cas = program.opts().cas;
-    const bin = program.opts().bin;
-    const bas = program.opts().bas;
+    const detokenize = program.opts().detokenize;
 
-    if (!wav && !cas && !bin) {
-        console.error("Specify at least one of --wav, --cas, --bin, or --bas");
-        program.outputHelp();
-        process.exit(1);
-    }
-
-    if (!split && (bas || bin)) {
-        console.error("Must use --split when specifying --bin or --bas");
-        program.outputHelp();
+    if (all && !(wav || cas)) {
+        console.error("Must specify --wav or --cas when using --all");
         process.exit(1);
     }
 
@@ -104,45 +96,60 @@ function main() {
         }
     };
 
-    for (let i = 0; i < tape.programs.length; i++) {
+    const nameForProgram = (program: Program): string => name + "-T" + program.trackNumber + "-C" + program.copyNumber;
+
+    programLoop: for (let i = 0; i < tape.programs.length; i++) {
         const program = tape.programs[i];
-        const programName = name + "-" + program.trackNumber + "-" + program.copyNumber;
+        const programName = nameForProgram(program);
+
+        // See if it's a duplicate.
+        for (let j = 0; j < i; j++) {
+            const otherProgram = tape.programs[j];
+            if (program.sameBinaryAs(otherProgram)) {
+                console.log(`Skipping ${programName}, it's identical to ${nameForProgram(otherProgram)}.`);
+                continue programLoop;
+            }
+        }
+
         const errorCount = program.countBitErrors();
         if (errorCount !== 0) {
             console.log(`Warning: Track ${program.trackNumber} copy ${program.copyNumber} has ${errorCount} bit-reading error${errorCount === 1 ? "" : "s"}.`);
         }
 
         if (wav) {
-            if (split) {
-                possiblyWriteFile(path.join(dir, programName + ".wav"), program.asWavFile());
-            } else {
+            if (all) {
                 if (wavFileParts.length > 0) {
                     // Insert some silence between the recordings.
                     wavFileParts.push(makeSilence(2, DEFAULT_SAMPLE_RATE));
                 }
                 wavFileParts.push(program.asAudio());
+            } else {
+                possiblyWriteFile(path.join(dir, programName + ".wav"), program.asWavFile());
             }
-        }
-
-        if (bin && split) {
-            possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
         }
 
         if (cas) {
             let casFile = program.asCasFile();
-            if (split) {
-                possiblyWriteFile(path.join(dir, programName + ".cas"), casFile);
-            } else {
+            if (all) {
                 casFileParts.push(casFile);
+            } else {
+                possiblyWriteFile(path.join(dir, programName + ".cas"), casFile);
             }
         }
 
-        if (bas && split && program.isBasicProgram()) {
-            possiblyWriteFile(path.join(dir, programName + ".bas"), makeBasicText(program.binary));
+        if (!all) {
+            if (program.isBasicProgram()) {
+                const contents = detokenize ? makeBasicText(program.binary) : program.binary;
+                possiblyWriteFile(path.join(dir, programName + ".bas"), contents);
+            } else if (program.isSystemProgram()) {
+                possiblyWriteFile(path.join(dir, programName + ".3bn"), program.binary);
+            } else {
+                possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
+            }
         }
     }
 
-    if (!split) {
+    if (all) {
         const basename = name + "-all";
         if (wav && wavFileParts.length > 0) {
             possiblyWriteFile(path.join(dir, basename + ".wav"),
