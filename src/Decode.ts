@@ -113,6 +113,8 @@ function main() {
 
         const labelParts: string[] = [];
 
+        labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
+
         // Analyze system program.
         if (program.isSystemProgram()) {
             labelParts.push("system program");
