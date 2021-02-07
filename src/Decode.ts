@@ -7,7 +7,7 @@ import * as program from "commander";
 import {concatByteArrays} from "./Utils";
 import {concatAudio, makeSilence} from "./AudioUtils";
 import * as pkg from "../package.json";
-import {decodeBasicProgram, ElementType} from "trs80-base";
+import {decodeBasicProgram, decodeSystemProgram, ElementType} from "trs80-base";
 import {Program} from "./Program";
 
 /**
@@ -114,6 +114,19 @@ function main() {
         const errorCount = program.countBitErrors();
         if (errorCount !== 0) {
             console.log(`Warning: Track ${program.trackNumber} copy ${program.copyNumber} has ${errorCount} bit-reading error${errorCount === 1 ? "" : "s"}.`);
+        }
+
+        if (program.isSystemProgram()) {
+            const systemProgram = decodeSystemProgram(program.binary);
+            if (systemProgram !== undefined) {
+                for (let i = 0; i < systemProgram.chunks.length; i++) {
+                    const chunk = systemProgram.chunks[i];
+
+                    if (!chunk.isChecksumValid()) {
+                        console.log(`Warning: Chunk ${i + 1} of ${programName} fails checksum test`);
+                    }
+                }
+            }
         }
 
         if (wav) {
