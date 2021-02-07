@@ -34,6 +34,13 @@ function makeBasicText(binary: Uint8Array): string {
     return parts.join("");
 }
 
+/**
+ * Return the singular or plural version of a string depending on the count.
+ */
+function pluralize(count: number, singular: string, plural?: string): string {
+    return count === 1 ? singular : plural ?? (singular + "s");
+}
+
 function main() {
     program
         .storeOptionsAsProperties(false)
@@ -87,77 +94,102 @@ function main() {
     const casFileParts: Uint8Array[] = [];
 
     // Write contents to file if the file is missing, or if --force is specified.
+    let firstForceNotice = true;
     const possiblyWriteFile = (pathname: string, contents: Uint8Array | string) => {
         if (!force && fs.existsSync(pathname)) {
-            console.error("Not overwriting " + pathname);
+            console.error("    " + pathname + " exists " + (firstForceNotice ? " (use --force to overwrite)" : ""));
+            firstForceNotice = false;
         } else {
-            console.log("Writing " + pathname);
+            console.log("    Writing " + pathname);
             fs.writeFileSync(pathname, contents);
         }
     };
 
     const nameForProgram = (program: Program): string => name + "-T" + program.trackNumber + "-C" + program.copyNumber;
 
-    programLoop: for (let i = 0; i < tape.programs.length; i++) {
+    for (let i = 0; i < tape.programs.length; i++) {
         const program = tape.programs[i];
         const programName = nameForProgram(program);
 
+        const labelParts: string[] = [];
+
+        // Analyze system program.
+        if (program.isSystemProgram()) {
+            labelParts.push("system program");
+            const systemProgram = decodeSystemProgram(program.binary);
+            if (systemProgram !== undefined) {
+                let checksumErrors = 0;
+                for (const chunk of systemProgram.chunks) {
+                    if (Math.random() < 0.2) {
+                        chunk.data[0] += 1;
+                    }
+                    if (!chunk.isChecksumValid()) {
+                        checksumErrors += 1;
+                    }
+                }
+                if (checksumErrors === 0) {
+                    labelParts.push("all checksums good")
+                } else {
+                    labelParts.push(`${checksumErrors}/${systemProgram.chunks.length} checksum ${pluralize(checksumErrors, "error")} found`);
+                }
+            }
+        }
+
+        // Label Basic program.
+        if (program.isBasicProgram()) {
+            labelParts.push("Basic program");
+        }
+
+        // Warn about bit errors.
+        const errorCount = program.countBitErrors();
+        if (errorCount !== 0) {
+            labelParts.push(`${errorCount} bit-reading ${pluralize(errorCount, "error")}`);
+        }
+
         // See if it's a duplicate.
+        let isDuplicate = false;
         for (let j = 0; j < i; j++) {
             const otherProgram = tape.programs[j];
             if (program.sameBinaryAs(otherProgram)) {
-                console.log(`Skipping ${programName}, it's identical to ${nameForProgram(otherProgram)}.`);
-                continue programLoop;
+                labelParts.push(`identical to ${nameForProgram(otherProgram)}`);
+                isDuplicate = true;
+                break;
             }
         }
 
-        const errorCount = program.countBitErrors();
-        if (errorCount !== 0) {
-            console.log(`Warning: Track ${program.trackNumber} copy ${program.copyNumber} has ${errorCount} bit-reading error${errorCount === 1 ? "" : "s"}.`);
-        }
+        console.log(programName + ": " + labelParts.join(", "));
 
-        if (program.isSystemProgram()) {
-            const systemProgram = decodeSystemProgram(program.binary);
-            if (systemProgram !== undefined) {
-                for (let i = 0; i < systemProgram.chunks.length; i++) {
-                    const chunk = systemProgram.chunks[i];
-
-                    if (!chunk.isChecksumValid()) {
-                        console.log(`Warning: Chunk ${i + 1} of ${programName} fails checksum test`);
+        if (!isDuplicate) {
+            if (wav) {
+                if (all) {
+                    if (wavFileParts.length > 0) {
+                        // Insert some silence between the recordings.
+                        wavFileParts.push(makeSilence(2, DEFAULT_SAMPLE_RATE));
                     }
+                    wavFileParts.push(program.asAudio());
+                } else {
+                    possiblyWriteFile(path.join(dir, programName + ".wav"), program.asWavFile());
                 }
             }
-        }
 
-        if (wav) {
-            if (all) {
-                if (wavFileParts.length > 0) {
-                    // Insert some silence between the recordings.
-                    wavFileParts.push(makeSilence(2, DEFAULT_SAMPLE_RATE));
+            if (cas) {
+                let casFile = program.asCasFile();
+                if (all) {
+                    casFileParts.push(casFile);
+                } else {
+                    possiblyWriteFile(path.join(dir, programName + ".cas"), casFile);
                 }
-                wavFileParts.push(program.asAudio());
-            } else {
-                possiblyWriteFile(path.join(dir, programName + ".wav"), program.asWavFile());
             }
-        }
 
-        if (cas) {
-            let casFile = program.asCasFile();
-            if (all) {
-                casFileParts.push(casFile);
-            } else {
-                possiblyWriteFile(path.join(dir, programName + ".cas"), casFile);
-            }
-        }
-
-        if (!all) {
-            if (program.isBasicProgram()) {
-                const contents = detokenize ? makeBasicText(program.binary) : program.binary;
-                possiblyWriteFile(path.join(dir, programName + ".bas"), contents);
-            } else if (program.isSystemProgram()) {
-                possiblyWriteFile(path.join(dir, programName + ".3bn"), program.binary);
-            } else {
-                possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
+            if (!all) {
+                if (program.isBasicProgram()) {
+                    const contents = detokenize ? makeBasicText(program.binary) : program.binary;
+                    possiblyWriteFile(path.join(dir, programName + ".bas"), contents);
+                } else if (program.isSystemProgram()) {
+                    possiblyWriteFile(path.join(dir, programName + ".3bn"), program.binary);
+                } else {
+                    possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
+                }
             }
         }
     }
