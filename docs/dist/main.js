@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 133);
+/******/ 	return __webpack_require__(__webpack_require__.s = 138);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -94,10 +94,10 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(51));
 __export(__webpack_require__(52));
-__export(__webpack_require__(23));
 __export(__webpack_require__(53));
+__export(__webpack_require__(23));
+__export(__webpack_require__(54));
 
 
 /***/ }),
@@ -121,13 +121,13 @@ __exportStar(__webpack_require__(24), exports);
 __exportStar(__webpack_require__(25), exports);
 __exportStar(__webpack_require__(26), exports);
 __exportStar(__webpack_require__(14), exports);
-__exportStar(__webpack_require__(7), exports);
+__exportStar(__webpack_require__(6), exports);
 __exportStar(__webpack_require__(28), exports);
 __exportStar(__webpack_require__(27), exports);
-__exportStar(__webpack_require__(8), exports);
+__exportStar(__webpack_require__(7), exports);
 __exportStar(__webpack_require__(29), exports);
-__exportStar(__webpack_require__(61), exports);
 __exportStar(__webpack_require__(62), exports);
+__exportStar(__webpack_require__(63), exports);
 
 
 /***/ }),
@@ -146,22 +146,22 @@ __exportStar(__webpack_require__(62), exports);
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = exports.Subscription = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = void 0;
-var ste_core_1 = __webpack_require__(12);
+var ste_core_1 = __webpack_require__(11);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return ste_core_1.DispatcherBase; } });
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return ste_core_1.DispatcherWrapper; } });
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return ste_core_1.EventListBase; } });
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return ste_core_1.Subscription; } });
-var ste_events_1 = __webpack_require__(45);
+var ste_events_1 = __webpack_require__(46);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return ste_events_1.EventDispatcher; } });
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return ste_events_1.EventHandlingBase; } });
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return ste_events_1.EventList; } });
 Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return ste_events_1.NonUniformEventList; } });
-var ste_simple_events_1 = __webpack_require__(47);
+var ste_simple_events_1 = __webpack_require__(48);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventDispatcher; } });
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventHandlingBase; } });
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventList; } });
 Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.NonUniformSimpleEventList; } });
-var ste_signals_1 = __webpack_require__(49);
+var ste_signals_1 = __webpack_require__(50);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return ste_signals_1.SignalDispatcher; } });
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return ste_signals_1.SignalHandlingBase; } });
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return ste_signals_1.SignalList; } });
@@ -174,18 +174,18 @@ Object.defineProperty(exports, "SignalList", { enumerable: true, get: function (
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var CassettePlayer_1 = __webpack_require__(66);
+var CassettePlayer_1 = __webpack_require__(64);
 Object.defineProperty(exports, "CassettePlayer", { enumerable: true, get: function () { return CassettePlayer_1.CassettePlayer; } });
-var Trs80_1 = __webpack_require__(67);
+var Trs80_1 = __webpack_require__(65);
 Object.defineProperty(exports, "Trs80", { enumerable: true, get: function () { return Trs80_1.Trs80; } });
-var CanvasScreen_1 = __webpack_require__(40);
+var CanvasScreen_1 = __webpack_require__(39);
 Object.defineProperty(exports, "CanvasScreen", { enumerable: true, get: function () { return CanvasScreen_1.CanvasScreen; } });
-var ControlPanel_1 = __webpack_require__(131);
+var ControlPanel_1 = __webpack_require__(129);
 Object.defineProperty(exports, "ControlPanel", { enumerable: true, get: function () { return ControlPanel_1.ControlPanel; } });
-var SettingsPanel_1 = __webpack_require__(41);
+var SettingsPanel_1 = __webpack_require__(40);
 Object.defineProperty(exports, "SettingsPanel", { enumerable: true, get: function () { return SettingsPanel_1.SettingsPanel; } });
 Object.defineProperty(exports, "PanelType", { enumerable: true, get: function () { return SettingsPanel_1.PanelType; } });
-var ProgressBar_1 = __webpack_require__(132);
+var ProgressBar_1 = __webpack_require__(130);
 Object.defineProperty(exports, "ProgressBar", { enumerable: true, get: function () { return ProgressBar_1.ProgressBar; } });
 
 
@@ -205,45 +205,28 @@ Object.defineProperty(exports, "ProgressBar", { enumerable: true, get: function 
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(77);
+const DispatcherBase_1 = __webpack_require__(75);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(78);
+const DispatchError_1 = __webpack_require__(76);
 Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(79);
+const DispatcherWrapper_1 = __webpack_require__(77);
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(80);
+const EventListBase_1 = __webpack_require__(78);
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(81);
+const EventManagement_1 = __webpack_require__(79);
 Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(82);
+const HandlingBase_1 = __webpack_require__(80);
 Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(83);
+const PromiseDispatcherBase_1 = __webpack_require__(81);
 Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(84);
+const PromiseSubscription_1 = __webpack_require__(82);
 Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(85);
+const Subscription_1 = __webpack_require__(83);
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
 
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var Disasm_1 = __webpack_require__(63);
-exports.Disasm = Disasm_1.Disasm;
-var Instruction_1 = __webpack_require__(30);
-exports.Instruction = Instruction_1.Instruction;
-__export(__webpack_require__(65));
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -271,7 +254,7 @@ exports.ProgramAnnotation = ProgramAnnotation;
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -292,14 +275,14 @@ exports.Trs80File = Trs80File;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FloppyDisk = exports.SectorData = exports.numberToSide = exports.Side = void 0;
-const Trs80File_1 = __webpack_require__(7);
+const Trs80File_1 = __webpack_require__(6);
 // Side of a floppy disk.
 var Side;
 (function (Side) {
@@ -367,6 +350,42 @@ exports.FloppyDisk = FloppyDisk;
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/*!
+ * Strongly Typed Events for TypeScript - Core
+ * https://github.com/KeesCBakker/StronlyTypedEvents/
+ * http://keestalkstech.com
+ *
+ * Copyright Kees C. Bakker / KeesTalksTech
+ * Released under the MIT license
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
+const DispatcherBase_1 = __webpack_require__(93);
+Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
+const DispatchError_1 = __webpack_require__(94);
+Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
+const DispatcherWrapper_1 = __webpack_require__(95);
+Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
+const EventListBase_1 = __webpack_require__(96);
+Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
+const EventManagement_1 = __webpack_require__(97);
+Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
+const HandlingBase_1 = __webpack_require__(98);
+Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
+const PromiseDispatcherBase_1 = __webpack_require__(99);
+Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
+const PromiseSubscription_1 = __webpack_require__(100);
+Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
+const Subscription_1 = __webpack_require__(101);
+Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
+
+
+/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -382,23 +401,23 @@ exports.FloppyDisk = FloppyDisk;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(95);
+const DispatcherBase_1 = __webpack_require__(105);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(96);
+const DispatchError_1 = __webpack_require__(106);
 Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(97);
+const DispatcherWrapper_1 = __webpack_require__(107);
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(98);
+const EventListBase_1 = __webpack_require__(108);
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(99);
+const EventManagement_1 = __webpack_require__(109);
 Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(100);
+const HandlingBase_1 = __webpack_require__(110);
 Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(101);
+const PromiseDispatcherBase_1 = __webpack_require__(111);
 Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(102);
+const PromiseSubscription_1 = __webpack_require__(112);
 Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(103);
+const Subscription_1 = __webpack_require__(113);
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
 
 
@@ -418,23 +437,23 @@ Object.defineProperty(exports, "Subscription", { enumerable: true, get: function
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(107);
+const DispatcherBase_1 = __webpack_require__(117);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(108);
+const DispatchError_1 = __webpack_require__(118);
 Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(109);
+const DispatcherWrapper_1 = __webpack_require__(119);
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(110);
+const EventListBase_1 = __webpack_require__(120);
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(111);
+const EventManagement_1 = __webpack_require__(121);
 Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(112);
+const HandlingBase_1 = __webpack_require__(122);
 Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(113);
+const PromiseDispatcherBase_1 = __webpack_require__(123);
 Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(114);
+const PromiseSubscription_1 = __webpack_require__(124);
 Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(115);
+const Subscription_1 = __webpack_require__(125);
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
 
 
@@ -453,25 +472,13 @@ Object.defineProperty(exports, "Subscription", { enumerable: true, get: function
  * Released under the MIT license
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(119);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(120);
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(121);
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(122);
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(123);
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(124);
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(125);
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(126);
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(127);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
+exports.Subscription = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = void 0;
+var dispatching_1 = __webpack_require__(44);
+Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return dispatching_1.DispatcherBase; } });
+Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return dispatching_1.DispatcherWrapper; } });
+Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return dispatching_1.EventListBase; } });
+var subscription_1 = __webpack_require__(22);
+Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return subscription_1.Subscription; } });
 
 
 /***/ }),
@@ -480,22 +487,19 @@ Object.defineProperty(exports, "Subscription", { enumerable: true, get: function
 
 "use strict";
 
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Subscription = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = void 0;
-var dispatching_1 = __webpack_require__(43);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return dispatching_1.DispatcherBase; } });
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return dispatching_1.DispatcherWrapper; } });
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return dispatching_1.EventListBase; } });
-var subscription_1 = __webpack_require__(22);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return subscription_1.Subscription; } });
+__exportStar(__webpack_require__(57), exports);
+__exportStar(__webpack_require__(58), exports);
 
 
 /***/ }),
@@ -515,8 +519,8 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(__webpack_require__(56), exports);
-__exportStar(__webpack_require__(57), exports);
+__exportStar(__webpack_require__(131), exports);
+__exportStar(__webpack_require__(42), exports);
 
 
 /***/ }),
@@ -532,10 +536,10 @@ __exportStar(__webpack_require__(57), exports);
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeSystemProgram = exports.SystemProgram = exports.SystemChunk = void 0;
-const teamten_ts_utils_1 = __webpack_require__(13);
+const teamten_ts_utils_1 = __webpack_require__(12);
 const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(6);
-const Trs80File_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
+const Trs80File_1 = __webpack_require__(6);
 const FILE_HEADER = 0x55;
 const DATA_HEADER = 0x3C;
 const END_OF_FILE_MARKER = 0x78;
@@ -985,7 +989,7 @@ exports.SimpleEventDispatcher = SimpleEventDispatcher;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseEventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(9);
+const ste_core_1 = __webpack_require__(8);
 /**
  * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
  * or dispatch events. Use the ToEvent() method to expose the event.
@@ -1050,7 +1054,7 @@ exports.PromiseEventDispatcher = PromiseEventDispatcher;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSimpleEventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(11);
+const ste_core_1 = __webpack_require__(10);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a simple event
@@ -1116,7 +1120,7 @@ exports.CSS_PREFIX = "trs80-emulator";
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42);
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(43);
 /* global window */
 
 
@@ -1135,7 +1139,7 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(54), __webpack_require__(55)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(55), __webpack_require__(56)(module)))
 
 /***/ }),
 /* 22 */
@@ -1326,11 +1330,11 @@ exports.signedByte = signedByte;
 
 // Tools for decoding Basic programs.
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseBasicText = exports.decodeBasicProgram = exports.wrapBasic = exports.BasicProgram = exports.BasicElement = exports.ElementType = exports.getToken = exports.BASIC_HEADER_BYTE = exports.BASIC_TAPE_HEADER_BYTE = void 0;
-const teamten_ts_utils_1 = __webpack_require__(13);
+exports.parseBasicText = exports.decodeBasicProgram = exports.setBasicName = exports.wrapBasic = exports.BasicProgram = exports.BasicElement = exports.ElementType = exports.getToken = exports.BASIC_HEADER_BYTE = exports.BASIC_TAPE_HEADER_BYTE = void 0;
+const teamten_ts_utils_1 = __webpack_require__(12);
 const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(6);
-const Trs80File_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
+const Trs80File_1 = __webpack_require__(6);
 exports.BASIC_TAPE_HEADER_BYTE = 0xD3;
 exports.BASIC_HEADER_BYTE = 0xFF;
 const FIRST_TOKEN = 0x80;
@@ -1410,6 +1414,52 @@ class BasicElement {
         this.text = text;
         this.elementType = elementType;
     }
+    /**
+     * Get the element's text so that it will display properly in "Another Man's Treasure" font.
+     *
+     * https://www.kreativekorp.com/software/fonts/trs80.shtml
+     */
+    asAnotherMansTreasure() {
+        if (this.elementType === ElementType.STRING) {
+            const parts = [];
+            // Convert non-ASCII to the right value for our font.
+            for (const ch of this.text) {
+                let c = ch.charCodeAt(0);
+                if (c < 32 || c >= 127) {
+                    c += 0xE000;
+                }
+                parts.push(String.fromCodePoint(c));
+            }
+            return parts.join("");
+        }
+        else {
+            return this.text;
+        }
+    }
+    /**
+     * Get the element's text so that it will display properly in ASCII.
+     */
+    asAscii() {
+        if (this.elementType === ElementType.STRING) {
+            const parts = [];
+            for (const ch of this.text) {
+                const c = ch.charCodeAt(0);
+                if (ch === "\r") {
+                    parts.push("\\r");
+                }
+                else if (c >= 32 && c < 128 && ch !== "\\") {
+                    parts.push(ch);
+                }
+                else {
+                    parts.push("\\" + toOctal(c));
+                }
+            }
+            return parts.join("");
+        }
+        else {
+            return this.text;
+        }
+    }
 }
 exports.BasicElement = BasicElement;
 /**
@@ -1439,6 +1489,31 @@ function wrapBasic(bytes) {
     return teamten_ts_utils_1.concatByteArrays(buffers);
 }
 exports.wrapBasic = wrapBasic;
+/**
+ * Set the one-letter Basic name in the binary to the first letter of the name.
+ *
+ * @return a new array with the modified name.
+ */
+function setBasicName(bytes, name) {
+    if (name === "") {
+        // Pick anything.
+        name = "A";
+    }
+    // Make a copy for modifying.
+    const newName = new Uint8Array(bytes);
+    if (newName[0] === exports.BASIC_TAPE_HEADER_BYTE &&
+        newName[1] === exports.BASIC_TAPE_HEADER_BYTE &&
+        newName[2] === exports.BASIC_TAPE_HEADER_BYTE &&
+        newName.length > 3) {
+        newName[3] = name.charCodeAt(0);
+    }
+    else if (newName[0] === exports.BASIC_HEADER_BYTE &&
+        newName.length > 1) {
+        newName[1] = name.charCodeAt(0);
+    }
+    return newName;
+}
+exports.setBasicName = setBasicName;
 /**
  * Decode a tokenized Basic program.
  * @param binary tokenized program. May be in tape format (D3 D3 D3 followed by a one-letter program
@@ -1549,20 +1624,9 @@ function decodeBasicProgram(binary) {
                         }
                         break;
                     case ParserState.STRING:
-                        let e;
-                        if (ch === "\r") {
-                            e = new BasicElement(b.addr() - 1, "\\n", ElementType.PUNCTUATION);
-                        }
-                        else if (ch === "\\") {
-                            e = new BasicElement(b.addr() - 1, "\\" + toOctal(c), ElementType.PUNCTUATION);
-                        }
-                        else if (c >= 32 && c < 128) {
-                            e = new BasicElement(b.addr() - 1, ch, ElementType.STRING);
-                        }
-                        else {
-                            e = new BasicElement(b.addr() - 1, "\\" + toOctal(c), ElementType.PUNCTUATION);
-                        }
-                        elements.push(e);
+                        // Put the real value in the string. Code displaying can use the methods of
+                        // BasicElement to convert it before printing.
+                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.STRING));
                         if (ch === '"') {
                             // End of string.
                             state = preStringState;
@@ -1798,10 +1862,10 @@ exports.parseBasicText = parseBasicText;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeCmdProgram = exports.CmdProgram = exports.CMD_CHUNK_TYPE_NAME = exports.CmdLoadModuleHeaderChunk = exports.CmdTransferAddressChunk = exports.CmdLoadBlockChunk = exports.CmdChunk = exports.CMD_MAX_TYPE = exports.CMD_LOAD_MODULE_HEADER = exports.CMD_TRANSFER_ADDRESS = exports.CMD_LOAD_BLOCK = void 0;
-const teamten_ts_utils_1 = __webpack_require__(13);
+const teamten_ts_utils_1 = __webpack_require__(12);
 const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(6);
-const Trs80File_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
+const Trs80File_1 = __webpack_require__(6);
 // Chunk types.
 exports.CMD_LOAD_BLOCK = 0x01;
 exports.CMD_TRANSFER_ADDRESS = 0x02;
@@ -2018,9 +2082,9 @@ exports.decodeCmdProgram = decodeCmdProgram;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeCassette = exports.Cassette = exports.CassetteFile = exports.CassetteSpeed = void 0;
 const SystemProgram_1 = __webpack_require__(14);
-const Trs80File_1 = __webpack_require__(7);
+const Trs80File_1 = __webpack_require__(6);
 const Trs80FileDecoder_1 = __webpack_require__(27);
-const ProgramAnnotation_1 = __webpack_require__(6);
+const ProgramAnnotation_1 = __webpack_require__(5);
 // Low-speed header and sync constants.
 const LOW_SPEED_HEADER_BYTE = 0x00;
 const LOW_SPEED_SYNC_BYTE = 0xA5;
@@ -2219,8 +2283,8 @@ const Cassette_1 = __webpack_require__(26);
 const CmdProgram_1 = __webpack_require__(25);
 const RawBinaryFile_1 = __webpack_require__(28);
 const Jv1FloppyDisk_1 = __webpack_require__(29);
-const Jv3FloppyDisk_1 = __webpack_require__(58);
-const DmkFloppyDisk_1 = __webpack_require__(59);
+const Jv3FloppyDisk_1 = __webpack_require__(59);
+const DmkFloppyDisk_1 = __webpack_require__(60);
 const SystemProgram_1 = __webpack_require__(14);
 /**
  * Get the extension of the filename, including the dot, in upper case, or
@@ -2308,7 +2372,7 @@ exports.decodeTrs80File = decodeTrs80File;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RawBinaryFile = void 0;
-const Trs80File_1 = __webpack_require__(7);
+const Trs80File_1 = __webpack_require__(6);
 /**
  * File when we don't recognize the type.
  */
@@ -2331,8 +2395,8 @@ exports.RawBinaryFile = RawBinaryFile;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeJv1FloppyDisk = exports.Jv1FloppyDisk = void 0;
-const FloppyDisk_1 = __webpack_require__(8);
-const ProgramAnnotation_1 = __webpack_require__(6);
+const FloppyDisk_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
 const BYTES_PER_SECTOR = 256;
 const SECTORS_PER_TRACK = 10;
 const BYTES_PER_TRACK = BYTES_PER_SECTOR * SECTORS_PER_TRACK;
@@ -2400,77 +2464,6 @@ exports.decodeJv1FloppyDisk = decodeJv1FloppyDisk;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const z80_base_1 = __webpack_require__(0);
-class Instruction {
-    constructor(address, bin, mnemonic, params, args) {
-        this.address = address;
-        this.bin = bin;
-        this.mnemonic = mnemonic;
-        this.params = (params !== null && params !== void 0 ? params : []);
-        this.args = (args !== null && args !== void 0 ? args : []);
-    }
-    /**
-     * Text version of the binary: two-digit hex numbers separated by a space.
-     */
-    binText() {
-        return this.bin.map(z80_base_1.toHexByte).join(" ");
-    }
-    /**
-     * Text of the instruction (e.g., "ld hl,0x1234").
-     */
-    toText() {
-        return (this.mnemonic + " " + this.args.join(",")).trim();
-    }
-    /**
-     * Replace all instances of "varName" in the args field with a replacement.
-     */
-    replaceArgVariable(varName, replacement) {
-        const args = this.args;
-        for (let i = 0; i < args.length; i++) {
-            let arg = args[i];
-            let changed;
-            do {
-                changed = false;
-                const pos = arg.indexOf(varName);
-                if (pos >= 0) {
-                    arg = arg.substr(0, pos) + replacement + arg.substr(pos + varName.length);
-                    changed = true;
-                }
-            } while (changed);
-            args[i] = arg;
-        }
-    }
-    /**
-     * Whether this instruction, when executed, potentially continues on to the next instructions. For example,
-     * "nop" and "jr z,foo" return true, but "ret" and "jr foo" return false.
-     */
-    continues() {
-        // Return without a flag test.
-        if (this.mnemonic === "ret" && this.args.length === 0) {
-            return false;
-        }
-        // Return from interrupt.
-        if (this.mnemonic === "reti" || this.mnemonic === "retn") {
-            return false;
-        }
-        // Jump without a flag test.
-        if ((this.mnemonic === "jp" || this.mnemonic === "jr") && this.args.length === 1) {
-            return false;
-        }
-        // All else might continue.
-        return true;
-    }
-}
-exports.Instruction = Instruction;
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventList = void 0;
 const ste_core_1 = __webpack_require__(4);
 const EventDispatcher_1 = __webpack_require__(16);
@@ -2496,7 +2489,7 @@ exports.EventList = EventList;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2527,7 +2520,7 @@ exports.SimpleEventList = SimpleEventList;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2591,7 +2584,7 @@ exports.SignalDispatcher = SignalDispatcher;
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2599,7 +2592,7 @@ exports.SignalDispatcher = SignalDispatcher;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = void 0;
 const ste_core_1 = __webpack_require__(4);
-const SignalDispatcher_1 = __webpack_require__(33);
+const SignalDispatcher_1 = __webpack_require__(32);
 /**
  * Storage class for multiple signal events that are accessible by name.
  * Events dispatchers are automatically created.
@@ -2622,14 +2615,14 @@ exports.SignalList = SignalList;
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseEventList = void 0;
-const ste_core_1 = __webpack_require__(9);
+const ste_core_1 = __webpack_require__(8);
 const PromiseEventDispatcher_1 = __webpack_require__(18);
 /**
  * Storage class for multiple events that are accessible by name.
@@ -2653,7 +2646,7 @@ exports.PromiseEventList = PromiseEventList;
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2668,24 +2661,24 @@ exports.PromiseEventList = PromiseEventList;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSignalList = exports.PromiseSignalHandlingBase = exports.PromiseSignalDispatcher = void 0;
-const PromiseSignalDispatcher_1 = __webpack_require__(106);
+const PromiseSignalDispatcher_1 = __webpack_require__(104);
 Object.defineProperty(exports, "PromiseSignalDispatcher", { enumerable: true, get: function () { return PromiseSignalDispatcher_1.PromiseSignalDispatcher; } });
-const PromiseSignalHandlingBase_1 = __webpack_require__(116);
+const PromiseSignalHandlingBase_1 = __webpack_require__(114);
 Object.defineProperty(exports, "PromiseSignalHandlingBase", { enumerable: true, get: function () { return PromiseSignalHandlingBase_1.PromiseSignalHandlingBase; } });
-const PromiseSignalList_1 = __webpack_require__(37);
+const PromiseSignalList_1 = __webpack_require__(36);
 Object.defineProperty(exports, "PromiseSignalList", { enumerable: true, get: function () { return PromiseSignalList_1.PromiseSignalList; } });
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSignalList = void 0;
-const ste_core_1 = __webpack_require__(10);
-const _1 = __webpack_require__(36);
+const ste_core_1 = __webpack_require__(9);
+const _1 = __webpack_require__(35);
 /**
  * Storage class for multiple signal events that are accessible by name.
  * Events dispatchers are automatically created.
@@ -2708,14 +2701,14 @@ exports.PromiseSignalList = PromiseSignalList;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSimpleEventList = void 0;
-const ste_core_1 = __webpack_require__(11);
+const ste_core_1 = __webpack_require__(10);
 const PromiseSimpleEventDispatcher_1 = __webpack_require__(19);
 /**
  * Storage class for multiple simple events that are accessible by name.
@@ -2739,7 +2732,7 @@ exports.PromiseSimpleEventList = PromiseSimpleEventList;
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2852,15 +2845,15 @@ exports.EventScheduler = EventScheduler;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CanvasScreen = exports.phosphorToRgb = exports.BLACK_BACKGROUND = exports.AUTHENTIC_BACKGROUND = void 0;
-const Trs80Screen_1 = __webpack_require__(129);
-const Fonts_1 = __webpack_require__(130);
+const Trs80Screen_1 = __webpack_require__(127);
+const Fonts_1 = __webpack_require__(128);
 const Config_1 = __webpack_require__(15);
 const z80_base_1 = __webpack_require__(0);
 const trs80_base_1 = __webpack_require__(1);
@@ -3081,7 +3074,7 @@ exports.CanvasScreen = CanvasScreen;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3090,7 +3083,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SettingsPanel = exports.PanelType = void 0;
 const Utils_1 = __webpack_require__(20);
 const Config_1 = __webpack_require__(15);
-const CanvasScreen_1 = __webpack_require__(40);
+const CanvasScreen_1 = __webpack_require__(39);
 const gCssPrefix = Utils_1.CSS_PREFIX + "-settings-panel";
 const gScreenNodeCssClass = gCssPrefix + "-screen-node";
 const gPanelCssClass = gCssPrefix + "-panel";
@@ -3593,7 +3586,117 @@ exports.SettingsPanel = SettingsPanel;
 
 
 /***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const z80_base_1 = __webpack_require__(0);
+class Instruction {
+    constructor(address, bin, mnemonic, params, args) {
+        this.address = address;
+        this.bin = bin;
+        this.mnemonic = mnemonic;
+        this.params = (params !== null && params !== void 0 ? params : []);
+        this.args = (args !== null && args !== void 0 ? args : []);
+    }
+    /**
+     * Text version of the binary: two-digit hex numbers separated by a space.
+     */
+    binText() {
+        return this.bin.map(z80_base_1.toHexByte).join(" ");
+    }
+    /**
+     * Text of the instruction (e.g., "ld hl,0x1234").
+     */
+    toText() {
+        return (this.mnemonic + " " + this.args.join(",")).trim();
+    }
+    /**
+     * Replace all instances of "varName" in the args field with a replacement.
+     */
+    replaceArgVariable(varName, replacement) {
+        const args = this.args;
+        for (let i = 0; i < args.length; i++) {
+            let arg = args[i];
+            let changed;
+            do {
+                changed = false;
+                const pos = arg.indexOf(varName);
+                if (pos >= 0) {
+                    arg = arg.substr(0, pos) + replacement + arg.substr(pos + varName.length);
+                    changed = true;
+                }
+            } while (changed);
+            args[i] = arg;
+        }
+    }
+    /**
+     * Whether this instruction, when executed, potentially continues on to the next instructions. For example,
+     * "nop" and "jr z,foo" return true, but "ret" and "jr foo" return false.
+     */
+    continues() {
+        // Return without a flag test.
+        if (this.mnemonic === "ret" && this.args.length === 0) {
+            return false;
+        }
+        // Return from interrupt.
+        if (this.mnemonic === "reti" || this.mnemonic === "retn") {
+            return false;
+        }
+        // Jump without a flag test.
+        if ((this.mnemonic === "jp" || this.mnemonic === "jr") && this.args.length === 1) {
+            return false;
+        }
+        // All else might continue.
+        return true;
+    }
+}
+exports.Instruction = Instruction;
+
+
+/***/ }),
 /* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TRS80_MODEL_III_KNOWN_LABELS = void 0;
+exports.TRS80_MODEL_III_KNOWN_LABELS = [
+    [0x0298, "clkon"],
+    [0x02a1, "clkoff"],
+    [0x0296, "cshin"],
+    [0x0235, "csin"],
+    [0x0287, "cshwr"],
+    [0x01f8, "csoff"],
+    [0x0264, "csout"],
+    [0x3033, "date"],
+    [0x0060, "delay"],
+    [0x0069, "initio"],
+    [0x002b, "kbchar"],
+    [0x0040, "kbline"],
+    [0x0049, "kbwait"],
+    [0x028d, "kbbrk"],
+    [0x003b, "prchar"],
+    [0x01d9, "prscn"],
+    [0x1a19, "ready"],
+    [0x0000, "reset"],
+    [0x006c, "route"],
+    [0x005a, "rsinit"],
+    [0x0050, "rsrcv"],
+    [0x0055, "rstx"],
+    [0x3042, "setcas"],
+    [0x3036, "time"],
+    [0x0033, "vdchar"],
+    [0x01c9, "vdcls"],
+    [0x021b, "vdline"],
+];
+
+
+/***/ }),
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3618,7 +3721,7 @@ function symbolObservablePonyfill(root) {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3632,7 +3735,7 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DispatcherWrapper = exports.EventListBase = exports.DispatcherBase = void 0;
-var management_1 = __webpack_require__(44);
+var management_1 = __webpack_require__(45);
 var subscription_1 = __webpack_require__(22);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
@@ -3899,7 +4002,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3926,14 +4029,14 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = void 0;
-var events_1 = __webpack_require__(46);
+var events_1 = __webpack_require__(47);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return events_1.EventDispatcher; } });
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return events_1.EventHandlingBase; } });
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return events_1.EventList; } });
@@ -3941,7 +4044,7 @@ Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: f
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3961,7 +4064,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventHandlingBase = exports.EventList = exports.NonUniformEventList = exports.EventDispatcher = void 0;
-var ste_core_1 = __webpack_require__(12);
+var ste_core_1 = __webpack_require__(11);
 /**
  * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
  * or dispatch events. Use the ToEvent() method to expose the event.
@@ -4128,14 +4231,14 @@ exports.EventHandlingBase = EventHandlingBase;
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = void 0;
-var simple_events_1 = __webpack_require__(48);
+var simple_events_1 = __webpack_require__(49);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return simple_events_1.SimpleEventDispatcher; } });
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return simple_events_1.SimpleEventHandlingBase; } });
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return simple_events_1.SimpleEventList; } });
@@ -4143,7 +4246,7 @@ Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, 
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4163,7 +4266,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEventHandlingBase = exports.SimpleEventList = exports.NonUniformSimpleEventList = exports.SimpleEventDispatcher = void 0;
-var ste_core_1 = __webpack_require__(12);
+var ste_core_1 = __webpack_require__(11);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a simple event
@@ -4325,21 +4428,21 @@ exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = void 0;
-var signals_1 = __webpack_require__(50);
+var signals_1 = __webpack_require__(51);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return signals_1.SignalDispatcher; } });
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return signals_1.SignalHandlingBase; } });
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return signals_1.SignalList; } });
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4359,7 +4462,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalHandlingBase = exports.SignalList = exports.SignalDispatcher = void 0;
-var ste_core_1 = __webpack_require__(12);
+var ste_core_1 = __webpack_require__(11);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a signal event.
@@ -4483,7 +4586,7 @@ exports.SignalHandlingBase = SignalHandlingBase;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4514,7 +4617,7 @@ exports.isByteReg = isByteReg;
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4641,7 +4744,7 @@ exports.registerSetFields = [
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4693,7 +4796,7 @@ var Flag;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 var g;
@@ -4719,7 +4822,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -4749,13 +4852,13 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.concatByteArrays = exports.withCommas = exports.clearElement = void 0;
+exports.startTimer = exports.concatByteArrays = exports.withCommas = exports.clearElement = void 0;
 /**
  * Remove all children from element.
  */
@@ -4783,21 +4886,35 @@ exports.withCommas = withCommas;
 /**
  * Concatenate a list of byte arrays into one.
  */
-function concatByteArrays(samplesList) {
-    const length = samplesList.reduce((sum, samples) => sum + samples.length, 0);
+function concatByteArrays(items) {
+    const length = items.reduce((sum, samples) => sum + samples.length, 0);
     const allBytes = new Uint8Array(length);
     let offset = 0;
-    for (const samples of samplesList) {
-        allBytes.set(samples, offset);
-        offset += samples.length;
+    for (const item of items) {
+        allBytes.set(item, offset);
+        offset += item.length;
     }
     return allBytes;
 }
 exports.concatByteArrays = concatByteArrays;
+/**
+ * Start a timer, and return a function that will evaluate to how many milliseconds
+ * the timer has been running. Calling the function restarts the timer.
+ */
+function startTimer() {
+    let timerStart = Date.now();
+    return () => {
+        const now = Date.now();
+        const elapsed = now - timerStart;
+        timerStart = now;
+        return elapsed;
+    };
+}
+exports.startTimer = startTimer;
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4856,10 +4973,12 @@ class ByteReader {
         return low + high * 256;
     }
     /**
-     * Reads an ASCII string from the stream. If the returned string is shorter than "length", then we hit EOF.
+     * Reads a UTF-8 string from the stream. If the returned string is shorter than "length", then we hit EOF.
      */
     readString(length) {
-        return new TextDecoder("ascii").decode(this.readBytes(length));
+        // We used to specify "ascii" for the decoder, but Node doesn't support it, and in any
+        // case UTF-8 is a super set, so anything that worked before should work now.
+        return new TextDecoder().decode(this.readBytes(length));
     }
     /**
      * Returns the next "length" bytes. If the returned array is shorter than "length", then we hit EOF.
@@ -4876,7 +4995,7 @@ exports.ByteReader = ByteReader;
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4884,8 +5003,8 @@ exports.ByteReader = ByteReader;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeJv3FloppyDisk = exports.Jv3FloppyDisk = void 0;
 const z80_base_1 = __webpack_require__(0);
-const FloppyDisk_1 = __webpack_require__(8);
-const ProgramAnnotation_1 = __webpack_require__(6);
+const FloppyDisk_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
 // The JV3 file consists of sectors of different sizes all bunched together. Before that
 // comes a directory of these sectors, with three bytes per directory entry (track,
 // sector, and flags), mapping in order to the subsequent sectors.
@@ -5073,7 +5192,7 @@ exports.decodeJv3FloppyDisk = decodeJv3FloppyDisk;
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5089,9 +5208,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeDmkFloppyDisk = exports.DmkFloppyDisk = void 0;
 const z80_base_1 = __webpack_require__(0);
 const z80_base_2 = __webpack_require__(0);
-const Crc16_1 = __webpack_require__(60);
-const FloppyDisk_1 = __webpack_require__(8);
-const ProgramAnnotation_1 = __webpack_require__(6);
+const Crc16_1 = __webpack_require__(61);
+const FloppyDisk_1 = __webpack_require__(7);
+const ProgramAnnotation_1 = __webpack_require__(5);
 const FILE_HEADER_SIZE = 16;
 const TRACK_HEADER_SIZE = 128;
 /**
@@ -5466,7 +5585,7 @@ exports.decodeDmkFloppyDisk = decodeDmkFloppyDisk;
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5513,7 +5632,7 @@ exports.CRC_16_CCITT = new Crc16(0x1021);
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5526,8 +5645,8 @@ exports.CRC_16_CCITT = new Crc16(0x1021);
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeTrsdos = exports.Trsdos = exports.TrsdosDirEntry = exports.TrsdosHitInfo = exports.TrsdosGatInfo = exports.TrsdosExtent = exports.trsdosProtectionLevelToString = exports.TrsdosProtectionLevel = void 0;
-const teamten_ts_utils_1 = __webpack_require__(13);
-const FloppyDisk_1 = __webpack_require__(8);
+const teamten_ts_utils_1 = __webpack_require__(12);
+const FloppyDisk_1 = __webpack_require__(7);
 // Number of bytes per dir entry in the sector.
 const DIR_ENTRY_LENGTH = 48;
 // Apparently this is constant in TRSDOS.
@@ -5549,6 +5668,10 @@ const PASSWORD = 0xD38F;
 function decodeAscii(binary, trim = true) {
     const parts = [];
     for (const b of binary) {
+        if (b === 0x0D) {
+            // Auto command ends with carriage return.
+            break;
+        }
         if (b < 32 || b >= 127) {
             return undefined;
         }
@@ -5668,7 +5791,7 @@ function decodeGatInfo(binary) {
     const password = (binary[0xCE] << 8) | binary[0xCF];
     const name = decodeAscii(binary.subarray(0xD0, 0xD8));
     const date = decodeAscii(binary.subarray(0xD8, 0xE0));
-    const autoCommand = binary[0xE0] === 0x0D ? "" : decodeAscii(binary.subarray(0xE0));
+    const autoCommand = decodeAscii(binary.subarray(0xE0));
     // Implies that this is not a TRSDOS disk.
     if (name === undefined || date === undefined || autoCommand === undefined) {
         return undefined;
@@ -5936,7 +6059,7 @@ exports.decodeTrsdos = decodeTrsdos;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5949,359 +6072,7 @@ exports.TRS80_SCREEN_END = 16 * 1024;
 
 
 /***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const Opcodes_json_1 = __importDefault(__webpack_require__(64));
-const Instruction_1 = __webpack_require__(30);
-const z80_base_1 = __webpack_require__(0);
-// Temporary string used for address substitution.
-const TARGET = "TARGET";
-// Number of bytes in memory.
-const MEM_SIZE = 64 * 1024;
-class Disasm {
-    constructor() {
-        this.memory = new Uint8Array(MEM_SIZE);
-        this.hasContent = new Uint8Array(MEM_SIZE);
-        this.isDecoded = new Uint8Array(MEM_SIZE);
-        this.instructions = new Array(MEM_SIZE);
-        this.knownLabels = new Map();
-        /**
-         * Addresses that might be jumped to when running the code.
-         */
-        this.entryPoints = [];
-    }
-    /**
-     * Add a chunk of binary somewhere in memory.
-     */
-    addChunk(bin, address) {
-        this.memory.set(bin, address);
-        this.hasContent.fill(1, address, address + bin.length);
-    }
-    /**
-     * Add a memory location that might be jumped to when running this program. If no entry
-     * points are specified, then the lower address for which we have binary will be used.
-     */
-    addEntryPoint(entryPoint) {
-        this.entryPoints.push(entryPoint);
-    }
-    /**
-     * Disassemble one instruction.
-     *
-     * @param address the address to disassemble.
-     */
-    disassembleOne(address) {
-        var _a;
-        // Bytes decoded so far in the instruction being disassembled.
-        let bytes = [];
-        // Get the next byte.
-        const next = () => {
-            const byte = this.memory[address];
-            bytes.push(byte);
-            address = z80_base_1.inc16(address);
-            return byte;
-        };
-        const startAddress = address;
-        let jumpTarget = undefined;
-        // Fetch base instruction.
-        let byte = next();
-        let map = Opcodes_json_1.default;
-        let instruction;
-        while (instruction === undefined) {
-            let value = map[byte.toString(16)];
-            if (value === undefined) {
-                // TODO
-                // asm.push(".byte 0x" + byte.toString(16));
-                const stringParams = bytes.map((n) => "0x" + z80_base_1.toHex(n, 2));
-                instruction = new Instruction_1.Instruction(startAddress, bytes, ".byte", stringParams, stringParams);
-            }
-            else if (value.shift !== undefined) {
-                // Descend to sub-map.
-                map = value.shift;
-                byte = next();
-            }
-            else {
-                // Found instruction. Parse arguments.
-                const args = (_a = value.params, (_a !== null && _a !== void 0 ? _a : [])).slice();
-                for (let i = 0; i < args.length; i++) {
-                    let arg = args[i];
-                    let changed;
-                    do {
-                        changed = false;
-                        // Fetch word argument.
-                        let pos = arg.indexOf("nnnn");
-                        if (pos >= 0) {
-                            const lowByte = next();
-                            const highByte = next();
-                            const nnnn = z80_base_1.word(highByte, lowByte);
-                            let target;
-                            if (value.mnemonic === "call" || value.mnemonic === "jp") {
-                                jumpTarget = nnnn;
-                                target = TARGET;
-                            }
-                            else {
-                                target = "0x" + z80_base_1.toHex(nnnn, 4);
-                            }
-                            arg = arg.substr(0, pos) + target + arg.substr(pos + 4);
-                            changed = true;
-                        }
-                        // Fetch byte argument.
-                        pos = arg.indexOf("nn");
-                        if (pos === -1) {
-                            pos = arg.indexOf("dd");
-                        }
-                        if (pos >= 0) {
-                            const nn = next();
-                            arg = arg.substr(0, pos) + "0x" + z80_base_1.toHex(nn, 2) + arg.substr(pos + 2);
-                            changed = true;
-                        }
-                        // Fetch offset argument.
-                        pos = arg.indexOf("offset");
-                        if (pos >= 0) {
-                            const offset = z80_base_1.signedByte(next());
-                            jumpTarget = address + offset;
-                            arg = arg.substr(0, pos) + TARGET + arg.substr(pos + 6);
-                            changed = true;
-                        }
-                    } while (changed);
-                    args[i] = arg;
-                }
-                instruction = new Instruction_1.Instruction(startAddress, bytes, value.mnemonic, value.params, args);
-                if (jumpTarget !== undefined) {
-                    instruction.jumpTarget = jumpTarget;
-                }
-            }
-        }
-        return instruction;
-    }
-    /**
-     * Makes a data (.byte, .text) instruction starting at the specified address.
-     */
-    makeDataInstruction(address) {
-        const startAddress = address;
-        // Whether the byte is appropriate for a .text instruction.
-        const isPrintable = (b) => b >= 32 && b < 127;
-        const isText = (b) => isPrintable(b) || b === 10 || b === 13;
-        const parts = [];
-        let mnemonic = undefined;
-        // Look for contiguous sequence of either text or not text.
-        if (isText(this.memory[address])) {
-            mnemonic = ".text";
-            while (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] && isText(this.memory[address]) && address - startAddress < 50) {
-                const byte = this.memory[address];
-                if (isPrintable(byte)) {
-                    let char = String.fromCharCode(byte);
-                    if (char === "\"") {
-                        // zasm doesn't support this backslash syntax. We'd have to enclose the whole string
-                        // with single quotes.
-                        // http://k1.spdns.de/Develop/Projects/zasm/Documentation/z79.htm#R
-                        char = "\\\"";
-                    }
-                    if (parts.length > 0 && parts[parts.length - 1].startsWith("\"")) {
-                        const s = parts[parts.length - 1];
-                        parts[parts.length - 1] = s.substring(0, s.length - 1) + char + "\"";
-                    }
-                    else {
-                        parts.push("\"" + char + "\"");
-                    }
-                }
-                else {
-                    parts.push("0x" + z80_base_1.toHexByte(byte));
-                }
-                address += 1;
-            }
-            if (address - startAddress < 2) {
-                // Probably not actual text.
-                mnemonic = undefined;
-                parts.splice(0, parts.length);
-                address = startAddress;
-            }
-            else {
-                // Allow terminating NUL.
-                if (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] && this.memory[address] === 0) {
-                    parts.push("0x" + z80_base_1.toHexByte(0));
-                    address += 1;
-                }
-            }
-        }
-        if (mnemonic === undefined) {
-            mnemonic = ".byte";
-            while (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] && address - startAddress < 8) {
-                parts.push("0x" + z80_base_1.toHexByte(this.memory[address]));
-                address += 1;
-            }
-        }
-        const bytes = Array.from(this.memory.slice(startAddress, address));
-        return new Instruction_1.Instruction(startAddress, bytes, mnemonic, parts, parts);
-    }
-    /**
-     * Add an array of known label ([address, label] pairs).
-     */
-    addLabels(labels) {
-        for (const [address, label] of labels) {
-            this.knownLabels.set(address, label);
-        }
-    }
-    /**
-     * Disassemble all instructions and assign labels.
-     */
-    disassemble() {
-        var _a;
-        // Create set of addresses we want to decode, starting with our entry points.
-        const addressesToDecode = new Set();
-        const addAddressToDecode = (number) => {
-            if (number !== undefined &&
-                this.hasContent[number] &&
-                this.instructions[number] === undefined) {
-                addressesToDecode.add(number);
-            }
-        };
-        if (this.entryPoints.length === 0) {
-            // No explicit entry points. Default to lowest address we have data for.
-            for (let address = 0; address < MEM_SIZE; address++) {
-                if (this.hasContent[address]) {
-                    addressesToDecode.add(address);
-                    break;
-                }
-            }
-            if (this.entryPoints.length === 0) {
-                throw new Error("not binary content was specified");
-            }
-        }
-        else {
-            for (const address of this.entryPoints) {
-                addressesToDecode.add(address);
-            }
-        }
-        // Keep decoding as long as we have addresses to decode.
-        while (addressesToDecode.size !== 0) {
-            // Pick any to do next.
-            const address = addressesToDecode.values().next().value;
-            addressesToDecode.delete(address);
-            const instruction = this.disassembleOne(address);
-            this.instructions[address] = instruction;
-            this.isDecoded.fill(1, address, address + instruction.bin.length);
-            addAddressToDecode(instruction.jumpTarget);
-            if (instruction.continues()) {
-                addAddressToDecode(address + instruction.bin.length);
-            }
-        }
-        // Map from jump target to list of instructions that jump there.
-        const jumpTargetMap = new Map();
-        const instructions = [];
-        for (let address = 0; address < MEM_SIZE; address++) {
-            if (this.hasContent[address]) {
-                let instruction = this.instructions[address];
-                if (instruction === undefined) {
-                    instruction = this.makeDataInstruction(address);
-                }
-                instructions.push(instruction);
-                if (instruction.jumpTarget !== undefined) {
-                    // Add this instruction to the list of instructions that call this target.
-                    let sources = jumpTargetMap.get(instruction.jumpTarget);
-                    if (sources === undefined) {
-                        sources = [];
-                        jumpTargetMap.set(instruction.jumpTarget, sources);
-                    }
-                    sources.push(instruction);
-                }
-                address += instruction.bin.length - 1;
-            }
-        }
-        // Assign labels.
-        let labelCounter = 1;
-        for (const instruction of instructions) {
-            let label = this.knownLabels.get(instruction.address);
-            const sources = (_a = jumpTargetMap.get(instruction.address), (_a !== null && _a !== void 0 ? _a : []));
-            if (sources.length !== 0) {
-                if (label === undefined) {
-                    // Make anonymous label.
-                    label = "L" + labelCounter++;
-                }
-            }
-            if (label !== undefined) {
-                instruction.label = label;
-                // Replace pseudo-target in instruction.
-                for (const source of sources) {
-                    source.replaceArgVariable(TARGET, label);
-                }
-            }
-        }
-        // Replace the target variable with the actual address for those
-        // jumps that go outside our disassembled code.
-        for (const instruction of instructions) {
-            if (instruction.jumpTarget !== undefined) {
-                instruction.replaceArgVariable(TARGET, "0x" + z80_base_1.toHexWord(instruction.jumpTarget));
-            }
-        }
-        return instructions;
-    }
-}
-exports.Disasm = Disasm;
-
-
-/***/ }),
 /* 64 */
-/***/ (function(module) {
-
-module.exports = JSON.parse("{\"0\":{\"mnemonic\":\"nop\"},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"nnnn\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"(bc)\",\"a\"]},\"3\":{\"mnemonic\":\"inc\",\"params\":[\"bc\"]},\"4\":{\"mnemonic\":\"inc\",\"params\":[\"b\"]},\"5\":{\"mnemonic\":\"dec\",\"params\":[\"b\"]},\"6\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"nn\"]},\"7\":{\"mnemonic\":\"rlca\"},\"8\":{\"mnemonic\":\"ex\",\"params\":[\"af\",\"af'\"]},\"9\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"bc\"]},\"10\":{\"mnemonic\":\"djnz\",\"params\":[\"offset\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"nnnn\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"(de)\",\"a\"]},\"13\":{\"mnemonic\":\"inc\",\"params\":[\"de\"]},\"14\":{\"mnemonic\":\"inc\",\"params\":[\"d\"]},\"15\":{\"mnemonic\":\"dec\",\"params\":[\"d\"]},\"16\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"nn\"]},\"17\":{\"mnemonic\":\"rla\"},\"18\":{\"mnemonic\":\"jr\",\"params\":[\"offset\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"de\"]},\"20\":{\"mnemonic\":\"jr\",\"params\":[\"nz\",\"offset\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"hl\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"h\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"nn\"]},\"27\":{\"mnemonic\":\"daa\"},\"28\":{\"mnemonic\":\"jr\",\"params\":[\"z\",\"offset\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"hl\"]},\"30\":{\"mnemonic\":\"jr\",\"params\":[\"nc\",\"offset\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"nnnn\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"a\"]},\"33\":{\"mnemonic\":\"inc\",\"params\":[\"sp\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(hl)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(hl)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"nn\"]},\"37\":{\"mnemonic\":\"scf\"},\"38\":{\"mnemonic\":\"jr\",\"params\":[\"c\",\"offset\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"sp\"]},\"40\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"b\"]},\"41\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"c\"]},\"42\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"d\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"e\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"h\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"l\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(hl)\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"a\"]},\"48\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"b\"]},\"49\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"c\"]},\"50\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"b\"]},\"51\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"c\"]},\"52\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"d\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"e\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"h\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"l\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(hl)\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"a\"]},\"58\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"b\"]},\"59\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"c\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"h\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"l\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(hl)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"l\"]},\"76\":{\"mnemonic\":\"halt\"},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"a\"]},\"78\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"b\"]},\"79\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"c\"]},\"80\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"b\"]},\"81\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"c\"]},\"82\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"d\"]},\"83\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"e\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"h\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"l\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(hl)\"]},\"87\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"a\"]},\"88\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"b\"]},\"89\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"c\"]},\"90\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"b\"]},\"91\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"c\"]},\"92\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"d\"]},\"93\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"e\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"h\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"l\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(hl)\"]},\"97\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"a\"]},\"98\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"b\"]},\"99\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"c\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(bc)\"]},\"b\":{\"mnemonic\":\"dec\",\"params\":[\"bc\"]},\"c\":{\"mnemonic\":\"inc\",\"params\":[\"c\"]},\"d\":{\"mnemonic\":\"dec\",\"params\":[\"c\"]},\"e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"nn\"]},\"f\":{\"mnemonic\":\"rrca\"},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(de)\"]},\"1b\":{\"mnemonic\":\"dec\",\"params\":[\"de\"]},\"1c\":{\"mnemonic\":\"inc\",\"params\":[\"e\"]},\"1d\":{\"mnemonic\":\"dec\",\"params\":[\"e\"]},\"1e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"nn\"]},\"1f\":{\"mnemonic\":\"rra\"},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"hl\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"l\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"nn\"]},\"2f\":{\"mnemonic\":\"cpl\"},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(nnnn)\"]},\"3b\":{\"mnemonic\":\"dec\",\"params\":[\"sp\"]},\"3c\":{\"mnemonic\":\"inc\",\"params\":[\"a\"]},\"3d\":{\"mnemonic\":\"dec\",\"params\":[\"a\"]},\"3e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"nn\"]},\"3f\":{\"mnemonic\":\"ccf\"},\"4a\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"d\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"e\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"h\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"l\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"a\"]},\"5a\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"d\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"e\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"h\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"l\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"a\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"h\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"l\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"a\"]},\"7a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"d\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"e\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"h\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"l\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"a\"]},\"8a\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"d\"]},\"8b\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"e\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"h\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"l\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"a\"]},\"9a\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"d\"]},\"9b\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"e\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"h\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"l\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"a\"]},\"a0\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"b\"]},\"a1\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"c\"]},\"a2\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"d\"]},\"a3\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"e\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"h\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"l\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"a\"]},\"a8\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"b\"]},\"a9\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"c\"]},\"aa\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"d\"]},\"ab\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"e\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"h\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"l\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(hl)\"]},\"af\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"a\"]},\"b0\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"b\"]},\"b1\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"c\"]},\"b2\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"d\"]},\"b3\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"e\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"h\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"l\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"a\"]},\"b8\":{\"mnemonic\":\"cp\",\"params\":[\"b\"]},\"b9\":{\"mnemonic\":\"cp\",\"params\":[\"c\"]},\"ba\":{\"mnemonic\":\"cp\",\"params\":[\"d\"]},\"bb\":{\"mnemonic\":\"cp\",\"params\":[\"e\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"h\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"l\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(hl)\"]},\"bf\":{\"mnemonic\":\"cp\",\"params\":[\"a\"]},\"c0\":{\"mnemonic\":\"ret\",\"params\":[\"nz\"]},\"c1\":{\"mnemonic\":\"pop\",\"params\":[\"bc\"]},\"c2\":{\"mnemonic\":\"jp\",\"params\":[\"nz\",\"nnnn\"]},\"c3\":{\"mnemonic\":\"jp\",\"params\":[\"nnnn\"]},\"c4\":{\"mnemonic\":\"call\",\"params\":[\"nz\",\"nnnn\"]},\"c5\":{\"mnemonic\":\"push\",\"params\":[\"bc\"]},\"c6\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"nn\"]},\"c7\":{\"mnemonic\":\"rst\",\"params\":[\"00\"]},\"c8\":{\"mnemonic\":\"ret\",\"params\":[\"z\"]},\"c9\":{\"mnemonic\":\"ret\"},\"ca\":{\"mnemonic\":\"jp\",\"params\":[\"z\",\"nnnn\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"rlc\",\"params\":[\"b\"]},\"1\":{\"mnemonic\":\"rlc\",\"params\":[\"c\"]},\"2\":{\"mnemonic\":\"rlc\",\"params\":[\"d\"]},\"3\":{\"mnemonic\":\"rlc\",\"params\":[\"e\"]},\"4\":{\"mnemonic\":\"rlc\",\"params\":[\"h\"]},\"5\":{\"mnemonic\":\"rlc\",\"params\":[\"l\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(hl)\"]},\"7\":{\"mnemonic\":\"rlc\",\"params\":[\"a\"]},\"8\":{\"mnemonic\":\"rrc\",\"params\":[\"b\"]},\"9\":{\"mnemonic\":\"rrc\",\"params\":[\"c\"]},\"10\":{\"mnemonic\":\"rl\",\"params\":[\"b\"]},\"11\":{\"mnemonic\":\"rl\",\"params\":[\"c\"]},\"12\":{\"mnemonic\":\"rl\",\"params\":[\"d\"]},\"13\":{\"mnemonic\":\"rl\",\"params\":[\"e\"]},\"14\":{\"mnemonic\":\"rl\",\"params\":[\"h\"]},\"15\":{\"mnemonic\":\"rl\",\"params\":[\"l\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(hl)\"]},\"17\":{\"mnemonic\":\"rl\",\"params\":[\"a\"]},\"18\":{\"mnemonic\":\"rr\",\"params\":[\"b\"]},\"19\":{\"mnemonic\":\"rr\",\"params\":[\"c\"]},\"20\":{\"mnemonic\":\"sla\",\"params\":[\"b\"]},\"21\":{\"mnemonic\":\"sla\",\"params\":[\"c\"]},\"22\":{\"mnemonic\":\"sla\",\"params\":[\"d\"]},\"23\":{\"mnemonic\":\"sla\",\"params\":[\"e\"]},\"24\":{\"mnemonic\":\"sla\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"sla\",\"params\":[\"l\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(hl)\"]},\"27\":{\"mnemonic\":\"sla\",\"params\":[\"a\"]},\"28\":{\"mnemonic\":\"sra\",\"params\":[\"b\"]},\"29\":{\"mnemonic\":\"sra\",\"params\":[\"c\"]},\"30\":{\"mnemonic\":\"sll\",\"params\":[\"b\"]},\"31\":{\"mnemonic\":\"sll\",\"params\":[\"c\"]},\"32\":{\"mnemonic\":\"sll\",\"params\":[\"d\"]},\"33\":{\"mnemonic\":\"sll\",\"params\":[\"e\"]},\"34\":{\"mnemonic\":\"sll\",\"params\":[\"h\"]},\"35\":{\"mnemonic\":\"sll\",\"params\":[\"l\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(hl)\"]},\"37\":{\"mnemonic\":\"sll\",\"params\":[\"a\"]},\"38\":{\"mnemonic\":\"srl\",\"params\":[\"b\"]},\"39\":{\"mnemonic\":\"srl\",\"params\":[\"c\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"b\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"c\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"d\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"e\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"h\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"l\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(hl)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"a\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"b\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"c\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"b\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"c\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"d\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"e\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"h\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"l\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(hl)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"a\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"b\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"c\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"b\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"c\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"d\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"e\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"h\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"l\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(hl)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"a\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"b\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"c\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"b\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"c\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"d\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"e\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"h\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"l\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(hl)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"a\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"b\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"c\"]},\"80\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"b\"]},\"81\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"c\"]},\"82\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"d\"]},\"83\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"e\"]},\"84\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"h\"]},\"85\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"l\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(hl)\"]},\"87\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"a\"]},\"88\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"b\"]},\"89\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"c\"]},\"90\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"b\"]},\"91\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"c\"]},\"92\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"d\"]},\"93\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"e\"]},\"94\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"h\"]},\"95\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"l\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(hl)\"]},\"97\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"a\"]},\"98\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"b\"]},\"99\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"c\"]},\"a\":{\"mnemonic\":\"rrc\",\"params\":[\"d\"]},\"b\":{\"mnemonic\":\"rrc\",\"params\":[\"e\"]},\"c\":{\"mnemonic\":\"rrc\",\"params\":[\"h\"]},\"d\":{\"mnemonic\":\"rrc\",\"params\":[\"l\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(hl)\"]},\"f\":{\"mnemonic\":\"rrc\",\"params\":[\"a\"]},\"1a\":{\"mnemonic\":\"rr\",\"params\":[\"d\"]},\"1b\":{\"mnemonic\":\"rr\",\"params\":[\"e\"]},\"1c\":{\"mnemonic\":\"rr\",\"params\":[\"h\"]},\"1d\":{\"mnemonic\":\"rr\",\"params\":[\"l\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(hl)\"]},\"1f\":{\"mnemonic\":\"rr\",\"params\":[\"a\"]},\"2a\":{\"mnemonic\":\"sra\",\"params\":[\"d\"]},\"2b\":{\"mnemonic\":\"sra\",\"params\":[\"e\"]},\"2c\":{\"mnemonic\":\"sra\",\"params\":[\"h\"]},\"2d\":{\"mnemonic\":\"sra\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(hl)\"]},\"2f\":{\"mnemonic\":\"sra\",\"params\":[\"a\"]},\"3a\":{\"mnemonic\":\"srl\",\"params\":[\"d\"]},\"3b\":{\"mnemonic\":\"srl\",\"params\":[\"e\"]},\"3c\":{\"mnemonic\":\"srl\",\"params\":[\"h\"]},\"3d\":{\"mnemonic\":\"srl\",\"params\":[\"l\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(hl)\"]},\"3f\":{\"mnemonic\":\"srl\",\"params\":[\"a\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"d\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"e\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"h\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"l\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"a\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"d\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"e\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"h\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"l\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"a\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"d\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"e\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"h\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"l\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"a\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"d\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"e\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"h\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"l\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"a\"]},\"8a\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"d\"]},\"8b\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"e\"]},\"8c\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"h\"]},\"8d\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"l\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"a\"]},\"9a\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"d\"]},\"9b\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"e\"]},\"9c\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"h\"]},\"9d\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"l\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"a\"]},\"a0\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"b\"]},\"a1\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"c\"]},\"a2\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"d\"]},\"a3\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"e\"]},\"a4\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"h\"]},\"a5\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"l\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"a\"]},\"a8\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"b\"]},\"a9\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"c\"]},\"aa\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"d\"]},\"ab\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"e\"]},\"ac\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"h\"]},\"ad\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"l\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(hl)\"]},\"af\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"a\"]},\"b0\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"b\"]},\"b1\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"c\"]},\"b2\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"d\"]},\"b3\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"e\"]},\"b4\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"h\"]},\"b5\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"l\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"a\"]},\"b8\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"b\"]},\"b9\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"c\"]},\"ba\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"d\"]},\"bb\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"e\"]},\"bc\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"h\"]},\"bd\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"l\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(hl)\"]},\"bf\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"a\"]},\"c0\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"b\"]},\"c1\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"c\"]},\"c2\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"d\"]},\"c3\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"e\"]},\"c4\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"h\"]},\"c5\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"l\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(hl)\"]},\"c7\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"a\"]},\"c8\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"b\"]},\"c9\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"c\"]},\"ca\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"d\"]},\"cb\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"e\"]},\"cc\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"h\"]},\"cd\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"l\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(hl)\"]},\"cf\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"a\"]},\"d0\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"b\"]},\"d1\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"c\"]},\"d2\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"d\"]},\"d3\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"e\"]},\"d4\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"h\"]},\"d5\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"l\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(hl)\"]},\"d7\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"a\"]},\"d8\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"b\"]},\"d9\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"c\"]},\"da\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"d\"]},\"db\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"e\"]},\"dc\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"h\"]},\"dd\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"l\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(hl)\"]},\"df\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"a\"]},\"e0\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"b\"]},\"e1\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"c\"]},\"e2\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"d\"]},\"e3\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"e\"]},\"e4\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"h\"]},\"e5\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"l\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(hl)\"]},\"e7\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"a\"]},\"e8\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"b\"]},\"e9\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"c\"]},\"ea\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"d\"]},\"eb\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"e\"]},\"ec\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"h\"]},\"ed\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"l\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(hl)\"]},\"ef\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"a\"]},\"f0\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"b\"]},\"f1\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"c\"]},\"f2\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"d\"]},\"f3\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"e\"]},\"f4\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"h\"]},\"f5\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"l\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(hl)\"]},\"f7\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"a\"]},\"f8\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"b\"]},\"f9\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"c\"]},\"fa\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"d\"]},\"fb\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"e\"]},\"fc\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"h\"]},\"fd\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"l\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(hl)\"]},\"ff\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"a\"]}}},\"cc\":{\"mnemonic\":\"call\",\"params\":[\"z\",\"nnnn\"]},\"cd\":{\"mnemonic\":\"call\",\"params\":[\"nnnn\"]},\"ce\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"nn\"]},\"cf\":{\"mnemonic\":\"rst\",\"params\":[\"8\"]},\"d0\":{\"mnemonic\":\"ret\",\"params\":[\"nc\"]},\"d1\":{\"mnemonic\":\"pop\",\"params\":[\"de\"]},\"d2\":{\"mnemonic\":\"jp\",\"params\":[\"nc\",\"nnnn\"]},\"d3\":{\"mnemonic\":\"out\",\"params\":[\"(nn)\",\"a\"]},\"d4\":{\"mnemonic\":\"call\",\"params\":[\"nc\",\"nnnn\"]},\"d5\":{\"mnemonic\":\"push\",\"params\":[\"de\"]},\"d6\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"nn\"]},\"d7\":{\"mnemonic\":\"rst\",\"params\":[\"10\"]},\"d8\":{\"mnemonic\":\"ret\",\"params\":[\"c\"]},\"d9\":{\"mnemonic\":\"exx\"},\"da\":{\"mnemonic\":\"jp\",\"params\":[\"c\",\"nnnn\"]},\"db\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(nn)\"]},\"dc\":{\"mnemonic\":\"call\",\"params\":[\"c\",\"nnnn\"]},\"dd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"ix\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"ix\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"ixh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"ixh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"ix\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"ix\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"ixl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"ixl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"ixh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"ixl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(ix+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(ix+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(ix+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(ix+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(ix+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(ix+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(ix+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(ix+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(ix+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(ix+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(ix+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(ix+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(ix+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(ix+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(ix+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(ix+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(ix+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(ix+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(ix+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(ix+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(ix+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(ix+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(ix+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(ix+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(ix+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"ix\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"ix\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"ix\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"ix\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"ix\"]}}},\"de\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"nn\"]},\"df\":{\"mnemonic\":\"rst\",\"params\":[\"18\"]},\"e0\":{\"mnemonic\":\"ret\",\"params\":[\"po\"]},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"hl\"]},\"e2\":{\"mnemonic\":\"jp\",\"params\":[\"po\",\"nnnn\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"hl\"]},\"e4\":{\"mnemonic\":\"call\",\"params\":[\"po\",\"nnnn\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"hl\"]},\"e6\":{\"mnemonic\":\"and\",\"params\":[\"nn\"]},\"e7\":{\"mnemonic\":\"rst\",\"params\":[\"20\"]},\"e8\":{\"mnemonic\":\"ret\",\"params\":[\"pe\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"hl\"]},\"ea\":{\"mnemonic\":\"jp\",\"params\":[\"pe\",\"nnnn\"]},\"eb\":{\"mnemonic\":\"ex\",\"params\":[\"de\",\"hl\"]},\"ec\":{\"mnemonic\":\"call\",\"params\":[\"pe\",\"nnnn\"]},\"ed\":{\"shift\":{\"40\":{\"mnemonic\":\"in\",\"params\":[\"b\",\"(c)\"]},\"41\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"b\"]},\"42\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"bc\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"bc\"]},\"44\":{\"mnemonic\":\"neg\"},\"45\":{\"mnemonic\":\"retn\"},\"46\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"i\",\"a\"]},\"48\":{\"mnemonic\":\"in\",\"params\":[\"c\",\"(c)\"]},\"49\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"c\"]},\"50\":{\"mnemonic\":\"in\",\"params\":[\"d\",\"(c)\"]},\"51\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"d\"]},\"52\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"de\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"de\"]},\"54\":{\"mnemonic\":\"neg\"},\"55\":{\"mnemonic\":\"retn\"},\"56\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"i\"]},\"58\":{\"mnemonic\":\"in\",\"params\":[\"e\",\"(c)\"]},\"59\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"e\"]},\"60\":{\"mnemonic\":\"in\",\"params\":[\"h\",\"(c)\"]},\"61\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"h\"]},\"62\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"hl\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"64\":{\"mnemonic\":\"neg\"},\"65\":{\"mnemonic\":\"retn\"},\"66\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"67\":{\"mnemonic\":\"rrd\"},\"68\":{\"mnemonic\":\"in\",\"params\":[\"l\",\"(c)\"]},\"69\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"l\"]},\"70\":{\"mnemonic\":\"in\",\"params\":[\"f\",\"(c)\"]},\"71\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"0\"]},\"72\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"sp\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"sp\"]},\"74\":{\"mnemonic\":\"neg\"},\"75\":{\"mnemonic\":\"retn\"},\"76\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"78\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(c)\"]},\"79\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"a\"]},\"4c\":{\"mnemonic\":\"neg\"},\"5c\":{\"mnemonic\":\"neg\"},\"6c\":{\"mnemonic\":\"neg\"},\"7c\":{\"mnemonic\":\"neg\"},\"5d\":{\"mnemonic\":\"retn\"},\"6d\":{\"mnemonic\":\"retn\"},\"7d\":{\"mnemonic\":\"retn\"},\"4e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"6e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"4a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"bc\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"(nnnn)\"]},\"4d\":{\"mnemonic\":\"reti\"},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"r\",\"a\"]},\"5a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"de\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"(nnnn)\"]},\"5e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"7e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"r\"]},\"6a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"hl\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"6f\":{\"mnemonic\":\"rld\"},\"7a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"sp\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"(nnnn)\"]},\"a0\":{\"mnemonic\":\"ldi\"},\"a1\":{\"mnemonic\":\"cpi\"},\"a2\":{\"mnemonic\":\"ini\"},\"a3\":{\"mnemonic\":\"outi\"},\"a8\":{\"mnemonic\":\"ldd\"},\"a9\":{\"mnemonic\":\"cpd\"},\"aa\":{\"mnemonic\":\"ind\"},\"ab\":{\"mnemonic\":\"outd\"},\"b0\":{\"mnemonic\":\"ldir\"},\"b1\":{\"mnemonic\":\"cpir\"},\"b2\":{\"mnemonic\":\"inir\"},\"b3\":{\"mnemonic\":\"otir\"},\"b8\":{\"mnemonic\":\"lddr\"},\"b9\":{\"mnemonic\":\"cpdr\"},\"ba\":{\"mnemonic\":\"indr\"},\"bb\":{\"mnemonic\":\"otdr\"}}},\"ee\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"nn\"]},\"ef\":{\"mnemonic\":\"rst\",\"params\":[\"28\"]},\"f0\":{\"mnemonic\":\"ret\",\"params\":[\"p\"]},\"f1\":{\"mnemonic\":\"pop\",\"params\":[\"af\"]},\"f2\":{\"mnemonic\":\"jp\",\"params\":[\"p\",\"nnnn\"]},\"f3\":{\"mnemonic\":\"di\"},\"f4\":{\"mnemonic\":\"call\",\"params\":[\"p\",\"nnnn\"]},\"f5\":{\"mnemonic\":\"push\",\"params\":[\"af\"]},\"f6\":{\"mnemonic\":\"or\",\"params\":[\"nn\"]},\"f7\":{\"mnemonic\":\"rst\",\"params\":[\"30\"]},\"f8\":{\"mnemonic\":\"ret\",\"params\":[\"m\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"hl\"]},\"fa\":{\"mnemonic\":\"jp\",\"params\":[\"m\",\"nnnn\"]},\"fb\":{\"mnemonic\":\"ei\"},\"fc\":{\"mnemonic\":\"call\",\"params\":[\"m\",\"nnnn\"]},\"fd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"iy\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"iy\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"iyh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"iyh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"iy\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"iy\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"iyl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"iyl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"iyh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"iyl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(iy+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(iy+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(iy+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(iy+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(iy+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(iy+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(iy+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(iy+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(iy+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(iy+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(iy+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(iy+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(iy+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(iy+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(iy+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(iy+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(iy+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(iy+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(iy+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(iy+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(iy+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(iy+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(iy+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(iy+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(iy+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"iy\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"iy\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"iy\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"iy\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"iy\"]}}},\"fe\":{\"mnemonic\":\"cp\",\"params\":[\"nn\"]},\"ff\":{\"mnemonic\":\"rst\",\"params\":[\"38\"]}}");
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Z80_KNOWN_LABELS = [
-    [0x0000, "rst00"],
-    [0x0008, "rst08"],
-    [0x0010, "rst10"],
-    [0x0018, "rst18"],
-    [0x0020, "rst20"],
-    [0x0028, "rst28"],
-    [0x0030, "rst30"],
-    [0x0038, "rst38"],
-];
-exports.TRS80_MODEL_III_KNOWN_LABELS = [
-    [0x0298, "clkon"],
-    [0x02a1, "clkoff"],
-    [0x0296, "cshin"],
-    [0x0235, "csin"],
-    [0x0287, "cshwr"],
-    [0x01f8, "csoff"],
-    [0x0264, "csout"],
-    [0x3033, "date"],
-    [0x0060, "delay"],
-    [0x0069, "initio"],
-    [0x002b, "kbchar"],
-    [0x0040, "kbline"],
-    [0x0049, "kbwait"],
-    [0x028d, "kbbrk"],
-    [0x003b, "prchar"],
-    [0x01d9, "prscn"],
-    [0x1a19, "ready"],
-    [0x0000, "reset"],
-    [0x006c, "route"],
-    [0x005a, "rsinit"],
-    [0x0050, "rsrcv"],
-    [0x0055, "rstx"],
-    [0x3042, "setcas"],
-    [0x3036, "time"],
-    [0x0033, "vdchar"],
-    [0x01c9, "vdcls"],
-    [0x021b, "vdline"],
-];
-
-
-/***/ }),
-/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6343,7 +6114,7 @@ exports.CassettePlayer = CassettePlayer;
 
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6351,17 +6122,17 @@ exports.CassettePlayer = CassettePlayer;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Trs80 = void 0;
 const z80_base_1 = __webpack_require__(0);
-const z80_emulator_1 = __webpack_require__(68);
-const Keyboard_1 = __webpack_require__(71);
-const Model1Level1Rom_1 = __webpack_require__(72);
-const Model1Level2Rom_1 = __webpack_require__(73);
-const Model3Rom_1 = __webpack_require__(74);
+const z80_emulator_1 = __webpack_require__(66);
+const Keyboard_1 = __webpack_require__(69);
+const Model1Level1Rom_1 = __webpack_require__(70);
+const Model1Level2Rom_1 = __webpack_require__(71);
+const Model3Rom_1 = __webpack_require__(72);
 const Config_1 = __webpack_require__(15);
 const trs80_base_1 = __webpack_require__(1);
 const z80_base_2 = __webpack_require__(0);
-const FloppyDisk_1 = __webpack_require__(8);
-const FloppyDiskController_1 = __webpack_require__(75);
-const EventScheduler_1 = __webpack_require__(39);
+const FloppyDisk_1 = __webpack_require__(7);
+const FloppyDiskController_1 = __webpack_require__(73);
+const EventScheduler_1 = __webpack_require__(38);
 // IRQs
 const M1_TIMER_IRQ_MASK = 0x80;
 const M3_CASSETTE_RISE_IRQ_MASK = 0x01;
@@ -7402,7 +7173,7 @@ exports.Trs80 = Trs80;
 
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7411,18 +7182,18 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(69));
+__export(__webpack_require__(67));
 
 
 /***/ }),
-/* 69 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const z80_base_1 = __webpack_require__(0);
-const Decode_1 = __webpack_require__(70);
+const Decode_1 = __webpack_require__(68);
 /**
  * Emulated Z80 processor.
  */
@@ -7611,7 +7382,7 @@ exports.Z80 = Z80;
 
 
 /***/ }),
-/* 70 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16492,7 +16263,7 @@ exports.decode = decode;
 
 
 /***/ }),
-/* 71 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16773,7 +16544,7 @@ exports.Keyboard = Keyboard;
 
 
 /***/ }),
-/* 72 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16786,7 +16557,7 @@ exports.model1Level1Rom = `
 
 
 /***/ }),
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16799,7 +16570,7 @@ exports.model1Level2Rom = `
 
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16812,7 +16583,7 @@ exports.model3Rom = `
 
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16827,9 +16598,9 @@ exports.model3Rom = `
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FloppyDiskController = void 0;
 const trs80_base_1 = __webpack_require__(1);
-const strongly_typed_events_1 = __webpack_require__(76);
+const strongly_typed_events_1 = __webpack_require__(74);
 const z80_base_1 = __webpack_require__(0);
-const EventScheduler_1 = __webpack_require__(39);
+const EventScheduler_1 = __webpack_require__(38);
 // Whether this controller supports writing.
 const SUPPORT_WRITING = false;
 // Number of physical drives.
@@ -17356,7 +17127,7 @@ exports.FloppyDiskController = FloppyDiskController;
 
 
 /***/ }),
-/* 76 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17381,30 +17152,30 @@ Object.defineProperty(exports, "DispatchError", { enumerable: true, get: functio
 Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return ste_core_1.PromiseSubscription; } });
 Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return ste_core_1.PromiseDispatcherBase; } });
 Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return ste_core_1.HandlingBase; } });
-var ste_events_1 = __webpack_require__(86);
+var ste_events_1 = __webpack_require__(84);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return ste_events_1.EventDispatcher; } });
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return ste_events_1.EventHandlingBase; } });
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return ste_events_1.EventList; } });
 Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return ste_events_1.NonUniformEventList; } });
-var ste_simple_events_1 = __webpack_require__(89);
+var ste_simple_events_1 = __webpack_require__(87);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventDispatcher; } });
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventHandlingBase; } });
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventList; } });
 Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.NonUniformSimpleEventList; } });
-var ste_signals_1 = __webpack_require__(92);
+var ste_signals_1 = __webpack_require__(90);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return ste_signals_1.SignalDispatcher; } });
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return ste_signals_1.SignalHandlingBase; } });
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return ste_signals_1.SignalList; } });
-var ste_promise_events_1 = __webpack_require__(94);
+var ste_promise_events_1 = __webpack_require__(92);
 Object.defineProperty(exports, "PromiseEventDispatcher", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventDispatcher; } });
 Object.defineProperty(exports, "PromiseEventHandlingBase", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventHandlingBase; } });
 Object.defineProperty(exports, "PromiseEventList", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventList; } });
 Object.defineProperty(exports, "NonUniformPromiseEventList", { enumerable: true, get: function () { return ste_promise_events_1.NonUniformPromiseEventList; } });
-var ste_promise_signals_1 = __webpack_require__(36);
+var ste_promise_signals_1 = __webpack_require__(35);
 Object.defineProperty(exports, "PromiseSignalDispatcher", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalDispatcher; } });
 Object.defineProperty(exports, "PromiseSignalHandlingBase", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalHandlingBase; } });
 Object.defineProperty(exports, "PromiseSignalList", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalList; } });
-var ste_promise_simple_events_1 = __webpack_require__(117);
+var ste_promise_simple_events_1 = __webpack_require__(115);
 Object.defineProperty(exports, "PromiseSimpleEventDispatcher", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventDispatcher; } });
 Object.defineProperty(exports, "PromiseSimpleEventHandlingBase", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventHandlingBase; } });
 Object.defineProperty(exports, "PromiseSimpleEventList", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventList; } });
@@ -17412,7 +17183,7 @@ Object.defineProperty(exports, "NonUniformPromiseSimpleEventList", { enumerable:
 
 
 /***/ }),
-/* 77 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17567,7 +17338,7 @@ exports.DispatcherBase = DispatcherBase;
 
 
 /***/ }),
-/* 78 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17590,7 +17361,7 @@ exports.DispatchError = DispatchError;
 
 
 /***/ }),
-/* 79 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17679,7 +17450,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 80 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17718,7 +17489,7 @@ exports.EventListBase = EventListBase;
 
 
 /***/ }),
-/* 81 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17744,7 +17515,7 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 82 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17820,7 +17591,7 @@ exports.HandlingBase = HandlingBase;
 
 
 /***/ }),
-/* 83 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17873,7 +17644,7 @@ exports.PromiseDispatcherBase = PromiseDispatcherBase;
 
 
 /***/ }),
-/* 84 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17922,7 +17693,7 @@ exports.PromiseSubscription = PromiseSubscription;
 
 
 /***/ }),
-/* 85 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17975,7 +17746,7 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 86 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17992,16 +17763,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = void 0;
 const EventDispatcher_1 = __webpack_require__(16);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return EventDispatcher_1.EventDispatcher; } });
-const EventHandlingBase_1 = __webpack_require__(87);
+const EventHandlingBase_1 = __webpack_require__(85);
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return EventHandlingBase_1.EventHandlingBase; } });
-const EventList_1 = __webpack_require__(31);
+const EventList_1 = __webpack_require__(30);
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return EventList_1.EventList; } });
-const NonUniformEventList_1 = __webpack_require__(88);
+const NonUniformEventList_1 = __webpack_require__(86);
 Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return NonUniformEventList_1.NonUniformEventList; } });
 
 
 /***/ }),
-/* 87 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18009,7 +17780,7 @@ Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: f
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventHandlingBase = void 0;
 const ste_core_1 = __webpack_require__(4);
-const EventList_1 = __webpack_require__(31);
+const EventList_1 = __webpack_require__(30);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -18022,7 +17793,7 @@ exports.EventHandlingBase = EventHandlingBase;
 
 
 /***/ }),
-/* 88 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18068,7 +17839,7 @@ exports.NonUniformEventList = NonUniformEventList;
 
 
 /***/ }),
-/* 89 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18077,16 +17848,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = void 0;
 const SimpleEventDispatcher_1 = __webpack_require__(17);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return SimpleEventDispatcher_1.SimpleEventDispatcher; } });
-const SimpleEventHandlingBase_1 = __webpack_require__(90);
+const SimpleEventHandlingBase_1 = __webpack_require__(88);
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return SimpleEventHandlingBase_1.SimpleEventHandlingBase; } });
-const NonUniformSimpleEventList_1 = __webpack_require__(91);
+const NonUniformSimpleEventList_1 = __webpack_require__(89);
 Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return NonUniformSimpleEventList_1.NonUniformSimpleEventList; } });
-const SimpleEventList_1 = __webpack_require__(32);
+const SimpleEventList_1 = __webpack_require__(31);
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return SimpleEventList_1.SimpleEventList; } });
 
 
 /***/ }),
-/* 90 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18094,7 +17865,7 @@ Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: funct
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEventHandlingBase = void 0;
 const ste_core_1 = __webpack_require__(4);
-const SimpleEventList_1 = __webpack_require__(32);
+const SimpleEventList_1 = __webpack_require__(31);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -18107,7 +17878,7 @@ exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
 
 
 /***/ }),
-/* 91 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18153,7 +17924,7 @@ exports.NonUniformSimpleEventList = NonUniformSimpleEventList;
 
 
 /***/ }),
-/* 92 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18168,16 +17939,16 @@ exports.NonUniformSimpleEventList = NonUniformSimpleEventList;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = void 0;
-const SignalDispatcher_1 = __webpack_require__(33);
+const SignalDispatcher_1 = __webpack_require__(32);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return SignalDispatcher_1.SignalDispatcher; } });
-const SignalHandlingBase_1 = __webpack_require__(93);
+const SignalHandlingBase_1 = __webpack_require__(91);
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return SignalHandlingBase_1.SignalHandlingBase; } });
-const SignalList_1 = __webpack_require__(34);
+const SignalList_1 = __webpack_require__(33);
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return SignalList_1.SignalList; } });
 
 
 /***/ }),
-/* 93 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18185,7 +17956,7 @@ Object.defineProperty(exports, "SignalList", { enumerable: true, get: function (
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalHandlingBase = void 0;
 const ste_core_1 = __webpack_require__(4);
-const SignalList_1 = __webpack_require__(34);
+const SignalList_1 = __webpack_require__(33);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -18198,7 +17969,7 @@ exports.SignalHandlingBase = SignalHandlingBase;
 
 
 /***/ }),
-/* 94 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18215,23 +17986,23 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformPromiseEventList = exports.PromiseEventList = exports.PromiseEventHandlingBase = exports.PromiseEventDispatcher = void 0;
 const PromiseEventDispatcher_1 = __webpack_require__(18);
 Object.defineProperty(exports, "PromiseEventDispatcher", { enumerable: true, get: function () { return PromiseEventDispatcher_1.PromiseEventDispatcher; } });
-const PromiseEventHandlingBase_1 = __webpack_require__(104);
+const PromiseEventHandlingBase_1 = __webpack_require__(102);
 Object.defineProperty(exports, "PromiseEventHandlingBase", { enumerable: true, get: function () { return PromiseEventHandlingBase_1.PromiseEventHandlingBase; } });
-const PromiseEventList_1 = __webpack_require__(35);
+const PromiseEventList_1 = __webpack_require__(34);
 Object.defineProperty(exports, "PromiseEventList", { enumerable: true, get: function () { return PromiseEventList_1.PromiseEventList; } });
-const NonUniformPromiseEventList_1 = __webpack_require__(105);
+const NonUniformPromiseEventList_1 = __webpack_require__(103);
 Object.defineProperty(exports, "NonUniformPromiseEventList", { enumerable: true, get: function () { return NonUniformPromiseEventList_1.NonUniformPromiseEventList; } });
 
 
 /***/ }),
-/* 95 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(9);
+const __1 = __webpack_require__(8);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
  * and unsubscribe methods based on generic handlers. The TEventType specifies
@@ -18379,7 +18150,7 @@ exports.DispatcherBase = DispatcherBase;
 
 
 /***/ }),
-/* 96 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18402,7 +18173,7 @@ exports.DispatchError = DispatchError;
 
 
 /***/ }),
-/* 97 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18491,7 +18262,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 98 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18530,7 +18301,7 @@ exports.EventListBase = EventListBase;
 
 
 /***/ }),
-/* 99 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18556,7 +18327,7 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 100 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18632,14 +18403,14 @@ exports.HandlingBase = HandlingBase;
 
 
 /***/ }),
-/* 101 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(9);
+const __1 = __webpack_require__(8);
 class PromiseDispatcherBase extends __1.DispatcherBase {
     constructor() {
         super();
@@ -18685,7 +18456,7 @@ exports.PromiseDispatcherBase = PromiseDispatcherBase;
 
 
 /***/ }),
-/* 102 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18734,7 +18505,7 @@ exports.PromiseSubscription = PromiseSubscription;
 
 
 /***/ }),
-/* 103 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18787,15 +18558,15 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 104 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseEventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(9);
-const PromiseEventList_1 = __webpack_require__(35);
+const ste_core_1 = __webpack_require__(8);
+const PromiseEventList_1 = __webpack_require__(34);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -18808,7 +18579,7 @@ exports.PromiseEventHandlingBase = PromiseEventHandlingBase;
 
 
 /***/ }),
-/* 105 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18854,14 +18625,14 @@ exports.NonUniformPromiseEventList = NonUniformPromiseEventList;
 
 
 /***/ }),
-/* 106 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSignalDispatcher = void 0;
-const ste_core_1 = __webpack_require__(10);
+const ste_core_1 = __webpack_require__(9);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a signal event.
@@ -18905,14 +18676,14 @@ exports.PromiseSignalDispatcher = PromiseSignalDispatcher;
 
 
 /***/ }),
-/* 107 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(10);
+const __1 = __webpack_require__(9);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
  * and unsubscribe methods based on generic handlers. The TEventType specifies
@@ -19060,7 +18831,7 @@ exports.DispatcherBase = DispatcherBase;
 
 
 /***/ }),
-/* 108 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19083,7 +18854,7 @@ exports.DispatchError = DispatchError;
 
 
 /***/ }),
-/* 109 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19172,7 +18943,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 110 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19211,7 +18982,7 @@ exports.EventListBase = EventListBase;
 
 
 /***/ }),
-/* 111 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19237,7 +19008,7 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 112 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19313,14 +19084,14 @@ exports.HandlingBase = HandlingBase;
 
 
 /***/ }),
-/* 113 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(10);
+const __1 = __webpack_require__(9);
 class PromiseDispatcherBase extends __1.DispatcherBase {
     constructor() {
         super();
@@ -19366,7 +19137,7 @@ exports.PromiseDispatcherBase = PromiseDispatcherBase;
 
 
 /***/ }),
-/* 114 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19415,7 +19186,7 @@ exports.PromiseSubscription = PromiseSubscription;
 
 
 /***/ }),
-/* 115 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19468,15 +19239,15 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 116 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSignalHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(10);
-const PromiseSignalList_1 = __webpack_require__(37);
+const ste_core_1 = __webpack_require__(9);
+const PromiseSignalList_1 = __webpack_require__(36);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -19489,7 +19260,7 @@ exports.PromiseSignalHandlingBase = PromiseSignalHandlingBase;
 
 
 /***/ }),
-/* 117 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19504,18 +19275,18 @@ exports.PromiseSignalHandlingBase = PromiseSignalHandlingBase;
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformPromiseSimpleEventList = exports.PromiseSimpleEventList = exports.PromiseSimpleEventHandlingBase = exports.PromiseSimpleEventDispatcher = void 0;
-const NonUniformPromiseSimpleEventList_1 = __webpack_require__(118);
+const NonUniformPromiseSimpleEventList_1 = __webpack_require__(116);
 Object.defineProperty(exports, "NonUniformPromiseSimpleEventList", { enumerable: true, get: function () { return NonUniformPromiseSimpleEventList_1.NonUniformPromiseSimpleEventList; } });
 const PromiseSimpleEventDispatcher_1 = __webpack_require__(19);
 Object.defineProperty(exports, "PromiseSimpleEventDispatcher", { enumerable: true, get: function () { return PromiseSimpleEventDispatcher_1.PromiseSimpleEventDispatcher; } });
-const PromiseSimpleEventHandlingBase_1 = __webpack_require__(128);
+const PromiseSimpleEventHandlingBase_1 = __webpack_require__(126);
 Object.defineProperty(exports, "PromiseSimpleEventHandlingBase", { enumerable: true, get: function () { return PromiseSimpleEventHandlingBase_1.PromiseSimpleEventHandlingBase; } });
-const PromiseSimpleEventList_1 = __webpack_require__(38);
+const PromiseSimpleEventList_1 = __webpack_require__(37);
 Object.defineProperty(exports, "PromiseSimpleEventList", { enumerable: true, get: function () { return PromiseSimpleEventList_1.PromiseSimpleEventList; } });
 
 
 /***/ }),
-/* 118 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19561,14 +19332,14 @@ exports.NonUniformPromiseSimpleEventList = NonUniformPromiseSimpleEventList;
 
 
 /***/ }),
-/* 119 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(11);
+const __1 = __webpack_require__(10);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
  * and unsubscribe methods based on generic handlers. The TEventType specifies
@@ -19716,7 +19487,7 @@ exports.DispatcherBase = DispatcherBase;
 
 
 /***/ }),
-/* 120 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19739,7 +19510,7 @@ exports.DispatchError = DispatchError;
 
 
 /***/ }),
-/* 121 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19828,7 +19599,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 122 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19867,7 +19638,7 @@ exports.EventListBase = EventListBase;
 
 
 /***/ }),
-/* 123 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19893,7 +19664,7 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 124 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19969,14 +19740,14 @@ exports.HandlingBase = HandlingBase;
 
 
 /***/ }),
-/* 125 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(11);
+const __1 = __webpack_require__(10);
 class PromiseDispatcherBase extends __1.DispatcherBase {
     constructor() {
         super();
@@ -20022,7 +19793,7 @@ exports.PromiseDispatcherBase = PromiseDispatcherBase;
 
 
 /***/ }),
-/* 126 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20071,7 +19842,7 @@ exports.PromiseSubscription = PromiseSubscription;
 
 
 /***/ }),
-/* 127 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20124,15 +19895,15 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 128 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromiseSimpleEventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(11);
-const PromiseSimpleEventList_1 = __webpack_require__(38);
+const ste_core_1 = __webpack_require__(10);
+const PromiseSimpleEventList_1 = __webpack_require__(37);
 /**
  * Extends objects with signal event handling capabilities.
  */
@@ -20145,7 +19916,7 @@ exports.PromiseSimpleEventHandlingBase = PromiseSimpleEventHandlingBase;
 
 
 /***/ }),
-/* 129 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20252,7 +20023,7 @@ exports.Trs80Screen = Trs80Screen;
 
 
 /***/ }),
-/* 130 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20931,7 +20702,7 @@ exports.MODEL3_ALT_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 192]);
 
 
 /***/ }),
-/* 131 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20939,7 +20710,7 @@ exports.MODEL3_ALT_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 192]);
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ControlPanel = void 0;
 const Utils_1 = __webpack_require__(20);
-const SettingsPanel_1 = __webpack_require__(41);
+const SettingsPanel_1 = __webpack_require__(40);
 const gCssPrefix = Utils_1.CSS_PREFIX + "-control-panel";
 const gScreenNodeCssClass = gCssPrefix + "-screen-node";
 const gPanelCssClass = gCssPrefix + "-panel";
@@ -21173,7 +20944,7 @@ exports.ControlPanel = ControlPanel;
 
 
 /***/ }),
-/* 132 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21260,7 +21031,573 @@ exports.ProgressBar = ProgressBar;
 
 
 /***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.disasmForTrs80Program = void 0;
+const trs80_base_1 = __webpack_require__(1);
+const z80_disasm_1 = __webpack_require__(132);
+const KnownLabels_1 = __webpack_require__(42);
+// Whether to try to disassemble this chunk.
+function shouldDisassembleSystemProgramChunk(chunk) {
+    if (chunk.loadAddress >= trs80_base_1.TRS80_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= trs80_base_1.TRS80_SCREEN_END) {
+        return false;
+    }
+    // Various addresses that don't represent code.
+    if (chunk.loadAddress === 0x4210 || chunk.loadAddress === 0x401E) {
+        return false;
+    }
+    return true;
+}
+/**
+ * Create and configure a disassembler for the specified program.
+ */
+function disasmForTrs80Program(program) {
+    const disasm = new z80_disasm_1.Disasm();
+    disasm.addLabels(z80_disasm_1.Z80_KNOWN_LABELS);
+    disasm.addLabels(KnownLabels_1.TRS80_MODEL_III_KNOWN_LABELS);
+    if (program.entryPointAddress !== undefined) {
+        disasm.addLabels([[program.entryPointAddress, "main"]]);
+    }
+    if (program instanceof trs80_base_1.CmdProgram) {
+        for (const chunk of program.chunks) {
+            if (chunk instanceof trs80_base_1.CmdLoadBlockChunk) {
+                disasm.addChunk(chunk.loadData, chunk.address);
+            }
+            if (chunk instanceof trs80_base_1.CmdTransferAddressChunk) {
+                // Not sure what to do here. I've seen junk after this block, and we risk
+                // overwriting valid things in memory. I suspect that CMD parsers of the time,
+                // when running into this block, would immediately just jump to the address
+                // and ignore everything after it, so let's emulate that.
+                break;
+            }
+        }
+    }
+    else {
+        for (const chunk of program.chunks) {
+            if (shouldDisassembleSystemProgramChunk(chunk)) {
+                disasm.addChunk(chunk.data, chunk.loadAddress);
+            }
+        }
+    }
+    if (program.entryPointAddress !== undefined) {
+        disasm.addEntryPoint(program.entryPointAddress);
+    }
+    return disasm;
+}
+exports.disasmForTrs80Program = disasmForTrs80Program;
+
+
+/***/ }),
+/* 132 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var Disasm_1 = __webpack_require__(133);
+exports.Disasm = Disasm_1.Disasm;
+var Instruction_1 = __webpack_require__(41);
+exports.Instruction = Instruction_1.Instruction;
+__export(__webpack_require__(136));
+__export(__webpack_require__(137));
+
+
+/***/ }),
 /* 133 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Opcodes_json_1 = __importDefault(__webpack_require__(134));
+const Instruction_1 = __webpack_require__(41);
+const z80_base_1 = __webpack_require__(0);
+const Preamble_1 = __webpack_require__(135);
+// Temporary string used for address substitution.
+const TARGET = "TARGET";
+// Number of bytes in memory.
+const MEM_SIZE = 64 * 1024;
+// Whether the byte can be converted to readable ASCII.
+function isPrintable(b) {
+    return b >= 32 && b < 127;
+}
+// Whether the byte is appropriate for a .text instruction.
+function isText(b) {
+    return isPrintable(b) || b === 0x0A || b === 0x0D;
+}
+/**
+ * Main class for disassembling a binary.
+ */
+class Disasm {
+    constructor() {
+        this.memory = new Uint8Array(MEM_SIZE);
+        this.hasContent = new Uint8Array(MEM_SIZE);
+        this.isDecoded = new Uint8Array(MEM_SIZE);
+        this.instructions = new Array(MEM_SIZE);
+        this.knownLabels = new Map();
+        /**
+         * Addresses that might be jumped to when running the code.
+         */
+        this.entryPoints = [];
+        /**
+         * Values that were loaded into a 16-bit register. We can't be sure that these were meant to be
+         * addresses, but guess that they were if it helps make a nicer disassembly.
+         */
+        this.referencedAddresses = new Set();
+    }
+    /**
+     * Add a chunk of binary somewhere in memory.
+     */
+    addChunk(bin, address) {
+        this.memory.set(bin, address);
+        this.hasContent.fill(1, address, address + bin.length);
+    }
+    /**
+     * Add a memory location that might be jumped to when running this program. If no entry
+     * points are specified, then the lower address for which we have binary will be used.
+     */
+    addEntryPoint(entryPoint) {
+        this.entryPoints.push(entryPoint);
+    }
+    /**
+     * Disassemble one instruction.
+     *
+     * @param address the address to disassemble.
+     */
+    disassembleOne(address) {
+        var _a;
+        // Bytes decoded so far in the instruction being disassembled.
+        let bytes = [];
+        // Get the next byte.
+        const next = () => {
+            const byte = this.memory[address];
+            bytes.push(byte);
+            address = z80_base_1.inc16(address);
+            return byte;
+        };
+        const startAddress = address;
+        let jumpTarget = undefined;
+        // Fetch base instruction.
+        let byte = next();
+        let map = Opcodes_json_1.default;
+        let instruction;
+        while (instruction === undefined) {
+            let value = map[byte.toString(16)];
+            if (value === undefined) {
+                // TODO
+                // asm.push(".byte 0x" + byte.toString(16));
+                const stringParams = bytes.map((n) => "0x" + z80_base_1.toHex(n, 2));
+                instruction = new Instruction_1.Instruction(startAddress, bytes, ".byte", stringParams, stringParams);
+            }
+            else if (value.shift !== undefined) {
+                // Descend to sub-map.
+                map = value.shift;
+                byte = next();
+            }
+            else {
+                // Found instruction. Parse arguments.
+                const args = (_a = value.params, (_a !== null && _a !== void 0 ? _a : [])).slice();
+                for (let i = 0; i < args.length; i++) {
+                    let arg = args[i];
+                    let changed;
+                    do {
+                        changed = false;
+                        // Fetch word argument.
+                        let pos = arg.indexOf("nnnn");
+                        if (pos >= 0) {
+                            const lowByte = next();
+                            const highByte = next();
+                            const nnnn = z80_base_1.word(highByte, lowByte);
+                            let target;
+                            if (value.mnemonic === "call" || value.mnemonic === "jp") {
+                                jumpTarget = nnnn;
+                                target = TARGET;
+                            }
+                            else {
+                                target = "0x" + z80_base_1.toHex(nnnn, 4);
+                                // Perhaps we should only do this if the destination register is HL, since that's
+                                // often an address and other registers are more often lengths.
+                                this.referencedAddresses.add(nnnn);
+                            }
+                            arg = arg.substr(0, pos) + target + arg.substr(pos + 4);
+                            changed = true;
+                        }
+                        // Fetch byte argument.
+                        pos = arg.indexOf("nn");
+                        if (pos === -1) {
+                            pos = arg.indexOf("dd");
+                        }
+                        if (pos >= 0) {
+                            const nn = next();
+                            arg = arg.substr(0, pos) + "0x" + z80_base_1.toHex(nn, 2) + arg.substr(pos + 2);
+                            changed = true;
+                        }
+                        // Fetch offset argument.
+                        pos = arg.indexOf("offset");
+                        if (pos >= 0) {
+                            const offset = z80_base_1.signedByte(next());
+                            jumpTarget = address + offset;
+                            arg = arg.substr(0, pos) + TARGET + arg.substr(pos + 6);
+                            changed = true;
+                        }
+                    } while (changed);
+                    args[i] = arg;
+                }
+                instruction = new Instruction_1.Instruction(startAddress, bytes, value.mnemonic, value.params, args);
+                if (jumpTarget !== undefined) {
+                    instruction.jumpTarget = jumpTarget;
+                }
+            }
+        }
+        return instruction;
+    }
+    /**
+     * Makes a data (.byte, .text) instruction starting at the specified address.
+     */
+    makeDataInstruction(address) {
+        const startAddress = address;
+        const parts = [];
+        let mnemonic = undefined;
+        // Look for contiguous sequence of either text or not text.
+        if (isText(this.memory[address])) {
+            // Gobble as much text as we can.
+            mnemonic = ".text";
+            while (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] &&
+                isText(this.memory[address]) && address - startAddress < 50 &&
+                !(address > startAddress && this.referencedAddresses.has(address))) {
+                const byte = this.memory[address];
+                if (isPrintable(byte)) {
+                    let char = String.fromCharCode(byte);
+                    if (char === "\"") {
+                        // zasm doesn't support this backslash syntax. We'd have to enclose the whole string
+                        // with single quotes.
+                        // http://k1.spdns.de/Develop/Projects/zasm/Documentation/z79.htm#R
+                        char = "\\\"";
+                    }
+                    if (parts.length > 0 && parts[parts.length - 1].startsWith("\"")) {
+                        const s = parts[parts.length - 1];
+                        parts[parts.length - 1] = s.substring(0, s.length - 1) + char + "\"";
+                    }
+                    else {
+                        parts.push("\"" + char + "\"");
+                    }
+                }
+                else {
+                    parts.push("0x" + z80_base_1.toHexByte(byte));
+                }
+                address += 1;
+            }
+            // See if it's too short.
+            if (address - startAddress < 2) {
+                // Probably not actual text.
+                mnemonic = undefined;
+                parts.splice(0, parts.length);
+                address = startAddress;
+            }
+            else {
+                // Allow terminating NUL. Also allow terminating 0x03, it was used by the TRS-80 $VDLINE routine.
+                if (address < MEM_SIZE && this.hasContent[address] &&
+                    !(address > startAddress && this.referencedAddresses.has(address)) &&
+                    !this.isDecoded[address] && (this.memory[address] === 0x00 || this.memory[address] === 0x03)) {
+                    parts.push("0x" + z80_base_1.toHexByte(this.memory[address]));
+                    address += 1;
+                }
+            }
+        }
+        if (mnemonic === undefined) {
+            mnemonic = ".byte";
+            while (address < MEM_SIZE && this.hasContent[address] && !this.isDecoded[address] &&
+                address - startAddress < 8 && !(address > startAddress && this.referencedAddresses.has(address))) {
+                parts.push("0x" + z80_base_1.toHexByte(this.memory[address]));
+                address += 1;
+            }
+        }
+        const bytes = Array.from(this.memory.slice(startAddress, address));
+        return new Instruction_1.Instruction(startAddress, bytes, mnemonic, parts, parts);
+    }
+    /**
+     * Add an array of known label ([address, label] pairs).
+     */
+    addLabels(labels) {
+        for (const [address, label] of labels) {
+            this.knownLabels.set(address, label);
+        }
+    }
+    /**
+     * Whether we have a label with this name. This is pretty slow currently, but is only used
+     * where that doesn't matter. Speed up with a set later if necessary.
+     */
+    haveLabel(label) {
+        for (const l of this.knownLabels.values()) {
+            if (l === label) {
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * Add the label or, if it's already there, add a suffix to make it unique.
+     */
+    addUniqueLabel(address, label) {
+        let suffix = 1;
+        while (suffix < 1000) {
+            const uniqueLabel = label + (suffix === 1 ? "" : suffix);
+            if (this.haveLabel(uniqueLabel)) {
+                suffix += 1;
+            }
+            else {
+                this.addLabels([[address, uniqueLabel]]);
+                break;
+            }
+        }
+    }
+    /**
+     * Disassemble all instructions and assign labels.
+     */
+    disassemble() {
+        var _a;
+        // First, see if there's a preamble that copies the program else where in memory and jumps to it.
+        // Use numerical for-loop instead of for-of because we modify the array in the loop and I
+        // don't know what guarantees JavaScript makes about that.
+        for (let i = 0; i < this.entryPoints.length; i++) {
+            const entryPoint = this.entryPoints[i];
+            const preamble = Preamble_1.Preamble.detect(this.memory, entryPoint);
+            if (preamble !== undefined) {
+                const begin = preamble.sourceAddress;
+                const end = begin + preamble.copyLength;
+                this.addChunk(this.memory.subarray(begin, end), preamble.destinationAddress);
+                // Unmark this so that we don't decode it as data. It's possible that the program makes use of
+                // it, but unlikely.
+                this.hasContent.fill(0, begin, end);
+                this.addUniqueLabel(preamble.jumpAddress, "main");
+                // It might have a preamble! See Galaxy Invasion.
+                this.addEntryPoint(preamble.jumpAddress);
+            }
+        }
+        // Create set of addresses we want to decode, starting with our entry points.
+        const addressesToDecode = new Set();
+        const addAddressToDecode = (number) => {
+            if (number !== undefined &&
+                this.hasContent[number] &&
+                this.instructions[number] === undefined) {
+                addressesToDecode.add(number);
+            }
+        };
+        if (this.entryPoints.length === 0) {
+            // No explicit entry points. Default to lowest address we have data for.
+            for (let address = 0; address < MEM_SIZE; address++) {
+                if (this.hasContent[address]) {
+                    addressesToDecode.add(address);
+                    break;
+                }
+            }
+            if (this.entryPoints.length === 0) {
+                throw new Error("no binary content was specified");
+            }
+        }
+        else {
+            for (const address of this.entryPoints) {
+                addressesToDecode.add(address);
+            }
+        }
+        // Keep decoding as long as we have addresses to decode.
+        while (addressesToDecode.size !== 0) {
+            // Pick any to do next.
+            const address = addressesToDecode.values().next().value;
+            addressesToDecode.delete(address);
+            const instruction = this.disassembleOne(address);
+            this.instructions[address] = instruction;
+            this.isDecoded.fill(1, address, address + instruction.bin.length);
+            addAddressToDecode(instruction.jumpTarget);
+            if (instruction.continues()) {
+                addAddressToDecode(address + instruction.bin.length);
+            }
+        }
+        // Map from jump target to list of instructions that jump there.
+        const jumpTargetMap = new Map();
+        // Make list of instructions in memory order.
+        const instructions = [];
+        for (let address = 0; address < MEM_SIZE; address++) {
+            if (this.hasContent[address]) {
+                let instruction = this.instructions[address];
+                if (instruction === undefined) {
+                    instruction = this.makeDataInstruction(address);
+                }
+                instructions.push(instruction);
+                if (instruction.jumpTarget !== undefined) {
+                    // Add this instruction to the list of instructions that call this target.
+                    let sources = jumpTargetMap.get(instruction.jumpTarget);
+                    if (sources === undefined) {
+                        sources = [];
+                        jumpTargetMap.set(instruction.jumpTarget, sources);
+                    }
+                    sources.push(instruction);
+                }
+                address += instruction.bin.length - 1;
+            }
+        }
+        // Assign labels.
+        let labelCounter = 1;
+        for (const instruction of instructions) {
+            let label = this.knownLabels.get(instruction.address);
+            const sources = (_a = jumpTargetMap.get(instruction.address), (_a !== null && _a !== void 0 ? _a : []));
+            if (sources.length !== 0) {
+                if (label === undefined) {
+                    // Make anonymous label.
+                    label = "label" + labelCounter++;
+                }
+            }
+            if (label !== undefined) {
+                instruction.label = label;
+                // Replace pseudo-target in instruction.
+                for (const source of sources) {
+                    source.replaceArgVariable(TARGET, label);
+                }
+            }
+        }
+        // Replace the target variable with the actual address for those
+        // jumps that go outside our disassembled code.
+        for (const instruction of instructions) {
+            if (instruction.jumpTarget !== undefined) {
+                let label = this.knownLabels.get(instruction.jumpTarget);
+                if (label === undefined) {
+                    label = "0x" + z80_base_1.toHexWord(instruction.jumpTarget);
+                }
+                instruction.replaceArgVariable(TARGET, label);
+            }
+        }
+        return instructions;
+    }
+}
+exports.Disasm = Disasm;
+
+
+/***/ }),
+/* 134 */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"0\":{\"mnemonic\":\"nop\"},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"nnnn\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"(bc)\",\"a\"]},\"3\":{\"mnemonic\":\"inc\",\"params\":[\"bc\"]},\"4\":{\"mnemonic\":\"inc\",\"params\":[\"b\"]},\"5\":{\"mnemonic\":\"dec\",\"params\":[\"b\"]},\"6\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"nn\"]},\"7\":{\"mnemonic\":\"rlca\"},\"8\":{\"mnemonic\":\"ex\",\"params\":[\"af\",\"af'\"]},\"9\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"bc\"]},\"10\":{\"mnemonic\":\"djnz\",\"params\":[\"offset\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"nnnn\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"(de)\",\"a\"]},\"13\":{\"mnemonic\":\"inc\",\"params\":[\"de\"]},\"14\":{\"mnemonic\":\"inc\",\"params\":[\"d\"]},\"15\":{\"mnemonic\":\"dec\",\"params\":[\"d\"]},\"16\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"nn\"]},\"17\":{\"mnemonic\":\"rla\"},\"18\":{\"mnemonic\":\"jr\",\"params\":[\"offset\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"de\"]},\"20\":{\"mnemonic\":\"jr\",\"params\":[\"nz\",\"offset\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"hl\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"h\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"nn\"]},\"27\":{\"mnemonic\":\"daa\"},\"28\":{\"mnemonic\":\"jr\",\"params\":[\"z\",\"offset\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"hl\"]},\"30\":{\"mnemonic\":\"jr\",\"params\":[\"nc\",\"offset\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"nnnn\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"a\"]},\"33\":{\"mnemonic\":\"inc\",\"params\":[\"sp\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(hl)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(hl)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"nn\"]},\"37\":{\"mnemonic\":\"scf\"},\"38\":{\"mnemonic\":\"jr\",\"params\":[\"c\",\"offset\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"sp\"]},\"40\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"b\"]},\"41\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"c\"]},\"42\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"d\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"e\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"h\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"l\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(hl)\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"a\"]},\"48\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"b\"]},\"49\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"c\"]},\"50\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"b\"]},\"51\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"c\"]},\"52\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"d\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"e\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"h\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"l\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(hl)\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"a\"]},\"58\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"b\"]},\"59\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"c\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"h\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"l\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(hl)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"l\"]},\"76\":{\"mnemonic\":\"halt\"},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"a\"]},\"78\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"b\"]},\"79\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"c\"]},\"80\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"b\"]},\"81\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"c\"]},\"82\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"d\"]},\"83\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"e\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"h\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"l\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(hl)\"]},\"87\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"a\"]},\"88\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"b\"]},\"89\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"c\"]},\"90\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"b\"]},\"91\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"c\"]},\"92\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"d\"]},\"93\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"e\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"h\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"l\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(hl)\"]},\"97\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"a\"]},\"98\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"b\"]},\"99\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"c\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(bc)\"]},\"b\":{\"mnemonic\":\"dec\",\"params\":[\"bc\"]},\"c\":{\"mnemonic\":\"inc\",\"params\":[\"c\"]},\"d\":{\"mnemonic\":\"dec\",\"params\":[\"c\"]},\"e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"nn\"]},\"f\":{\"mnemonic\":\"rrca\"},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(de)\"]},\"1b\":{\"mnemonic\":\"dec\",\"params\":[\"de\"]},\"1c\":{\"mnemonic\":\"inc\",\"params\":[\"e\"]},\"1d\":{\"mnemonic\":\"dec\",\"params\":[\"e\"]},\"1e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"nn\"]},\"1f\":{\"mnemonic\":\"rra\"},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"hl\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"l\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"nn\"]},\"2f\":{\"mnemonic\":\"cpl\"},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(nnnn)\"]},\"3b\":{\"mnemonic\":\"dec\",\"params\":[\"sp\"]},\"3c\":{\"mnemonic\":\"inc\",\"params\":[\"a\"]},\"3d\":{\"mnemonic\":\"dec\",\"params\":[\"a\"]},\"3e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"nn\"]},\"3f\":{\"mnemonic\":\"ccf\"},\"4a\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"d\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"e\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"h\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"l\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"a\"]},\"5a\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"d\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"e\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"h\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"l\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"a\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"h\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"l\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"a\"]},\"7a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"d\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"e\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"h\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"l\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"a\"]},\"8a\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"d\"]},\"8b\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"e\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"h\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"l\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"a\"]},\"9a\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"d\"]},\"9b\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"e\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"h\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"l\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"a\"]},\"a0\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"b\"]},\"a1\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"c\"]},\"a2\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"d\"]},\"a3\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"e\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"h\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"l\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"a\"]},\"a8\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"b\"]},\"a9\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"c\"]},\"aa\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"d\"]},\"ab\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"e\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"h\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"l\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(hl)\"]},\"af\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"a\"]},\"b0\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"b\"]},\"b1\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"c\"]},\"b2\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"d\"]},\"b3\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"e\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"h\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"l\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"a\"]},\"b8\":{\"mnemonic\":\"cp\",\"params\":[\"b\"]},\"b9\":{\"mnemonic\":\"cp\",\"params\":[\"c\"]},\"ba\":{\"mnemonic\":\"cp\",\"params\":[\"d\"]},\"bb\":{\"mnemonic\":\"cp\",\"params\":[\"e\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"h\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"l\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(hl)\"]},\"bf\":{\"mnemonic\":\"cp\",\"params\":[\"a\"]},\"c0\":{\"mnemonic\":\"ret\",\"params\":[\"nz\"]},\"c1\":{\"mnemonic\":\"pop\",\"params\":[\"bc\"]},\"c2\":{\"mnemonic\":\"jp\",\"params\":[\"nz\",\"nnnn\"]},\"c3\":{\"mnemonic\":\"jp\",\"params\":[\"nnnn\"]},\"c4\":{\"mnemonic\":\"call\",\"params\":[\"nz\",\"nnnn\"]},\"c5\":{\"mnemonic\":\"push\",\"params\":[\"bc\"]},\"c6\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"nn\"]},\"c7\":{\"mnemonic\":\"rst\",\"params\":[\"00\"]},\"c8\":{\"mnemonic\":\"ret\",\"params\":[\"z\"]},\"c9\":{\"mnemonic\":\"ret\"},\"ca\":{\"mnemonic\":\"jp\",\"params\":[\"z\",\"nnnn\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"rlc\",\"params\":[\"b\"]},\"1\":{\"mnemonic\":\"rlc\",\"params\":[\"c\"]},\"2\":{\"mnemonic\":\"rlc\",\"params\":[\"d\"]},\"3\":{\"mnemonic\":\"rlc\",\"params\":[\"e\"]},\"4\":{\"mnemonic\":\"rlc\",\"params\":[\"h\"]},\"5\":{\"mnemonic\":\"rlc\",\"params\":[\"l\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(hl)\"]},\"7\":{\"mnemonic\":\"rlc\",\"params\":[\"a\"]},\"8\":{\"mnemonic\":\"rrc\",\"params\":[\"b\"]},\"9\":{\"mnemonic\":\"rrc\",\"params\":[\"c\"]},\"10\":{\"mnemonic\":\"rl\",\"params\":[\"b\"]},\"11\":{\"mnemonic\":\"rl\",\"params\":[\"c\"]},\"12\":{\"mnemonic\":\"rl\",\"params\":[\"d\"]},\"13\":{\"mnemonic\":\"rl\",\"params\":[\"e\"]},\"14\":{\"mnemonic\":\"rl\",\"params\":[\"h\"]},\"15\":{\"mnemonic\":\"rl\",\"params\":[\"l\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(hl)\"]},\"17\":{\"mnemonic\":\"rl\",\"params\":[\"a\"]},\"18\":{\"mnemonic\":\"rr\",\"params\":[\"b\"]},\"19\":{\"mnemonic\":\"rr\",\"params\":[\"c\"]},\"20\":{\"mnemonic\":\"sla\",\"params\":[\"b\"]},\"21\":{\"mnemonic\":\"sla\",\"params\":[\"c\"]},\"22\":{\"mnemonic\":\"sla\",\"params\":[\"d\"]},\"23\":{\"mnemonic\":\"sla\",\"params\":[\"e\"]},\"24\":{\"mnemonic\":\"sla\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"sla\",\"params\":[\"l\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(hl)\"]},\"27\":{\"mnemonic\":\"sla\",\"params\":[\"a\"]},\"28\":{\"mnemonic\":\"sra\",\"params\":[\"b\"]},\"29\":{\"mnemonic\":\"sra\",\"params\":[\"c\"]},\"30\":{\"mnemonic\":\"sll\",\"params\":[\"b\"]},\"31\":{\"mnemonic\":\"sll\",\"params\":[\"c\"]},\"32\":{\"mnemonic\":\"sll\",\"params\":[\"d\"]},\"33\":{\"mnemonic\":\"sll\",\"params\":[\"e\"]},\"34\":{\"mnemonic\":\"sll\",\"params\":[\"h\"]},\"35\":{\"mnemonic\":\"sll\",\"params\":[\"l\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(hl)\"]},\"37\":{\"mnemonic\":\"sll\",\"params\":[\"a\"]},\"38\":{\"mnemonic\":\"srl\",\"params\":[\"b\"]},\"39\":{\"mnemonic\":\"srl\",\"params\":[\"c\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"b\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"c\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"d\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"e\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"h\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"l\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(hl)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"a\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"b\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"c\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"b\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"c\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"d\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"e\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"h\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"l\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(hl)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"a\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"b\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"c\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"b\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"c\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"d\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"e\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"h\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"l\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(hl)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"a\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"b\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"c\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"b\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"c\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"d\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"e\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"h\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"l\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(hl)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"a\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"b\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"c\"]},\"80\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"b\"]},\"81\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"c\"]},\"82\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"d\"]},\"83\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"e\"]},\"84\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"h\"]},\"85\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"l\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(hl)\"]},\"87\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"a\"]},\"88\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"b\"]},\"89\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"c\"]},\"90\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"b\"]},\"91\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"c\"]},\"92\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"d\"]},\"93\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"e\"]},\"94\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"h\"]},\"95\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"l\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(hl)\"]},\"97\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"a\"]},\"98\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"b\"]},\"99\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"c\"]},\"a\":{\"mnemonic\":\"rrc\",\"params\":[\"d\"]},\"b\":{\"mnemonic\":\"rrc\",\"params\":[\"e\"]},\"c\":{\"mnemonic\":\"rrc\",\"params\":[\"h\"]},\"d\":{\"mnemonic\":\"rrc\",\"params\":[\"l\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(hl)\"]},\"f\":{\"mnemonic\":\"rrc\",\"params\":[\"a\"]},\"1a\":{\"mnemonic\":\"rr\",\"params\":[\"d\"]},\"1b\":{\"mnemonic\":\"rr\",\"params\":[\"e\"]},\"1c\":{\"mnemonic\":\"rr\",\"params\":[\"h\"]},\"1d\":{\"mnemonic\":\"rr\",\"params\":[\"l\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(hl)\"]},\"1f\":{\"mnemonic\":\"rr\",\"params\":[\"a\"]},\"2a\":{\"mnemonic\":\"sra\",\"params\":[\"d\"]},\"2b\":{\"mnemonic\":\"sra\",\"params\":[\"e\"]},\"2c\":{\"mnemonic\":\"sra\",\"params\":[\"h\"]},\"2d\":{\"mnemonic\":\"sra\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(hl)\"]},\"2f\":{\"mnemonic\":\"sra\",\"params\":[\"a\"]},\"3a\":{\"mnemonic\":\"srl\",\"params\":[\"d\"]},\"3b\":{\"mnemonic\":\"srl\",\"params\":[\"e\"]},\"3c\":{\"mnemonic\":\"srl\",\"params\":[\"h\"]},\"3d\":{\"mnemonic\":\"srl\",\"params\":[\"l\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(hl)\"]},\"3f\":{\"mnemonic\":\"srl\",\"params\":[\"a\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"d\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"e\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"h\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"l\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"a\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"d\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"e\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"h\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"l\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"a\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"d\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"e\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"h\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"l\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"a\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"d\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"e\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"h\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"l\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"a\"]},\"8a\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"d\"]},\"8b\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"e\"]},\"8c\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"h\"]},\"8d\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"l\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"a\"]},\"9a\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"d\"]},\"9b\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"e\"]},\"9c\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"h\"]},\"9d\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"l\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"a\"]},\"a0\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"b\"]},\"a1\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"c\"]},\"a2\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"d\"]},\"a3\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"e\"]},\"a4\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"h\"]},\"a5\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"l\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"a\"]},\"a8\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"b\"]},\"a9\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"c\"]},\"aa\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"d\"]},\"ab\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"e\"]},\"ac\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"h\"]},\"ad\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"l\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(hl)\"]},\"af\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"a\"]},\"b0\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"b\"]},\"b1\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"c\"]},\"b2\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"d\"]},\"b3\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"e\"]},\"b4\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"h\"]},\"b5\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"l\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"a\"]},\"b8\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"b\"]},\"b9\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"c\"]},\"ba\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"d\"]},\"bb\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"e\"]},\"bc\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"h\"]},\"bd\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"l\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(hl)\"]},\"bf\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"a\"]},\"c0\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"b\"]},\"c1\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"c\"]},\"c2\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"d\"]},\"c3\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"e\"]},\"c4\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"h\"]},\"c5\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"l\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(hl)\"]},\"c7\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"a\"]},\"c8\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"b\"]},\"c9\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"c\"]},\"ca\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"d\"]},\"cb\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"e\"]},\"cc\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"h\"]},\"cd\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"l\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(hl)\"]},\"cf\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"a\"]},\"d0\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"b\"]},\"d1\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"c\"]},\"d2\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"d\"]},\"d3\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"e\"]},\"d4\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"h\"]},\"d5\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"l\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(hl)\"]},\"d7\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"a\"]},\"d8\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"b\"]},\"d9\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"c\"]},\"da\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"d\"]},\"db\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"e\"]},\"dc\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"h\"]},\"dd\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"l\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(hl)\"]},\"df\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"a\"]},\"e0\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"b\"]},\"e1\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"c\"]},\"e2\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"d\"]},\"e3\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"e\"]},\"e4\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"h\"]},\"e5\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"l\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(hl)\"]},\"e7\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"a\"]},\"e8\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"b\"]},\"e9\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"c\"]},\"ea\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"d\"]},\"eb\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"e\"]},\"ec\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"h\"]},\"ed\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"l\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(hl)\"]},\"ef\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"a\"]},\"f0\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"b\"]},\"f1\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"c\"]},\"f2\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"d\"]},\"f3\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"e\"]},\"f4\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"h\"]},\"f5\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"l\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(hl)\"]},\"f7\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"a\"]},\"f8\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"b\"]},\"f9\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"c\"]},\"fa\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"d\"]},\"fb\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"e\"]},\"fc\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"h\"]},\"fd\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"l\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(hl)\"]},\"ff\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"a\"]}}},\"cc\":{\"mnemonic\":\"call\",\"params\":[\"z\",\"nnnn\"]},\"cd\":{\"mnemonic\":\"call\",\"params\":[\"nnnn\"]},\"ce\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"nn\"]},\"cf\":{\"mnemonic\":\"rst\",\"params\":[\"8\"]},\"d0\":{\"mnemonic\":\"ret\",\"params\":[\"nc\"]},\"d1\":{\"mnemonic\":\"pop\",\"params\":[\"de\"]},\"d2\":{\"mnemonic\":\"jp\",\"params\":[\"nc\",\"nnnn\"]},\"d3\":{\"mnemonic\":\"out\",\"params\":[\"(nn)\",\"a\"]},\"d4\":{\"mnemonic\":\"call\",\"params\":[\"nc\",\"nnnn\"]},\"d5\":{\"mnemonic\":\"push\",\"params\":[\"de\"]},\"d6\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"nn\"]},\"d7\":{\"mnemonic\":\"rst\",\"params\":[\"10\"]},\"d8\":{\"mnemonic\":\"ret\",\"params\":[\"c\"]},\"d9\":{\"mnemonic\":\"exx\"},\"da\":{\"mnemonic\":\"jp\",\"params\":[\"c\",\"nnnn\"]},\"db\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(nn)\"]},\"dc\":{\"mnemonic\":\"call\",\"params\":[\"c\",\"nnnn\"]},\"dd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"ix\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"ix\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"ixh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"ixh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"ix\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"ix\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"ixl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"ixl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"ixh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"ixl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(ix+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(ix+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(ix+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(ix+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(ix+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(ix+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(ix+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(ix+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(ix+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(ix+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(ix+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(ix+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(ix+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(ix+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(ix+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(ix+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(ix+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(ix+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(ix+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(ix+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(ix+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(ix+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(ix+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(ix+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(ix+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"ix\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"ix\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"ix\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"ix\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"ix\"]}}},\"de\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"nn\"]},\"df\":{\"mnemonic\":\"rst\",\"params\":[\"18\"]},\"e0\":{\"mnemonic\":\"ret\",\"params\":[\"po\"]},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"hl\"]},\"e2\":{\"mnemonic\":\"jp\",\"params\":[\"po\",\"nnnn\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"hl\"]},\"e4\":{\"mnemonic\":\"call\",\"params\":[\"po\",\"nnnn\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"hl\"]},\"e6\":{\"mnemonic\":\"and\",\"params\":[\"nn\"]},\"e7\":{\"mnemonic\":\"rst\",\"params\":[\"20\"]},\"e8\":{\"mnemonic\":\"ret\",\"params\":[\"pe\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"hl\"]},\"ea\":{\"mnemonic\":\"jp\",\"params\":[\"pe\",\"nnnn\"]},\"eb\":{\"mnemonic\":\"ex\",\"params\":[\"de\",\"hl\"]},\"ec\":{\"mnemonic\":\"call\",\"params\":[\"pe\",\"nnnn\"]},\"ed\":{\"shift\":{\"40\":{\"mnemonic\":\"in\",\"params\":[\"b\",\"(c)\"]},\"41\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"b\"]},\"42\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"bc\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"bc\"]},\"44\":{\"mnemonic\":\"neg\"},\"45\":{\"mnemonic\":\"retn\"},\"46\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"i\",\"a\"]},\"48\":{\"mnemonic\":\"in\",\"params\":[\"c\",\"(c)\"]},\"49\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"c\"]},\"50\":{\"mnemonic\":\"in\",\"params\":[\"d\",\"(c)\"]},\"51\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"d\"]},\"52\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"de\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"de\"]},\"54\":{\"mnemonic\":\"neg\"},\"55\":{\"mnemonic\":\"retn\"},\"56\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"i\"]},\"58\":{\"mnemonic\":\"in\",\"params\":[\"e\",\"(c)\"]},\"59\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"e\"]},\"60\":{\"mnemonic\":\"in\",\"params\":[\"h\",\"(c)\"]},\"61\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"h\"]},\"62\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"hl\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"64\":{\"mnemonic\":\"neg\"},\"65\":{\"mnemonic\":\"retn\"},\"66\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"67\":{\"mnemonic\":\"rrd\"},\"68\":{\"mnemonic\":\"in\",\"params\":[\"l\",\"(c)\"]},\"69\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"l\"]},\"70\":{\"mnemonic\":\"in\",\"params\":[\"f\",\"(c)\"]},\"71\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"0\"]},\"72\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"sp\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"sp\"]},\"74\":{\"mnemonic\":\"neg\"},\"75\":{\"mnemonic\":\"retn\"},\"76\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"78\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(c)\"]},\"79\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"a\"]},\"4c\":{\"mnemonic\":\"neg\"},\"5c\":{\"mnemonic\":\"neg\"},\"6c\":{\"mnemonic\":\"neg\"},\"7c\":{\"mnemonic\":\"neg\"},\"5d\":{\"mnemonic\":\"retn\"},\"6d\":{\"mnemonic\":\"retn\"},\"7d\":{\"mnemonic\":\"retn\"},\"4e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"6e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"4a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"bc\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"(nnnn)\"]},\"4d\":{\"mnemonic\":\"reti\"},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"r\",\"a\"]},\"5a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"de\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"(nnnn)\"]},\"5e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"7e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"r\"]},\"6a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"hl\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"6f\":{\"mnemonic\":\"rld\"},\"7a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"sp\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"(nnnn)\"]},\"a0\":{\"mnemonic\":\"ldi\"},\"a1\":{\"mnemonic\":\"cpi\"},\"a2\":{\"mnemonic\":\"ini\"},\"a3\":{\"mnemonic\":\"outi\"},\"a8\":{\"mnemonic\":\"ldd\"},\"a9\":{\"mnemonic\":\"cpd\"},\"aa\":{\"mnemonic\":\"ind\"},\"ab\":{\"mnemonic\":\"outd\"},\"b0\":{\"mnemonic\":\"ldir\"},\"b1\":{\"mnemonic\":\"cpir\"},\"b2\":{\"mnemonic\":\"inir\"},\"b3\":{\"mnemonic\":\"otir\"},\"b8\":{\"mnemonic\":\"lddr\"},\"b9\":{\"mnemonic\":\"cpdr\"},\"ba\":{\"mnemonic\":\"indr\"},\"bb\":{\"mnemonic\":\"otdr\"}}},\"ee\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"nn\"]},\"ef\":{\"mnemonic\":\"rst\",\"params\":[\"28\"]},\"f0\":{\"mnemonic\":\"ret\",\"params\":[\"p\"]},\"f1\":{\"mnemonic\":\"pop\",\"params\":[\"af\"]},\"f2\":{\"mnemonic\":\"jp\",\"params\":[\"p\",\"nnnn\"]},\"f3\":{\"mnemonic\":\"di\"},\"f4\":{\"mnemonic\":\"call\",\"params\":[\"p\",\"nnnn\"]},\"f5\":{\"mnemonic\":\"push\",\"params\":[\"af\"]},\"f6\":{\"mnemonic\":\"or\",\"params\":[\"nn\"]},\"f7\":{\"mnemonic\":\"rst\",\"params\":[\"30\"]},\"f8\":{\"mnemonic\":\"ret\",\"params\":[\"m\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"hl\"]},\"fa\":{\"mnemonic\":\"jp\",\"params\":[\"m\",\"nnnn\"]},\"fb\":{\"mnemonic\":\"ei\"},\"fc\":{\"mnemonic\":\"call\",\"params\":[\"m\",\"nnnn\"]},\"fd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"iy\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"iy\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"iyh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"iyh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"iy\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"iy\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"iyl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"iyl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"iyh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"iyl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(iy+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(iy+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(iy+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(iy+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(iy+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(iy+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(iy+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(iy+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(iy+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(iy+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(iy+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(iy+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(iy+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(iy+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(iy+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(iy+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(iy+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(iy+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(iy+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(iy+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(iy+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(iy+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(iy+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(iy+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(iy+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"iy\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"iy\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"iy\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"iy\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"iy\"]}}},\"fe\":{\"mnemonic\":\"cp\",\"params\":[\"nn\"]},\"ff\":{\"mnemonic\":\"rst\",\"params\":[\"38\"]}}");
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Information about a preamble that might copy the rest of the program elsewhere in memory. It typically looks like:
+ *
+ *     6000  21 0E 60            ld hl,0x600E
+ *     6003  11 00 43            ld de,0x4300
+ *     6006  01 5C 07            ld bc,0x075C
+ *     6009  ED B0               ldir
+ *     600B  C3 00 43            jp 0x4300
+ *     600E  [program to be copied]
+ *
+ */
+class Preamble {
+    constructor(preambleLength, sourceAddress, destinationAddress, copyLength, jumpAddress) {
+        this.preambleLength = preambleLength;
+        this.sourceAddress = sourceAddress;
+        this.destinationAddress = destinationAddress;
+        this.copyLength = copyLength;
+        this.jumpAddress = jumpAddress;
+    }
+    /**
+     * Detect a preamble that copies the program to another address.
+     */
+    static detect(memory, entryPoint) {
+        let preambleLength = 0x0E;
+        let start = entryPoint;
+        // Skip optional DI.
+        if (memory[start] === 0xF3) { // DI
+            start += 1;
+            preambleLength += 1;
+        }
+        const sourceAddress = memory[start + 0x01] | (memory[start + 0x02] << 8);
+        const destinationAddress = memory[start + 0x04] | (memory[start + 0x05] << 8);
+        const copyLength = memory[start + 0x07] | (memory[start + 0x08] << 8);
+        const jumpAddress = memory[start + 0x0C] | (memory[start + 0x0D] << 8);
+        if (memory[start + 0x00] === 0x21 && // LD HL,nnnn
+            memory[start + 0x03] === 0x11 && // LD DE,nnnn
+            memory[start + 0x06] === 0x01 && // LD BC,nnnn
+            memory[start + 0x09] === 0xED && memory[start + 0x0A] === 0xB0 && // LDIR
+            memory[start + 0x0B] === 0xC3 && // JP nnnn
+            jumpAddress >= destinationAddress && jumpAddress < destinationAddress + copyLength) {
+            return new Preamble(preambleLength, sourceAddress, destinationAddress, copyLength, jumpAddress);
+        }
+        return undefined;
+    }
+}
+exports.Preamble = Preamble;
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Z80_KNOWN_LABELS = [
+    [0x0000, "rst00"],
+    [0x0008, "rst08"],
+    [0x0010, "rst10"],
+    [0x0018, "rst18"],
+    [0x0020, "rst20"],
+    [0x0028, "rst28"],
+    [0x0030, "rst30"],
+    [0x0038, "rst38"],
+];
+
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const z80_base_1 = __webpack_require__(0);
+/**
+ * Converts an array of instructions into an array of text lines, suitable for displaying
+ * in a shell console.
+ */
+function instructionsToText(instructions) {
+    const lines = [];
+    for (const instruction of instructions) {
+        if (instruction.label !== undefined) {
+            lines.push("                 " + instruction.label + ":");
+        }
+        let address = instruction.address;
+        const bytes = instruction.bin;
+        while (bytes.length > 0) {
+            const subbytes = bytes.slice(0, Math.min(3, bytes.length));
+            lines.push(z80_base_1.toHexWord(address) + " " +
+                subbytes.map(z80_base_1.toHexByte).join(" ").padEnd(12) +
+                (address === instruction.address ? "        " + instruction.toText() : ""));
+            address += subbytes.length;
+            bytes.splice(0, subbytes.length);
+        }
+    }
+    return lines;
+}
+exports.instructionsToText = instructionsToText;
+
+
+/***/ }),
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21376,356 +21713,6 @@ class DisplaySamples {
 
 // EXTERNAL MODULE: ./node_modules/strongly-typed-events/dist/index.js
 var dist = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./src/ByteReader.ts
-const EOF = -1;
-/**
- * Provides an API for reading through a byte array.
- */
-class ByteReader {
-    constructor(b) {
-        this.b = b;
-        this.pos = 0;
-    }
-    /**
-     * Return the next byte, or EOF on end of array.
-     *
-     * @returns {number}
-     */
-    read() {
-        return this.pos < this.b.length ? this.b[this.pos++] : EOF;
-    }
-    /**
-     * Return the byte address of the next byte to be read.
-     */
-    addr() {
-        return this.pos;
-    }
-    /**
-     * Reads a little-endian short (two-byte) integer.
-     *
-     * @param allowEofAfterFirstByte if true, an EOF after the first byte will result in just the
-     * first byte. Otherwise an EOF is returned.
-     * @returns the integer, or EOF on end of file.
-     */
-    readShort(allowEofAfterFirstByte) {
-        const low = this.read();
-        if (low === EOF) {
-            return EOF;
-        }
-        const high = this.read();
-        if (high === EOF) {
-            return allowEofAfterFirstByte ? low : EOF;
-        }
-        return low + high * 256;
-    }
-    /**
-     * Reads a string from the stream. If the returned string is shorter than "length", then we hit EOF.
-     */
-    readString(length) {
-        let s = "";
-        while (length-- > 0) {
-            const letter = this.read();
-            if (letter === EOF) {
-                break;
-            }
-            // Here we could check to see if it's a valid (ASCII?) letter.
-            s += String.fromCharCode(letter);
-        }
-        return s;
-    }
-    /**
-     * Returns the next "length" bytes. If the returned array is shorter than "length", then we hit EOF.
-     */
-    readBytes(length) {
-        const pos = this.pos;
-        length = Math.min(length, this.b.length - pos);
-        this.pos += length;
-        // In principle we can use this to get a view to part of the underlying array, but it
-        // doesn't work in Chrome, we get a view to the whole array.
-        /// return new Uint8Array(this.b, pos, length);
-        // So instead make a copy.
-        return this.b.slice(pos, pos + length);
-    }
-}
-
-// EXTERNAL MODULE: ./node_modules/z80-base/dist/index.js
-var z80_base_dist = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./src/Annotations.ts
-/**
- * Information about one particular section of a program. Because this is program-based, the indices
- * are byte-oriented.
- */
-class ProgramAnnotation {
-    /**
-     * Create an object representing a section to annotate.
-     *
-     * @param text any text to display for that section.
-     * @param firstIndex the first index into the binary, inclusive.
-     * @param lastIndex the last index into the binary, inclusive.
-     */
-    constructor(text, firstIndex, lastIndex) {
-        this.text = text;
-        this.firstIndex = firstIndex;
-        this.lastIndex = lastIndex;
-    }
-}
-/**
- * Annotation to draw a point.
- */
-class PointAnnotation {
-    constructor(frame, value) {
-        this.frame = frame;
-        this.value = value;
-    }
-    draw(ctx) {
-        const x = ctx.frameToX(this.frame);
-        const y = ctx.valueToY(this.value);
-        ctx.context.fillStyle = ctx.highlightColor;
-        ctx.context.beginPath();
-        ctx.context.arc(x, y, 3, 0, 2 * Math.PI);
-        ctx.context.fill();
-    }
-}
-/**
- * Annotation to draw a horizontal line.
- */
-class HorizontalLineAnnotation {
-    constructor(value, x1, x2) {
-        this.value = value;
-        this.x1 = x1;
-        this.x2 = x2;
-    }
-    draw(ctx) {
-        const y = ctx.valueToY(this.value);
-        ctx.context.strokeStyle = ctx.highlightColor;
-        ctx.context.beginPath();
-        ctx.context.moveTo(ctx.frameToX(this.x1), y);
-        ctx.context.lineTo(ctx.frameToX(this.x2), y);
-        ctx.context.stroke();
-    }
-}
-/**
- * Annotation to draw a vertical line.
- */
-class VerticalLineAnnotation {
-    constructor(frame) {
-        this.frame = frame;
-    }
-    draw(ctx) {
-        const x = ctx.frameToX(this.frame);
-        ctx.context.strokeStyle = ctx.highlightColor;
-        ctx.context.beginPath();
-        ctx.context.moveTo(x, 0);
-        ctx.context.lineTo(x, ctx.height);
-        ctx.context.stroke();
-    }
-}
-/**
- * Label with braces.
- */
-class LabelAnnotation {
-    constructor(label, left, right, onTop) {
-        this.label = label;
-        this.left = Math.min(left, right);
-        this.right = Math.max(left, right);
-        this.onTop = onTop;
-    }
-    draw(ctx) {
-        const x1 = ctx.frameToX(this.left);
-        const x2 = ctx.frameToX(this.right);
-        drawBraceAndLabel(ctx.context, ctx.height, x1, x2, ctx.secondaryForegroundColor, this.label, ctx.foregroundColor, this.onTop);
-    }
-}
-/**
- * Draw a brace with specified label.
- */
-function drawBraceAndLabel(ctx, height, left, right, braceColor, label, labelColor, drawOnTop) {
-    const middle = (left + right) / 2;
-    const leading = 16;
-    // Don't have more than two lines, there's no space for it.
-    const lines = label.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        // Don't use a custom font here, they load asynchronously and we're not told when they
-        // finish loading, so we can't redraw and the initial draw uses some default serif font.
-        ctx.font = '10pt monospace';
-        ctx.fillStyle = labelColor;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        const y = drawOnTop ? 38 - (lines.length - i - 1) * leading : height - 35 + i * leading;
-        ctx.fillText(line, middle, y);
-    }
-    ctx.strokeStyle = braceColor;
-    ctx.lineWidth = 1;
-    drawBrace(ctx, left, middle, right, 40, height - 40, drawOnTop);
-}
-/**
- * Draw a horizontal brace.
- */
-function drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
-    const radius = Math.min(10, (right - left) / 4);
-    const lineY = drawOnTop ? top + 20 : bottom - 20;
-    const pointY = drawOnTop ? top : bottom;
-    const otherY = drawOnTop ? bottom - 40 : top + 40;
-    ctx.beginPath();
-    ctx.moveTo(left, otherY);
-    if (left === right || radius <= 0) {
-        ctx.lineTo(left, lineY);
-    }
-    else {
-        ctx.arcTo(left, lineY, left + radius, lineY, radius);
-        ctx.arcTo(middle, lineY, middle, pointY, radius);
-        ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
-        ctx.arcTo(right, lineY, right, lineY + (drawOnTop ? radius : -radius), radius);
-        ctx.lineTo(right, otherY);
-    }
-    ctx.stroke();
-}
-
-// CONCATENATED MODULE: ./src/SystemProgram.ts
-/**
- * Tools for dealing with SYSTEM (machine language) programs.
- *
- * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
- */
-
-
-
-const FILE_HEADER = 0x55;
-const DATA_HEADER = 0x3C;
-const END_OF_FILE_MARKER = 0x78;
-const FILENAME_LENGTH = 6;
-/**
- * Represents a chunk of bytes from the file, with a checksum.
- */
-class SystemChunk {
-    constructor(loadAddress, data, checksum) {
-        this.loadAddress = loadAddress;
-        this.data = data;
-        this.checksum = checksum;
-    }
-    /**
-     * Whether the checksum supplied on tape matches what we compute.
-     */
-    isChecksumValid() {
-        let checksum = 0;
-        // Include load address and data.
-        checksum += (this.loadAddress >> 8) & 0xFF;
-        checksum += this.loadAddress & 0xFF;
-        for (const b of this.data) {
-            checksum += b;
-        }
-        checksum &= 0xFF;
-        return checksum === this.checksum;
-    }
-}
-/**
- * Whether this is a program that can be loaded with the SYSTEM command.
- */
-function isSystemProgram(binary) {
-    return binary != null &&
-        binary.length >= 1 &&
-        binary[0] === FILE_HEADER;
-}
-/**
- * Class representing a SYSTEM (machine language) program. If the "error" field is set, then something
- * went wrong with the program and the data may be partially loaded.
- */
-class SystemProgram_SystemProgram {
-    constructor(binary) {
-        this.filename = "";
-        this.chunks = [];
-        this.entryPointAddress = 0;
-        this.annotations = [];
-        const b = new ByteReader(binary);
-        this.annotations.push(new ProgramAnnotation("File\nHead", b.addr(), b.addr()));
-        const headerByte = b.read();
-        if (headerByte === EOF) {
-            this.error = "File is empty";
-            return;
-        }
-        if (headerByte != FILE_HEADER) {
-            this.error = "Not a SYSTEM file";
-            return;
-        }
-        this.filename = b.readString(FILENAME_LENGTH);
-        if (this.filename.length < FILENAME_LENGTH) {
-            // Binary is truncated.
-            this.error = "File is truncated at filename";
-            return;
-        }
-        this.filename = this.filename.trim();
-        this.annotations.push(new ProgramAnnotation("Filename\n\"" + this.filename + "\"", b.addr() - FILENAME_LENGTH, b.addr() - 1));
-        while (true) {
-            this.annotations.push(new ProgramAnnotation("Data\nHead", b.addr(), b.addr()));
-            const marker = b.read();
-            if (marker === EOF) {
-                this.error = "File is truncated at start of block";
-                return;
-            }
-            if (marker === END_OF_FILE_MARKER) {
-                break;
-            }
-            if (marker !== DATA_HEADER) {
-                this.error = "Unexpected byte " + Object(z80_base_dist["toHexByte"])(marker) + " at start of block";
-                return;
-            }
-            let length = b.read();
-            if (length === EOF) {
-                this.error = "File is truncated at block length";
-                return;
-            }
-            // 0 means 256.
-            if (length === 0) {
-                length = 256;
-            }
-            this.annotations.push(new ProgramAnnotation("Len\n" + length, b.addr() - 1, b.addr() - 1));
-            const loadAddress = b.readShort(false);
-            if (loadAddress === EOF) {
-                this.error = "File is truncated at load address";
-                return;
-            }
-            this.annotations.push(new ProgramAnnotation("Addr\n" + Object(z80_base_dist["toHexWord"])(loadAddress), b.addr() - 2, b.addr() - 1));
-            const data = b.readBytes(length);
-            if (data.length < length) {
-                this.error = "File is truncated at data";
-                return;
-            }
-            const checksum = b.read();
-            if (loadAddress === EOF) {
-                this.error = "File is truncated at checksum";
-                return;
-            }
-            this.annotations.push(new ProgramAnnotation("XSum\n0x" + Object(z80_base_dist["toHexByte"])(checksum), b.addr() - 1, b.addr() - 1));
-            this.chunks.push(new SystemChunk(loadAddress, data, checksum));
-        }
-        this.entryPointAddress = b.readShort(false);
-        if (this.entryPointAddress === EOF) {
-            this.error = "File is truncated at entry point address";
-            this.entryPointAddress = 0;
-            return;
-        }
-        this.annotations.push(new ProgramAnnotation("Run\n" + Object(z80_base_dist["toHexWord"])(this.entryPointAddress), b.addr() - 2, b.addr() - 1));
-    }
-    /**
-     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
-     * not found in any chunk.
-     */
-    addressToByteOffset(address) {
-        // Skip file header and block header.
-        let offset = 1 + FILENAME_LENGTH + 4;
-        for (const chunk of this.chunks) {
-            if (address >= chunk.loadAddress && address < chunk.loadAddress + chunk.data.length) {
-                return offset + (address - chunk.loadAddress);
-            }
-            // Skip checksum and block header of the next block.
-            offset += chunk.data.length + 5;
-        }
-        return undefined;
-    }
-}
 
 // CONCATENATED MODULE: ./src/Utils.ts
 /**
@@ -22170,6 +22157,9 @@ function encodeLowSpeed(bytes, sampleRate) {
     return concatAudio(samplesList);
 }
 
+// EXTERNAL MODULE: ./node_modules/z80-base/dist/index.js
+var z80_base_dist = __webpack_require__(0);
+
 // CONCATENATED MODULE: ./src/WavFile.ts
 
 
@@ -22415,145 +22405,7 @@ function writeWavFile(samples, sampleRate) {
     return new Uint8Array(wav);
 }
 
-// CONCATENATED MODULE: ./src/CmdProgram.ts
-/**
- * Tools for dealing with CMD (machine language) programs.
- *
- * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/#cmdfile
- */
-
-// Chunk types.
-const CMD_LOAD_BLOCK = 0x01;
-const CMD_TRANSFER_ADDRESS = 0x02;
-const CMD_LOAD_MODULE_HEADER = 0x05;
-const CMD_MAX_TYPE = 0x1F;
-/**
- * Represents a chunk of bytes from the file.
- */
-class CmdChunk {
-    constructor(type, data) {
-        this.type = type;
-        this.rawData = data;
-    }
-}
-/**
- * A chunk for loading data into memory.
- */
-class CmdLoadBlockChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.address = data[0] + data[1] * 256;
-        this.loadData = data.slice(2);
-    }
-}
-/**
- * A chunk for jumping to the start of the program.
- */
-class CmdTransferAddressChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.address = data.length === 2 ? (data[0] + data[1] * 256) : 0;
-    }
-}
-/**
- * A header chunk for the filename.
- */
-class CmdLoadModuleHeaderChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.filename = new TextDecoder("ascii").decode(data).trim().replace(/ +/g, " ");
-    }
-}
-/**
- * Whether this is a CMD program.
- */
-function isCmdProgram(binary) {
-    return binary != null &&
-        binary.length >= 1 &&
-        binary[0] <= CMD_MAX_TYPE;
-}
-/**
- * Class representing a CMD (machine language) program. If the "error" field is set, then something
- * went wrong with the program and the data may be partially loaded.
- */
-class CmdProgram_CmdProgram {
-    constructor(binary) {
-        this.chunks = [];
-        this.annotations = [];
-        this.filename = "";
-        this.entryPointAddress = 0;
-        const b = new ByteReader(binary);
-        // Read each chunk.
-        while (true) {
-            // First byte is type.
-            const type = b.read();
-            if (type === EOF || type > CMD_MAX_TYPE) {
-                return;
-            }
-            // Second byte is length, in bytes.
-            let length = b.read();
-            if (length === EOF) {
-                this.error = "File is truncated at length";
-                return;
-            }
-            // Adjust load block length.
-            if (type === CMD_LOAD_BLOCK && length <= 2) {
-                length += 256;
-            }
-            // Read the raw bytes.
-            const data = b.readBytes(length);
-            if (data.length < length) {
-                this.error = "File is truncated at data";
-            }
-            // Create chunk type-specific objects.
-            let chunk;
-            switch (type) {
-                case CMD_LOAD_BLOCK:
-                    chunk = new CmdLoadBlockChunk(type, data);
-                    break;
-                case CMD_TRANSFER_ADDRESS: {
-                    const cmdTransferAddressChunk = new CmdTransferAddressChunk(type, data);
-                    this.entryPointAddress = cmdTransferAddressChunk.address;
-                    chunk = cmdTransferAddressChunk;
-                    break;
-                }
-                case CMD_LOAD_MODULE_HEADER: {
-                    const cmdLoadModuleHeaderChunk = new CmdLoadModuleHeaderChunk(type, data);
-                    this.filename = cmdLoadModuleHeaderChunk.filename;
-                    chunk = cmdLoadModuleHeaderChunk;
-                    break;
-                }
-                default:
-                    chunk = new CmdChunk(type, data);
-                    break;
-            }
-            this.chunks.push(chunk);
-        }
-    }
-    /**
-     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
-     * not found in any chunk.
-     */
-    addressToByteOffset(address) {
-        // Offset in the binary of first byte of chunk.
-        let offset = 0;
-        for (const chunk of this.chunks) {
-            if (chunk instanceof CmdLoadBlockChunk) {
-                if (address >= chunk.address && address < chunk.address + chunk.loadData.length) {
-                    // Skip type, length, and address.
-                    return offset + 4 + (address - chunk.address);
-                }
-            }
-            // Skip type, length and data.
-            offset += 2 + chunk.rawData.length;
-        }
-        return undefined;
-    }
-}
-
 // CONCATENATED MODULE: ./src/Program.ts
-
-
 
 
 
@@ -22675,20 +22527,6 @@ class Program_Program {
             this.binary[12] === 0x20;
     }
     /**
-     * Whether this is a program that can be loaded with the SYSTEM command.
-     *
-     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
-     */
-    isSystemProgram() {
-        return isSystemProgram(this.binary);
-    }
-    /**
-     * Whether this is a CMD program.
-     */
-    isCmdProgram() {
-        return isCmdProgram(this.binary);
-    }
-    /**
      * Whether these two programs have the same binaries.
      */
     sameBinaryAs(other) {
@@ -22750,6 +22588,120 @@ class Program_Program {
         }
         return count;
     }
+}
+
+// CONCATENATED MODULE: ./src/Annotations.ts
+/**
+ * Annotation to draw a point.
+ */
+class PointAnnotation {
+    constructor(frame, value) {
+        this.frame = frame;
+        this.value = value;
+    }
+    draw(ctx) {
+        const x = ctx.frameToX(this.frame);
+        const y = ctx.valueToY(this.value);
+        ctx.context.fillStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.arc(x, y, 3, 0, 2 * Math.PI);
+        ctx.context.fill();
+    }
+}
+/**
+ * Annotation to draw a horizontal line.
+ */
+class HorizontalLineAnnotation {
+    constructor(value, x1, x2) {
+        this.value = value;
+        this.x1 = x1;
+        this.x2 = x2;
+    }
+    draw(ctx) {
+        const y = ctx.valueToY(this.value);
+        ctx.context.strokeStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.moveTo(ctx.frameToX(this.x1), y);
+        ctx.context.lineTo(ctx.frameToX(this.x2), y);
+        ctx.context.stroke();
+    }
+}
+/**
+ * Annotation to draw a vertical line.
+ */
+class VerticalLineAnnotation {
+    constructor(frame) {
+        this.frame = frame;
+    }
+    draw(ctx) {
+        const x = ctx.frameToX(this.frame);
+        ctx.context.strokeStyle = ctx.highlightColor;
+        ctx.context.beginPath();
+        ctx.context.moveTo(x, 0);
+        ctx.context.lineTo(x, ctx.height);
+        ctx.context.stroke();
+    }
+}
+/**
+ * Label with braces.
+ */
+class LabelAnnotation {
+    constructor(label, left, right, onTop) {
+        this.label = label;
+        this.left = Math.min(left, right);
+        this.right = Math.max(left, right);
+        this.onTop = onTop;
+    }
+    draw(ctx) {
+        const x1 = ctx.frameToX(this.left);
+        const x2 = ctx.frameToX(this.right);
+        drawBraceAndLabel(ctx.context, ctx.height, x1, x2, ctx.secondaryForegroundColor, this.label, ctx.foregroundColor, this.onTop);
+    }
+}
+/**
+ * Draw a brace with specified label.
+ */
+function drawBraceAndLabel(ctx, height, left, right, braceColor, label, labelColor, drawOnTop) {
+    const middle = (left + right) / 2;
+    const leading = 16;
+    // Don't have more than two lines, there's no space for it.
+    const lines = label.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        // Don't use a custom font here, they load asynchronously and we're not told when they
+        // finish loading, so we can't redraw and the initial draw uses some default serif font.
+        ctx.font = '10pt monospace';
+        ctx.fillStyle = labelColor;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        const y = drawOnTop ? 38 - (lines.length - i - 1) * leading : height - 35 + i * leading;
+        ctx.fillText(line, middle, y);
+    }
+    ctx.strokeStyle = braceColor;
+    ctx.lineWidth = 1;
+    drawBrace(ctx, left, middle, right, 40, height - 40, drawOnTop);
+}
+/**
+ * Draw a horizontal brace.
+ */
+function drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
+    const radius = Math.min(10, (right - left) / 4);
+    const lineY = drawOnTop ? top + 20 : bottom - 20;
+    const pointY = drawOnTop ? top : bottom;
+    const otherY = drawOnTop ? bottom - 40 : top + 40;
+    ctx.beginPath();
+    ctx.moveTo(left, otherY);
+    if (left === right || radius <= 0) {
+        ctx.lineTo(left, lineY);
+    }
+    else {
+        ctx.arcTo(left, lineY, left + radius, lineY, radius);
+        ctx.arcTo(middle, lineY, middle, pointY, radius);
+        ctx.arcTo(middle, lineY, middle + radius, lineY, radius);
+        ctx.arcTo(right, lineY, right, lineY + (drawOnTop ? radius : -radius), radius);
+        ctx.lineTo(right, otherY);
+    }
+    ctx.stroke();
 }
 
 // CONCATENATED MODULE: ./src/HighSpeedTapeDecoder.ts
@@ -23813,11 +23765,21 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
 }
+// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js
+
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
-  subClass.__proto__ = superClass;
+  _setPrototypeOf(subClass, superClass);
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/assertThisInitialized.js
 function _assertThisInitialized(self) {
@@ -28546,11 +28508,14 @@ function toDiv(basicProgram, out) {
     return elements;
 }
 
-// EXTERNAL MODULE: ./node_modules/z80-disasm/dist/index.js
-var z80_disasm_dist = __webpack_require__(5);
-
 // EXTERNAL MODULE: ./node_modules/trs80-emulator/dist/index.js
 var trs80_emulator_dist = __webpack_require__(3);
+
+// EXTERNAL MODULE: ./node_modules/trs80-disasm/dist/index.js
+var trs80_disasm_dist = __webpack_require__(13);
+
+// EXTERNAL MODULE: ./node_modules/trs80-base/dist/ProgramAnnotation.js
+var ProgramAnnotation = __webpack_require__(5);
 
 // CONCATENATED MODULE: ./src/SystemProgramRender.ts
 
@@ -28559,9 +28524,7 @@ var trs80_emulator_dist = __webpack_require__(3);
 
 
 
-// RAM address range of screen.
-const SCREEN_BEGIN = 15 * 1024;
-const SCREEN_END = 16 * 1024;
+
 /**
  * Add text to the line with the specified class.
  *
@@ -28655,15 +28618,6 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         out.appendChild(line);
         SystemProgramRender_add(line, systemProgram.error, classes.error);
     }
-    function okChunk(chunk) {
-        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
-            return false;
-        }
-        if (chunk.loadAddress === 0x4210 || chunk.loadAddress === 0x401E) {
-            return false;
-        }
-        return true;
-    }
     // Prepare screenshot, in case loading process writes to screen.
     const screen = new trs80_emulator_dist["CanvasScreen"]();
     let wroteToScreen = false;
@@ -28688,7 +28642,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         text = text.padEnd(14, " ");
         SystemProgramRender_add(line, text, classes.hex);
         // Write explanation.
-        if (chunk.loadAddress >= SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= SCREEN_END) {
+        if (chunk.loadAddress >= trs80_base_dist["TRS80_SCREEN_BEGIN"] && chunk.loadAddress + chunk.data.length <= trs80_base_dist["TRS80_SCREEN_END"]) {
             SystemProgramRender_add(line, "Screen", classes.opcodes);
             if (!wroteToScreen) {
                 SystemProgramRender_add(line, " (see screenshot below)", classes.error);
@@ -28731,16 +28685,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     h1 = document.createElement("h1");
     h1.innerText = "Disassembly";
     out.appendChild(h1);
-    const disasm = new z80_disasm_dist["Disasm"]();
-    disasm.addLabels(z80_disasm_dist["Z80_KNOWN_LABELS"]);
-    disasm.addLabels(z80_disasm_dist["TRS80_MODEL_III_KNOWN_LABELS"]);
-    disasm.addLabels([[systemProgram.entryPointAddress, "MAIN"]]);
-    for (const chunk of systemProgram.chunks) {
-        if (okChunk(chunk)) {
-            disasm.addChunk(chunk.data, chunk.loadAddress);
-        }
-    }
-    disasm.addEntryPoint(systemProgram.entryPointAddress);
+    const disasm = Object(trs80_disasm_dist["disasmForTrs80Program"])(systemProgram);
     const instructions = disasm.disassemble();
     for (const instruction of instructions) {
         if (instruction.label !== undefined) {
@@ -28766,9 +28711,9 @@ function SystemProgramRender_toDiv(systemProgram, out) {
             }
             const byteOffset = systemProgram.addressToByteOffset(address);
             if (byteOffset !== undefined) {
-                const lastIndex = byteOffset + subbytes.length - 1;
-                elements.push(new Highlightable(byteOffset, lastIndex, line));
-                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+                const endIndex = byteOffset + subbytes.length;
+                elements.push(new Highlightable(byteOffset, endIndex - 1, line));
+                annotations.push(new ProgramAnnotation["ProgramAnnotation"](instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
             }
             address += subbytes.length;
             bytes.splice(0, subbytes.length);
@@ -28888,7 +28833,7 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
         out.appendChild(line);
         // Chunk type.
         CmdProgramRender_add(line, Object(z80_base_dist["toHexByte"])(chunk.type) + "  ", classes.address);
-        if (chunk instanceof CmdLoadBlockChunk) {
+        if (chunk instanceof trs80_base_dist["CmdLoadBlockChunk"]) {
             CmdProgramRender_add(line, "Load at ", classes.opcodes);
             CmdProgramRender_add(line, Object(z80_base_dist["toHexWord"])(chunk.address), classes.address);
             CmdProgramRender_add(line, ": ", classes.opcodes);
@@ -28901,7 +28846,7 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
             }
             programAddress = chunk.address + chunk.loadData.length;
         }
-        else if (chunk instanceof CmdTransferAddressChunk) {
+        else if (chunk instanceof trs80_base_dist["CmdTransferAddressChunk"]) {
             if (chunk.rawData.length !== 2) {
                 CmdProgramRender_add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
             }
@@ -28910,7 +28855,7 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
                 CmdProgramRender_add(line, Object(z80_base_dist["toHexWord"])(chunk.address), classes.address);
             }
         }
-        else if (chunk instanceof CmdLoadModuleHeaderChunk) {
+        else if (chunk instanceof trs80_base_dist["CmdLoadModuleHeaderChunk"]) {
             CmdProgramRender_add(line, "Load module header: ", classes.opcodes);
             CmdProgramRender_add(line, chunk.filename, classes.hex);
         }
@@ -28925,17 +28870,7 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
     h1 = document.createElement("h1");
     h1.innerText = "Disassembly";
     out.appendChild(h1);
-    const disasm = new z80_disasm_dist["Disasm"]();
-    disasm.addLabels(z80_disasm_dist["Z80_KNOWN_LABELS"]);
-    disasm.addLabels(z80_disasm_dist["TRS80_MODEL_III_KNOWN_LABELS"]);
-    disasm.addLabels([[cmdProgram.entryPointAddress, "MAIN"]]);
-    for (const chunk of cmdProgram.chunks) {
-        if (chunk.type === CMD_LOAD_BLOCK) {
-            const address = chunk.rawData[0] + chunk.rawData[1] * 256;
-            disasm.addChunk(chunk.rawData.slice(2), address);
-        }
-    }
-    disasm.addEntryPoint(cmdProgram.entryPointAddress);
+    const disasm = Object(trs80_disasm_dist["disasmForTrs80Program"])(cmdProgram);
     const instructions = disasm.disassemble();
     for (const instruction of instructions) {
         if (instruction.label !== undefined) {
@@ -28961,9 +28896,9 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
             }
             const byteOffset = cmdProgram.addressToByteOffset(address);
             if (byteOffset !== undefined) {
-                const lastIndex = byteOffset + subbytes.length - 1;
-                elements.push(new Highlightable(byteOffset, lastIndex, line));
-                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+                const endIndex = byteOffset + subbytes.length;
+                elements.push(new Highlightable(byteOffset, endIndex - 1, line));
+                annotations.push(new ProgramAnnotation["ProgramAnnotation"](instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
             }
             address += subbytes.length;
             bytes.splice(0, subbytes.length);
@@ -29696,7 +29631,7 @@ class WaveformDisplay_WaveformDisplay {
                     for (const annotation of program.annotations) {
                         let startFrame = undefined;
                         let endFrame = undefined;
-                        for (let i = annotation.firstIndex; i <= annotation.lastIndex; i++) {
+                        for (let i = annotation.begin; i < annotation.end; i++) {
                             const byteInfo = program.byteData[i];
                             if (byteInfo !== undefined) {
                                 if (startFrame === undefined || endFrame === undefined) {
@@ -30083,8 +30018,6 @@ function decodeEdtasm(bytes, out) {
 }
 
 // CONCATENATED MODULE: ./src/TapeBrowser.ts
-
-
 
 
 
@@ -30564,10 +30497,13 @@ class TapeBrowser_TapeBrowser {
         return pane;
     }
     makeSystemPane(program) {
+        const systemProgram = Object(trs80_base_dist["decodeSystemProgram"])(program.binary);
+        if (systemProgram === undefined) {
+            return undefined;
+        }
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("system-program");
-        const systemProgram = new SystemProgram_SystemProgram(program.binary);
         const [highlightables, annotations] = SystemProgramRender_toDiv(systemProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
         highlighter.addHighlightables(highlightables);
@@ -30596,10 +30532,13 @@ class TapeBrowser_TapeBrowser {
         return pane;
     }
     makeCmdPane(program) {
+        const cmdProgram = Object(trs80_base_dist["decodeCmdProgram"])(program.binary);
+        if (cmdProgram === undefined) {
+            return undefined;
+        }
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("cmd-program");
-        const cmdProgram = new CmdProgram_CmdProgram(program.binary);
         const [highlightables, annotations] = CmdProgramRender_toDiv(cmdProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
         highlighter.addHighlightables(highlightables);
@@ -30651,28 +30590,13 @@ class TapeBrowser_TapeBrowser {
         };
         return pane;
     }
+    /**
+     * Load program into memory and run it.
+     */
     loadProgram(trs80, program) {
-        if (program.isCmdProgram()) {
-            const cmdProgram = new CmdProgram_CmdProgram(program.binary);
-            for (const chunk of cmdProgram.chunks) {
-                if (chunk instanceof CmdLoadBlockChunk) {
-                    for (let i = 0; i < chunk.loadData.length; i++) {
-                        trs80.writeMemory(chunk.address + i, chunk.loadData[i]);
-                    }
-                }
-                else if (chunk instanceof CmdTransferAddressChunk) {
-                    trs80.jumpTo(chunk.address);
-                }
-            }
-        }
-        else if (program.isSystemProgram()) {
-            const systemProgram = new SystemProgram_SystemProgram(program.binary);
-            for (const chunk of systemProgram.chunks) {
-                for (let i = 0; i < chunk.data.length; i++) {
-                    trs80.writeMemory(chunk.loadAddress + i, chunk.data[i]);
-                }
-            }
-            trs80.jumpTo(systemProgram.entryPointAddress);
+        const trs80File = Object(trs80_base_dist["decodeTrs80File"])(program.binary, undefined);
+        if (trs80File !== undefined) {
+            trs80.runTrs80File(trs80File);
         }
     }
     /**
@@ -30688,9 +30612,7 @@ class TapeBrowser_TapeBrowser {
         const reboot = () => {
             trs80.reset();
             if (autoRun && program !== undefined) {
-                trs80.eventScheduler.add(undefined, trs80.clockHz / 30, () => {
-                    this.loadProgram(trs80, program);
-                });
+                this.loadProgram(trs80, program);
             }
         };
         const hardwareSettingsPanel = new trs80_emulator_dist["SettingsPanel"](screen.getNode(), trs80, trs80_emulator_dist["PanelType"].HARDWARE);
@@ -30819,9 +30741,9 @@ class TapeBrowser_TapeBrowser {
             copiesOfTrack.push(program);
             // Make these panes here so they're accessible from the metadata page.
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
-            const systemPane = program.isSystemProgram() ? this.makeSystemPane(program) : undefined;
+            const systemPane = this.makeSystemPane(program);
             const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
-            const cmdPane = program.isCmdProgram() ? this.makeCmdPane(program) : undefined;
+            const cmdPane = this.makeCmdPane(program);
             // Metadata pane.
             let metadataLabel = frameToTimestamp(program.startFrame, this.tape.sampleRate, true) + " to " +
                 frameToTimestamp(program.endFrame, this.tape.sampleRate, true) + " (" +
