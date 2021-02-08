@@ -50,8 +50,9 @@
     "split.js": "^1.5.11",
     "strongly-typed-events": "^1.6.7",
     "trs80-base": "^1.0.3",
-    "z80-base": "^1.0.6",
+    "trs80-disasm": "^1.0.0",
     "trs80-emulator": "^1.1.7",
-    "z80-disasm": "^1.1.0"
+    "z80-base": "^1.0.6",
+    "z80-disasm": "^1.1.3"
   }
 }

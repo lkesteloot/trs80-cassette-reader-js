@@ -13,11 +13,15 @@ import {Highlight} from "./Highlight";
 import {SimpleEventDispatcher} from "strongly-typed-events";
 import {DisplaySamples} from "./DisplaySamples";
 import {clearElement} from "./Utils";
-import {SystemProgram} from "./SystemProgram";
 import {Highlighter} from "./Highlighter";
-import {CmdLoadBlockChunk, CmdProgram, CmdTransferAddressChunk} from "./CmdProgram";
 import {DEFAULT_SAMPLE_RATE} from "./WavFile";
-import {decodeBasicProgram} from "trs80-base";
+import {
+    CmdLoadBlockChunk,
+    CmdTransferAddressChunk,
+    decodeBasicProgram,
+    decodeCmdProgram,
+    decodeSystemProgram, decodeTrs80File
+} from "trs80-base";
 
 /**
  * Generic cassette that reads from a Int16Array.
@@ -583,12 +587,15 @@ export class TapeBrowser {
         return pane;
     }
 
-    private makeSystemPane(program: Program): Pane {
+    private makeSystemPane(program: Program): Pane | undefined {
+        const systemProgram = decodeSystemProgram(program.binary);
+        if (systemProgram === undefined) {
+            return undefined;
+        }
+
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("system-program");
-
-        const systemProgram = new SystemProgram(program.binary);
 
         const [highlightables, annotations] = SystemProgramRender.toDiv(systemProgram, div);
         const highlighter = new Highlighter(this, program, div);
@@ -620,12 +627,15 @@ export class TapeBrowser {
         return pane;
     }
 
-    private makeCmdPane(program: Program): Pane {
+    private makeCmdPane(program: Program): Pane | undefined {
+        const cmdProgram = decodeCmdProgram(program.binary);
+        if (cmdProgram === undefined) {
+            return undefined;
+        }
+
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("cmd-program");
-
-        const cmdProgram = new CmdProgram(program.binary);
 
         const [highlightables, annotations] = CmdProgramRender.toDiv(cmdProgram, div);
         const highlighter = new Highlighter(this, program, div);
@@ -686,26 +696,13 @@ export class TapeBrowser {
         return pane;
     }
 
+    /**
+     * Load program into memory and run it.
+     */
     private loadProgram(trs80: Trs80, program: Program): void {
-        if (program.isCmdProgram()) {
-            const cmdProgram = new CmdProgram(program.binary);
-            for (const chunk of cmdProgram.chunks) {
-                if (chunk instanceof CmdLoadBlockChunk) {
-                    for (let i = 0; i < chunk.loadData.length; i++) {
-                        trs80.writeMemory(chunk.address + i, chunk.loadData[i]);
-                    }
-                } else if (chunk instanceof CmdTransferAddressChunk) {
-                    trs80.jumpTo(chunk.address);
-                }
-            }
-        } else if (program.isSystemProgram()) {
-            const systemProgram = new SystemProgram(program.binary);
-            for (const chunk of systemProgram.chunks) {
-                for (let i = 0; i < chunk.data.length; i++) {
-                    trs80.writeMemory(chunk.loadAddress + i, chunk.data[i]);
-                }
-            }
-            trs80.jumpTo(systemProgram.entryPointAddress);
+        const trs80File = decodeTrs80File(program.binary, undefined);
+        if (trs80File !== undefined) {
+            trs80.runTrs80File(trs80File);
         }
     }
 
@@ -726,9 +723,7 @@ export class TapeBrowser {
             trs80.reset();
 
             if (autoRun && program !== undefined) {
-                trs80.eventScheduler.add(undefined, trs80.clockHz/30, () => {
-                    this.loadProgram(trs80, program);
-                });
+                this.loadProgram(trs80, program);
             }
         };
 
@@ -872,9 +867,9 @@ export class TapeBrowser {
 
             // Make these panes here so they're accessible from the metadata page.
             const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
-            const systemPane = program.isSystemProgram() ? this.makeSystemPane(program) : undefined;
+            const systemPane = this.makeSystemPane(program);
             const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
-            const cmdPane = program.isCmdProgram() ? this.makeCmdPane(program) : undefined;
+            const cmdPane = this.makeCmdPane(program);
 
             // Metadata pane.
             let metadataLabel = frameToTimestamp(program.startFrame, this.tape.sampleRate, true) + " to " +

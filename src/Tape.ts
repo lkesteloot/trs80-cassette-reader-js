@@ -7,7 +7,7 @@ import {AudioFile, highPassFilter} from "./AudioUtils";
 import {DisplaySamples} from "./DisplaySamples";
 import {LowSpeedTapeDecoder} from "./LowSpeedTapeDecoder";
 import {Program} from "./Program";
-import {ProgramAnnotation, WaveformAnnotation} from "./Annotations";
+import {WaveformAnnotation} from "./Annotations";
 import {SimpleEventDispatcher} from "strongly-typed-events";
 
 const LOCAL_DATA_KEY = "tapes";

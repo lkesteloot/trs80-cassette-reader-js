@@ -3,14 +3,12 @@ import {BitData} from "./BitData";
 import {DisplaySamples} from "./DisplaySamples";
 import {ByteData} from "./ByteData";
 import {SimpleEventDispatcher} from "strongly-typed-events";
-import {isSystemProgram} from "./SystemProgram";
-import {ProgramAnnotation} from "./Annotations";
 import {BitType} from "./BitType";
 import {TapeDecoder} from "./TapeDecoder";
 import {encodeHighSpeed, wrapHighSpeed} from "./HighSpeedTapeEncoder";
 import {encodeLowSpeed, wrapLowSpeed} from "./LowSpeedTapeEncoder";
 import {DEFAULT_SAMPLE_RATE, writeWavFile} from "./WavFile";
-import {isCmdProgram} from "./CmdProgram";
+import {ProgramAnnotation} from "trs80-base/dist/ProgramAnnotation";
 
 export class Program {
     public trackNumber: number;
@@ -151,22 +149,6 @@ export class Program {
             isValidLineNumberChar(this.binary[10]) &&
             isValidLineNumberChar(this.binary[11]) &&
             this.binary[12] === 0x20;
-    }
-
-    /**
-     * Whether this is a program that can be loaded with the SYSTEM command.
-     *
-     * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
-     */
-    public isSystemProgram(): boolean {
-        return isSystemProgram(this.binary);
-    }
-
-    /**
-     * Whether this is a CMD program.
-     */
-    public isCmdProgram(): boolean {
-        return isCmdProgram(this.binary);
     }
 
     /**

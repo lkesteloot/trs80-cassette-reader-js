@@ -1,13 +1,9 @@
 import jss from './Jss'
-import {Disasm, TRS80_MODEL_III_KNOWN_LABELS, Z80_KNOWN_LABELS} from "z80-disasm";
 import {toHexByte, toHexWord} from "z80-base";
 import {Highlightable} from "./Highlighter";
-import {ProgramAnnotation} from "./Annotations";
-import {
-    CMD_LOAD_BLOCK,
-    CmdLoadBlockChunk, CmdLoadModuleHeaderChunk,
-    CmdProgram, CmdTransferAddressChunk
-} from "./CmdProgram";
+import {disasmForTrs80Program} from "trs80-disasm";
+import {CmdLoadBlockChunk, CmdLoadModuleHeaderChunk, CmdProgram, CmdTransferAddressChunk} from "trs80-base";
+import {ProgramAnnotation} from "trs80-base/dist/ProgramAnnotation";
 
 /**
  * Add text to the line with the specified class.
@@ -156,17 +152,7 @@ export function toDiv(cmdProgram: CmdProgram, out: HTMLElement): [Highlightable[
     h1.innerText = "Disassembly";
     out.appendChild(h1);
 
-    const disasm = new Disasm();
-    disasm.addLabels(Z80_KNOWN_LABELS);
-    disasm.addLabels(TRS80_MODEL_III_KNOWN_LABELS);
-    disasm.addLabels([[cmdProgram.entryPointAddress, "MAIN"]]);
-    for (const chunk of cmdProgram.chunks) {
-        if (chunk.type === CMD_LOAD_BLOCK) {
-            const address = chunk.rawData[0] + chunk.rawData[1] * 256;
-            disasm.addChunk(chunk.rawData.slice(2), address);
-        }
-    }
-    disasm.addEntryPoint(cmdProgram.entryPointAddress);
+    const disasm = disasmForTrs80Program(cmdProgram);
     const instructions = disasm.disassemble();
 
     for (const instruction of instructions) {
@@ -197,9 +183,9 @@ export function toDiv(cmdProgram: CmdProgram, out: HTMLElement): [Highlightable[
 
             const byteOffset = cmdProgram.addressToByteOffset(address);
             if (byteOffset !== undefined) {
-                const lastIndex = byteOffset + subbytes.length - 1;
-                elements.push(new Highlightable(byteOffset, lastIndex, line));
-                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, lastIndex));
+                const endIndex = byteOffset + subbytes.length;
+                elements.push(new Highlightable(byteOffset, endIndex - 1, line));
+                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
             }
 
             address += subbytes.length;

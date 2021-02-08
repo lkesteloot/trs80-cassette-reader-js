@@ -9,6 +9,8 @@ import {concatAudio, makeSilence} from "./AudioUtils";
 import * as pkg from "../package.json";
 import {decodeBasicProgram, decodeSystemProgram, ElementType} from "trs80-base";
 import {Program} from "./Program";
+import {disasmForTrs80Program} from "trs80-disasm";
+import {instructionsToText} from "z80-disasm";
 
 /**
  * Create a plain text version of the Basic program described by the binary.
@@ -48,6 +50,7 @@ function main() {
         .option("--all", "write a single output file for the whole tape, instead of one per program")
         .option("--wav", "output clean WAV file")
         .option("--cas", "output CAS file")
+        .option("--asm", "output ASM file for system files")
         .option("--detokenize", "make BAS files detokenized")
         .description("Extracts programs from a TRS-80 cassette audio file.")
         .usage("[options] original.wav")
@@ -63,6 +66,7 @@ function main() {
     const all = program.opts().all;
     const wav = program.opts().wav;
     const cas = program.opts().cas;
+    const asm = program.opts().asm;
     const detokenize = program.opts().detokenize;
 
     if (all && !(wav || cas)) {
@@ -97,7 +101,7 @@ function main() {
     let firstForceNotice = true;
     const possiblyWriteFile = (pathname: string, contents: Uint8Array | string) => {
         if (!force && fs.existsSync(pathname)) {
-            console.error("    " + pathname + " exists " + (firstForceNotice ? " (use --force to overwrite)" : ""));
+            console.error("    " + pathname + " exists" + (firstForceNotice ? " (use --force to overwrite)" : ""));
             firstForceNotice = false;
         } else {
             console.log("    Writing " + pathname);
@@ -115,25 +119,33 @@ function main() {
 
         labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
 
+        // Decode various formats.
+        const systemProgram = decodeSystemProgram(program.binary);
+
         // Analyze system program.
-        if (program.isSystemProgram()) {
+        let asmProgram: string | undefined = undefined;
+        if (systemProgram !== undefined) {
             labelParts.push("system program");
-            const systemProgram = decodeSystemProgram(program.binary);
-            if (systemProgram !== undefined) {
-                let checksumErrors = 0;
-                for (const chunk of systemProgram.chunks) {
-                    if (Math.random() < 0.2) {
-                        chunk.data[0] += 1;
-                    }
-                    if (!chunk.isChecksumValid()) {
-                        checksumErrors += 1;
-                    }
+
+            // Check for checksum errors.
+            let checksumErrors = 0;
+            for (const chunk of systemProgram.chunks) {
+                if (!chunk.isChecksumValid()) {
+                    checksumErrors += 1;
                 }
-                if (checksumErrors === 0) {
-                    labelParts.push("all checksums good")
-                } else {
-                    labelParts.push(`${checksumErrors}/${systemProgram.chunks.length} checksum ${pluralize(checksumErrors, "error")} found`);
-                }
+            }
+            if (checksumErrors === 0) {
+                labelParts.push("all checksums good")
+            } else {
+                labelParts.push(`${checksumErrors}/${systemProgram.chunks.length} checksum ${pluralize(checksumErrors, "error")} found`);
+            }
+
+            // Disassembled if required.
+            if (asm) {
+                const disasm = disasmForTrs80Program(systemProgram);
+                const instructions = disasm.disassemble();
+                const lines = instructionsToText(instructions);
+                asmProgram = lines.join("\n") + "\n";
             }
         }
 
@@ -187,10 +199,14 @@ function main() {
                 if (program.isBasicProgram()) {
                     const contents = detokenize ? makeBasicText(program.binary) : program.binary;
                     possiblyWriteFile(path.join(dir, programName + ".bas"), contents);
-                } else if (program.isSystemProgram()) {
+                } else if (systemProgram !== undefined) {
                     possiblyWriteFile(path.join(dir, programName + ".3bn"), program.binary);
                 } else {
                     possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
+                }
+
+                if (asmProgram !== undefined) {
+                    possiblyWriteFile(path.join(dir, programName + ".asm"), asmProgram);
                 }
             }
         }

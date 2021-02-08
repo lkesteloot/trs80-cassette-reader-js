@@ -716,7 +716,7 @@ export class WaveformDisplay {
                     for (const annotation of program.annotations) {
                         let startFrame: number | undefined = undefined;
                         let endFrame: number | undefined = undefined;
-                        for (let i = annotation.firstIndex; i <= annotation.lastIndex; i++) {
+                        for (let i = annotation.begin; i < annotation.end; i++) {
                             const byteInfo = program.byteData[i];
                             if (byteInfo !== undefined) {
                                 if (startFrame === undefined || endFrame === undefined) {
