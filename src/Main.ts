@@ -274,7 +274,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                 switch (test.type) {
                     case TestType.LOW_SPEED_PULSE:
                     case TestType.LOW_SPEED_NO_PULSE: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape);
+                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
                         const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, true);
                         waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                         if (pulse.explanation !== "") {
@@ -287,7 +287,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     }
 
                     case TestType.LOW_SPEED_PROOF: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape);
+                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
                         const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
                         if (pulse === undefined) {
                             // Ran off the end of the tape.
@@ -308,7 +308,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     }
 
                     case TestType.LOW_SPEED_SYNC: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape);
+                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
                         const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
                         if (pulse === undefined) {
                             // Ran off the end of the tape.
@@ -341,7 +341,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     case TestType.LOW_SPEED_BITS:
                     case TestType.HIGH_SPEED_BITS: {
                         const decoder = test.type === TestType.LOW_SPEED_BITS
-                            ? new LowSpeedAnteoTapeDecoder(tape)
+                            ? new LowSpeedAnteoTapeDecoder(tape, 500)
                             : new HighSpeedTapeDecoder(tape);
                         const [actualBits, waveformAnnotations, explanations] = decoder.readBits(0);
                         if (test.bin === undefined) {

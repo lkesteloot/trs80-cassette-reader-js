@@ -106,7 +106,7 @@ export class LowSpeedTapeDecoder implements TapeDecoder {
     }
 
     public getName(): string {
-        return "Low speed" + (this.invert ? " (Inv)" : "");
+        return "500 baud" + (this.invert ? " (Inv)" : "");
     }
 
     public isHighSpeed(): boolean {

@@ -51,6 +51,7 @@ export class Pulse {
 export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
     public static DEFAULT_THRESHOLD = 3000;
     private readonly samples: Int16Array;
+    private readonly baud: number;
     // Distance between two clock pulses.
     private readonly period: number;
     private readonly halfPeriod: number;
@@ -59,7 +60,7 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
     private state: TapeDecoderState = TapeDecoderState.UNDECIDED;
     private peakThreshold = LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD;
 
-    constructor(tape: Tape) {
+    constructor(tape: Tape, baud: number) {
         const samples = tape.lowSpeedSamples.samplesList[0];
         if (true) {
             this.samples = samples;
@@ -70,7 +71,8 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
                 this.samples[i] = -samples[i];
             }
         }
-        this.period = Math.round(tape.sampleRate*0.002); // 2ms period.
+        this.baud = baud;
+        this.period = Math.round(tape.sampleRate/baud);
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
         this.pulseSearchRadius = Math.round(this.period / 6);
@@ -435,7 +437,7 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
     }
 
     getName(): string {
-        return "Low speed (Anteo)";
+        return `${this.baud} baud`;
     }
 
     public isHighSpeed(): boolean {

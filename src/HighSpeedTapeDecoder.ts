@@ -30,7 +30,7 @@ export class HighSpeedTapeDecoder implements TapeDecoder {
     }
 
     public getName(): string {
-        return "High speed";
+        return "1500 baud";
     }
 
     public isHighSpeed(): boolean {

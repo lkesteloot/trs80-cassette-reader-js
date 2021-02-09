@@ -43,6 +43,13 @@ function pluralize(count: number, singular: string, plural?: string): string {
     return count === 1 ? singular : plural ?? (singular + "s");
 }
 
+/**
+ * Return the count and the singular or plural version of a string depending on the count.
+ */
+function pluralizeWithCount(count: number, singular: string, plural?: string): string {
+    return `${count} ${pluralize(count, singular, plural)}`;
+}
+
 function main() {
     program
         .storeOptionsAsProperties(false)
@@ -50,8 +57,7 @@ function main() {
         .option("--all", "write a single output file for the whole tape, instead of one per program")
         .option("--wav", "output clean WAV file")
         .option("--cas", "output CAS file")
-        .option("--asm", "output ASM file for system files")
-        .option("--detokenize", "make BAS files detokenized")
+        .option("--text", "make text version of file when possible (e.g,. detokenized Basic, listing file for system files)")
         .description("Extracts programs from a TRS-80 cassette audio file.")
         .usage("[options] original.wav")
         .version(pkg.version)
@@ -66,8 +72,7 @@ function main() {
     const all = program.opts().all;
     const wav = program.opts().wav;
     const cas = program.opts().cas;
-    const asm = program.opts().asm;
-    const detokenize = program.opts().detokenize;
+    const text = program.opts().text;
 
     if (all && !(wav || cas)) {
         console.error("Must specify --wav or --cas when using --all");
@@ -123,7 +128,6 @@ function main() {
         const systemProgram = decodeSystemProgram(program.binary);
 
         // Analyze system program.
-        let asmProgram: string | undefined = undefined;
         if (systemProgram !== undefined) {
             labelParts.push("system program");
 
@@ -137,15 +141,7 @@ function main() {
             if (checksumErrors === 0) {
                 labelParts.push("all checksums good")
             } else {
-                labelParts.push(`${checksumErrors}/${systemProgram.chunks.length} checksum ${pluralize(checksumErrors, "error")} found`);
-            }
-
-            // Disassembled if required.
-            if (asm) {
-                const disasm = disasmForTrs80Program(systemProgram);
-                const instructions = disasm.disassemble();
-                const lines = instructionsToText(instructions);
-                asmProgram = lines.join("\n") + "\n";
+                labelParts.push(`${checksumErrors} of ${pluralizeWithCount(systemProgram.chunks.length, "chunk")} have a checksum error`);
             }
         }
 
@@ -157,7 +153,7 @@ function main() {
         // Warn about bit errors.
         const errorCount = program.countBitErrors();
         if (errorCount !== 0) {
-            labelParts.push(`${errorCount} bit-reading ${pluralize(errorCount, "error")}`);
+            labelParts.push(pluralizeWithCount(errorCount, "bit-reading error"));
         }
 
         // See if it's a duplicate.
@@ -197,16 +193,22 @@ function main() {
 
             if (!all) {
                 if (program.isBasicProgram()) {
-                    const contents = detokenize ? makeBasicText(program.binary) : program.binary;
-                    possiblyWriteFile(path.join(dir, programName + ".bas"), contents);
+                    possiblyWriteFile(path.join(dir, programName + ".bas"), program.binary);
+                    if (text) {
+                        possiblyWriteFile(path.join(dir, programName + ".txt"), makeBasicText(program.binary));
+                    }
                 } else if (systemProgram !== undefined) {
                     possiblyWriteFile(path.join(dir, programName + ".3bn"), program.binary);
+                    if (text) {
+                        const disasm = disasmForTrs80Program(systemProgram);
+                        const instructions = disasm.disassemble();
+                        const lines = instructionsToText(instructions);
+                        const listing = lines.join("\n") + "\n";
+
+                        possiblyWriteFile(path.join(dir, programName + ".lst"), listing);
+                    }
                 } else {
                     possiblyWriteFile(path.join(dir, programName + ".bin"), program.binary);
-                }
-
-                if (asmProgram !== undefined) {
-                    possiblyWriteFile(path.join(dir, programName + ".asm"), asmProgram);
                 }
             }
         }

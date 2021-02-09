@@ -22728,7 +22728,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.lengthMultiplier = tape.sampleRate / DEFAULT_SAMPLE_RATE;
     }
     getName() {
-        return "High speed";
+        return "1500 baud";
     }
     isHighSpeed() {
         return true;
@@ -22924,7 +22924,7 @@ class Pulse {
     }
 }
 class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
-    constructor(tape) {
+    constructor(tape, baud) {
         this.state = TapeDecoderState.UNDECIDED;
         this.peakThreshold = LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD;
         const samples = tape.lowSpeedSamples.samplesList[0];
@@ -22932,7 +22932,8 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             this.samples = samples;
         }
         else {}
-        this.period = Math.round(tape.sampleRate * 0.002); // 2ms period.
+        this.baud = baud;
+        this.period = Math.round(tape.sampleRate / baud);
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
         this.pulseSearchRadius = Math.round(this.period / 6);
@@ -23247,7 +23248,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         return [];
     }
     getName() {
-        return "Low speed (Anteo)";
+        return `${this.baud} baud`;
     }
     isHighSpeed() {
         return false;
@@ -23286,9 +23287,7 @@ class Decoder_Decoder {
         // All decoders we're interested in. We use factories because they're created
         // multiple times, once for each program found.
         let tapeDecoderFactories = [
-            // () => new LowSpeedTapeDecoder(this.tape, true),
-            // () => new LowSpeedTapeDecoder(this.tape, false),
-            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape),
+            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 500),
             () => new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
         ];
         // All programs we detect.
@@ -23452,7 +23451,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
         return out;
     }
     getName() {
-        return "Low speed" + (this.invert ? " (Inv)" : "");
+        return "500 baud" + (this.invert ? " (Inv)" : "");
     }
     isHighSpeed() {
         return false;
@@ -31964,7 +31963,7 @@ function runTests(parent, testFile) {
             switch (test.type) {
                 case TestType.LOW_SPEED_PULSE:
                 case TestType.LOW_SPEED_NO_PULSE: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
+                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
                     const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, true);
                     waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                     if (pulse.explanation !== "") {
@@ -31977,7 +31976,7 @@ function runTests(parent, testFile) {
                     break;
                 }
                 case TestType.LOW_SPEED_PROOF: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
+                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
                     const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
                     if (pulse === undefined) {
                         // Ran off the end of the tape.
@@ -31999,7 +31998,7 @@ function runTests(parent, testFile) {
                     break;
                 }
                 case TestType.LOW_SPEED_SYNC: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape);
+                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
                     const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
                     if (pulse === undefined) {
                         // Ran off the end of the tape.
@@ -32032,7 +32031,7 @@ function runTests(parent, testFile) {
                 case TestType.LOW_SPEED_BITS:
                 case TestType.HIGH_SPEED_BITS: {
                     const decoder = test.type === TestType.LOW_SPEED_BITS
-                        ? new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape)
+                        ? new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500)
                         : new HighSpeedTapeDecoder_HighSpeedTapeDecoder(tape);
                     const [actualBits, waveformAnnotations, explanations] = decoder.readBits(0);
                     if (test.bin === undefined) {

@@ -40,9 +40,7 @@ export class Decoder {
         // All decoders we're interested in. We use factories because they're created
         // multiple times, once for each program found.
         let tapeDecoderFactories: (() => TapeDecoder)[] = [
-            // () => new LowSpeedTapeDecoder(this.tape, true),
-            // () => new LowSpeedTapeDecoder(this.tape, false),
-            () => new LowSpeedAnteoTapeDecoder(this.tape),
+            () => new LowSpeedAnteoTapeDecoder(this.tape, 500),
             () => new HighSpeedTapeDecoder(this.tape),
         ];
 
