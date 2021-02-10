@@ -35,8 +35,6 @@ export class Decoder {
      * Decode the tape, populating the tape's "programs" array.
      */
     public decode() {
-        let sampleLength = this.tape.filteredSamples.samplesList[0].length;
-
         // All decoders we're interested in. We use factories because they're created
         // multiple times, once for each program found.
         let tapeDecoderFactories: (() => TapeDecoder)[] = [
