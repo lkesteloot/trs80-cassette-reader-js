@@ -39,6 +39,7 @@ export class Decoder {
         // multiple times, once for each program found.
         let tapeDecoderFactories: (() => TapeDecoder)[] = [
             () => new LowSpeedAnteoTapeDecoder(this.tape, 500),
+            () => new LowSpeedAnteoTapeDecoder(this.tape, 1000),
             () => new HighSpeedTapeDecoder(this.tape),
         ];
 
