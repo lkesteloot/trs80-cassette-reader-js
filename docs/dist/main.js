@@ -21864,7 +21864,7 @@ function frameDurationToString(frame, hz) {
     const hour = Math.floor(min / 60);
     min -= hour * 60;
     return (hour !== 0 ? hour + ":" + pad(min, 10, 2) : min) + ":" + pad(sec, 10, 2) + "." +
-        withCommas(pad(us, 10, 6)) + " (" + withCommas(frame) + " frames)";
+        withCommas(pad(us, 10, 6)) + " (" + withCommas(frame) + " frame" + (frame === 1 ? "" : "s") + ")";
 }
 /**
  * Concatenate a list of audio samples into one.
@@ -23283,11 +23283,12 @@ class Decoder_Decoder {
      * Decode the tape, populating the tape's "programs" array.
      */
     decode() {
-        let sampleLength = this.tape.filteredSamples.samplesList[0].length;
         // All decoders we're interested in. We use factories because they're created
         // multiple times, once for each program found.
         let tapeDecoderFactories = [
+            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 250),
             () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 500),
+            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 1000),
             () => new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
         ];
         // All programs we detect.
@@ -29053,6 +29054,10 @@ class WaveformDisplay_WaveformDisplay {
          */
         this.maxZoom = 0;
         /**
+         * The min value that zoom can have.
+         */
+        this.minZoom = -4;
+        /**
          * The sample in the middle of the display, in original samples.
          */
         this.centerSample = 0; // Initialized in zoomToFitAll()
@@ -29268,7 +29273,7 @@ class WaveformDisplay_WaveformDisplay {
         // We want to flip this horizontally, so make the slider's value
         // the negative of the real zoom.
         input.min = (-this.maxZoom).toString();
-        input.max = "0";
+        input.max = (-this.minZoom).toString();
         this.onMaxZoom.subscribe(maxZoom => input.min = (-maxZoom).toString());
         this.onZoom.subscribe(zoom => input.value = (-zoom).toString());
         input.addEventListener("input", () => {
@@ -29434,6 +29439,15 @@ class WaveformDisplay_WaveformDisplay {
                 updateSelectionAdjustMode();
             }
         });
+        canvas.addEventListener("wheel", event => {
+            // Can't do both at once, so just pick major axis.
+            if (Math.abs(event.deltaX) > Math.abs(event.deltaY)) {
+                const mag = Math.pow(2, this.zoom);
+                this.centerSample = Math.round(this.centerSample + event.deltaX * mag);
+                this.draw();
+                event.preventDefault();
+            }
+        });
         // Keyboard events.
         document.addEventListener("keydown", event => {
             if (inCanvas) {
@@ -29521,33 +29535,46 @@ class WaveformDisplay_WaveformDisplay {
         // Background.
         ctx.fillStyle = backgroundColor;
         ctx.fillRect(0, 0, width, height);
-        const samplesList = displaySamples.samplesList;
-        const samples = samplesList[this.zoom];
-        const mag = Math.pow(2, this.zoom);
-        const centerSample = Math.floor(this.centerSample / mag);
-        // From zoom space sample to X.
-        const frameToX = (i) => Math.floor(width / 2) + (i - centerSample);
-        // Compute viewing window in zoom space.
-        const firstSample = Math.max(centerSample - Math.floor(width / 2), 0);
-        const lastSample = Math.min(centerSample + width - 1, samples.length - 1);
+        // Terminology:
+        //
+        // "zoom" is user-visible zoom (0 = one-to-one with pixels, positive = zoomed out, negative = zoomed in).
+        // "orig sample" is sample at zoom level 0.
+        // "view sample" is sample at whatever zoom level we're showing.
+        // Which samples series we're going to use.
+        const samplesZoom = Math.max(this.zoom, 0);
+        // Actual samples we plan to use.
+        const viewSamples = displaySamples.samplesList[samplesZoom];
+        // Number of horizontal pixels per sample.
+        const pixelsPerViewSample = Math.pow(2, samplesZoom - this.zoom);
+        // How many original samples in each view sample.
+        const origSamplesPerViewSamples = Math.pow(2, samplesZoom);
+        // Index of center view sample.
+        const centerViewSample = Math.round(this.centerSample / origSamplesPerViewSamples);
+        // From view sample index to X coordinate in canvas.
+        const viewSampleToX = (viewSample) => Math.round((viewSample - centerViewSample) * pixelsPerViewSample + width / 2);
+        // Compute viewing window in view space.
+        const halfWindowViewSamples = width / 2 / pixelsPerViewSample;
+        const firstViewSample = Math.floor(Math.max(centerViewSample - halfWindowViewSamples, 0));
+        const lastViewSample = Math.ceil(Math.min(centerViewSample + halfWindowViewSamples, viewSamples.length - 1));
         // Compute viewing window in original space.
-        const firstOrigSample = Math.floor(firstSample * mag);
-        const lastOrigSample = Math.ceil(lastSample * mag);
+        const firstOrigSample = Math.floor(firstViewSample * origSamplesPerViewSamples);
+        const lastOrigSample = Math.ceil(lastViewSample * origSamplesPerViewSamples);
         // Whether we're zoomed in enough to draw and line and individual bits.
         const drawingLine = this.zoom < 3;
+        // Draw selection and highlight.
         if (this.selectionMode === SelectionMode.BYTES) {
             // Selection.
             if (this.startSelectionFrame !== undefined && this.endSelectionFrame !== undefined) {
                 ctx.fillStyle = selectionColor;
-                const x1 = frameToX(this.startSelectionFrame / mag);
-                const x2 = frameToX(this.endSelectionFrame / mag);
+                const x1 = viewSampleToX(this.startSelectionFrame / origSamplesPerViewSamples);
+                const x2 = viewSampleToX(this.endSelectionFrame / origSamplesPerViewSamples);
                 ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
             }
             // Highlight.
             if (this.startHighlightFrame !== undefined && this.endHighlightFrame !== undefined) {
                 ctx.fillStyle = highlightColor;
-                const x1 = frameToX(this.startHighlightFrame / mag);
-                const x2 = frameToX(this.endHighlightFrame / mag);
+                const x1 = viewSampleToX(this.startHighlightFrame / origSamplesPerViewSamples);
+                const x2 = viewSampleToX(this.endHighlightFrame / origSamplesPerViewSamples);
                 ctx.fillRect(x1, 0, Math.max(x2 - x1, 1), height);
             }
         }
@@ -29555,8 +29582,8 @@ class WaveformDisplay_WaveformDisplay {
             // Selecting samples.
             if (this.startSampleSelectionFrame !== undefined && this.endSampleSelectionFrame !== undefined) {
                 ctx.fillStyle = selectionColor;
-                let x1 = frameToX(this.startSampleSelectionFrame / mag);
-                let x2 = frameToX(this.endSampleSelectionFrame / mag);
+                let x1 = viewSampleToX(this.startSampleSelectionFrame / origSamplesPerViewSamples);
+                let x2 = viewSampleToX(this.endSampleSelectionFrame / origSamplesPerViewSamples);
                 if (x2 < x1) {
                     // Might be backwards while dragging.
                     const tmp = x1;
@@ -29585,8 +29612,8 @@ class WaveformDisplay_WaveformDisplay {
                 // Highlight bits.
                 for (const bitInfo of program.bitData) {
                     if (bitInfo.endFrame >= firstOrigSample && bitInfo.startFrame <= lastOrigSample) {
-                        const x1 = frameToX(bitInfo.startFrame / mag);
-                        const x2 = frameToX(bitInfo.endFrame / mag);
+                        const x1 = viewSampleToX(bitInfo.startFrame / origSamplesPerViewSamples);
+                        const x2 = viewSampleToX(bitInfo.endFrame / origSamplesPerViewSamples);
                         let bitBraceColor;
                         let label;
                         let bitLabelColor;
@@ -29637,8 +29664,8 @@ class WaveformDisplay_WaveformDisplay {
                         }
                         if (endFrame !== undefined && startFrame !== undefined &&
                             endFrame >= firstOrigSample && startFrame <= lastOrigSample) {
-                            const x1 = frameToX(startFrame / mag);
-                            const x2 = frameToX(endFrame / mag);
+                            const x1 = viewSampleToX(startFrame / origSamplesPerViewSamples);
+                            const x2 = viewSampleToX(endFrame / origSamplesPerViewSamples);
                             drawBraceAndLabel(ctx, height, x1, x2, braceColor, annotation.text, labelColor, true);
                         }
                     }
@@ -29647,8 +29674,8 @@ class WaveformDisplay_WaveformDisplay {
                     // Highlight bytes.
                     for (const byteInfo of program.byteData) {
                         if (byteInfo.endFrame >= firstOrigSample && byteInfo.startFrame <= lastOrigSample) {
-                            const x1 = frameToX(byteInfo.startFrame / mag);
-                            const x2 = frameToX(byteInfo.endFrame / mag);
+                            const x1 = viewSampleToX(byteInfo.startFrame / origSamplesPerViewSamples);
+                            const x2 = viewSampleToX(byteInfo.endFrame / origSamplesPerViewSamples);
                             let byteValue = byteInfo.value;
                             const basicToken = Object(trs80_base_dist["getToken"])(byteValue);
                             const label = byteValue < 32 ? "^" + String.fromCodePoint(byteValue + 64)
@@ -29663,8 +29690,8 @@ class WaveformDisplay_WaveformDisplay {
             }
             else {
                 // Highlight the whole program.
-                const x1 = frameToX(program.startFrame / mag);
-                const x2 = frameToX(program.endFrame / mag);
+                const x1 = viewSampleToX(program.startFrame / origSamplesPerViewSamples);
+                const x2 = viewSampleToX(program.endFrame / origSamplesPerViewSamples);
                 drawBraceAndLabel(ctx, height, x1, x2, braceColor, program.getShortLabel(), labelColor, true);
             }
         }
@@ -29673,12 +29700,12 @@ class WaveformDisplay_WaveformDisplay {
         if (drawingLine) {
             ctx.beginPath();
         }
-        for (let i = firstSample; i <= lastSample; i++) {
-            const value = samples[i];
-            const x = frameToX(i);
+        for (let viewSample = firstViewSample; viewSample <= lastViewSample; viewSample++) {
+            const value = viewSamples[viewSample];
+            const x = viewSampleToX(viewSample);
             const y = value * height / 65536;
             if (drawingLine) {
-                if (i === firstSample) {
+                if (viewSample === firstViewSample) {
                     ctx.moveTo(x, height / 2 - y);
                 }
                 else {
@@ -29700,7 +29727,7 @@ class WaveformDisplay_WaveformDisplay {
             width: width,
             height: height,
             frameToX(frame) {
-                return frameToX(frame / mag);
+                return viewSampleToX(frame / origSamplesPerViewSamples);
             },
             valueToY(value) {
                 return height / 2 - value * height / 65536;
@@ -29724,7 +29751,7 @@ class WaveformDisplay_WaveformDisplay {
         if (screenX === undefined) {
             screenX = Math.round(this.displayWidth / 2);
         }
-        const newZoom = Math.min(Math.max(0, zoom), this.maxZoom);
+        const newZoom = Math.min(Math.max(this.minZoom, zoom), this.maxZoom);
         if (newZoom !== this.zoom) {
             const frame = this.screenXToOriginalFrame(screenX);
             this.zoom = newZoom;
@@ -29780,7 +29807,7 @@ class WaveformDisplay_WaveformDisplay {
         }
         // Clamp at start.
         frame = Math.max(frame, 0);
-        return frame;
+        return Math.round(frame);
     }
     /**
      * Convert an original (unzoomed) sample to its X coordinate. Does not clamp to display range.
@@ -30464,10 +30491,10 @@ class TapeBrowser_TapeBrowser {
         ]);
         return new Pane(div);
     }
-    makeBasicPane(program) {
+    makeBasicPane(program, basicProgram) {
         const div = document.createElement("div");
         div.classList.add("program");
-        const highlightables = toDiv(Object(trs80_base_dist["decodeBasicProgram"])(program.binary), div);
+        const highlightables = toDiv(basicProgram, div);
         const highlighter = new Highlighter_Highlighter(this, program, div);
         highlighter.addHighlightables(highlightables);
         this.onHighlight.subscribe(highlight => {
@@ -30487,11 +30514,7 @@ class TapeBrowser_TapeBrowser {
         };
         return pane;
     }
-    makeSystemPane(program) {
-        const systemProgram = Object(trs80_base_dist["decodeSystemProgram"])(program.binary);
-        if (systemProgram === undefined) {
-            return undefined;
-        }
+    makeSystemPane(program, systemProgram) {
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("system-program");
@@ -30522,11 +30545,7 @@ class TapeBrowser_TapeBrowser {
         };
         return pane;
     }
-    makeCmdPane(program) {
-        const cmdProgram = Object(trs80_base_dist["decodeCmdProgram"])(program.binary);
-        if (cmdProgram === undefined) {
-            return undefined;
-        }
+    makeCmdPane(program, cmdProgram) {
         const div = document.createElement("div");
         div.classList.add("program");
         div.classList.add("cmd-program");
@@ -30582,18 +30601,9 @@ class TapeBrowser_TapeBrowser {
         return pane;
     }
     /**
-     * Load program into memory and run it.
-     */
-    loadProgram(trs80, program) {
-        const trs80File = Object(trs80_base_dist["decodeTrs80File"])(program.binary, undefined);
-        if (trs80File !== undefined) {
-            trs80.runTrs80File(trs80File);
-        }
-    }
-    /**
      * Create a pane with an emulator pointing at the cassette and program.
      */
-    makeEmulatorPane(program, cassette, autoRun) {
+    makeEmulatorPane(program, cassette, trs80File) {
         const div = document.createElement("div");
         const screenDiv = document.createElement("div");
         div.appendChild(screenDiv);
@@ -30602,8 +30612,8 @@ class TapeBrowser_TapeBrowser {
         const trs80 = new trs80_emulator_dist["Trs80"](screen, cassette !== null && cassette !== void 0 ? cassette : new TapeBrowser_EmptyCassette());
         const reboot = () => {
             trs80.reset();
-            if (autoRun && program !== undefined) {
-                this.loadProgram(trs80, program);
+            if (trs80File !== undefined) {
+                trs80.runTrs80File(trs80File);
             }
         };
         const hardwareSettingsPanel = new trs80_emulator_dist["SettingsPanel"](screen.getNode(), trs80, trs80_emulator_dist["PanelType"].HARDWARE);
@@ -30658,6 +30668,7 @@ class TapeBrowser_TapeBrowser {
      * Create the panes and the table of contents for them on the left.
      */
     updateTapeContents() {
+        var _a;
         // Add a new section that we can style all at once.
         const addSection = () => {
             const sectionDiv = document.createElement("div");
@@ -30730,11 +30741,15 @@ class TapeBrowser_TapeBrowser {
                 }
             }
             copiesOfTrack.push(program);
+            // Decode the programs.
+            const basicProgram = Object(trs80_base_dist["decodeBasicProgram"])(program.binary);
+            const systemProgram = Object(trs80_base_dist["decodeSystemProgram"])(program.binary);
+            const cmdProgram = Object(trs80_base_dist["decodeCmdProgram"])(program.binary);
             // Make these panes here so they're accessible from the metadata page.
-            const basicPane = program.isBasicProgram() ? this.makeBasicPane(program) : undefined;
-            const systemPane = this.makeSystemPane(program);
+            const basicPane = basicProgram !== undefined ? this.makeBasicPane(program, basicProgram) : undefined;
+            const systemPane = systemProgram !== undefined ? this.makeSystemPane(program, systemProgram) : undefined;
             const edtasmPane = program.isEdtasmProgram() ? this.makeEdtasmPane(program) : undefined;
-            const cmdPane = this.makeCmdPane(program);
+            const cmdPane = cmdProgram !== undefined ? this.makeCmdPane(program, cmdProgram) : undefined;
             // Metadata pane.
             let metadataLabel = frameToTimestamp(program.startFrame, this.tape.sampleRate, true) + " to " +
                 frameToTimestamp(program.endFrame, this.tape.sampleRate, true) + " (" +
@@ -30777,8 +30792,9 @@ class TapeBrowser_TapeBrowser {
                     addPane("Emulator (reconstructed, low speed)", this.makeEmulatorPane(program, new ReconstructedCassette(program.reconstructedSamples, this.tape.sampleRate)));
                 }
             }
-            if (cmdPane !== undefined || systemPane !== undefined) {
-                addPane("Emulator (auto-run)", this.makeEmulatorPane(program, undefined, true));
+            const trs80File = (_a = systemProgram !== null && systemProgram !== void 0 ? systemProgram : cmdProgram) !== null && _a !== void 0 ? _a : basicProgram;
+            if (trs80File !== undefined) {
+                addPane("Emulator (auto-run)", this.makeEmulatorPane(program, undefined, trs80File));
             }
         }
         // Show the first pane.
