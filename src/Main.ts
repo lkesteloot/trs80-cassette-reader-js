@@ -297,7 +297,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
 
                 waveformDisplay.addWaveformAndChrome("Original samples", tape.originalSamples, panel);
                 if (test.isHighSpeed()) {
-                    waveformDisplay.addWaveformAndChrome("High pass filter", tape.filteredSamples, panel);
+                    waveformDisplay.addWaveformAndChrome("High speed filter", tape.highSpeedSamples, panel);
                 } else {
                     waveformDisplay.addWaveformAndChrome("Low speed filter", tape.lowSpeedSamples, panel);
                 }
@@ -355,7 +355,6 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                             // Don't bother proofing.
                             const waveformAnnotations: WaveformAnnotation[] = [];
                             const program = decoder.loadData(pulse.frame, waveformAnnotations);
-                            console.log(program.binary.length, program.binary);
                             waveformDisplay.addWaveformAnnotations(waveformAnnotations);
                             waveformDisplay.addProgram(program);
                             const actualBits = Array.from(program.binary).map(b => b.toString(2).padStart(8, "0")).join("");

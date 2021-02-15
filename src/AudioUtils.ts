@@ -13,13 +13,13 @@ export class AudioFile {
 }
 
 /**
- * Simple high-pass filter.
+ * Simple high-pass box filter.
  *
  * @param samples samples to filter.
  * @param size size of filter
  * @returns filtered samples.
  */
-export function highPassFilter(samples: Int16Array, size: number): Int16Array {
+export function highPassBoxFilter(samples: Int16Array, size: number): Int16Array {
     const out = new Int16Array(samples.length);
     let sum = 0;
 
@@ -34,6 +34,58 @@ export function highPassFilter(samples: Int16Array, size: number): Int16Array {
 
         // Subtract out the average of the last "size" samples (to estimate local DC component).
         out[i] = clampToInt16(samples[i] - sum / size);
+    }
+
+    return out;
+}
+
+/**
+ * Performs a simple RC high-pass filter at the given frequency.
+ *
+ * https://en.wikipedia.org/wiki/High-pass_filter
+ */
+export function highPassRcFilter(samples: Int16Array, frequency: number, sampleRate: number): Int16Array {
+    const rc = 1/(2*Math.PI*frequency);
+    const dt = 1/sampleRate;
+    const alpha = rc/(rc + dt);
+
+    const out = new Int16Array(samples.length);
+    out[0] = samples[0];
+    for (let i = 1; i < samples.length; i++) {
+        out[i] = clampToInt16(alpha*(out[i - 1] + samples[i] - samples[i - 1]));
+    }
+
+    return out;
+}
+
+/**
+ * Performs a simple RC low-pass filter at the given frequency.
+ *
+ * https://en.wikipedia.org/wiki/Low-pass_filter
+ */
+export function lowPassRcFilter(samples: Int16Array, frequency: number, sampleRate: number): Int16Array {
+    const rc = 1/(2*Math.PI*frequency);
+    const dt = 1/sampleRate;
+    const alpha = dt/(rc + dt);
+
+    const out = new Int16Array(samples.length);
+    out[0] = alpha*samples[0];
+    for (let i = 1; i < samples.length; i++) {
+        out[i] = clampToInt16(out[i - 1] + alpha*(samples[i] - out[i - 1]));
+    }
+
+    return out;
+}
+
+/**
+ * Compute the derivative of the signal.
+ */
+export function differentiate(samples: Int16Array): Int16Array {
+    const out = new Int16Array(samples.length);
+
+    for (let i = 0; i < samples.length; i++) {
+        const newSample = i > 0 ? samples[i - 1] - samples[i] : 0;
+        out[i] = clampToInt16(newSample);
     }
 
     return out;

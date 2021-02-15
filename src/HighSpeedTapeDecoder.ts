@@ -7,6 +7,7 @@ import {ByteData} from "./ByteData";
 import {Program} from "./Program";
 import {LabelAnnotation, WaveformAnnotation} from "./Annotations";
 import {DEFAULT_SAMPLE_RATE} from "./WavFile";
+import {highPassRcFilter} from "./AudioUtils";
 
 // What distance away from 0 counts as "positive" (or, when negative, "negative").
 const THRESHOLD = 500;
@@ -15,6 +16,13 @@ const THRESHOLD = 500;
  * Decodes high-speed (1500 baud) cassettes.
  */
 export class HighSpeedTapeDecoder implements TapeDecoder {
+    /**
+     * Filter samples to get them ready for high-speed decoding.
+     */
+    public static filterSamples(samples: Int16Array, sampleRate: number): Int16Array {
+        return highPassRcFilter(samples, 1000, sampleRate);
+    }
+
     private readonly tape: Tape;
     private readonly lengthMultiplier: number;
     private state: TapeDecoderState = TapeDecoderState.UNDECIDED;
@@ -38,7 +46,7 @@ export class HighSpeedTapeDecoder implements TapeDecoder {
     }
 
     public findNextProgram(startFrame: number, waveformAnnotations: WaveformAnnotation[]): Program | undefined {
-        const samples = this.tape.filteredSamples.samplesList[0];
+        const samples = this.tape.highSpeedSamples.samplesList[0];
         let programStartFrame: number | undefined = undefined;
         let bitCount = 0;
         let recentBits = 0;
@@ -125,7 +133,7 @@ export class HighSpeedTapeDecoder implements TapeDecoder {
         const cycleSize = crossing - startFrame;
         if (cycleSize > 7*this.lengthMultiplier && cycleSize < 100*this.lengthMultiplier) {
             // Long cycle is "0", short cycle is "1".
-            const bit = cycleSize < 22*this.lengthMultiplier;
+            const bit = cycleSize < 24.9*this.lengthMultiplier;
 
             return [crossing, bit];
         } else {
@@ -160,7 +168,7 @@ export class HighSpeedTapeDecoder implements TapeDecoder {
      * Read a sequence of bits (the characters "0" and "1"). This is for testing.
      */
     public readBits(frame: number): [string, WaveformAnnotation[], string[]] {
-        const samples = this.tape.filteredSamples.samplesList[0];
+        const samples = this.tape.highSpeedSamples.samplesList[0];
         let bits = "";
         const waveformAnnotation: WaveformAnnotation[] = [];
         const explanations: string[] = [];

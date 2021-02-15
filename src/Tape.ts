@@ -3,12 +3,13 @@
 // filtered-down samples for display, and other information
 // we got from it.
 
-import {AudioFile, highPassFilter} from "./AudioUtils";
+import {AudioFile, highPassBoxFilter} from "./AudioUtils";
 import {DisplaySamples} from "./DisplaySamples";
 import {LowSpeedTapeDecoder} from "./LowSpeedTapeDecoder";
 import {Program} from "./Program";
 import {WaveformAnnotation} from "./Annotations";
 import {SimpleEventDispatcher} from "strongly-typed-events";
+import {HighSpeedTapeDecoder} from "./HighSpeedTapeDecoder";
 
 const LOCAL_DATA_KEY = "tapes";
 
@@ -39,6 +40,7 @@ export class Tape {
     public originalSamples: DisplaySamples;
     public filteredSamples: DisplaySamples;
     public lowSpeedSamples: DisplaySamples;
+    public highSpeedSamples: DisplaySamples;
     public sampleRate: number;
     public programs: Program[];
     public readonly waveformAnnotations: WaveformAnnotation[] = [];
@@ -52,9 +54,11 @@ export class Tape {
     constructor(name: string, audioFile: AudioFile) {
         this.name = name;
         this.originalSamples = new DisplaySamples(audioFile.samples);
-        this.filteredSamples = new DisplaySamples(highPassFilter(audioFile.samples, 500));
+        this.filteredSamples = new DisplaySamples(highPassBoxFilter(audioFile.samples, 500));
         this.lowSpeedSamples = new DisplaySamples(LowSpeedTapeDecoder.filterSamples(
             this.filteredSamples.samplesList[0], audioFile.rate));
+        this.highSpeedSamples = new DisplaySamples(HighSpeedTapeDecoder.filterSamples(
+            this.originalSamples.samplesList[0], audioFile.rate));
         this.sampleRate = audioFile.rate;
         this.programs = [];
     }
