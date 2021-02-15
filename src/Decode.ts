@@ -125,6 +125,9 @@ function main() {
         // Speed.
         labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
 
+        // Size.
+        labelParts.push(pluralizeWithCount(program.binary.length, "byte"));
+
         // Start, stop, and duration.
         labelParts.push(frameToTimestamp(program.startFrame, tape.sampleRate, true) + " to " +
             frameToTimestamp(program.endFrame, tape.sampleRate, true) + " (" +
@@ -135,7 +138,7 @@ function main() {
 
         // Analyze system program.
         if (systemProgram !== undefined) {
-            labelParts.push("system program");
+            labelParts.push("system program (" + systemProgram.filename + ")");
 
             // Check for checksum errors.
             let checksumErrors = 0;
