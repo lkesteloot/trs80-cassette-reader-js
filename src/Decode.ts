@@ -5,7 +5,7 @@ import {Tape} from "./Tape";
 import {Decoder} from "./Decoder";
 import * as program from "commander";
 import {concatByteArrays} from "./Utils";
-import {concatAudio, makeSilence} from "./AudioUtils";
+import {concatAudio, frameToTimestamp, makeSilence} from "./AudioUtils";
 import * as pkg from "../package.json";
 import {decodeBasicProgram, decodeSystemProgram, ElementType} from "trs80-base";
 import {Program} from "./Program";
@@ -122,7 +122,13 @@ function main() {
 
         const labelParts: string[] = [];
 
+        // Speed.
         labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
+
+        // Start, stop, and duration.
+        labelParts.push(frameToTimestamp(program.startFrame, tape.sampleRate, true) + " to " +
+            frameToTimestamp(program.endFrame, tape.sampleRate, true) + " (" +
+            frameToTimestamp(program.endFrame - program.startFrame, tape.sampleRate, true) + ")");
 
         // Decode various formats.
         const systemProgram = decodeSystemProgram(program.binary);
