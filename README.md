@@ -3,6 +3,8 @@
 Web app and command-line tool to read programs off of TRS-80 Model I and Model
 III cassettes.
 
+![Tape](images/tape.jpg)
+
 [Try it now in your browser](https://lkesteloot.github.io/trs80-cassette-reader-js/)
 or run it locally:
 
@@ -54,13 +56,15 @@ For Basic programs, the `--tokenize` flag will generate a detokenized
 If any output file exists, it will not be overwritten unless the
 `--force` flag is given.
 
-# Cassette encoding format
+# Cassette coding schemes
 
 ## Low-speed (250 baud, 500 baud, and 1000 baud)
 
 Low-speed encoding is used for 250 baud (Level 1 Basic) and
 500 baud (Level 2 Basic). Some tapes have been found with 1000 baud
-using the same encoding. The values below apply to 500 baud.
+using the same encoding. The coding scheme is digital Frequency Modulation (FM)
+without [NRZI](https://en.wikipedia.org/wiki/Non-return-to-zero#Non-return-to-zero_inverted).
+The time values below apply to 500 baud.
 
 Each **bit** is made of two 1 ms pulses, for a total of 2 ms (500 Hz).
 Each **pulse** takes 1 ms: 125 µs positive, 125 µs negative, and 750 µs neutral.
@@ -98,32 +102,43 @@ References:
 ## High-speed (1500 baud)
 
 The TRS-80 Model III high-speed (1500 baud) encoding is as follows:
+Each bit is one cycle of a sine wave (positive half-cycle, then negative
+half-cycle). A 0 bit is encoded with a 1320 Hz cycle, while a 1 bit is encoded
+with a 2680 Hz cycle. These correspond to 768 and 1536 Z80 T-cycles at
+2,027,520 Hz, the Model III's clock frequency.
 
-* Each bit is one cycle of a sine wave (positive half-cycle, then negative
-  half-cycle).
-* A 0 bit is encoded as a full cycle taking 725 µs, or 32 samples at 44.1 kHz.
-* A 1 bit is encoded as a full cycle taking 340 µs, or 15 samples at 44.1 kHz.
-* Each byte is written with its most-significant bit first.
-* The header is 256 instances of the byte 0x55, followed by a single 0x7F.
-* The program is then written as a sequence of bytes, each starting with a
-  start bit of value 0 followed by the byte value.
-* Between the header and the program is a 1 ms pause. This is probably not intentional,
-  but a result of some processing the ROM had to do when writing the program.
-* A 1.5 ms silence indicates the end of the program. There's no special end-of-file marker.
+More precisely, the timing of the square waves are:
 
-This sample encodes one 1 bit, two 0 bits, four 1 bits, and one 0 bit:
+* **Start bit**: 903 to 1007 T-cycles high and 765 T-cycle low (1777 total).
+* **Zero bit**: 771 T-cycles high and 765 T-cycle low (1536 total).
+* **One bit**: 378 T-cycles high and 381 T-cycle low (759 total).
+* The high section of the data bit after the start bit is 6 T-cycles shorter.
+
+Each byte is written with its most-significant bit first.
+The header is 256 instances of the byte 0x55, followed by the **sync byte** value 0x7F.
+The program is then written as a sequence of bytes, each starting with a
+start bit of value 0 followed by the byte value.
+Between the header and the program is a 1 ms pause. This is probably not intentional,
+but a result of some processing the ROM had to do when writing the program.
+
+This sample encodes the sequence `10011110`:
 
 ![High speed example](images/high-speed-example.png)
+
+References:
+
+* [Story behind "1500" baud decisions](http://www.vcfed.org/forum/archive/index.php/t-56618.html)
+* [U.S. Patent 4443883, "Data synchronization apparatus"](https://patents.google.com/patent/US4443883)
 
 # 1500 baud mystery
 
 Note that in the high-speed encoding a 0 bit is about twice as long as a 1 bit.
-This is a strange design, since 0 bits appear far more often in programs: all
+This is a strange design, since 0 bits appear more often in programs: all
 space characters (0x20) have 0 for 7 of their 8 bits; all ASCII characters
 (comments, strings) have their most significant bit as 0; every start bit is a
 zero.
 
-In one program I analyzed, there were 15,472 zero bits and 2960 one bits. That's
+In one Basic program I analyzed, there were 15,472 zero bits and 2960 one bits. That's
 a recording time of 12.2 seconds, or 1508 baud. Had they swapped the meaning of
 the two cycle times, that would have been reduced to 7.4 seconds, or 2489 baud.
 Instead of a jump from 500 baud (on the Model I) to 1500 baud, they could have
