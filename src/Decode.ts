@@ -11,6 +11,7 @@ import {decodeBasicProgram, decodeSystemProgram, ElementType} from "trs80-base";
 import {Program} from "./Program";
 import {disasmForTrs80Program} from "trs80-disasm";
 import {instructionsToText} from "z80-disasm";
+import {BitType} from "./BitType";
 
 /**
  * Create a plain text version of the Basic program described by the binary.
@@ -58,6 +59,7 @@ function main() {
         .option("--wav", "output clean WAV file")
         .option("--cas", "output CAS file")
         .option("--text", "make text version of file when possible (e.g,. detokenized Basic, listing file for system files)")
+        .option("--json", "make a single JSON file for the whole tape")
         .description("Extracts programs from a TRS-80 cassette audio file.")
         .usage("[options] original.wav")
         .version(pkg.version)
@@ -73,6 +75,7 @@ function main() {
     const wav = program.opts().wav;
     const cas = program.opts().cas;
     const text = program.opts().text;
+    const json = program.opts().json;
 
     if (all && !(wav || cas)) {
         console.error("Must specify --wav or --cas when using --all");
@@ -116,22 +119,36 @@ function main() {
 
     const nameForProgram = (program: Program): string => name + "-T" + program.trackNumber + "-C" + program.copyNumber;
 
+    const fullData: any = {
+        programs: [],
+        sampleRate: tape.sampleRate,
+    };
+
     for (let i = 0; i < tape.programs.length; i++) {
         const program = tape.programs[i];
         const programName = nameForProgram(program);
+        const programData: any = {
+            name: programName,
+        };
+        fullData.programs.push(programData);
 
         const labelParts: string[] = [];
 
         // Speed.
         labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
+        programData.speed = program.decoder.isHighSpeed() ? 1500 : 500;
 
         // Size.
         labelParts.push(pluralizeWithCount(program.binary.length, "byte"));
+        programData.length = program.binary.length;
 
         // Start, stop, and duration.
         labelParts.push(frameToTimestamp(program.startFrame, tape.sampleRate, true) + " to " +
             frameToTimestamp(program.endFrame, tape.sampleRate, true) + " (" +
             frameToTimestamp(program.endFrame - program.startFrame, tape.sampleRate, true) + ")");
+        programData.startFrame = program.startFrame;
+        programData.endFrame = program.endFrame;
+        programData.type = "unknown";
 
         // Decode various formats.
         const systemProgram = decodeSystemProgram(program.binary);
@@ -139,6 +156,9 @@ function main() {
         // Analyze system program.
         if (systemProgram !== undefined) {
             labelParts.push("system program (" + systemProgram.filename + ")");
+            programData.type = "systemProgram";
+            programData.filename = systemProgram.filename;
+            programData.chunkCount = systemProgram.chunks.length;
 
             // Check for checksum errors.
             let checksumErrors = 0;
@@ -150,19 +170,29 @@ function main() {
             if (checksumErrors === 0) {
                 labelParts.push("all checksums good")
             } else {
-                labelParts.push(`${checksumErrors} of ${pluralizeWithCount(systemProgram.chunks.length, "chunk")} have a checksum error`);
+                labelParts.push(`${checksumErrors} of ${pluralizeWithCount(systemProgram.chunks.length, "chunk has", "chunks have")} a checksum error`);
             }
+
+            programData.checksumErrorCount = checksumErrors;
         }
 
         // Label Basic program.
         if (program.isBasicProgram()) {
             labelParts.push("Basic program");
+            programData.type = "basic";
         }
 
         // Warn about bit errors.
         const errorCount = program.countBitErrors();
         if (errorCount !== 0) {
             labelParts.push(pluralizeWithCount(errorCount, "bit-reading error"));
+        }
+        programData.errorCount = errorCount;
+        programData.errors = [];
+        for (const bitData of program.bitData) {
+            if (bitData.bitType === BitType.BAD) {
+                programData.errors.push(Math.round((bitData.startFrame + bitData.endFrame)/2));
+            }
         }
 
         // See if it's a duplicate.
@@ -175,6 +205,7 @@ function main() {
                 break;
             }
         }
+        programData.isDuplicate = isDuplicate;
 
         console.log(programName + ": " + labelParts.join(", "));
 
@@ -223,15 +254,20 @@ function main() {
         }
     }
 
+    const allBasename = name + "-all";
     if (all) {
-        const basename = name + "-all";
         if (wav && wavFileParts.length > 0) {
-            possiblyWriteFile(path.join(dir, basename + ".wav"),
+            possiblyWriteFile(path.join(dir, allBasename + ".wav"),
                 writeWavFile(concatAudio(wavFileParts), DEFAULT_SAMPLE_RATE));
         }
         if (cas && casFileParts.length > 0) {
-            possiblyWriteFile(path.join(dir, basename + ".cas"), concatByteArrays(casFileParts));
+            possiblyWriteFile(path.join(dir, allBasename + ".cas"), concatByteArrays(casFileParts));
         }
+    }
+
+    if (json) {
+        possiblyWriteFile(path.join(dir, allBasename + ".json"),
+            JSON.stringify(fullData, undefined, 2));
     }
 }
 
