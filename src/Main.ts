@@ -233,7 +233,7 @@ function getPrefixSuffixHtml(s: string, prefix: number, suffix: number): string 
 function getDiffHtml(expectedBits: string, actualBits: string): string {
     if (expectedBits === actualBits) {
         // Shouldn't happen.
-        return "";
+        throw new Error("getDiffHtml must be passed different arguments");
     }
 
     let commonPrefix = 0;
@@ -242,7 +242,9 @@ function getDiffHtml(expectedBits: string, actualBits: string): string {
     }
 
     let commonSuffix = 0;
-    while (expectedBits.substr(-(commonSuffix + 1)) === actualBits.substr(-(commonSuffix + 1))) {
+    while (commonPrefix + commonSuffix < Math.min(expectedBits.length, actualBits.length) &&
+        expectedBits.substr(-(commonSuffix + 1)) === actualBits.substr(-(commonSuffix + 1))) {
+
         commonSuffix += 1;
     }
 
@@ -307,7 +309,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     case TestType.LOW_SPEED_PULSE:
                     case TestType.LOW_SPEED_NO_PULSE: {
                         const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
-                        const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, true);
+                        const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, true);
                         waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                         if (pulse.explanation !== "") {
                             explanation.innerText = pulse.explanation;

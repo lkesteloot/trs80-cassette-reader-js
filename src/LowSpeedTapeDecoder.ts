@@ -1,4 +1,4 @@
-import {clampToInt16} from "./AudioUtils";
+import {clampToInt16, highPassFilter} from "./AudioUtils";
 import {BitData} from "./BitData";
 import {BitType} from "./BitType";
 import {Tape} from "./Tape";
@@ -56,7 +56,9 @@ export class LowSpeedTapeDecoder implements TapeDecoder {
             }
         }
 
-        return out;
+        // TODO do we still need this filter before this function?
+        // TOOD replace with better filter in branch.
+        return highPassFilter(out, 500)
     }
 
     private readonly tape: Tape;

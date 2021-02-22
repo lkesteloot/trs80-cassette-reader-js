@@ -170,7 +170,7 @@ function main() {
             if (checksumErrors === 0) {
                 labelParts.push("all checksums good")
             } else {
-                labelParts.push(`${checksumErrors} of ${pluralizeWithCount(systemProgram.chunks.length, "chunk has", "chunks have")} a checksum error`);
+                labelParts.push(`${checksumErrors} of ${pluralizeWithCount(systemProgram.chunks.length, "chunk")} ${pluralize(checksumErrors, "has", "have")} a checksum error`);
             }
 
             programData.checksumErrorCount = checksumErrors;

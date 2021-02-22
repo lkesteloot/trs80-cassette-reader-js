@@ -60,20 +60,31 @@ export interface WaveformAnnotation {
 export class PointAnnotation implements WaveformAnnotation {
     public readonly frame: number;
     public readonly value: number;
+    public readonly solid: boolean;
 
-    constructor(frame: number, value: number) {
+    constructor(frame: number, value: number, solid: boolean) {
         this.frame = frame;
         this.value = value;
+        this.solid = solid;
     }
 
     draw(ctx: AnnotationContext): void {
         const x = ctx.frameToX(this.frame);
         const y = ctx.valueToY(this.value);
 
-        ctx.context.fillStyle = ctx.highlightColor;
+        if (this.solid) {
+            ctx.context.fillStyle = ctx.highlightColor;
+        } else {
+            ctx.context.strokeStyle = ctx.highlightColor;
+            ctx.context.lineWidth = 1;
+        }
         ctx.context.beginPath();
         ctx.context.arc(x, y, 3, 0, 2 * Math.PI);
-        ctx.context.fill();
+        if (this.solid) {
+            ctx.context.fill();
+        } else {
+            ctx.context.stroke();
+        }
 
     }
 }
