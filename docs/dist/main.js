@@ -4974,11 +4974,12 @@ class ByteReader {
     }
     /**
      * Reads a UTF-8 string from the stream. If the returned string is shorter than "length", then we hit EOF.
+     * Nul bytes are replaced with spaces.
      */
     readString(length) {
         // We used to specify "ascii" for the decoder, but Node doesn't support it, and in any
         // case UTF-8 is a super set, so anything that worked before should work now.
-        return new TextDecoder().decode(this.readBytes(length));
+        return new TextDecoder().decode(this.readBytes(length)).replace(/\u0000/g, " ");
     }
     /**
      * Returns the next "length" bytes. If the returned array is shorter than "length", then we hit EOF.
@@ -22904,7 +22905,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
     }
 }
 
-// CONCATENATED MODULE: ./src/LowSpeedAnteoTapeDecoder.ts
+// CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
 // Low speed tape decode based on anteo's version.
 // https://github.com/anteo
 
@@ -22914,7 +22915,8 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
 
 
 
-const LowSpeedAnteoTapeDecoder_SYNC_BYTE = 0xA5;
+
+const LowSpeedTapeDecoder_SYNC_BYTE = 0xA5;
 // When not finding a pulse, what kind of audio we found.
 var PulseResultType;
 (function (PulseResultType) {
@@ -22936,10 +22938,13 @@ class Pulse {
         this.explanation = explanation;
     }
 }
-class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
+/**
+ * Low-speed (250, 500, and 1000 baud) decoder.
+ */
+class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     constructor(tape, baud) {
         this.state = TapeDecoderState.UNDECIDED;
-        this.peakThreshold = LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD;
+        this.peakThreshold = LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD;
         const samples = tape.lowSpeedSamples.samplesList[0];
         if (true) {
             this.samples = samples;
@@ -22953,6 +22958,34 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         // Be more strict about data pulse, there should be less variance there and we don't want to risk
         // accidentally reading the next clock pulse.
         this.dataPulseSearchRadius = Math.round(this.period * 0.15);
+    }
+    /**
+     * Differentiating filter to accentuate pulses.
+     *
+     * @param samples samples to filter.
+     * @param sampleRate number of samples per second in the recording.
+     * @returns filtered samples.
+     */
+    static filterSamples(samples, sampleRate) {
+        const out = new Int16Array(samples.length);
+        // Number of samples between the top of the pulse and the bottom of it. Each pulse
+        // lasts 125µs, so assume the distance between crest and trough is 125µs.
+        const pulseWidth = Math.round(125e-6 * sampleRate);
+        // Convolution with a pulse similar to what the original should have looked like (125 µs pulse
+        let posSum = 0;
+        let negSum = 0;
+        let denom = pulseWidth * 2;
+        for (let i = 0; i < samples.length; i++) {
+            let aheadSample = i + pulseWidth >= samples.length ? 0 : samples[i + pulseWidth];
+            let nowSample = samples[i];
+            let behindSample = i - pulseWidth < 0 ? 0 : samples[i - pulseWidth];
+            posSum += nowSample - behindSample;
+            negSum += aheadSample - nowSample;
+            out[i] = clampToInt16((posSum - negSum) / denom);
+        }
+        // TODO do we still need this filter before this function?
+        // TOOD replace with better filter in branch.
+        return highPassFilter(out, 500);
     }
     findNextProgram(frame, waveformAnnotations) {
         while (true) {
@@ -22983,14 +23016,18 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             // We expect a pulse every period.
             const expectedPulse = this.isPulseAt(frame, this.peakThreshold, false, false);
             if (expectedPulse.resultType !== PulseResultType.PULSE) {
-                waveformAnnotations.push(new LabelAnnotation("Missing pulse", startFrame, frame, false));
+                // This creates a lot of noise. If we really find it useful, maybe suppress it from the middle
+                // of successfully-decoded programs.
+                // waveformAnnotations.push(new LabelAnnotation("Missing pulse", startFrame, frame, false));
                 return false;
             }
             lastPulseFrame = expectedPulse.frame;
             // And no pulse in between, which would indicate a "1" bit.
             const expectedNoPulse = this.isPulseAt(frame + this.halfPeriod, expectedPulse.range / 2, true, true);
             if (expectedNoPulse.resultType === PulseResultType.PULSE) {
-                waveformAnnotations.push(new LabelAnnotation("Extra pulse", startFrame, expectedNoPulse.frame, false));
+                // This creates a lot of noise. If we really find it useful, maybe suppress it from the middle
+                // of successfully-decoded programs.
+                // waveformAnnotations.push(new LabelAnnotation("Extra pulse", startFrame, expectedNoPulse.frame, false));
                 return false;
             }
             frame = expectedPulse.frame + this.period;
@@ -23043,7 +23080,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
                 }
             }
             else {
-                if (recentBits === LowSpeedAnteoTapeDecoder_SYNC_BYTE) {
+                if (recentBits === LowSpeedTapeDecoder_SYNC_BYTE) {
                     waveformAnnotations.push(new LabelAnnotation("Sync", bitData[bitData.length - 8].startFrame, bitData[bitData.length - 1].endFrame, false));
                     foundSyncByte = true;
                     bitCount = 0;
@@ -23130,7 +23167,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             let maxAbsValue = 0;
             let maxPulse = undefined;
             for (let i = 0; i < this.period * 2; i += this.clockPulseSearchRadius) {
-                const pulse = this.isPulseAt(frame + i, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, false);
+                const pulse = this.isPulseAt(frame + i, LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD, false, false);
                 if (pulse.resultType === PulseResultType.PULSE) {
                     const absValue = Math.abs(pulse.value);
                     if (absValue > maxAbsValue) {
@@ -23274,7 +23311,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         return this.state;
     }
 }
-LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD = 3000;
+LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD = 3000;
 
 // CONCATENATED MODULE: ./src/Decoder.ts
 // Uses tape decoders to work through the tape, finding programs and decoding them.
@@ -23303,9 +23340,9 @@ class Decoder_Decoder {
         // All decoders we're interested in. We use factories because they're created
         // multiple times, once for each program found.
         let tapeDecoderFactories = [
-            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 250),
-            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 500),
-            () => new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(this.tape, 1000),
+            () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, 250),
+            () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, 500),
+            () => new LowSpeedTapeDecoder_LowSpeedTapeDecoder(this.tape, 1000),
             () => new HighSpeedTapeDecoder_HighSpeedTapeDecoder(this.tape),
         ];
         // All programs we detect.
@@ -23394,199 +23431,6 @@ class Decoder_Decoder {
             return encodeLowSpeed(wrapLowSpeed(binary), this.tape.sampleRate);
         }
         else {}
-    }
-}
-
-// CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
-
-
-
-
-
-
-/**
- * Number of consecutive zero bits we require in the header before we're pretty
- * sure this is a low speed program.
- */
-const MIN_HEADER_ZEROS = 6;
-class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
-    constructor(tape, invert) {
-        this.programBytes = [];
-        this.byteData = [];
-        this.tape = tape;
-        this.invert = invert;
-        this.state = TapeDecoderState.UNDECIDED;
-        // The frame where we last detected a pulse.
-        this.lastPulseFrame = 0;
-        this.eatNextPulse = false;
-        this.bitCount = 0;
-        this.recentBits = 0;
-        this.lenientFirstBit = false;
-        this.detectedZeros = 0;
-        // Height of the previous pulse. We set each pulse's threshold
-        // to 1/3 of the previous pulse's height.
-        this.pulseHeight = 0;
-        this.bitData = [];
-        this.pulseCount = 0;
-        // Number of samples between start of pulse detection and end of pulse. Once
-        // we detect a pulse, we ignore this number of samples.
-        // TODO make tape.sampleRate-sensitive.
-        this.pulseWidth = 22;
-        // Number of samples that determines a zero (longer) or one (shorter) bit.
-        // TODO make tape.sampleRate-sensitive.
-        this.bitDeterminator = 68;
-        // Number of quiet samples that would indicate the end of the program.
-        this.endOfProgramSilence = tape.sampleRate / 10;
-    }
-    /**
-     * Differentiating filter to accentuate pulses.
-     *
-     * @param samples samples to filter.
-     * @param sampleRate number of samples per second in the recording.
-     * @returns filtered samples.
-     */
-    static filterSamples(samples, sampleRate) {
-        const out = new Int16Array(samples.length);
-        // Number of samples between the top of the pulse and the bottom of it. Each pulse
-        // lasts 125µs, so assume the distance between crest and trough is 125µs.
-        const pulseWidth = Math.round(125e-6 * sampleRate);
-        if (false) {}
-        else {
-            // Convolution with a pulse similar to what the original should have looked like (125 µs pulse
-            // up, then 125 µs pulse down).
-            let posSum = 0;
-            let negSum = 0;
-            let denom = pulseWidth * 2;
-            for (let i = 0; i < samples.length; i++) {
-                let aheadSample = i + pulseWidth >= samples.length ? 0 : samples[i + pulseWidth];
-                let nowSample = samples[i];
-                let behindSample = i - pulseWidth < 0 ? 0 : samples[i - pulseWidth];
-                posSum += nowSample - behindSample;
-                negSum += aheadSample - nowSample;
-                out[i] = clampToInt16((posSum - negSum) / denom);
-            }
-        }
-        // TODO do we still need this filter before this function?
-        // TOOD replace with better filter in branch.
-        return highPassFilter(out, 500);
-    }
-    getName() {
-        return "500 baud" + (this.invert ? " (Inv)" : "");
-    }
-    isHighSpeed() {
-        return false;
-    }
-    findNextProgram(startFrame, waveformAnnotation) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        let programStartFrame = -1;
-        for (let frame = startFrame; frame < samples.length; frame++) {
-            this.handleSample(frame);
-            if (this.state === TapeDecoderState.DETECTED && programStartFrame === -1) {
-                programStartFrame = frame;
-            }
-            if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
-                return new Program_Program(0, 0, programStartFrame, frame, this, 500, this.getBinary(), this.getBitData(), this.getByteData());
-            }
-        }
-        return undefined;
-    }
-    handleSample(frame) {
-        const samples = this.tape.lowSpeedSamples.samplesList[0];
-        const pulse = this.invert ? -samples[frame] : samples[frame];
-        const timeDiff = frame - this.lastPulseFrame;
-        const pulsing = timeDiff > this.pulseWidth && pulse >= this.pulseHeight / 3;
-        // Keep track of the height of this pulse, to calibrate for the next one.
-        if (timeDiff < this.pulseWidth) {
-            this.pulseHeight = Math.max(this.pulseHeight, pulse);
-        }
-        if (this.state === TapeDecoderState.DETECTED && timeDiff > this.endOfProgramSilence) {
-            // End of program.
-            this.state = TapeDecoderState.FINISHED;
-        }
-        else if (pulsing) {
-            const bit = timeDiff < this.bitDeterminator;
-            if (this.pulseCount++ === 1000) {
-                // For debugging, forces a detection so we can inspect the bits.
-                /// this.state = TapeDecoderState.DETECTED;
-            }
-            if (this.eatNextPulse) {
-                if (this.state === TapeDecoderState.DETECTED && !bit && !this.lenientFirstBit) {
-                    this.bitData.push(new BitData(this.lastPulseFrame, frame, BitType.BAD));
-                }
-                else {
-                    const lastBit = this.bitData[this.bitData.length - 1];
-                    if (lastBit && lastBit.bitType === BitType.ONE && lastBit.endFrame === this.lastPulseFrame) {
-                        // Merge with previous 1 bit.
-                        lastBit.endFrame = frame;
-                    }
-                    const lastByte = this.byteData[this.byteData.length - 1];
-                    if (lastByte && lastByte.endFrame === this.lastPulseFrame) {
-                        // Adjust last bit.
-                        lastByte.endFrame = frame;
-                    }
-                }
-                this.eatNextPulse = false;
-                this.lenientFirstBit = false;
-            }
-            else {
-                // If we see a 1 in the header, reset the count. We want a bunch of consecutive zeros.
-                if (bit && this.state === TapeDecoderState.UNDECIDED && this.detectedZeros < MIN_HEADER_ZEROS) {
-                    // Still not in header. Reset count.
-                    this.detectedZeros = 0;
-                }
-                else {
-                    if (bit) {
-                        this.eatNextPulse = true;
-                    }
-                    else {
-                        this.detectedZeros += 1;
-                    }
-                    this.recentBits = (this.recentBits << 1) | (bit ? 1 : 0);
-                    if (this.lastPulseFrame !== 0) {
-                        this.bitData.push(new BitData(this.lastPulseFrame, frame, bit ? BitType.ONE : BitType.ZERO));
-                    }
-                    if (this.state === TapeDecoderState.UNDECIDED) {
-                        // Haven't found end of header yet. Look for it, preceded by zeros.
-                        if (this.recentBits === 0x000000A5) {
-                            this.bitCount = 0;
-                            // For some reason we don't get a clock after this last 1.
-                            this.lenientFirstBit = true;
-                            this.state = TapeDecoderState.DETECTED;
-                        }
-                    }
-                    else {
-                        this.bitCount += 1;
-                        if (this.bitCount === 8) {
-                            let byteValue = this.recentBits & 0xFF;
-                            this.programBytes.push(byteValue);
-                            this.byteData.push(new ByteData(byteValue, this.bitData[this.bitData.length - 8].startFrame, frame));
-                            this.bitCount = 0;
-                        }
-                    }
-                }
-            }
-            this.lastPulseFrame = frame;
-            this.pulseHeight = 0;
-        }
-    }
-    getState() {
-        return this.state;
-    }
-    getBinary() {
-        const bytes = new Uint8Array(this.programBytes.length);
-        for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = this.programBytes[i];
-        }
-        return bytes;
-    }
-    getBitData() {
-        return this.bitData;
-    }
-    getByteData() {
-        return this.byteData;
-    }
-    readBits(frame) {
-        throw new Error("Method not implemented.");
     }
 }
 
@@ -32026,8 +31870,8 @@ function runTests(parent, testFile) {
             switch (test.type) {
                 case TestType.LOW_SPEED_PULSE:
                 case TestType.LOW_SPEED_NO_PULSE: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
-                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, true);
+                    const decoder = new LowSpeedTapeDecoder_LowSpeedTapeDecoder(tape, 500);
+                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD, false, true);
                     waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                     if (pulse.explanation !== "") {
                         explanation.innerText = pulse.explanation;
@@ -32039,8 +31883,8 @@ function runTests(parent, testFile) {
                     break;
                 }
                 case TestType.LOW_SPEED_PROOF: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
-                    const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
+                    const decoder = new LowSpeedTapeDecoder_LowSpeedTapeDecoder(tape, 500);
+                    const pulse = decoder.findPulse(0, LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD);
                     if (pulse === undefined) {
                         // Ran off the end of the tape.
                         pass = false;
@@ -32061,8 +31905,8 @@ function runTests(parent, testFile) {
                     break;
                 }
                 case TestType.LOW_SPEED_SYNC: {
-                    const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
-                    const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
+                    const decoder = new LowSpeedTapeDecoder_LowSpeedTapeDecoder(tape, 500);
+                    const pulse = decoder.findPulse(0, LowSpeedTapeDecoder_LowSpeedTapeDecoder.DEFAULT_THRESHOLD);
                     if (pulse === undefined) {
                         // Ran off the end of the tape.
                         pass = false;
@@ -32094,7 +31938,7 @@ function runTests(parent, testFile) {
                 case TestType.LOW_SPEED_BITS:
                 case TestType.HIGH_SPEED_BITS: {
                     const decoder = test.type === TestType.LOW_SPEED_BITS
-                        ? new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500)
+                        ? new LowSpeedTapeDecoder_LowSpeedTapeDecoder(tape, 500)
                         : new HighSpeedTapeDecoder_HighSpeedTapeDecoder(tape);
                     const [actualBits, waveformAnnotations, explanations] = decoder.readBits(0);
                     if (test.bin === undefined) {

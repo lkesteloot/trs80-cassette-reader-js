@@ -1,7 +1,4 @@
 
-// Low speed tape decode based on anteo's version.
-// https://github.com/anteo
-
 import {TapeDecoder} from "./TapeDecoder";
 import {Tape} from "./Tape";
 import {TapeDecoderState} from "./TapeDecoderState";
@@ -49,7 +46,12 @@ export class Pulse {
     }
 }
 
-export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
+/**
+ * Low-speed (250, 500, and 1000 baud) decoder.
+ *
+ * Originally based on: https://github.com/anteo/wav2cas
+ */
+export class LowSpeedTapeDecoder implements TapeDecoder {
     /**
      * Differentiating filter to accentuate pulses.
      *
@@ -94,7 +96,7 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
     private readonly clockPulseSearchRadius: number;
     private readonly dataPulseSearchRadius: number;
     private state: TapeDecoderState = TapeDecoderState.UNDECIDED;
-    private peakThreshold = LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD;
+    private peakThreshold = LowSpeedTapeDecoder.DEFAULT_THRESHOLD;
 
     constructor(tape: Tape, baud: number) {
         const samples = tape.lowSpeedSamples.samplesList[0];
@@ -330,7 +332,7 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
             let maxPulse: Pulse | undefined = undefined;
 
             for (let i = 0; i < this.period * 2; i += this.clockPulseSearchRadius) {
-                const pulse = this.isPulseAt(frame + i, LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, false);
+                const pulse = this.isPulseAt(frame + i, LowSpeedTapeDecoder.DEFAULT_THRESHOLD, false, false);
                 if (pulse.resultType === PulseResultType.PULSE) {
                     const absValue = Math.abs(pulse.value);
                     if (absValue > maxAbsValue) {

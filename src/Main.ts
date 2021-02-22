@@ -9,7 +9,7 @@ import {CanvasScreen} from "trs80-emulator";
 import {TestFile, TestType} from "./Test";
 import {readWavFile} from "./WavFile";
 import {SelectionMode, WaveformDisplay} from "./WaveformDisplay";
-import {LowSpeedAnteoTapeDecoder, PulseResultType} from "./LowSpeedAnteoTapeDecoder";
+import {LowSpeedTapeDecoder, PulseResultType} from "./LowSpeedTapeDecoder";
 import {HighSpeedTapeDecoder} from "./HighSpeedTapeDecoder";
 import {WaveformAnnotation} from "./Annotations";
 
@@ -308,8 +308,8 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                 switch (test.type) {
                     case TestType.LOW_SPEED_PULSE:
                     case TestType.LOW_SPEED_NO_PULSE: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
-                        const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, true);
+                        const decoder = new LowSpeedTapeDecoder(tape, 500);
+                        const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedTapeDecoder.DEFAULT_THRESHOLD, false, true);
                         waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                         if (pulse.explanation !== "") {
                             explanation.innerText = pulse.explanation;
@@ -321,8 +321,8 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     }
 
                     case TestType.LOW_SPEED_PROOF: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
-                        const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
+                        const decoder = new LowSpeedTapeDecoder(tape, 500);
+                        const pulse = decoder.findPulse(0, LowSpeedTapeDecoder.DEFAULT_THRESHOLD);
                         if (pulse === undefined) {
                             // Ran off the end of the tape.
                             pass = false;
@@ -342,8 +342,8 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     }
 
                     case TestType.LOW_SPEED_SYNC: {
-                        const decoder = new LowSpeedAnteoTapeDecoder(tape, 500);
-                        const pulse = decoder.findPulse(0, LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
+                        const decoder = new LowSpeedTapeDecoder(tape, 500);
+                        const pulse = decoder.findPulse(0, LowSpeedTapeDecoder.DEFAULT_THRESHOLD);
                         if (pulse === undefined) {
                             // Ran off the end of the tape.
                             pass = false;
@@ -375,7 +375,7 @@ function runTests(parent: HTMLElement, testFile: TestFile): void {
                     case TestType.LOW_SPEED_BITS:
                     case TestType.HIGH_SPEED_BITS: {
                         const decoder = test.type === TestType.LOW_SPEED_BITS
-                            ? new LowSpeedAnteoTapeDecoder(tape, 500)
+                            ? new LowSpeedTapeDecoder(tape, 500)
                             : new HighSpeedTapeDecoder(tape);
                         const [actualBits, waveformAnnotations, explanations] = decoder.readBits(0);
                         if (test.bin === undefined) {
