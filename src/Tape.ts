@@ -5,10 +5,10 @@
 
 import {AudioFile, highPassFilter} from "./AudioUtils";
 import {DisplaySamples} from "./DisplaySamples";
-import {LowSpeedTapeDecoder} from "./LowSpeedTapeDecoder";
 import {Program} from "./Program";
 import {WaveformAnnotation} from "./Annotations";
 import {SimpleEventDispatcher} from "strongly-typed-events";
+import {LowSpeedAnteoTapeDecoder} from "./LowSpeedAnteoTapeDecoder";
 
 const LOCAL_DATA_KEY = "tapes";
 
@@ -53,7 +53,7 @@ export class Tape {
         this.name = name;
         this.originalSamples = new DisplaySamples(audioFile.samples);
         this.filteredSamples = new DisplaySamples(highPassFilter(audioFile.samples, 500));
-        this.lowSpeedSamples = new DisplaySamples(LowSpeedTapeDecoder.filterSamples(
+        this.lowSpeedSamples = new DisplaySamples(LowSpeedAnteoTapeDecoder.filterSamples(
             this.filteredSamples.samplesList[0], audioFile.rate));
         this.sampleRate = audioFile.rate;
         this.programs = [];

@@ -17,6 +17,7 @@ import {
     WaveformAnnotation
 } from "./Annotations";
 import {withCommas} from "./Utils";
+import {clampToInt16, highPassFilter} from "./AudioUtils";
 
 const SYNC_BYTE = 0xA5;
 
@@ -49,6 +50,40 @@ export class Pulse {
 }
 
 export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
+    /**
+     * Differentiating filter to accentuate pulses.
+     *
+     * @param samples samples to filter.
+     * @param sampleRate number of samples per second in the recording.
+     * @returns filtered samples.
+     */
+    public static filterSamples(samples: Int16Array, sampleRate: number): Int16Array {
+        const out = new Int16Array(samples.length);
+
+        // Number of samples between the top of the pulse and the bottom of it. Each pulse
+        // lasts 125µs, so assume the distance between crest and trough is 125µs.
+        const pulseWidth = Math.round(125e-6*sampleRate);
+
+         // Convolution with a pulse similar to what the original should have looked like (125 µs pulse
+        let posSum = 0;
+        let negSum = 0;
+        let denom = pulseWidth * 2;
+        for (let i = 0; i < samples.length; i++) {
+            let aheadSample = i + pulseWidth >= samples.length ? 0 : samples[i + pulseWidth];
+            let nowSample = samples[i];
+            let behindSample = i - pulseWidth < 0 ? 0 : samples[i - pulseWidth];
+
+            posSum += nowSample - behindSample;
+            negSum += aheadSample - nowSample;
+
+            out[i] = clampToInt16((posSum - negSum) / denom);
+        }
+
+        // TODO do we still need this filter before this function?
+        // TOOD replace with better filter in branch.
+        return highPassFilter(out, 500)
+    }
+
     public static DEFAULT_THRESHOLD = 3000;
     private readonly samples: Int16Array;
     private readonly baud: number;
@@ -115,7 +150,9 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
             // We expect a pulse every period.
             const expectedPulse = this.isPulseAt(frame, this.peakThreshold, false, false);
             if (expectedPulse.resultType !== PulseResultType.PULSE) {
-                waveformAnnotations.push(new LabelAnnotation("Missing pulse", startFrame, frame, false));
+                // This creates a lot of noise. If we really find it useful, maybe suppress it from the middle
+                // of successfully-decoded programs.
+                // waveformAnnotations.push(new LabelAnnotation("Missing pulse", startFrame, frame, false));
                 return false;
             }
             lastPulseFrame = expectedPulse.frame;
@@ -123,7 +160,9 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
             // And no pulse in between, which would indicate a "1" bit.
             const expectedNoPulse = this.isPulseAt(frame + this.halfPeriod, expectedPulse.range / 2, true, true);
             if (expectedNoPulse.resultType === PulseResultType.PULSE) {
-                waveformAnnotations.push(new LabelAnnotation("Extra pulse", startFrame, expectedNoPulse.frame, false));
+                // This creates a lot of noise. If we really find it useful, maybe suppress it from the middle
+                // of successfully-decoded programs.
+                // waveformAnnotations.push(new LabelAnnotation("Extra pulse", startFrame, expectedNoPulse.frame, false));
                 return false;
             }
 
