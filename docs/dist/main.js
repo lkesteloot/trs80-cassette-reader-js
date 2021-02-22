@@ -4974,11 +4974,12 @@ class ByteReader {
     }
     /**
      * Reads a UTF-8 string from the stream. If the returned string is shorter than "length", then we hit EOF.
+     * Nul bytes are replaced with spaces.
      */
     readString(length) {
         // We used to specify "ascii" for the decoder, but Node doesn't support it, and in any
         // case UTF-8 is a super set, so anything that worked before should work now.
-        return new TextDecoder().decode(this.readBytes(length));
+        return new TextDecoder().decode(this.readBytes(length)).replace(/\u0000/g, " ");
     }
     /**
      * Returns the next "length" bytes. If the returned array is shorter than "length", then we hit EOF.
@@ -22595,17 +22596,29 @@ class Program_Program {
  * Annotation to draw a point.
  */
 class PointAnnotation {
-    constructor(frame, value) {
+    constructor(frame, value, solid) {
         this.frame = frame;
         this.value = value;
+        this.solid = solid;
     }
     draw(ctx) {
         const x = ctx.frameToX(this.frame);
         const y = ctx.valueToY(this.value);
-        ctx.context.fillStyle = ctx.highlightColor;
+        if (this.solid) {
+            ctx.context.fillStyle = ctx.highlightColor;
+        }
+        else {
+            ctx.context.strokeStyle = ctx.highlightColor;
+            ctx.context.lineWidth = 1;
+        }
         ctx.context.beginPath();
         ctx.context.arc(x, y, 3, 0, 2 * Math.PI);
-        ctx.context.fill();
+        if (this.solid) {
+            ctx.context.fill();
+        }
+        else {
+            ctx.context.stroke();
+        }
     }
 }
 /**
@@ -22936,7 +22949,10 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         this.period = Math.round(tape.sampleRate / baud);
         this.halfPeriod = Math.round(this.period / 2);
         this.quarterPeriod = Math.round(this.period / 4);
-        this.pulseSearchRadius = Math.round(this.period / 6);
+        this.clockPulseSearchRadius = Math.round(this.period * 0.3);
+        // Be more strict about data pulse, there should be less variance there and we don't want to risk
+        // accidentally reading the next clock pulse.
+        this.dataPulseSearchRadius = Math.round(this.period * 0.15);
     }
     findNextProgram(frame, waveformAnnotations) {
         while (true) {
@@ -22965,14 +22981,14 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         let lastPulseFrame = frame;
         for (let i = 0; i < 200; i++) {
             // We expect a pulse every period.
-            const expectedPulse = this.isPulseAt(frame, this.peakThreshold);
+            const expectedPulse = this.isPulseAt(frame, this.peakThreshold, false, false);
             if (expectedPulse.resultType !== PulseResultType.PULSE) {
                 waveformAnnotations.push(new LabelAnnotation("Missing pulse", startFrame, frame, false));
                 return false;
             }
             lastPulseFrame = expectedPulse.frame;
             // And no pulse in between, which would indicate a "1" bit.
-            const expectedNoPulse = this.isPulseAt(frame + this.halfPeriod, expectedPulse.range / 2, true);
+            const expectedNoPulse = this.isPulseAt(frame + this.halfPeriod, expectedPulse.range / 2, true, true);
             if (expectedNoPulse.resultType === PulseResultType.PULSE) {
                 waveformAnnotations.push(new LabelAnnotation("Extra pulse", startFrame, expectedNoPulse.frame, false));
                 return false;
@@ -23046,11 +23062,11 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
      * Read a bit at position "frame", which should be the position of the previous bit's clock pulse.
      * @return the value of the bit, the clock pulse, and the data pulse.
      */
-    readBit(frame, includeExplanation) {
+    readBit(frame, includeExplanation = false) {
         // Clock pulse is one period away.
-        let clockPulse = this.isPulseAt(frame + this.period, this.peakThreshold, includeExplanation);
+        let clockPulse = this.isPulseAt(frame + this.period, this.peakThreshold, false, includeExplanation);
         if (clockPulse.resultType !== PulseResultType.PULSE) {
-            const latePulse = this.findNextClosePulse(frame + this.period, this.peakThreshold, this.samples[frame] > 0);
+            const latePulse = this.findNextClosePulse(frame + this.period, this.peakThreshold, this.samples[frame] > 0, includeExplanation);
             if (latePulse === undefined) {
                 // Failed to find late pulse.
                 return [false, clockPulse, clockPulse];
@@ -23058,7 +23074,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             clockPulse = latePulse;
         }
         // Data pulse is half a period after the clock pulse.
-        const dataPulse = this.isPulseAt(clockPulse.frame + this.halfPeriod, this.peakThreshold, includeExplanation);
+        const dataPulse = this.isPulseAt(clockPulse.frame + this.halfPeriod, this.peakThreshold, true, includeExplanation);
         const bit = dataPulse.resultType === PulseResultType.PULSE;
         return [bit, clockPulse, dataPulse];
     }
@@ -23113,8 +23129,8 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         while (frame < this.samples.length) {
             let maxAbsValue = 0;
             let maxPulse = undefined;
-            for (let i = 0; i < this.period * 2; i += this.pulseSearchRadius) {
-                const pulse = this.isPulseAt(frame + i, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD);
+            for (let i = 0; i < this.period * 2; i += this.clockPulseSearchRadius) {
+                const pulse = this.isPulseAt(frame + i, LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, false);
                 if (pulse.resultType === PulseResultType.PULSE) {
                     const absValue = Math.abs(pulse.value);
                     if (absValue > maxAbsValue) {
@@ -23133,9 +23149,9 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     /**
      * Find the very next pulse of the specified polarity. The pulse must be in the next six periods.
      */
-    findNextClosePulse(frame, threshold, positive) {
-        for (let i = 0; i < this.period * 6; i += this.pulseSearchRadius) {
-            const pulse = this.isPulseAt(frame + i, threshold);
+    findNextClosePulse(frame, threshold, positive, includeExplanation) {
+        for (let i = 0; i < this.period * 6; i += this.clockPulseSearchRadius) {
+            const pulse = this.isPulseAt(frame + i, threshold, false, includeExplanation);
             if (pulse.resultType === PulseResultType.PULSE && (positive ? (pulse.value > 0) : (pulse.value < 0))) {
                 return pulse;
             }
@@ -23145,9 +23161,10 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
     /**
      * Look for a pulse around frame.
      */
-    isPulseAt(frame, peakThreshold, includeExplanation) {
-        const searchStart = Math.max(frame - this.pulseSearchRadius, 0);
-        const searchEnd = Math.min(frame + this.pulseSearchRadius, this.samples.length - 1);
+    isPulseAt(frame, peakThreshold, isDataPulse, includeExplanation) {
+        const searchRadius = isDataPulse ? this.dataPulseSearchRadius : this.clockPulseSearchRadius;
+        const searchStart = Math.max(frame - searchRadius, 0);
+        const searchEnd = Math.min(frame + searchRadius, this.samples.length - 1);
         // Find min and max around frame.
         let minFrame = searchStart;
         let maxFrame = searchStart;
@@ -23171,8 +23188,8 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         const annotations = [];
         if (range > peakThreshold) {
             if (includeExplanation) {
-                annotations.push(new PointAnnotation(searchStart, this.samples[searchStart]));
-                annotations.push(new PointAnnotation(searchEnd, this.samples[searchEnd]));
+                annotations.push(new PointAnnotation(searchStart, this.samples[searchStart], false));
+                annotations.push(new PointAnnotation(searchEnd, this.samples[searchEnd], false));
                 annotations.push(new HorizontalLineAnnotation(posPulseEndThreshold, searchStart, searchEnd));
                 annotations.push(new HorizontalLineAnnotation(negPulseEndThreshold, searchStart, searchEnd));
             }
@@ -23192,13 +23209,13 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             if (foundPosPulse) {
                 const explanation = includeExplanation ?
                     "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(maxFrame) +
-                        ", which is within the search radius of " + withCommas(this.pulseSearchRadius) + ". " +
+                        ", which is within the search radius of " + withCommas(searchRadius) + ". " +
                         "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(peakThreshold) +
                         ", start " + withCommas(this.samples[searchStart]) + " < " + withCommas(posPulseEndThreshold) +
                         ", and end " + withCommas(this.samples[searchEnd]) + " < " + withCommas(posPulseEndThreshold) + "." : "";
                 let pulse = new Pulse(PulseResultType.PULSE, maxValue, maxFrame, range, explanation);
                 if (includeExplanation) {
-                    pulse.waveformAnnotations.push(new PointAnnotation(pulse.frame, pulse.value));
+                    pulse.waveformAnnotations.push(new PointAnnotation(pulse.frame, pulse.value, true));
                     pulse.waveformAnnotations.push(new VerticalLineAnnotation(frame));
                     pulse.waveformAnnotations.push(...annotations);
                 }
@@ -23207,13 +23224,13 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
             if (foundNegPulse) {
                 const explanation = includeExplanation ?
                     "Looked for pulse at " + withCommas(frame) + " and found it at " + withCommas(minFrame) +
-                        ", which is within the search radius of " + withCommas(this.pulseSearchRadius) + ". " +
+                        ", which is within the search radius of " + withCommas(searchRadius) + ". " +
                         "Range " + withCommas(range) + " is greater than pulse threshold " + withCommas(peakThreshold) +
                         ", start " + withCommas(this.samples[searchStart]) + " > " + withCommas(negPulseEndThreshold) +
                         ", and end " + withCommas(this.samples[searchEnd]) + " > " + withCommas(negPulseEndThreshold) + "." : "";
                 const pulse = new Pulse(PulseResultType.PULSE, minValue, minFrame, range, explanation);
                 if (includeExplanation) {
-                    pulse.waveformAnnotations.push(new PointAnnotation(pulse.frame, pulse.value));
+                    pulse.waveformAnnotations.push(new PointAnnotation(pulse.frame, pulse.value, true));
                     pulse.waveformAnnotations.push(new VerticalLineAnnotation(frame));
                     pulse.waveformAnnotations.push(...annotations);
                 }
@@ -23449,7 +23466,9 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                 out[i] = clampToInt16((posSum - negSum) / denom);
             }
         }
-        return out;
+        // TODO do we still need this filter before this function?
+        // TOOD replace with better filter in branch.
+        return highPassFilter(out, 500);
     }
     getName() {
         return "500 baud" + (this.invert ? " (Inv)" : "");
@@ -31931,6 +31950,34 @@ function makePassFailLabel(pass) {
     }
     return result;
 }
+/**
+ * Get HTML for a string where the prefix and suffix are dimmed.
+ */
+function getPrefixSuffixHtml(s, prefix, suffix) {
+    return "<span style='opacity: 30%'>" + s.substr(0, prefix) + "</span>" +
+        s.substr(prefix, s.length - prefix - suffix) +
+        "<span style='opacity: 30%'>" + s.substr(s.length - suffix) + "</span>";
+}
+/**
+ * Return an HTML string for showing the differences between these bit strings.
+ */
+function getDiffHtml(expectedBits, actualBits) {
+    if (expectedBits === actualBits) {
+        // Shouldn't happen.
+        throw new Error("getDiffHtml must be passed different arguments");
+    }
+    let commonPrefix = 0;
+    while (expectedBits.substr(0, commonPrefix + 1) === actualBits.substr(0, commonPrefix + 1)) {
+        commonPrefix += 1;
+    }
+    let commonSuffix = 0;
+    while (commonPrefix + commonSuffix < Math.min(expectedBits.length, actualBits.length) &&
+        expectedBits.substr(-(commonSuffix + 1)) === actualBits.substr(-(commonSuffix + 1))) {
+        commonSuffix += 1;
+    }
+    return "Expected " + getPrefixSuffixHtml(expectedBits, commonPrefix, commonSuffix) +
+        " but got " + getPrefixSuffixHtml(actualBits, commonPrefix, commonSuffix);
+}
 function runTests(parent, testFile) {
     if (testFile.name !== undefined) {
         const pageHeader = document.createElement("h2");
@@ -31980,7 +32027,7 @@ function runTests(parent, testFile) {
                 case TestType.LOW_SPEED_PULSE:
                 case TestType.LOW_SPEED_NO_PULSE: {
                     const decoder = new LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder(tape, 500);
-                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, true);
+                    const pulse = decoder.isPulseAt(Math.round(wavFile.samples.length / 2), LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder.DEFAULT_THRESHOLD, false, true);
                     waveformDisplay.addWaveformAnnotations(pulse.waveformAnnotations);
                     if (pulse.explanation !== "") {
                         explanation.innerText = pulse.explanation;
@@ -32039,7 +32086,7 @@ function runTests(parent, testFile) {
                             explanation.remove();
                         }
                         else {
-                            explanation.innerText = "Expected " + expectBits + " but got " + actualBits + ".";
+                            explanation.innerHTML = getDiffHtml(expectBits, actualBits);
                         }
                     }
                     break;
@@ -32057,10 +32104,7 @@ function runTests(parent, testFile) {
                     const expectBits = test.bin.replace(/ /g, "");
                     waveformDisplay.addWaveformAnnotations(waveformAnnotations);
                     pass = actualBits === expectBits;
-                    if (!pass) {
-                        explanations.unshift("Expected " + expectBits + " but got " + actualBits + ".");
-                    }
-                    if (explanations.length === 0) {
+                    if (explanations.length === 0 && pass) {
                         explanation.remove();
                     }
                     else {
@@ -32070,6 +32114,9 @@ function runTests(parent, testFile) {
                                 html += "<br>";
                             }
                             html += escapeHtml(e);
+                        }
+                        if (!pass) {
+                            html += "<br>" + getDiffHtml(expectBits, actualBits);
                         }
                         explanation.innerHTML = html;
                     }
