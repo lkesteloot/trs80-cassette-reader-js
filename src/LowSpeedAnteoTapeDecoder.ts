@@ -197,7 +197,7 @@ export class LowSpeedAnteoTapeDecoder implements TapeDecoder {
         }
 
         return new Program(0, 0, startFrame, frame,
-            this, new Uint8Array(binary), bitData, byteData);
+            this, this.baud, new Uint8Array(binary), bitData, byteData);
     }
 
     /**

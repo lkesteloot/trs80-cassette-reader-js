@@ -4974,12 +4974,11 @@ class ByteReader {
     }
     /**
      * Reads a UTF-8 string from the stream. If the returned string is shorter than "length", then we hit EOF.
-     * Nul bytes are replaced with spaces.
      */
     readString(length) {
         // We used to specify "ascii" for the decoder, but Node doesn't support it, and in any
         // case UTF-8 is a super set, so anything that worked before should work now.
-        return new TextDecoder().decode(this.readBytes(length)).replace(/\u0000/g, " ");
+        return new TextDecoder().decode(this.readBytes(length));
     }
     /**
      * Returns the next "length" bytes. If the returned array is shorter than "length", then we hit EOF.
@@ -22414,7 +22413,7 @@ function writeWavFile(samples, sampleRate) {
 
 
 class Program_Program {
-    constructor(trackNumber, copyNumber, startFrame, endFrame, decoder, binary, bitData, byteData) {
+    constructor(trackNumber, copyNumber, startFrame, endFrame, decoder, baud, binary, bitData, byteData) {
         this.name = "";
         this.notes = "";
         this.screenshot = "";
@@ -22426,6 +22425,7 @@ class Program_Program {
         this.startFrame = startFrame;
         this.endFrame = endFrame;
         this.decoder = decoder;
+        this.baud = baud;
         this.binary = binary;
         this.bitData = bitData;
         this.byteData = byteData;
@@ -22806,7 +22806,7 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         if (programStartFrame === undefined) {
             return undefined;
         }
-        return new Program_Program(0, 0, programStartFrame, startFrame, this, this.getBinary(), this.getBitData(), this.getByteData());
+        return new Program_Program(0, 0, programStartFrame, startFrame, this, 1500, this.getBinary(), this.getBitData(), this.getByteData());
     }
     /**
      * Find the next bit, starting at the positive crossing of the end of the previous bit. Returns
@@ -23056,7 +23056,7 @@ class LowSpeedAnteoTapeDecoder_LowSpeedAnteoTapeDecoder {
         while (bitData.length > 0 && bitData[bitData.length - 1].bitType === BitType.BAD) {
             bitData.splice(bitData.length - 1, 1);
         }
-        return new Program_Program(0, 0, startFrame, frame, this, new Uint8Array(binary), bitData, byteData);
+        return new Program_Program(0, 0, startFrame, frame, this, this.baud, new Uint8Array(binary), bitData, byteData);
     }
     /**
      * Read a bit at position "frame", which should be the position of the previous bit's clock pulse.
@@ -23485,7 +23485,7 @@ class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
                 programStartFrame = frame;
             }
             if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
-                return new Program_Program(0, 0, programStartFrame, frame, this, this.getBinary(), this.getBitData(), this.getByteData());
+                return new Program_Program(0, 0, programStartFrame, frame, this, 500, this.getBinary(), this.getBitData(), this.getByteData());
             }
         }
         return undefined;

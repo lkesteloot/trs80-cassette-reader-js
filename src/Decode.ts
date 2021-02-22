@@ -135,8 +135,8 @@ function main() {
         const labelParts: string[] = [];
 
         // Speed.
-        labelParts.push(program.decoder.isHighSpeed() ? "1500 baud" : "500 baud");
-        programData.speed = program.decoder.isHighSpeed() ? 1500 : 500;
+        labelParts.push(program.baud + " baud");
+        programData.speed = program.baud;
 
         // Size.
         labelParts.push(pluralizeWithCount(program.binary.length, "byte"));

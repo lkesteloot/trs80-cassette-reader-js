@@ -125,7 +125,7 @@ export class LowSpeedTapeDecoder implements TapeDecoder {
                 programStartFrame = frame;
             }
             if (this.state === TapeDecoderState.FINISHED && programStartFrame !== -1) {
-                return new Program(0, 0, programStartFrame, frame, this,
+                return new Program(0, 0, programStartFrame, frame, this, 500,
                     this.getBinary(), this.getBitData(), this.getByteData());
             }
         }

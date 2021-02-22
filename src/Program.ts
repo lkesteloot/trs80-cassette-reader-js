@@ -16,6 +16,7 @@ export class Program {
     public startFrame: number;
     public endFrame: number;
     public decoder: TapeDecoder;
+    public readonly baud: number;
     public binary: Uint8Array;
     public bitData: BitData[];
     // Index by byte index in the "binary" array.
@@ -31,13 +32,14 @@ export class Program {
     public readonly onScreenshot = new SimpleEventDispatcher<string>();
 
     constructor(trackNumber: number, copyNumber: number, startFrame: number, endFrame: number,
-                decoder: TapeDecoder, binary: Uint8Array, bitData: BitData[], byteData: ByteData[]) {
+                decoder: TapeDecoder, baud: number, binary: Uint8Array, bitData: BitData[], byteData: ByteData[]) {
 
         this.trackNumber = trackNumber;
         this.copyNumber = copyNumber;
         this.startFrame = startFrame;
         this.endFrame = endFrame;
         this.decoder = decoder;
+        this.baud = baud;
         this.binary = binary;
         this.bitData = bitData;
         this.byteData = byteData;

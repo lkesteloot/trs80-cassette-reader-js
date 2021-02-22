@@ -106,7 +106,7 @@ export class HighSpeedTapeDecoder implements TapeDecoder {
             return undefined;
         }
 
-        return new Program(0, 0, programStartFrame, startFrame, this,
+        return new Program(0, 0, programStartFrame, startFrame, this, 1500,
             this.getBinary(), this.getBitData(), this.getByteData());
     }
 
