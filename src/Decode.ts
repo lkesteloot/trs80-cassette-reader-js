@@ -122,6 +122,7 @@ function main() {
     const fullData: any = {
         programs: [],
         sampleRate: tape.sampleRate,
+        version: 1,
     };
 
     for (let i = 0; i < tape.programs.length; i++) {
@@ -129,6 +130,12 @@ function main() {
         const programName = nameForProgram(program);
         const programData: any = {
             name: programName,
+            trackNumber: program.trackNumber,
+            copyNumber: program.copyNumber,
+            startFrame: program.startFrame,
+            endFrame: program.endFrame,
+            speed: program.baud,
+            length: program.binary.length,
         };
         fullData.programs.push(programData);
 
@@ -136,21 +143,17 @@ function main() {
 
         // Speed.
         labelParts.push(program.baud + " baud");
-        programData.speed = program.baud;
 
         // Size.
         labelParts.push(pluralizeWithCount(program.binary.length, "byte"));
-        programData.length = program.binary.length;
 
         // Start, stop, and duration.
         labelParts.push(frameToTimestamp(program.startFrame, tape.sampleRate, true) + " to " +
             frameToTimestamp(program.endFrame, tape.sampleRate, true) + " (" +
             frameToTimestamp(program.endFrame - program.startFrame, tape.sampleRate, true) + ")");
-        programData.startFrame = program.startFrame;
-        programData.endFrame = program.endFrame;
-        programData.type = "unknown";
 
         // Decode various formats.
+        programData.type = "unknown";
         const systemProgram = decodeSystemProgram(program.binary);
 
         // Analyze system program.
