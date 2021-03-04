@@ -22126,7 +22126,9 @@ function LowSpeedTapeEncoder_addByte(samplesList, b, cycle, silence) {
 function wrapLowSpeed(bytes) {
     // Add tape header.
     const buffers = [
-        new Uint8Array(256),
+        // We used to generate 256 zero bytes, but Knut's wav2cas uses 255 bytes,
+        // so use that so we can binary-compare the outputs.
+        new Uint8Array(255),
         new Uint8Array([LowSpeedTapeEncoder_SYNC_BYTE]),
         bytes,
     ];
@@ -23451,6 +23453,7 @@ class Decoder_Decoder {
 
 
 
+
 const LOCAL_DATA_KEY = "tapes";
 class Tape_Tape {
     /**
@@ -23489,6 +23492,12 @@ class Tape_Tape {
             this.notes = notes;
             this.onNotes.dispatch(notes);
         }
+    }
+    /**
+     * Return a .cas file version of the tape.
+     */
+    asCasFile() {
+        return concatByteArrays(this.programs.map(program => program.asCasFile()));
     }
     /**
      * Listen for changes to local storage and apply them.
@@ -30222,6 +30231,17 @@ class TapeBrowser_TapeBrowser {
             else {
                 addKeyValue("Type", "Unknown");
             }
+        }
+        else {
+            addKeyValues("Download", [".CAS"], (extension) => {
+                // Download binary.
+                const a = document.createElement("a");
+                const contents = program.asCasFile();
+                const blob = new Blob([contents], { type: "application/octet-stream" });
+                a.href = window.URL.createObjectURL(blob);
+                a.download = (this.tape.name).replace(/ /g, "-") + extension;
+                a.click();
+            });
         }
         // Add editable fields.
         if (program instanceof Program_Program) {

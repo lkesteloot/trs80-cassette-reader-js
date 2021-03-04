@@ -9,6 +9,7 @@ import {Program} from "./Program";
 import {WaveformAnnotation} from "./Annotations";
 import {SimpleEventDispatcher} from "strongly-typed-events";
 import {LowSpeedTapeDecoder} from "./LowSpeedTapeDecoder";
+import {concatByteArrays} from "./Utils";
 
 const LOCAL_DATA_KEY = "tapes";
 
@@ -81,6 +82,13 @@ export class Tape {
             this.notes = notes;
             this.onNotes.dispatch(notes);
         }
+    }
+
+    /**
+     * Return a .cas file version of the tape.
+     */
+    public asCasFile(): Uint8Array {
+        return concatByteArrays(this.programs.map(program => program.asCasFile()));
     }
 
     /**

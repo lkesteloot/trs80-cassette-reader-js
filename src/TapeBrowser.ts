@@ -400,6 +400,16 @@ export class TapeBrowser {
             } else {
                 addKeyValue("Type", "Unknown");
             }
+        } else {
+            addKeyValues("Download", [".CAS"], (extension: string) => {
+                // Download binary.
+                const a = document.createElement("a");
+                const contents = program.asCasFile();
+                const blob = new Blob([contents], {type: "application/octet-stream"});
+                a.href = window.URL.createObjectURL(blob);
+                a.download = (this.tape.name).replace(/ /g, "-") + extension;
+                a.click();
+            });
         }
 
         // Add editable fields.
