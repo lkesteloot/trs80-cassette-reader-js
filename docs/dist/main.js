@@ -22201,8 +22201,12 @@ class ArrayBufferReader {
      */
     readString(length) {
         let s = "";
-        for (let i = 0; i < length; i++) {
-            s += String.fromCharCode(this.dataView.getInt8(this.index++));
+        for (let i = 0; i < length && this.index < this.arrayBuffer.byteLength; i++) {
+            const byte = this.dataView.getInt8(this.index++);
+            if (byte === 0x00) {
+                break;
+            }
+            s += String.fromCharCode(byte);
         }
         return s;
     }
@@ -22277,6 +22281,11 @@ function readWavFile(arrayBuffer) {
     while (!reader.eof()) {
         // Chunk ID.
         const chunkId = reader.readString(4);
+        if (chunkId.length < 4) {
+            // Premature end of file.
+            console.log("End of file part-way through chunk ID in WAV file: " + chunkId);
+            break;
+        }
         const chunkSize = reader.readUint32();
         switch (chunkId) {
             case "fmt ": {
@@ -22906,8 +22915,6 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
 }
 
 // CONCATENATED MODULE: ./src/LowSpeedTapeDecoder.ts
-// Low speed tape decode based on anteo's version.
-// https://github.com/anteo
 
 
 
@@ -22940,6 +22947,8 @@ class Pulse {
 }
 /**
  * Low-speed (250, 500, and 1000 baud) decoder.
+ *
+ * Originally based on: https://github.com/anteo/wav2cas
  */
 class LowSpeedTapeDecoder_LowSpeedTapeDecoder {
     constructor(tape, baud) {

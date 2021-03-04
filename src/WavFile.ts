@@ -46,8 +46,12 @@ class ArrayBufferReader {
      */
     public readString(length: number): string {
         let s = "";
-        for (let i = 0; i < length; i++) {
-            s += String.fromCharCode(this.dataView.getInt8(this.index++));
+        for (let i = 0; i < length && this.index < this.arrayBuffer.byteLength; i++) {
+            const byte = this.dataView.getInt8(this.index++);
+            if (byte === 0x00) {
+                break;
+            }
+            s += String.fromCharCode(byte);
         }
 
         return s;
@@ -135,6 +139,11 @@ export function readWavFile(arrayBuffer: ArrayBuffer): AudioFile {
     while (!reader.eof()) {
         // Chunk ID.
         const chunkId = reader.readString(4);
+        if (chunkId.length < 4) {
+            // Premature end of file.
+            console.log("End of file part-way through chunk ID in WAV file: " + chunkId);
+            break;
+        }
         const chunkSize = reader.readUint32();
 
         switch (chunkId) {
