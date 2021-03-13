@@ -28,14 +28,14 @@
     "trs80-cassette-reader": "bin/trs80-cassette-reader"
   },
   "devDependencies": {
-    "@types/node": "^13.5.2",
+    "@types/node": "^13.13.46",
     "@types/progress": "^2.0.3",
     "@types/split.js": "^1.4.0",
     "http-server": "^0.12.0",
     "source-map-loader": "^0.2.4",
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.4",
+    "typescript": "^3.9.9",
     "webpack": "^4.41.5",
     "webpack-build-notifier": "^2.0.0",
     "webpack-cli": "^3.3.10"
@@ -49,9 +49,9 @@
     "progress": "^2.0.3",
     "split.js": "^1.5.11",
     "strongly-typed-events": "^1.6.7",
-    "trs80-base": "^1.0.4",
-    "trs80-disasm": "^1.0.0",
-    "trs80-emulator": "^1.1.7",
+    "trs80-base": "^1.0.5",
+    "trs80-disasm": "^1.0.2",
+    "trs80-emulator": "^1.1.14",
     "z80-base": "^1.0.6",
     "z80-disasm": "^1.1.3"
   }

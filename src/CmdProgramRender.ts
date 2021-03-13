@@ -117,34 +117,40 @@ export function toDiv(cmdProgram: CmdProgram, out: HTMLElement): [Highlightable[
         // Chunk type.
         add(line, toHexByte(chunk.type) + "  ", classes.address);
 
-        if (chunk instanceof CmdLoadBlockChunk) {
-            add(line, "Load at ", classes.opcodes);
-            add(line, toHexWord(chunk.address), classes.address);
-            add(line, ": ", classes.opcodes);
-            const bytes = chunk.loadData.slice(0, Math.min(3, chunk.loadData.length));
-            const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.loadData.length ? " ..." : "");
-            add(line, text, classes.hex);
-            add(line, " (" + chunk.loadData.length + " byte" + (chunk.loadData.length == 1 ? "" : "s") + ")", classes.address);
-            if (programAddress !== undefined && chunk.address !== programAddress) {
-                add(line, " (not contiguous, expected " + toHexWord(programAddress) + ")", classes.error);
-            }
-            programAddress = chunk.address + chunk.loadData.length;
-        } else if (chunk instanceof CmdTransferAddressChunk) {
-            if (chunk.rawData.length !== 2) {
-                add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
-            } else {
-                add(line, "Jump to ", classes.opcodes);
+        switch (chunk.className) {
+            case "CmdLoadBlockChunk": {
+                add(line, "Load at ", classes.opcodes);
                 add(line, toHexWord(chunk.address), classes.address);
+                add(line, ": ", classes.opcodes);
+                const bytes = chunk.loadData.slice(0, Math.min(3, chunk.loadData.length));
+                const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.loadData.length ? " ..." : "");
+                add(line, text, classes.hex);
+                add(line, " (" + chunk.loadData.length + " byte" + (chunk.loadData.length == 1 ? "" : "s") + ")", classes.address);
+                if (programAddress !== undefined && chunk.address !== programAddress) {
+                    add(line, " (not contiguous, expected " + toHexWord(programAddress) + ")", classes.error);
+                }
+                programAddress = chunk.address + chunk.loadData.length;
+                break;
             }
-        } else if (chunk instanceof CmdLoadModuleHeaderChunk) {
-            add(line, "Load module header: ", classes.opcodes);
-            add(line, chunk.filename, classes.hex);
-        } else {
-            add(line, "Unknown type: ", classes.error);
-            const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
-            const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
-            add(line, text, classes.hex);
-            add(line, " (" + chunk.rawData.length + " byte" + (chunk.rawData.length == 1 ? "" : "s") + ")", classes.address);
+            case "CmdTransferAddressChunk":
+                if (chunk.rawData.length !== 2) {
+                    add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
+                } else {
+                    add(line, "Jump to ", classes.opcodes);
+                    add(line, toHexWord(chunk.address), classes.address);
+                }
+                break;
+            case "CmdLoadModuleHeaderChunk":
+                add(line, "Load module header: ", classes.opcodes);
+                add(line, chunk.filename, classes.hex);
+                break;
+            default:
+                add(line, "Unknown type: ", classes.error);
+                const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
+                const text = Array.from(bytes).map(toHexByte).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
+                add(line, text, classes.hex);
+                add(line, " (" + chunk.rawData.length + " byte" + (chunk.rawData.length == 1 ? "" : "s") + ")", classes.address);
+                break;
         }
     }
 
