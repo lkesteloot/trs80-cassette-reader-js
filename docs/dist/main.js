@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 138);
+/******/ 	return __webpack_require__(__webpack_require__.s = 33);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -94,10 +94,10 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(52));
-__export(__webpack_require__(53));
-__export(__webpack_require__(23));
-__export(__webpack_require__(54));
+__export(__webpack_require__(19));
+__export(__webpack_require__(20));
+__export(__webpack_require__(7));
+__export(__webpack_require__(21));
 
 
 /***/ }),
@@ -119,15 +119,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(__webpack_require__(24), exports);
 __exportStar(__webpack_require__(25), exports);
-__exportStar(__webpack_require__(26), exports);
-__exportStar(__webpack_require__(14), exports);
-__exportStar(__webpack_require__(6), exports);
-__exportStar(__webpack_require__(28), exports);
-__exportStar(__webpack_require__(27), exports);
-__exportStar(__webpack_require__(7), exports);
-__exportStar(__webpack_require__(29), exports);
-__exportStar(__webpack_require__(62), exports);
-__exportStar(__webpack_require__(63), exports);
 
 
 /***/ }),
@@ -146,22 +137,22 @@ __exportStar(__webpack_require__(63), exports);
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = exports.Subscription = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = void 0;
-var ste_core_1 = __webpack_require__(11);
+var ste_core_1 = __webpack_require__(3);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return ste_core_1.DispatcherBase; } });
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return ste_core_1.DispatcherWrapper; } });
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return ste_core_1.EventListBase; } });
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return ste_core_1.Subscription; } });
-var ste_events_1 = __webpack_require__(46);
+var ste_events_1 = __webpack_require__(13);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return ste_events_1.EventDispatcher; } });
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return ste_events_1.EventHandlingBase; } });
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return ste_events_1.EventList; } });
 Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return ste_events_1.NonUniformEventList; } });
-var ste_simple_events_1 = __webpack_require__(48);
+var ste_simple_events_1 = __webpack_require__(15);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventDispatcher; } });
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventHandlingBase; } });
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventList; } });
 Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.NonUniformSimpleEventList; } });
-var ste_signals_1 = __webpack_require__(50);
+var ste_signals_1 = __webpack_require__(17);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return ste_signals_1.SignalDispatcher; } });
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return ste_signals_1.SignalHandlingBase; } });
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return ste_signals_1.SignalList; } });
@@ -169,296 +160,6 @@ Object.defineProperty(exports, "SignalList", { enumerable: true, get: function (
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var CassettePlayer_1 = __webpack_require__(64);
-Object.defineProperty(exports, "CassettePlayer", { enumerable: true, get: function () { return CassettePlayer_1.CassettePlayer; } });
-var Trs80_1 = __webpack_require__(65);
-Object.defineProperty(exports, "Trs80", { enumerable: true, get: function () { return Trs80_1.Trs80; } });
-var CanvasScreen_1 = __webpack_require__(39);
-Object.defineProperty(exports, "CanvasScreen", { enumerable: true, get: function () { return CanvasScreen_1.CanvasScreen; } });
-var ControlPanel_1 = __webpack_require__(129);
-Object.defineProperty(exports, "ControlPanel", { enumerable: true, get: function () { return ControlPanel_1.ControlPanel; } });
-var SettingsPanel_1 = __webpack_require__(40);
-Object.defineProperty(exports, "SettingsPanel", { enumerable: true, get: function () { return SettingsPanel_1.SettingsPanel; } });
-Object.defineProperty(exports, "PanelType", { enumerable: true, get: function () { return SettingsPanel_1.PanelType; } });
-var ProgressBar_1 = __webpack_require__(130);
-Object.defineProperty(exports, "ProgressBar", { enumerable: true, get: function () { return ProgressBar_1.ProgressBar; } });
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(75);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(76);
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(77);
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(78);
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(79);
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(80);
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(81);
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(82);
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(83);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgramAnnotation = void 0;
-/**
- * Information about one particular section of a program. The indices refer back to a binary
- * that the program was parsed from.
- */
-class ProgramAnnotation {
-    constructor(text, begin, end) {
-        this.text = text;
-        this.begin = begin;
-        this.end = end;
-    }
-    /**
-     * Create a new program annotation with the begin and end increased by the specified offset.
-     */
-    adjusted(offset) {
-        return new ProgramAnnotation(this.text, this.begin + offset, this.end + offset);
-    }
-}
-exports.ProgramAnnotation = ProgramAnnotation;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trs80File = void 0;
-/**
- * Base class for decoded TRS-80 files.
- */
-class Trs80File {
-    constructor(binary, error, annotations) {
-        this.binary = binary;
-        this.error = error;
-        this.annotations = annotations;
-    }
-}
-exports.Trs80File = Trs80File;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FloppyDisk = exports.SectorData = exports.numberToSide = exports.Side = void 0;
-const Trs80File_1 = __webpack_require__(6);
-// Side of a floppy disk.
-var Side;
-(function (Side) {
-    Side[Side["FRONT"] = 0] = "FRONT";
-    Side[Side["BACK"] = 1] = "BACK";
-})(Side = exports.Side || (exports.Side = {}));
-/**
- * Convert a number to a side, where 0 maps to FRONT and 1 maps to BACK.
- * Other numbers throw an exception.
- */
-function numberToSide(n) {
-    if (n === 0) {
-        return Side.FRONT;
-    }
-    if (n === 1) {
-        return Side.BACK;
-    }
-    throw new Error("Invalid side number " + n);
-}
-exports.numberToSide = numberToSide;
-/**
- * Byte for filling sector data when reading off the end.
- */
-const FILL_BYTE = 0xE5;
-/**
- * Data from a sector that was read from a disk.
- */
-class SectorData {
-    constructor(data) {
-        /**
-         * Whether the sector data is invalid. This is indicated on the floppy by having a 0xF8 data
-         * address mark (DAM) byte, instead of the normal 0xFB. For JV1 this is set to true for the directory track.
-         */
-        this.deleted = false;
-        /**
-         * Whether there was a CRC error when reading the physical disk.
-         */
-        this.crcError = false;
-        this.data = data;
-    }
-}
-exports.SectorData = SectorData;
-/**
- * Abstract class for virtual floppy disk file formats.
- */
-class FloppyDisk extends Trs80File_1.Trs80File {
-    constructor(binary, error, annotations, supportsDoubleDensity) {
-        super(binary, error, annotations);
-        this.supportsDoubleDensity = supportsDoubleDensity;
-    }
-    /**
-     * Pad a sector to its full length.
-     */
-    padSector(data, sectorSize) {
-        if (data.length < sectorSize) {
-            const newData = new Uint8Array(sectorSize);
-            newData.set(data);
-            newData.fill(FILL_BYTE, data.length);
-            data = newData;
-        }
-        return data;
-    }
-}
-exports.FloppyDisk = FloppyDisk;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(93);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(94);
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(95);
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(96);
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(97);
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(98);
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(99);
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(100);
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(101);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(105);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(106);
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(107);
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(108);
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(109);
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(110);
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(111);
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(112);
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(113);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-const DispatcherBase_1 = __webpack_require__(117);
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return DispatcherBase_1.DispatcherBase; } });
-const DispatchError_1 = __webpack_require__(118);
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return DispatchError_1.DispatchError; } });
-const DispatcherWrapper_1 = __webpack_require__(119);
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return DispatcherWrapper_1.DispatcherWrapper; } });
-const EventListBase_1 = __webpack_require__(120);
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return EventListBase_1.EventListBase; } });
-const EventManagement_1 = __webpack_require__(121);
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return EventManagement_1.EventManagement; } });
-const HandlingBase_1 = __webpack_require__(122);
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return HandlingBase_1.HandlingBase; } });
-const PromiseDispatcherBase_1 = __webpack_require__(123);
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return PromiseDispatcherBase_1.PromiseDispatcherBase; } });
-const PromiseSubscription_1 = __webpack_require__(124);
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return PromiseSubscription_1.PromiseSubscription; } });
-const Subscription_1 = __webpack_require__(125);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return Subscription_1.Subscription; } });
-
-
-/***/ }),
-/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -473,654 +174,20 @@ Object.defineProperty(exports, "Subscription", { enumerable: true, get: function
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Subscription = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = void 0;
-var dispatching_1 = __webpack_require__(44);
+var dispatching_1 = __webpack_require__(11);
 Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return dispatching_1.DispatcherBase; } });
 Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return dispatching_1.DispatcherWrapper; } });
 Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return dispatching_1.EventListBase; } });
-var subscription_1 = __webpack_require__(22);
+var subscription_1 = __webpack_require__(6);
 Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return subscription_1.Subscription; } });
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(__webpack_require__(57), exports);
-__exportStar(__webpack_require__(58), exports);
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(__webpack_require__(131), exports);
-__exportStar(__webpack_require__(42), exports);
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Tools for dealing with SYSTEM (machine language) programs.
- *
- * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeSystemProgram = exports.SystemProgram = exports.SystemChunk = void 0;
-const teamten_ts_utils_1 = __webpack_require__(12);
-const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(5);
-const Trs80File_1 = __webpack_require__(6);
-const FILE_HEADER = 0x55;
-const DATA_HEADER = 0x3C;
-const END_OF_FILE_MARKER = 0x78;
-const FILENAME_LENGTH = 6;
-/**
- * Represents a chunk of bytes from the file, with a checksum.
- */
-class SystemChunk {
-    constructor(loadAddress, data, checksum) {
-        this.loadAddress = loadAddress;
-        this.data = data;
-        this.checksum = checksum;
-    }
-    /**
-     * Whether the checksum supplied on tape matches what we compute.
-     */
-    isChecksumValid() {
-        let checksum = 0;
-        // Include load address and data.
-        checksum += (this.loadAddress >> 8) & 0xFF;
-        checksum += this.loadAddress & 0xFF;
-        for (const b of this.data) {
-            checksum += b;
-        }
-        checksum &= 0xFF;
-        return checksum === this.checksum;
-    }
-}
-exports.SystemChunk = SystemChunk;
-/**
- * Class representing a SYSTEM (machine language) program. If the "error" field is set, then something
- * went wrong with the program and the data may be partially loaded.
- */
-class SystemProgram extends Trs80File_1.Trs80File {
-    constructor(binary, error, filename, chunks, entryPointAddress, annotations) {
-        super(binary, error, annotations);
-        this.filename = filename;
-        this.chunks = chunks;
-        this.entryPointAddress = entryPointAddress;
-        this.annotations = annotations;
-    }
-    getDescription() {
-        return "System program (" + this.filename + ")";
-    }
-    /**
-     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
-     * not found in any chunk.
-     */
-    addressToByteOffset(address) {
-        // Skip file header and block header.
-        let offset = 1 + FILENAME_LENGTH + 4;
-        for (const chunk of this.chunks) {
-            if (address >= chunk.loadAddress && address < chunk.loadAddress + chunk.data.length) {
-                return offset + (address - chunk.loadAddress);
-            }
-            // Skip checksum and block header of the next block.
-            offset += chunk.data.length + 5;
-        }
-        return undefined;
-    }
-}
-exports.SystemProgram = SystemProgram;
-/**
- * Decodes a system program from the binary. If the binary is not at all a system
- * program, returns undefined. If it's a system program with decoding errors, returns
- * partially-decoded binary and sets the "error" field.
- */
-function decodeSystemProgram(binary) {
-    const chunks = [];
-    const annotations = [];
-    let entryPointAddress = 0;
-    const b = new teamten_ts_utils_1.ByteReader(binary);
-    const headerByte = b.read();
-    if (headerByte === teamten_ts_utils_1.EOF) {
-        return undefined;
-    }
-    if (headerByte !== FILE_HEADER) {
-        return undefined;
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation("System file header", b.addr() - 1, b.addr()));
-    let filename = b.readString(FILENAME_LENGTH);
-    // Make a SystemProgram object with what we have so far.
-    const makeSystemProgram = (error) => {
-        const programBinary = binary.subarray(0, b.addr());
-        return new SystemProgram(programBinary, error, filename, chunks, entryPointAddress, annotations);
-    };
-    if (filename.length < FILENAME_LENGTH) {
-        // Binary is truncated.
-        return makeSystemProgram("File is truncated at filename");
-    }
-    filename = filename.trim();
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Filename "${filename}"`, b.addr() - FILENAME_LENGTH, b.addr()));
-    while (true) {
-        const marker = b.read();
-        if (marker === teamten_ts_utils_1.EOF) {
-            return makeSystemProgram("File is truncated at start of block");
-        }
-        if (marker === END_OF_FILE_MARKER) {
-            annotations.push(new ProgramAnnotation_1.ProgramAnnotation("End of file marker", b.addr() - 1, b.addr()));
-            break;
-        }
-        if (marker !== DATA_HEADER) {
-            // Here if the marker is 0x55, we could guess that it's a high-speed cassette header.
-            return makeSystemProgram("Unexpected byte " + z80_base_1.toHexByte(marker) + " at start of block");
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Data chunk marker", b.addr() - 1, b.addr()));
-        let length = b.read();
-        if (length === teamten_ts_utils_1.EOF) {
-            return makeSystemProgram("File is truncated at block length");
-        }
-        // 0 means 256.
-        if (length === 0) {
-            length = 256;
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Length (${length} byte${length === 1 ? "" : "s"})`, b.addr() - 1, b.addr()));
-        const loadAddress = b.readShort(false);
-        if (loadAddress === teamten_ts_utils_1.EOF) {
-            return makeSystemProgram("File is truncated at load address");
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Address (0x${z80_base_1.toHexWord(loadAddress)})`, b.addr() - 2, b.addr()));
-        const dataStartAddr = b.addr();
-        const data = b.readBytes(length);
-        if (data.length < length) {
-            return makeSystemProgram("File is truncated at data");
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Chunk data`, dataStartAddr, b.addr()));
-        const checksum = b.read();
-        if (loadAddress === teamten_ts_utils_1.EOF) {
-            return makeSystemProgram("File is truncated at checksum");
-        }
-        const systemChunk = new SystemChunk(loadAddress, data, checksum);
-        chunks.push(systemChunk);
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Checksum (0x${z80_base_1.toHexByte(checksum)}, ${systemChunk.isChecksumValid() ? "" : "in"}valid)`, b.addr() - 1, b.addr()));
-    }
-    entryPointAddress = b.readShort(false);
-    if (entryPointAddress === teamten_ts_utils_1.EOF) {
-        entryPointAddress = 0;
-        return makeSystemProgram("File is truncated at entry point address");
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Jump address (0x${z80_base_1.toHexWord(entryPointAddress)})`, b.addr() - 2, b.addr()));
-    return makeSystemProgram();
-}
-exports.decodeSystemProgram = decodeSystemProgram;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Config = exports.ScanLines = exports.Background = exports.Phosphor = exports.RamSize = exports.CGChip = exports.BasicLevel = exports.ModelType = void 0;
-/**
- * The TRS-80 models we support.
- */
-var ModelType;
-(function (ModelType) {
-    ModelType[ModelType["MODEL1"] = 0] = "MODEL1";
-    ModelType[ModelType["MODEL3"] = 1] = "MODEL3";
-})(ModelType = exports.ModelType || (exports.ModelType = {}));
-/**
- * The levels of Basic.
- */
-var BasicLevel;
-(function (BasicLevel) {
-    BasicLevel[BasicLevel["LEVEL1"] = 0] = "LEVEL1";
-    BasicLevel[BasicLevel["LEVEL2"] = 1] = "LEVEL2";
-})(BasicLevel = exports.BasicLevel || (exports.BasicLevel = {}));
-/**
- * The character generator chip we support.
- */
-var CGChip;
-(function (CGChip) {
-    CGChip[CGChip["ORIGINAL"] = 0] = "ORIGINAL";
-    CGChip[CGChip["LOWER_CASE"] = 1] = "LOWER_CASE";
-})(CGChip = exports.CGChip || (exports.CGChip = {}));
-/**
- * The amounts of RAM we support.
- */
-var RamSize;
-(function (RamSize) {
-    RamSize[RamSize["RAM_4_KB"] = 0] = "RAM_4_KB";
-    RamSize[RamSize["RAM_16_KB"] = 1] = "RAM_16_KB";
-    RamSize[RamSize["RAM_32_KB"] = 2] = "RAM_32_KB";
-    RamSize[RamSize["RAM_48_KB"] = 3] = "RAM_48_KB";
-})(RamSize = exports.RamSize || (exports.RamSize = {}));
-/**
- * Phosphor color.
- */
-var Phosphor;
-(function (Phosphor) {
-    Phosphor[Phosphor["WHITE"] = 0] = "WHITE";
-    Phosphor[Phosphor["GREEN"] = 1] = "GREEN";
-    Phosphor[Phosphor["AMBER"] = 2] = "AMBER";
-})(Phosphor = exports.Phosphor || (exports.Phosphor = {}));
-/**
- * Background color.
- */
-var Background;
-(function (Background) {
-    Background[Background["BLACK"] = 0] = "BLACK";
-    Background[Background["AUTHENTIC"] = 1] = "AUTHENTIC";
-})(Background = exports.Background || (exports.Background = {}));
-/**
- * Whether to display scan lines.
- */
-var ScanLines;
-(function (ScanLines) {
-    ScanLines[ScanLines["OFF"] = 0] = "OFF";
-    ScanLines[ScanLines["ON"] = 1] = "ON";
-})(ScanLines = exports.ScanLines || (exports.ScanLines = {}));
-/**
- * A specific configuration of model and RAM.
- */
-class Config {
-    constructor(modelType, basicLevel, cgChip, ramSize, phosphor, background, scanLines) {
-        this.modelType = modelType;
-        this.basicLevel = basicLevel;
-        this.cgChip = cgChip;
-        this.ramSize = ramSize;
-        this.phosphor = phosphor;
-        this.background = background;
-        this.scanLines = scanLines;
-    }
-    withModelType(modelType) {
-        return new Config(modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
-    }
-    withBasicLevel(basicLevel) {
-        return new Config(this.modelType, basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
-    }
-    withCGChip(cgChip) {
-        return new Config(this.modelType, this.basicLevel, cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
-    }
-    withRamSize(ramSize) {
-        return new Config(this.modelType, this.basicLevel, this.cgChip, ramSize, this.phosphor, this.background, this.scanLines);
-    }
-    withPhosphor(phosphor) {
-        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, phosphor, this.background, this.scanLines);
-    }
-    withBackground(background) {
-        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, background, this.scanLines);
-    }
-    withScanLines(scanLines) {
-        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, scanLines);
-    }
-    /**
-     * Make a default configuration.
-     */
-    static makeDefault() {
-        return new Config(ModelType.MODEL3, BasicLevel.LEVEL2, CGChip.LOWER_CASE, RamSize.RAM_48_KB, Phosphor.WHITE, Background.AUTHENTIC, ScanLines.OFF);
-    }
-    /**
-     * Whether this particular config is valid.
-     */
-    isValid() {
-        // Model III only had Level 2. (I've read that it actually shipped with Level 1, but
-        // we don't have that ROM.)
-        if (this.modelType === ModelType.MODEL3 && this.basicLevel === BasicLevel.LEVEL1) {
-            return false;
-        }
-        // Model III only had lower case.
-        if (this.modelType === ModelType.MODEL3 && this.cgChip === CGChip.ORIGINAL) {
-            return false;
-        }
-        // Rest are okay.
-        return true;
-    }
-    /**
-     * Whether this new config needs to be rebooted, if the emulator currently is running the old config.
-     */
-    needsReboot(oldConfig) {
-        // Maybe here we could not reboot if only the CG chip changed. The software is able to detect the
-        // difference (since bit 6 is synthetic in one case).
-        return this.modelType !== oldConfig.modelType ||
-            this.basicLevel !== oldConfig.basicLevel ||
-            this.cgChip !== oldConfig.cgChip ||
-            this.ramSize !== oldConfig.ramSize;
-    }
-    /**
-     * Return the RAM size in bytes.
-     */
-    getRamSize() {
-        let kb;
-        switch (this.ramSize) {
-            case RamSize.RAM_4_KB:
-                kb = 4;
-                break;
-            case RamSize.RAM_16_KB:
-                kb = 16;
-                break;
-            case RamSize.RAM_32_KB:
-                kb = 32;
-                break;
-            case RamSize.RAM_48_KB:
-            default:
-                kb = 48;
-                break;
-        }
-        return kb * 1024;
-    }
-}
-exports.Config = Config;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(4);
-/**
- * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
- * or dispatch events. Use the ToEvent() method to expose the event.
- *
- * @export
- * @class EventDispatcher
- * @extends {DispatcherBase<IEventHandler<TSender, TArgs>>}
- * @implements {IEvent<TSender, TArgs>}
- * @template TSender
- * @template TArgs
- */
-class EventDispatcher extends ste_core_1.DispatcherBase {
-    /**
-     * Creates an instance of EventDispatcher.
-     *
-     * @memberOf EventDispatcher
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the event.
-     *
-     * @param {TSender} sender The sender object.
-     * @param {TArgs} args The arguments object.
-     * @returns {IPropagationStatus} The event status.
-     *
-     * @memberOf EventDispatcher
-     */
-    dispatch(sender, args) {
-        const result = this._dispatch(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the events thread.
-     * @param sender The sender.
-     * @param args The arguments object.
-     */
-    dispatchAsync(sender, args) {
-        this._dispatch(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     *
-     * @returns {IEvent<TSender, TArgs>} The event.
-     *
-     * @memberOf EventDispatcher
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.EventDispatcher = EventDispatcher;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SimpleEventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(4);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a simple event
- *
- * @export
- * @class SimpleEventDispatcher
- * @extends {DispatcherBase<ISimpleEventHandler<TArgs>>}
- * @implements {ISimpleEvent<TArgs>}
- * @template TArgs
- */
-class SimpleEventDispatcher extends ste_core_1.DispatcherBase {
-    /**
-     * Creates an instance of SimpleEventDispatcher.
-     *
-     * @memberOf SimpleEventDispatcher
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the event.
-     *
-     * @param {TArgs} args The arguments object.
-     * @returns {IPropagationStatus} The status of the event.
-     *
-     * @memberOf SimpleEventDispatcher
-     */
-    dispatch(args) {
-        const result = this._dispatch(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the event without waiting for the result.
-     *
-     * @param {TArgs} args The arguments object.
-     *
-     * @memberOf SimpleEventDispatcher
-     */
-    dispatchAsync(args) {
-        this._dispatch(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     *
-     * @returns {ISimpleEvent<TArgs>} The event.
-     *
-     * @memberOf SimpleEventDispatcher
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.SimpleEventDispatcher = SimpleEventDispatcher;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseEventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(8);
-/**
- * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
- * or dispatch events. Use the ToEvent() method to expose the event.
- *
- * @export
- * @class PromiseEventDispatcher
- * @extends {PromiseDispatcherBase<IPromiseEventHandler<TSender, TArgs>>}
- * @implements {IPromiseEvent<TSender, TArgs>}
- * @template TSender
- * @template TArgs
- */
-class PromiseEventDispatcher extends ste_core_1.PromiseDispatcherBase {
-    /**
-     * Creates a new EventDispatcher instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the event.
-     *
-     * @param {TSender} sender The sender object.
-     * @param {TArgs} args The argument object.
-     * @returns {Promise<IPropagationStatus>} The status.
-     *
-     * @memberOf PromiseEventDispatcher
-     */
-    async dispatch(sender, args) {
-        const result = await this._dispatchAsPromise(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the event without waiting for the result.
-     *
-     * @param {TSender} sender The sender object.
-     * @param {TArgs} args The argument object.
-     *
-     * @memberOf PromiseEventDispatcher
-     */
-    dispatchAsync(sender, args) {
-        this._dispatchAsPromise(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.PromiseEventDispatcher = PromiseEventDispatcher;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSimpleEventDispatcher = void 0;
-const ste_core_1 = __webpack_require__(10);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a simple event
- *
- * @export
- * @class PromiseSimpleEventDispatcher
- * @extends {PromiseDispatcherBase<IPromiseSimpleEventHandler<TArgs>>}
- * @implements {IPromiseSimpleEvent<TArgs>}
- * @template TArgs
- */
-class PromiseSimpleEventDispatcher extends ste_core_1.PromiseDispatcherBase {
-    /**
-     * Creates a new SimpleEventDispatcher instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the event.
-     * @param args The arguments object.
-     * @returns {IPropagationStatus} The status of the dispatch.
-     * @memberOf PromiseSimpleEventDispatcher
-     */
-    async dispatch(args) {
-        const result = await this._dispatchAsPromise(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the event without waiting for it to complete.
-     * @param args The argument object.
-     * @memberOf PromiseSimpleEventDispatcher
-     */
-    dispatchAsync(args) {
-        this._dispatchAsPromise(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.PromiseSimpleEventDispatcher = PromiseSimpleEventDispatcher;
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CSS_PREFIX = void 0;
-exports.CSS_PREFIX = "trs80-emulator";
-
-
-/***/ }),
-/* 21 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(43);
+/* WEBPACK VAR INJECTION */(function(global, module) {/* harmony import */ var _ponyfill_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 /* global window */
 
 
@@ -1139,10 +206,28 @@ if (typeof self !== 'undefined') {
 var result = Object(_ponyfill_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])(root);
 /* harmony default export */ __webpack_exports__["a"] = (result);
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(55), __webpack_require__(56)(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(22), __webpack_require__(23)(module)))
 
 /***/ }),
-/* 22 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+var Disasm_1 = __webpack_require__(28);
+exports.Disasm = Disasm_1.Disasm;
+var Instruction_1 = __webpack_require__(8);
+exports.Instruction = Instruction_1.Instruction;
+__export(__webpack_require__(31));
+__export(__webpack_require__(32));
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1196,7 +281,7 @@ exports.Subscription = Subscription;
 
 
 /***/ }),
-/* 23 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1323,2270 +408,7 @@ exports.signedByte = signedByte;
 
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// Tools for decoding Basic programs.
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseBasicText = exports.decodeBasicProgram = exports.setBasicName = exports.wrapBasic = exports.BasicProgram = exports.BasicElement = exports.ElementType = exports.getToken = exports.BASIC_HEADER_BYTE = exports.BASIC_TAPE_HEADER_BYTE = void 0;
-const teamten_ts_utils_1 = __webpack_require__(12);
-const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(5);
-const Trs80File_1 = __webpack_require__(6);
-exports.BASIC_TAPE_HEADER_BYTE = 0xD3;
-exports.BASIC_HEADER_BYTE = 0xFF;
-const FIRST_TOKEN = 0x80;
-const TOKENS = [
-    "END", "FOR", "RESET", "SET", "CLS", "CMD", "RANDOM", "NEXT",
-    "DATA", "INPUT", "DIM", "READ", "LET", "GOTO", "RUN", "IF",
-    "RESTORE", "GOSUB", "RETURN", "REM", "STOP", "ELSE", "TRON", "TROFF",
-    "DEFSTR", "DEFINT", "DEFSNG", "DEFDBL", "LINE", "EDIT", "ERROR", "RESUME",
-    "OUT", "ON", "OPEN", "FIELD", "GET", "PUT", "CLOSE", "LOAD",
-    "MERGE", "NAME", "KILL", "LSET", "RSET", "SAVE", "SYSTEM", "LPRINT",
-    "DEF", "POKE", "PRINT", "CONT", "LIST", "LLIST", "DELETE", "AUTO",
-    "CLEAR", "CLOAD", "CSAVE", "NEW", "TAB(", "TO", "FN", "USING",
-    "VARPTR", "USR", "ERL", "ERR", "STRING$", "INSTR", "POINT", "TIME$",
-    "MEM", "INKEY$", "THEN", "NOT", "STEP", "+", "-", "*",
-    "/", "[", "AND", "OR", ">", "=", "<", "SGN",
-    "INT", "ABS", "FRE", "INP", "POS", "SQR", "RND", "LOG",
-    "EXP", "COS", "SIN", "TAN", "ATN", "PEEK", "CVI", "CVS",
-    "CVD", "EOF", "LOC", "LOF", "MKI$", "MKS$", "MKD$", "CINT",
-    "CSNG", "CDBL", "FIX", "LEN", "STR$", "VAL", "ASC", "CHR$",
-    "LEFT$", "RIGHT$", "MID$",
-];
-const DOUBLE_QUOTE = 0x22;
-const SINGLE_QUOTE = 0x27;
-const COLON = 0x3A;
-const REM = 0x93;
-const DATA = 0x88;
-const REMQUOT = 0xFB;
-const ELSE = 0x95;
-/**
- * Parser state.
- */
-var ParserState;
-(function (ParserState) {
-    // Normal part of line.
-    ParserState[ParserState["NORMAL"] = 0] = "NORMAL";
-    // Inside string literal.
-    ParserState[ParserState["STRING"] = 1] = "STRING";
-    // After REM token to end of line.
-    ParserState[ParserState["REM"] = 2] = "REM";
-    // After DATA token to end of statement.
-    ParserState[ParserState["DATA"] = 3] = "DATA";
-})(ParserState || (ParserState = {}));
-/**
- * Get the token for the byte value, or undefined if the value does
- * not map to a token.
- */
-function getToken(c) {
-    return c >= FIRST_TOKEN && c < FIRST_TOKEN + TOKENS.length ? TOKENS[c - FIRST_TOKEN] : undefined;
-}
-exports.getToken = getToken;
-/**
- * Generate a 3-character octal version of a number.
- */
-function toOctal(n) {
-    return n.toString(8).padStart(3, "0");
-}
-/**
- * Type of Basic element, for syntax highlighting.
- */
-var ElementType;
-(function (ElementType) {
-    ElementType[ElementType["ERROR"] = 0] = "ERROR";
-    ElementType[ElementType["LINE_NUMBER"] = 1] = "LINE_NUMBER";
-    ElementType[ElementType["PUNCTUATION"] = 2] = "PUNCTUATION";
-    ElementType[ElementType["KEYWORD"] = 3] = "KEYWORD";
-    ElementType[ElementType["REGULAR"] = 4] = "REGULAR";
-    ElementType[ElementType["STRING"] = 5] = "STRING";
-    ElementType[ElementType["COMMENT"] = 6] = "COMMENT";
-})(ElementType = exports.ElementType || (exports.ElementType = {}));
-/**
- * Piece of a Basic program (token, character, line number).
- */
-class BasicElement {
-    constructor(offset, text, elementType, length = 1) {
-        this.offset = offset;
-        this.length = length;
-        this.text = text;
-        this.elementType = elementType;
-    }
-    /**
-     * Get the element's text so that it will display properly in "Another Man's Treasure" font.
-     *
-     * https://www.kreativekorp.com/software/fonts/trs80.shtml
-     */
-    asAnotherMansTreasure() {
-        if (this.elementType === ElementType.STRING) {
-            const parts = [];
-            // Convert non-ASCII to the right value for our font.
-            for (const ch of this.text) {
-                let c = ch.charCodeAt(0);
-                if (c < 32 || c >= 127) {
-                    c += 0xE000;
-                }
-                parts.push(String.fromCodePoint(c));
-            }
-            return parts.join("");
-        }
-        else {
-            return this.text;
-        }
-    }
-    /**
-     * Get the element's text so that it will display properly in ASCII.
-     */
-    asAscii() {
-        if (this.elementType === ElementType.STRING) {
-            const parts = [];
-            for (const ch of this.text) {
-                const c = ch.charCodeAt(0);
-                if (ch === "\r") {
-                    parts.push("\\r");
-                }
-                else if (c >= 32 && c < 128 && ch !== "\\") {
-                    parts.push(ch);
-                }
-                else {
-                    parts.push("\\" + toOctal(c));
-                }
-            }
-            return parts.join("");
-        }
-        else {
-            return this.text;
-        }
-    }
-}
-exports.BasicElement = BasicElement;
-/**
- * Class representing a Basic program. If the "error" field is set, then something
- * went wrong with the program and the data may be partially loaded.
- */
-class BasicProgram extends Trs80File_1.Trs80File {
-    constructor(binary, error, annotations, elements) {
-        super(binary, error, annotations);
-        this.elements = elements;
-    }
-    getDescription() {
-        // Don't include filename, it's usually worthless.
-        return "Basic program";
-    }
-}
-exports.BasicProgram = BasicProgram;
-/**
- * Adds the header bytes necessary for writing Basic cassettes.
- */
-function wrapBasic(bytes) {
-    // Add Basic header.
-    const buffers = [
-        new Uint8Array([exports.BASIC_TAPE_HEADER_BYTE, exports.BASIC_TAPE_HEADER_BYTE, exports.BASIC_TAPE_HEADER_BYTE]),
-        bytes,
-    ];
-    return teamten_ts_utils_1.concatByteArrays(buffers);
-}
-exports.wrapBasic = wrapBasic;
-/**
- * Set the one-letter Basic name in the binary to the first letter of the name.
- *
- * @return a new array with the modified name.
- */
-function setBasicName(bytes, name) {
-    if (name === "") {
-        // Pick anything.
-        name = "A";
-    }
-    // Make a copy for modifying.
-    const newName = new Uint8Array(bytes);
-    if (newName[0] === exports.BASIC_TAPE_HEADER_BYTE &&
-        newName[1] === exports.BASIC_TAPE_HEADER_BYTE &&
-        newName[2] === exports.BASIC_TAPE_HEADER_BYTE &&
-        newName.length > 3) {
-        newName[3] = name.charCodeAt(0);
-    }
-    else if (newName[0] === exports.BASIC_HEADER_BYTE &&
-        newName.length > 1) {
-        newName[1] = name.charCodeAt(0);
-    }
-    return newName;
-}
-exports.setBasicName = setBasicName;
-/**
- * Decode a tokenized Basic program.
- * @param binary tokenized program. May be in tape format (D3 D3 D3 followed by a one-letter program
- * name) or not (FF).
- * @return the Basic program, or undefined if the header did not indicate that this was a Basic program.
- */
-function decodeBasicProgram(binary) {
-    const b = new teamten_ts_utils_1.ByteReader(binary);
-    let state;
-    let preStringState = ParserState.NORMAL;
-    let error;
-    const annotations = [];
-    // Map from byte address to BasicElement for that byte.
-    const elements = [];
-    const firstByte = b.read();
-    if (firstByte === exports.BASIC_TAPE_HEADER_BYTE) {
-        if (b.read() !== exports.BASIC_TAPE_HEADER_BYTE || b.read() !== exports.BASIC_TAPE_HEADER_BYTE) {
-            return undefined;
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Header", 0, b.addr()));
-        // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
-        b.read();
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Name", b.addr() - 1, b.addr()));
-    }
-    else if (firstByte === exports.BASIC_HEADER_BYTE) {
-        // All good.
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Header", 0, b.addr()));
-    }
-    else {
-        return undefined;
-    }
-    while (true) {
-        // Read the address of the next line. We ignore this (as does Basic when
-        // loading programs), only using it to detect end of program. (In the real
-        // Basic these are regenerated after loading.)
-        const address = b.readShort(true);
-        if (address === teamten_ts_utils_1.EOF) {
-            error = "EOF in next line's address";
-            break;
-        }
-        // Zero address indicates end of program.
-        if (address === 0) {
-            annotations.push(new ProgramAnnotation_1.ProgramAnnotation("End-of-program marker", b.addr() - 2, b.addr()));
-            break;
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Address of next line (0x" + z80_base_1.toHexWord(address) + ")", b.addr() - 2, b.addr()));
-        // Read current line number.
-        const lineNumber = b.readShort(false);
-        if (lineNumber === teamten_ts_utils_1.EOF) {
-            error = "EOF in line number";
-            break;
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Line number (" + lineNumber + ")", b.addr() - 2, b.addr()));
-        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER, 2));
-        elements.push(new BasicElement(undefined, " ", ElementType.REGULAR));
-        // Read rest of line.
-        const lineAddr = b.addr();
-        const lineElementsIndex = elements.length;
-        let c; // Uint8 value.
-        let ch; // String value.
-        state = ParserState.NORMAL;
-        while (true) {
-            c = b.read();
-            if (c === teamten_ts_utils_1.EOF || c === 0) {
-                break;
-            }
-            ch = String.fromCharCode(c);
-            // Special handling of sequences of characters that start with a colon.
-            if (ch === ":" && state === ParserState.NORMAL) {
-                const colonAddr = b.addr() - 1;
-                if (b.peek(0) === ELSE) {
-                    // :ELSE gets translated to just ELSE, probably because an old version
-                    // of Basic only supported ELSE after a colon.
-                    b.read(); // ELSE
-                    elements.push(new BasicElement(colonAddr, "ELSE", ElementType.KEYWORD, b.addr() - colonAddr));
-                }
-                else if (b.peek(0) === REM && b.peek(1) === REMQUOT) {
-                    // Detect the ":REM'" sequence (colon, REM, single quote), because
-                    // that translates to a single quote. Must be a backward-compatible
-                    // way to add a single quote as a comment.
-                    b.read(); // REM
-                    b.read(); // REMQUOT
-                    elements.push(new BasicElement(colonAddr, "'", ElementType.COMMENT, b.addr() - colonAddr));
-                    state = ParserState.REM;
-                }
-                else {
-                    elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
-                }
-            }
-            else {
-                switch (state) {
-                    case ParserState.NORMAL:
-                        const token = getToken(c);
-                        elements.push(token !== undefined
-                            ? new BasicElement(b.addr() - 1, token, c === DATA || c === REM ? ElementType.COMMENT
-                                : token.length === 1 ? ElementType.PUNCTUATION
-                                    : ElementType.KEYWORD)
-                            : new BasicElement(b.addr() - 1, ch, ch === '"' ? ElementType.STRING : ElementType.REGULAR));
-                        if (c === REM) {
-                            state = ParserState.REM;
-                        }
-                        else if (c === DATA) {
-                            state = ParserState.DATA;
-                        }
-                        else if (ch === '"') {
-                            preStringState = state;
-                            state = ParserState.STRING;
-                        }
-                        break;
-                    case ParserState.STRING:
-                        // Put the real value in the string. Code displaying can use the methods of
-                        // BasicElement to convert it before printing.
-                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.STRING));
-                        if (ch === '"') {
-                            // End of string.
-                            state = preStringState;
-                        }
-                        break;
-                    case ParserState.REM:
-                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.COMMENT));
-                        break;
-                    case ParserState.DATA:
-                        let elementType = ElementType.COMMENT;
-                        if (ch === ":") {
-                            elementType = ElementType.PUNCTUATION;
-                            state = ParserState.NORMAL;
-                        }
-                        if (ch === '"') {
-                            elementType = ElementType.STRING;
-                            preStringState = state;
-                            state = ParserState.STRING;
-                        }
-                        elements.push(new BasicElement(b.addr() - 1, ch, elementType));
-                        break;
-                }
-            }
-        }
-        if (c === teamten_ts_utils_1.EOF) {
-            error = "EOF in line";
-            annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Partial line", lineAddr, b.addr()));
-            break;
-        }
-        const textLineParts = [];
-        for (let i = lineElementsIndex; i < elements.length; i++) {
-            textLineParts.push(elements[i].text);
-        }
-        let textLine = textLineParts.join("").replace(/[\n\r]+/, " ");
-        if (textLine.length > 33) {
-            textLine = textLine.substr(0, 30) + "...";
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Line: " + textLine, lineAddr, b.addr() - 1));
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("End-of-line marker", b.addr() - 1, b.addr()));
-    }
-    return new BasicProgram(binary, error, annotations, elements);
-}
-exports.decodeBasicProgram = decodeBasicProgram;
-/**
- * Parser for a single line of Basic code.
- */
-class BasicParser {
-    constructor(line) {
-        this.result = [];
-        this.lineNumber = undefined;
-        this.pos = 0;
-        // Only trim the start, spaces at the end should be kept.
-        this.line = line.trimStart();
-    }
-    /**
-     * Parse the line, returning the binary for it or an error. The binary includes
-     * the line number and the terminating nul, but not the "next-line" pointer.
-     */
-    parse() {
-        // Parse line number.
-        this.lineNumber = this.readNumber();
-        if (this.lineNumber === undefined) {
-            return "Missing line number: " + this.line;
-        }
-        this.result.push(z80_base_1.lo(this.lineNumber));
-        this.result.push(z80_base_1.hi(this.lineNumber));
-        // We only trim at the start, so there could be only spaces here, but that's not allowed.
-        if (this.line.substr(this.pos).trim() === "") {
-            return "Empty line " + this.lineNumber;
-        }
-        // Skip single optional whitespace
-        if (this.pos < this.line.length && BasicParser.isWhitespace(this.line.charCodeAt(this.pos))) {
-            this.pos++;
-        }
-        while (this.pos < this.line.length) {
-            let ch = this.line.charCodeAt(this.pos);
-            // Lower case anything outside of strings.
-            if (ch >= 0x61 && ch < 0x61 + 26) {
-                ch -= 0x20;
-            }
-            // Handle single-quote comment.
-            if (ch === SINGLE_QUOTE) {
-                // Single quote is the start of a comment, but it's encoded in a backward-compatible
-                // way with several tokens.
-                this.result.push(COLON, REM, REMQUOT);
-                this.pos++;
-                // We're done, copy the rest of the line.
-                break;
-            }
-            // Handle string.
-            if (ch === DOUBLE_QUOTE) {
-                this.result.push(ch);
-                this.pos++;
-                while (this.pos < this.line.length) {
-                    ch = this.line.charCodeAt(this.pos++);
-                    this.result.push(ch);
-                    if (ch === DOUBLE_QUOTE) {
-                        break;
-                    }
-                }
-            }
-            else {
-                // See if it should be a token.
-                const token = this.readToken();
-                if (token === undefined) {
-                    // Just a regular letter.
-                    this.result.push(ch);
-                    this.pos++;
-                }
-                else {
-                    // Prefix ELSE with colon for backward compatibility.
-                    if (token === ELSE && this.result[this.result.length - 1] !== COLON) {
-                        this.result.push(COLON);
-                    }
-                    this.result.push(token);
-                    this.pos += TOKENS[token - FIRST_TOKEN].length;
-                    if (token === REM) {
-                        // We're done, copy the rest of the line.
-                        break;
-                    }
-                    if (token === DATA) {
-                        // Copy to end of statement.
-                        let inString = false;
-                        while (this.pos < this.line.length) {
-                            ch = this.line.charCodeAt(this.pos);
-                            if (ch === DOUBLE_QUOTE) {
-                                inString = !inString;
-                            }
-                            else if (ch === COLON && !inString) {
-                                break;
-                            }
-                            this.result.push(ch);
-                            this.pos++;
-                        }
-                    }
-                }
-            }
-        }
-        // Copy rest of line (for comments).
-        while (this.pos < this.line.length) {
-            this.result.push(this.line.charCodeAt(this.pos++));
-        }
-        // End-of-line marker.
-        this.result.push(0);
-        return new Uint8Array(this.result);
-    }
-    /**
-     * If we're at a token, return it, else return undefined. Does not advance past the token.
-     */
-    readToken() {
-        for (let i = 0; i < TOKENS.length; i++) {
-            const token = TOKENS[i];
-            if (token === this.line.substr(this.pos, token.length).toUpperCase()) {
-                return FIRST_TOKEN + i;
-            }
-        }
-        return undefined;
-    }
-    /**
-     * Reads a decimal number and advances past it, or returns undefined if not at a number.
-     */
-    readNumber() {
-        let n;
-        while (this.pos < this.line.length && BasicParser.isDigit(this.line.charCodeAt(this.pos))) {
-            if (n === undefined) {
-                n = 0;
-            }
-            n = n * 10 + this.line.charCodeAt(this.pos) - 0x30;
-            this.pos++;
-        }
-        return n;
-    }
-    /**
-     * Whether the ASCII value is whitespace.
-     */
-    static isWhitespace(ch) {
-        return ch === 0x20 || ch === 0x09;
-    }
-    /**
-     * Whether the ASCII value is a digit.
-     */
-    static isDigit(ch) {
-        return ch >= 0x30 && ch < 0x3A;
-    }
-}
-/**
- * Parse a Basic program into a binary with the initial 0xFF header.
- *
- * @return the binary or an error.
- */
-function parseBasicText(text) {
-    // Split into lines. Only trim the start, spaces at the end should be kept.
-    const lines = text.split(/[\n\r]+/)
-        .map((line) => line.trimStart())
-        .filter((line) => line !== "");
-    const binaryParts = [];
-    binaryParts.push(new Uint8Array([exports.BASIC_HEADER_BYTE]));
-    // Parse each line.
-    let lineNumber;
-    for (const line of lines) {
-        const parser = new BasicParser(line);
-        const binary = parser.parse();
-        if (typeof binary === "string") {
-            return binary;
-        }
-        // Make sure line numbers are consecutive.
-        if (lineNumber !== undefined && parser.lineNumber !== undefined && parser.lineNumber <= lineNumber) {
-            return "Line " + parser.lineNumber + " is out of order";
-        }
-        lineNumber = parser.lineNumber;
-        // Push next-line pointer. Can be anything as long as it's not 0x0000,
-        // it'll get fixed up later.
-        binaryParts.push(new Uint8Array([0xFF, 0xFF]));
-        binaryParts.push(binary);
-    }
-    // End-of-program marker.
-    binaryParts.push(new Uint8Array([0x00, 0x00]));
-    return teamten_ts_utils_1.concatByteArrays(binaryParts);
-}
-exports.parseBasicText = parseBasicText;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Tools for dealing with CMD (machine language) programs.
- *
- * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/#cmdfile
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeCmdProgram = exports.CmdProgram = exports.CMD_CHUNK_TYPE_NAME = exports.CmdLoadModuleHeaderChunk = exports.CmdTransferAddressChunk = exports.CmdLoadBlockChunk = exports.CmdChunk = exports.CMD_MAX_TYPE = exports.CMD_LOAD_MODULE_HEADER = exports.CMD_TRANSFER_ADDRESS = exports.CMD_LOAD_BLOCK = void 0;
-const teamten_ts_utils_1 = __webpack_require__(12);
-const z80_base_1 = __webpack_require__(0);
-const ProgramAnnotation_1 = __webpack_require__(5);
-const Trs80File_1 = __webpack_require__(6);
-// Chunk types.
-exports.CMD_LOAD_BLOCK = 0x01;
-exports.CMD_TRANSFER_ADDRESS = 0x02;
-exports.CMD_LOAD_MODULE_HEADER = 0x05;
-exports.CMD_MAX_TYPE = 0x1F;
-/**
- * Represents a chunk of bytes from the file.
- */
-class CmdChunk {
-    constructor(type, data) {
-        this.type = type;
-        this.rawData = data;
-    }
-    /**
-     * Add annotations about this chunk, assuming its data is at "addr".
-     */
-    addAnnotations(annotations, addr) {
-        // Nothing for unknown chunks.
-    }
-}
-exports.CmdChunk = CmdChunk;
-/**
- * A chunk for loading data into memory.
- */
-class CmdLoadBlockChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.address = data[0] + data[1] * 256;
-        this.loadData = data.slice(2);
-    }
-    addAnnotations(annotations, addr) {
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Load address (0x" + z80_base_1.toHexWord(this.address) + ")", addr, addr + 2));
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Data (" + this.loadData.length + " byte" +
-            (this.loadData.length === 1 ? "" : "s") + ")", addr + 2, addr + 2 + this.loadData.length));
-    }
-}
-exports.CmdLoadBlockChunk = CmdLoadBlockChunk;
-/**
- * A chunk for jumping to the start of the program.
- */
-class CmdTransferAddressChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.address = data.length === 2 ? (data[0] + data[1] * 256) : 0;
-    }
-    addAnnotations(annotations, addr) {
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Jump address (0x" + z80_base_1.toHexWord(this.address) + ")", addr, addr + 2));
-    }
-}
-exports.CmdTransferAddressChunk = CmdTransferAddressChunk;
-/**
- * A header chunk for the filename.
- */
-class CmdLoadModuleHeaderChunk extends CmdChunk {
-    constructor(type, data) {
-        super(type, data);
-        this.filename = new TextDecoder("ascii").decode(data).trim().replace(/ +/g, " ");
-    }
-    addAnnotations(annotations, addr) {
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Name (" + this.filename + ")", addr, addr + this.rawData.length));
-    }
-}
-exports.CmdLoadModuleHeaderChunk = CmdLoadModuleHeaderChunk;
-/**
- * A friendly (not so technical) name for the block type.
- * See page 43 of The LDOS Quarterly, Volume 1, Number 4.
- * https://www.tim-mann.org/trs80/doc/ldosq1-4.pdf
- * http://www.vintagecomputer.net/fjkraan/comp/trs80/doc/Trscmdff.txt
- * https://tim-mann.org/trs80/doc/gocmd.pdf
- * http://www.manmrk.net/tutorials/TRS80/Software/ldos/trs80/doc/ldosq1-4.txt
- */
-exports.CMD_CHUNK_TYPE_NAME = new Map([
-    [0x01, "data"],
-    [0x02, "jump address"],
-    [0x04, "end of partitioned data set member"],
-    [0x05, "header"],
-    [0x06, "partitioned data set header"],
-    [0x07, "patch name header"],
-    [0x08, "ISAM directory entry"],
-    [0x0A, "end of ISAM directory"],
-    [0x0C, "PDS directory entry"],
-    [0x0E, "end of PDS directory"],
-    [0x10, "yanked load block"],
-    [0x1F, "copyright block"],
-]);
-/**
- * Class representing a CMD (machine language) program. If the "error" field is set, then something
- * went wrong with the program and the data may be partially loaded.
- */
-class CmdProgram extends Trs80File_1.Trs80File {
-    constructor(binary, error, annotations, chunks, filename, entryPointAddress) {
-        super(binary, error, annotations);
-        this.chunks = chunks;
-        this.filename = filename;
-        this.entryPointAddress = entryPointAddress;
-    }
-    getDescription() {
-        return "CMD program" + (this.filename !== undefined ? " (" + this.filename + ")" : "");
-    }
-    /**
-     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
-     * not found in any chunk.
-     */
-    addressToByteOffset(address) {
-        // Offset in the binary of first byte of chunk.
-        let offset = 0;
-        for (const chunk of this.chunks) {
-            if (chunk instanceof CmdLoadBlockChunk) {
-                if (address >= chunk.address && address < chunk.address + chunk.loadData.length) {
-                    // Skip type, length, and address.
-                    return offset + 4 + (address - chunk.address);
-                }
-            }
-            // Skip type, length and data.
-            offset += 2 + chunk.rawData.length;
-        }
-        return undefined;
-    }
-}
-exports.CmdProgram = CmdProgram;
-/**
- * Decodes a CMD program from the binary. If the binary is not at all a CMD
- * program, returns undefined. If it's a CMD program with decoding errors, returns
- * partially-decoded binary and sets the "error" field.
- */
-function decodeCmdProgram(binary) {
-    var _a;
-    let error;
-    const annotations = [];
-    const chunks = [];
-    let filename;
-    let entryPointAddress = 0;
-    const b = new teamten_ts_utils_1.ByteReader(binary);
-    // Read each chunk.
-    while (true) {
-        // First byte is type of chunk.
-        const type = b.read();
-        // End of file?
-        if (type === teamten_ts_utils_1.EOF ||
-            // Invalid type byte?
-            type > exports.CMD_MAX_TYPE ||
-            // Error earlier?
-            error !== undefined ||
-            // Just saw jump? There's typically junk after this and it can make it seem like there's an error.
-            (chunks.length > 0 && chunks[chunks.length - 1] instanceof CmdTransferAddressChunk)) {
-            if (chunks.length === 0) {
-                return undefined;
-            }
-            return new CmdProgram(binary.subarray(0, b.addr()), error, annotations, chunks, filename, entryPointAddress);
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Type of chunk (" +
-            ((_a = exports.CMD_CHUNK_TYPE_NAME.get(type)) !== null && _a !== void 0 ? _a : "unknown") + ")", b.addr() - 1, b.addr()));
-        // Second byte is length, in bytes.
-        let length = b.read();
-        if (length === teamten_ts_utils_1.EOF) {
-            error = "File is truncated at length";
-            continue;
-        }
-        // Adjust load block length.
-        if (type === exports.CMD_LOAD_BLOCK && length <= 2) {
-            length += 256;
-        }
-        else if (type === exports.CMD_LOAD_MODULE_HEADER && length === 0) {
-            length = 256;
-        }
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Length of chunk (" + length +
-            " byte" + (length === 1 ? "" : "s") + ")", b.addr() - 1, b.addr()));
-        // Read the raw bytes.
-        const dataAddr = b.addr();
-        const data = b.readBytes(length);
-        if (data.length < length) {
-            error = "File is truncated at data";
-            // We continue so we can create a partial chunk. The loop will stop at the top of the next
-            // iteration. Not sure this is the right thing to do.
-        }
-        // Create type-specific chunk objects.
-        let chunk;
-        switch (type) {
-            case exports.CMD_LOAD_BLOCK:
-                chunk = new CmdLoadBlockChunk(type, data);
-                break;
-            case exports.CMD_TRANSFER_ADDRESS: {
-                const cmdTransferAddressChunk = new CmdTransferAddressChunk(type, data);
-                entryPointAddress = cmdTransferAddressChunk.address;
-                chunk = cmdTransferAddressChunk;
-                break;
-            }
-            case exports.CMD_LOAD_MODULE_HEADER: {
-                const cmdLoadModuleHeaderChunk = new CmdLoadModuleHeaderChunk(type, data);
-                filename = cmdLoadModuleHeaderChunk.filename;
-                if (filename === "") {
-                    filename = undefined;
-                }
-                chunk = cmdLoadModuleHeaderChunk;
-                break;
-            }
-            default:
-                chunk = new CmdChunk(type, data);
-                break;
-        }
-        chunk.addAnnotations(annotations, dataAddr);
-        chunks.push(chunk);
-    }
-}
-exports.decodeCmdProgram = decodeCmdProgram;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeCassette = exports.Cassette = exports.CassetteFile = exports.CassetteSpeed = void 0;
-const SystemProgram_1 = __webpack_require__(14);
-const Trs80File_1 = __webpack_require__(6);
-const Trs80FileDecoder_1 = __webpack_require__(27);
-const ProgramAnnotation_1 = __webpack_require__(5);
-// Low-speed header and sync constants.
-const LOW_SPEED_HEADER_BYTE = 0x00;
-const LOW_SPEED_SYNC_BYTE = 0xA5;
-const LOW_SPEED_ACCEPTABLE_HEADER = (LOW_SPEED_HEADER_BYTE << 24) |
-    (LOW_SPEED_HEADER_BYTE << 16) |
-    (LOW_SPEED_HEADER_BYTE << 8) |
-    (LOW_SPEED_HEADER_BYTE << 0);
-const LOW_SPEED_DETECT = (LOW_SPEED_HEADER_BYTE << 24) |
-    (LOW_SPEED_HEADER_BYTE << 16) |
-    (LOW_SPEED_HEADER_BYTE << 8) |
-    (LOW_SPEED_SYNC_BYTE << 0);
-// High-speed header and sync constants.
-const HIGH_SPEED_HEADER_BYTE = 0x55;
-const HIGH_SPEED_SYNC_BYTE = 0x7F;
-const HIGH_SPEED_ACCEPTABLE_HEADER1 = (HIGH_SPEED_HEADER_BYTE << 24) |
-    (HIGH_SPEED_HEADER_BYTE << 16) |
-    (HIGH_SPEED_HEADER_BYTE << 8) |
-    (HIGH_SPEED_HEADER_BYTE << 0);
-const HIGH_SPEED_ACCEPTABLE_HEADER2 = ~HIGH_SPEED_ACCEPTABLE_HEADER1;
-const HIGH_SPEED_DETECT = (HIGH_SPEED_HEADER_BYTE << 24) |
-    (HIGH_SPEED_HEADER_BYTE << 16) |
-    (HIGH_SPEED_HEADER_BYTE << 8) |
-    (HIGH_SPEED_SYNC_BYTE << 0);
-var CassetteSpeed;
-(function (CassetteSpeed) {
-    CassetteSpeed[CassetteSpeed["LOW_SPEED"] = 0] = "LOW_SPEED";
-    CassetteSpeed[CassetteSpeed["HIGH_SPEED"] = 1] = "HIGH_SPEED";
-})(CassetteSpeed = exports.CassetteSpeed || (exports.CassetteSpeed = {}));
-/**
- * See if actual and reference are equal, modulo some bit offset.
- *
- * @param actual the last 32 bits of the stream.
- * @param reference the 32 bits we're looking for.
- * @return the number of extra bits (0 to 7 inclusive) in "actual" after the end of reference,
- * or undefined if not a match.
- */
-function checkMatch(actual, reference) {
-    for (let offset = 0; offset < 8; offset++) {
-        if ((actual & ~((1 << offset) - 1)) === reference << offset) {
-            return offset;
-        }
-    }
-    return undefined;
-}
-/**
- * Represents a file on a cassette. (Not the CAS file itself.)
- */
-class CassetteFile {
-    constructor(offset, speed, file) {
-        this.offset = offset;
-        this.speed = speed;
-        this.file = file;
-    }
-    /**
-     * Return the file's annotations adjusted by the offset into the cassette.
-     */
-    adjustedAnnotations() {
-        return this.file.annotations.map(annotation => annotation.adjusted(this.offset));
-    }
-}
-exports.CassetteFile = CassetteFile;
-/**
- * Represents a cassette (CAS file).
- */
-class Cassette extends Trs80File_1.Trs80File {
-    constructor(binary, error, annotations, files) {
-        super(binary, error, annotations);
-        this.files = files;
-    }
-    getDescription() {
-        if (this.files.length === 0) {
-            return "Empty cassette";
-        }
-        else if (this.files.length === 1) {
-            const cassetteFile = this.files[0];
-            return cassetteFile.file.getDescription() + " on a " +
-                (cassetteFile.speed === CassetteSpeed.LOW_SPEED ? "low" : "high") + " speed cassette";
-        }
-        else {
-            return "Cassette with " + this.files.length + " files";
-        }
-    }
-}
-exports.Cassette = Cassette;
-/**
- * High-speed CAS files have start bits built-in. Strip these out because
- * we re-insert them below when encoding. We could also remove the
- * writing of start bits below, but we don't really know how many bits
- * there are at the end that we shouldn't write.
- *
- * Update: We no longer insert start bits in encodeHighSpeed(), so this
- * routine is no longer necessary, but we keep it around anyway.
- */
-function stripStartBits(inBytes) {
-    // Compute new size of array.
-    const outBytes = new Uint8Array(Math.floor(inBytes.length * 8 / 9));
-    // Fill output buffer.
-    for (let i = 0; i < outBytes.length; i++) {
-        // Index of most-significant data bit.
-        const bitIndex = i * 9 + 1;
-        const byteIndex = Math.floor(bitIndex / 8);
-        const bitOffset = bitIndex % 8;
-        let value = inBytes[byteIndex] << bitOffset;
-        if (bitOffset !== 0) {
-            value |= inBytes[byteIndex + 1] >> (8 - bitOffset);
-        }
-        outBytes[i] = value;
-    }
-    return outBytes;
-}
-/**
- * Decodes a CAS from the binary. If the binary is not at all a cassette,
- * returns undefined. If it's a cassette with decoding errors, returns
- * partially-decoded object and sets the "error" field.
- */
-function decodeCassette(binary) {
-    const start = 0;
-    const annotations = [];
-    const cassetteFiles = [];
-    while (true) {
-        let recentBits = 0xFFFFFFFF;
-        let programBinary;
-        let speed;
-        let programStartIndex = 0;
-        for (let i = start; i < binary.length; i++) {
-            const byte = binary[i];
-            recentBits = (recentBits << 8) | byte;
-            const lowSpeedBitOffset = checkMatch(recentBits, LOW_SPEED_DETECT);
-            if (lowSpeedBitOffset !== undefined) {
-                if (lowSpeedBitOffset !== 0) {
-                    // TODO
-                    throw new Error("We don't yet handle low-speed cassettes with bit offsets of " + lowSpeedBitOffset);
-                }
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Low speed header", 0, i));
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Low speed sync byte", i, i + 1));
-                speed = CassetteSpeed.LOW_SPEED;
-                programStartIndex = i + 1;
-                programBinary = binary.subarray(programStartIndex);
-                break;
-            }
-            const highSpeedBitOffset = checkMatch(recentBits, HIGH_SPEED_DETECT);
-            if (highSpeedBitOffset !== undefined) {
-                if (highSpeedBitOffset !== 0) {
-                    // TODO
-                    throw new Error("We don't yet handle high-speed cassettes with bit offsets of " +
-                        highSpeedBitOffset);
-                }
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("High speed header", 0, i));
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("High speed sync byte", i, i + 1));
-                speed = CassetteSpeed.HIGH_SPEED;
-                programStartIndex = i + 1;
-                programBinary = stripStartBits(binary.subarray(programStartIndex));
-                break;
-            }
-            if (i >= start + 4 &&
-                recentBits !== LOW_SPEED_ACCEPTABLE_HEADER &&
-                recentBits !== HIGH_SPEED_ACCEPTABLE_HEADER1 &&
-                recentBits !== HIGH_SPEED_ACCEPTABLE_HEADER2) {
-                // We should be seeing the header bits.
-                break;
-            }
-        }
-        if (programBinary === undefined || speed === undefined) {
-            // Not a CAS file.
-            return undefined;
-        }
-        // See what kind of file it is. System program aren't decoded by decodeTrs80File() because
-        // these are always on cassettes or with a .3BN extension. So try that ourselves first.
-        let file = SystemProgram_1.decodeSystemProgram(programBinary);
-        if (file === undefined) {
-            file = Trs80FileDecoder_1.decodeTrs80File(programBinary, undefined);
-        }
-        cassetteFiles.push(new CassetteFile(programStartIndex, speed, file));
-        // TODO handle multiple files. See HAUNT.CAS.
-        break;
-    }
-    // Merge the annotations of the files into ours.
-    for (const file of cassetteFiles) {
-        annotations.push(...file.adjustedAnnotations());
-    }
-    return new Cassette(binary, undefined, annotations, cassetteFiles);
-}
-exports.decodeCassette = decodeCassette;
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeTrs80File = void 0;
-const Basic_1 = __webpack_require__(24);
-const Cassette_1 = __webpack_require__(26);
-const CmdProgram_1 = __webpack_require__(25);
-const RawBinaryFile_1 = __webpack_require__(28);
-const Jv1FloppyDisk_1 = __webpack_require__(29);
-const Jv3FloppyDisk_1 = __webpack_require__(59);
-const DmkFloppyDisk_1 = __webpack_require__(60);
-const SystemProgram_1 = __webpack_require__(14);
-/**
- * Get the extension of the filename, including the dot, in upper case, or
- * an empty string if the filename does not contain an extension.
- */
-function getExtension(filename) {
-    // Strip pathname, in case the filename has no dot but a path component does.
-    // Not sure if we need to support backslash here.
-    const slash = filename.lastIndexOf("/");
-    if (slash >= 0) {
-        filename = filename.substr(slash + 1);
-    }
-    // Look for extension.
-    const dot = filename.lastIndexOf(".");
-    // If the dot is at position 0, then it's just a hidden file, not an extension.
-    return dot > 0 ? filename.substr(dot).toUpperCase() : "";
-}
-/**
- * Decode a file that's known to be a floppy disk, but not what kind specifically.
- */
-function decodeDsk(binary) {
-    // TODO see trs_disk.c:trs_disk_emutype()
-    // TODO see DiskDrive.cpp:Dectect_JV1, etc.
-    let trs80File;
-    trs80File = DmkFloppyDisk_1.decodeDmkFloppyDisk(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    trs80File = Jv1FloppyDisk_1.decodeJv1FloppyDisk(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    trs80File = Jv3FloppyDisk_1.decodeJv3FloppyDisk(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    return undefined;
-}
-/**
- * Top-level decoder for any TRS-80 file.
- *
- * @param binary the bytes of the file.
- * @param filename optional filename to help with detection.
- */
-function decodeTrs80File(binary, filename) {
-    var _a, _b, _c, _d;
-    let trs80File;
-    const extension = filename === undefined ? "" : getExtension(filename);
-    if (extension === ".JV1") {
-        return (_a = Jv1FloppyDisk_1.decodeJv1FloppyDisk(binary)) !== null && _a !== void 0 ? _a : new RawBinaryFile_1.RawBinaryFile(binary);
-    }
-    if (extension === ".DSK") {
-        return (_b = decodeDsk(binary)) !== null && _b !== void 0 ? _b : new RawBinaryFile_1.RawBinaryFile(binary);
-    }
-    if (extension === ".DMK") {
-        return (_c = DmkFloppyDisk_1.decodeDmkFloppyDisk(binary)) !== null && _c !== void 0 ? _c : new RawBinaryFile_1.RawBinaryFile(binary);
-    }
-    // "Model III BiNary" format, invented by George Phillips for trs80gp.
-    // Rarely used as a stand-alone file, usually just embedded in .CAS files.
-    if (extension === ".3BN") {
-        return (_d = SystemProgram_1.decodeSystemProgram(binary)) !== null && _d !== void 0 ? _d : new RawBinaryFile_1.RawBinaryFile(binary);
-    }
-    trs80File = Cassette_1.decodeCassette(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    trs80File = CmdProgram_1.decodeCmdProgram(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    trs80File = Basic_1.decodeBasicProgram(binary);
-    if (trs80File !== undefined) {
-        return trs80File;
-    }
-    return new RawBinaryFile_1.RawBinaryFile(binary);
-}
-exports.decodeTrs80File = decodeTrs80File;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RawBinaryFile = void 0;
-const Trs80File_1 = __webpack_require__(6);
-/**
- * File when we don't recognize the type.
- */
-class RawBinaryFile extends Trs80File_1.Trs80File {
-    constructor(binary) {
-        super(binary, undefined, []);
-    }
-    getDescription() {
-        return "Unknown file";
-    }
-}
-exports.RawBinaryFile = RawBinaryFile;
-
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeJv1FloppyDisk = exports.Jv1FloppyDisk = void 0;
-const FloppyDisk_1 = __webpack_require__(7);
-const ProgramAnnotation_1 = __webpack_require__(5);
-const BYTES_PER_SECTOR = 256;
-const SECTORS_PER_TRACK = 10;
-const BYTES_PER_TRACK = BYTES_PER_SECTOR * SECTORS_PER_TRACK;
-const DIRECTORY_TRACK = 17;
-/**
- * Floppy disk in the JV1 format.
- */
-class Jv1FloppyDisk extends FloppyDisk_1.FloppyDisk {
-    constructor(binary, error, annotations) {
-        super(binary, error, annotations, false);
-    }
-    getDescription() {
-        return "Floppy disk (JV1)";
-    }
-    readSector(trackNumber, side, sectorNumber) {
-        sectorNumber = sectorNumber !== null && sectorNumber !== void 0 ? sectorNumber : 0;
-        // Check for errors.
-        if (trackNumber < 0 ||
-            side === FloppyDisk_1.Side.BACK ||
-            sectorNumber >= SECTORS_PER_TRACK) {
-            return undefined;
-        }
-        // Offset straight into data.
-        const offset = (SECTORS_PER_TRACK * trackNumber + sectorNumber) * BYTES_PER_SECTOR;
-        const data = this.padSector(this.binary.subarray(offset, offset + BYTES_PER_SECTOR), BYTES_PER_SECTOR);
-        const sectorData = new FloppyDisk_1.SectorData(data);
-        if (trackNumber === DIRECTORY_TRACK) {
-            // I don't know why "deleted" is used for the directory track.
-            sectorData.deleted = true;
-        }
-        return sectorData;
-    }
-}
-exports.Jv1FloppyDisk = Jv1FloppyDisk;
-/**
- * Decode a JV1 floppy disk file.
- */
-function decodeJv1FloppyDisk(binary) {
-    let error;
-    const annotations = [];
-    const length = binary.length;
-    // Magic number check.
-    if (length < 2 || binary[0] !== 0x00 || binary[1] !== 0xFE) {
-        return undefined;
-    }
-    // Basic sanity check.
-    if (length % BYTES_PER_TRACK !== 0) {
-        error = "Length is not a multiple of track size (" + BYTES_PER_TRACK + " bytes)";
-    }
-    // Create annotations.
-    for (let byteOffset = 0; byteOffset < length; byteOffset += BYTES_PER_SECTOR) {
-        const track = Math.floor(byteOffset / BYTES_PER_TRACK);
-        const sector = (byteOffset - track * BYTES_PER_TRACK) / BYTES_PER_SECTOR;
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Track " + track + ", sector " + sector, byteOffset, Math.min(byteOffset + BYTES_PER_SECTOR, length)));
-    }
-    return new Jv1FloppyDisk(binary, error, annotations);
-}
-exports.decodeJv1FloppyDisk = decodeJv1FloppyDisk;
-
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventList = void 0;
-const ste_core_1 = __webpack_require__(4);
-const EventDispatcher_1 = __webpack_require__(16);
-/**
- * Storage class for multiple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class EventList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new EventList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new EventDispatcher_1.EventDispatcher();
-    }
-}
-exports.EventList = EventList;
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SimpleEventList = void 0;
-const ste_core_1 = __webpack_require__(4);
-const SimpleEventDispatcher_1 = __webpack_require__(17);
-/**
- * Storage class for multiple simple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class SimpleEventList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new SimpleEventList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new SimpleEventDispatcher_1.SimpleEventDispatcher();
-    }
-}
-exports.SimpleEventList = SimpleEventList;
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SignalDispatcher = void 0;
-const ste_core_1 = __webpack_require__(4);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a signal event.
- *
- * @export
- * @class SignalDispatcher
- * @extends {DispatcherBase<ISignalHandler>}
- * @implements {ISignal}
- */
-class SignalDispatcher extends ste_core_1.DispatcherBase {
-    /**
-     * Creates an instance of SignalDispatcher.
-     *
-     * @memberOf SignalDispatcher
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the signal.
-     *
-     * @returns {IPropagationStatus} The status of the signal.
-     *
-     * @memberOf SignalDispatcher
-     */
-    dispatch() {
-        const result = this._dispatch(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the signal without waiting for the result.
-     *
-     * @memberOf SignalDispatcher
-     */
-    dispatchAsync() {
-        this._dispatch(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     *
-     * @returns {ISignal} The signal.
-     *
-     * @memberOf SignalDispatcher
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.SignalDispatcher = SignalDispatcher;
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SignalList = void 0;
-const ste_core_1 = __webpack_require__(4);
-const SignalDispatcher_1 = __webpack_require__(32);
-/**
- * Storage class for multiple signal events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class SignalList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new SignalList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new SignalDispatcher_1.SignalDispatcher();
-    }
-}
-exports.SignalList = SignalList;
-
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseEventList = void 0;
-const ste_core_1 = __webpack_require__(8);
-const PromiseEventDispatcher_1 = __webpack_require__(18);
-/**
- * Storage class for multiple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class PromiseEventList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new EventList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new PromiseEventDispatcher_1.PromiseEventDispatcher();
-    }
-}
-exports.PromiseEventList = PromiseEventList;
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Promise Signals
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSignalList = exports.PromiseSignalHandlingBase = exports.PromiseSignalDispatcher = void 0;
-const PromiseSignalDispatcher_1 = __webpack_require__(104);
-Object.defineProperty(exports, "PromiseSignalDispatcher", { enumerable: true, get: function () { return PromiseSignalDispatcher_1.PromiseSignalDispatcher; } });
-const PromiseSignalHandlingBase_1 = __webpack_require__(114);
-Object.defineProperty(exports, "PromiseSignalHandlingBase", { enumerable: true, get: function () { return PromiseSignalHandlingBase_1.PromiseSignalHandlingBase; } });
-const PromiseSignalList_1 = __webpack_require__(36);
-Object.defineProperty(exports, "PromiseSignalList", { enumerable: true, get: function () { return PromiseSignalList_1.PromiseSignalList; } });
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSignalList = void 0;
-const ste_core_1 = __webpack_require__(9);
-const _1 = __webpack_require__(35);
-/**
- * Storage class for multiple signal events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class PromiseSignalList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new SignalList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new _1.PromiseSignalDispatcher();
-    }
-}
-exports.PromiseSignalList = PromiseSignalList;
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSimpleEventList = void 0;
-const ste_core_1 = __webpack_require__(10);
-const PromiseSimpleEventDispatcher_1 = __webpack_require__(19);
-/**
- * Storage class for multiple simple events that are accessible by name.
- * Events dispatchers are automatically created.
- */
-class PromiseSimpleEventList extends ste_core_1.EventListBase {
-    /**
-     * Creates a new SimpleEventList instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new PromiseSimpleEventDispatcher_1.PromiseSimpleEventDispatcher();
-    }
-}
-exports.PromiseSimpleEventList = PromiseSimpleEventList;
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventScheduler = exports.ScheduledEvent = exports.EventType = void 0;
-/**
- * Type of event, for mass canceling.
- */
-var EventType;
-(function (EventType) {
-    // Disk events.
-    EventType[EventType["DISK_DONE"] = 1] = "DISK_DONE";
-    EventType[EventType["DISK_LOST_DATA"] = 2] = "DISK_LOST_DATA";
-    EventType[EventType["DISK_FIRST_DRQ"] = 4] = "DISK_FIRST_DRQ";
-    // All disk events.
-    EventType[EventType["DISK_ALL"] = 7] = "DISK_ALL";
-})(EventType = exports.EventType || (exports.EventType = {}));
-/**
- * An event scheduled for the future.
- */
-class ScheduledEvent {
-    constructor(eventType, handle, tStateCount, callback) {
-        this.eventType = eventType;
-        this.handle = handle;
-        this.tStateCount = Math.round(tStateCount);
-        this.callback = callback;
-    }
-    /**
-     * Whether the event type of this event is included in the mask.
-     */
-    matchesEventTypeMask(eventTypeMask) {
-        return this.eventType !== undefined && (this.eventType & eventTypeMask) !== 0;
-    }
-}
-exports.ScheduledEvent = ScheduledEvent;
-/**
- * Stores events in chronological order and fires them off.
- */
-class EventScheduler {
-    constructor() {
-        this.counter = 1;
-        // Sorted by tStateCount.
-        this.events = [];
-    }
-    /**
-     * Dispatch all events ready to go.
-     *
-     * @param tStateCount current clock count.
-     */
-    dispatch(tStateCount) {
-        while (this.events.length > 0 && tStateCount >= this.events[0].tStateCount) {
-            const scheduledEvent = this.events.shift();
-            scheduledEvent.callback();
-        }
-    }
-    /**
-     * Schedule an event to happen at tStateCount clocks. The callback will be called
-     * at the end of an instruction step.
-     *
-     * @return a handle that can be passed to cancel().
-     */
-    add(eventType, tStateCount, callback) {
-        let handle = this.counter++;
-        this.events.push(new ScheduledEvent(eventType, handle, tStateCount, callback));
-        this.events.sort((a, b) => {
-            if (a.tStateCount < b.tStateCount) {
-                return -1;
-            }
-            else if (a.tStateCount > b.tStateCount) {
-                return 1;
-            }
-            else {
-                return 0;
-            }
-        });
-        return handle;
-    }
-    /**
-     * Cancel an event scheduled by add().
-     */
-    cancel(handle) {
-        for (let i = 0; i < this.events.length; i++) {
-            if (this.events[i].handle === handle) {
-                this.events.splice(i, 1);
-                break;
-            }
-        }
-    }
-    /**
-     * Cancel all events that are included in the mask.
-     */
-    cancelByEventTypeMask(eventTypeMask) {
-        this.events = this.events.filter(e => !e.matchesEventTypeMask(eventTypeMask));
-    }
-    /**
-     * Returns the first (next to dispatch) event included in the mask, or undefined if none.
-     * Does not remove the event from the queue.
-     */
-    getFirstEvent(eventTypeMask) {
-        for (const event of this.events) {
-            if (event.matchesEventTypeMask(eventTypeMask)) {
-                return event;
-            }
-        }
-        return undefined;
-    }
-}
-exports.EventScheduler = EventScheduler;
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CanvasScreen = exports.phosphorToRgb = exports.BLACK_BACKGROUND = exports.AUTHENTIC_BACKGROUND = void 0;
-const Trs80Screen_1 = __webpack_require__(127);
-const Fonts_1 = __webpack_require__(128);
-const Config_1 = __webpack_require__(15);
-const z80_base_1 = __webpack_require__(0);
-const trs80_base_1 = __webpack_require__(1);
-exports.AUTHENTIC_BACKGROUND = "#334843";
-exports.BLACK_BACKGROUND = "#000000";
-const PADDING = 10;
-const BORDER_RADIUS = 8;
-const WHITE_PHOSPHOR = [230, 231, 252];
-const AMBER_PHOSPHOR = [247, 190, 64];
-const GREEN_PHOSPHOR = [122, 244, 96];
-// Gets an RGB array (0-255) for a phosphor.
-function phosphorToRgb(phosphor) {
-    switch (phosphor) {
-        case Config_1.Phosphor.WHITE:
-        default:
-            return WHITE_PHOSPHOR;
-        case Config_1.Phosphor.GREEN:
-            return GREEN_PHOSPHOR;
-        case Config_1.Phosphor.AMBER:
-            return AMBER_PHOSPHOR;
-    }
-}
-exports.phosphorToRgb = phosphorToRgb;
-/**
- * TRS-80 screen based on an HTML canvas element.
- */
-class CanvasScreen extends Trs80Screen_1.Trs80Screen {
-    /**
-     * Create a canvas screen.
-     *
-     * @param scale size multiplier. If greater than 1, use multiples of 0.5.
-     */
-    constructor(scale = 1) {
-        super();
-        this.scale = 1;
-        this.memory = new Uint8Array(trs80_base_1.TRS80_SCREEN_END - trs80_base_1.TRS80_SCREEN_BEGIN);
-        this.glyphs = [];
-        this.config = Config_1.Config.makeDefault();
-        this.glyphWidth = 0;
-        this.node = document.createElement("div");
-        // Fit canvas horizontally so that the nested objects (panels and progress bars) are
-        // displayed in the canvas.
-        this.node.style.maxWidth = "max-content";
-        this.scale = scale;
-        this.padding = Math.round(PADDING * this.scale);
-        this.canvas = document.createElement("canvas");
-        this.canvas.width = 64 * 8 * this.scale + 2 * this.padding;
-        this.canvas.height = 16 * 24 * this.scale + 2 * this.padding;
-        this.node.append(this.canvas);
-        this.context = this.canvas.getContext("2d");
-        this.updateFromConfig();
-    }
-    getWidth() {
-        return this.canvas.width;
-    }
-    getHeight() {
-        return this.canvas.height;
-    }
-    setConfig(config) {
-        this.config = config;
-        this.updateFromConfig();
-    }
-    /**
-     * Update the font and screen from the config and other state.
-     */
-    updateFromConfig() {
-        let font;
-        switch (this.config.cgChip) {
-            case Config_1.CGChip.ORIGINAL:
-                font = Fonts_1.MODEL1A_FONT;
-                break;
-            case Config_1.CGChip.LOWER_CASE:
-            default:
-                switch (this.config.modelType) {
-                    case Config_1.ModelType.MODEL1:
-                        font = Fonts_1.MODEL1B_FONT;
-                        break;
-                    case Config_1.ModelType.MODEL3:
-                    default:
-                        font = this.isAlternateCharacters() ? Fonts_1.MODEL3_ALT_FONT : Fonts_1.MODEL3_FONT;
-                        break;
-                }
-                break;
-        }
-        const glyphOptions = {
-            color: phosphorToRgb(this.config.phosphor),
-            scanLines: this.config.scanLines === Config_1.ScanLines.ON,
-        };
-        for (let i = 0; i < 256; i++) {
-            this.glyphs[i] = font.makeImage(i, this.isExpandedCharacters(), glyphOptions);
-        }
-        this.glyphWidth = font.width;
-        this.drawBackground();
-        this.refresh();
-    }
-    writeChar(address, value) {
-        const offset = address - trs80_base_1.TRS80_SCREEN_BEGIN;
-        this.memory[offset] = value;
-        this.drawChar(offset, value);
-    }
-    getForegroundColor() {
-        const color = phosphorToRgb(this.config.phosphor);
-        return "#" + z80_base_1.toHexByte(color[0]) + z80_base_1.toHexByte(color[1]) + z80_base_1.toHexByte(color[2]);
-    }
-    /**
-     * Get the background color as a CSS color based on the current config.
-     */
-    getBackgroundColor() {
-        switch (this.config.background) {
-            case Config_1.Background.BLACK:
-                return exports.BLACK_BACKGROUND;
-            case Config_1.Background.AUTHENTIC:
-            default:
-                return exports.AUTHENTIC_BACKGROUND;
-        }
-    }
-    getBorderRadius() {
-        return BORDER_RADIUS * this.scale;
-    }
-    /**
-     * Draw a single character to the canvas.
-     */
-    drawChar(offset, value) {
-        const screenX = (offset % 64) * 8 * this.scale + this.padding;
-        const screenY = Math.floor(offset / 64) * 24 * this.scale + this.padding;
-        this.context.fillStyle = this.getBackgroundColor();
-        if (this.isExpandedCharacters()) {
-            if (offset % 2 === 0) {
-                this.context.fillRect(screenX, screenY, 16 * this.scale, 24 * this.scale);
-                this.context.drawImage(this.glyphs[value], 0, 0, this.glyphWidth * 2, 24, screenX, screenY, 16 * this.scale, 24 * this.scale);
-            }
-        }
-        else {
-            this.context.fillRect(screenX, screenY, 8 * this.scale, 24 * this.scale);
-            this.context.drawImage(this.glyphs[value], 0, 0, this.glyphWidth, 24, screenX, screenY, 8 * this.scale, 24 * this.scale);
-        }
-    }
-    getNode() {
-        return this.node;
-    }
-    setExpandedCharacters(expanded) {
-        if (expanded !== this.isExpandedCharacters()) {
-            super.setExpandedCharacters(expanded);
-            this.updateFromConfig();
-        }
-    }
-    setAlternateCharacters(alternate) {
-        if (alternate !== this.isAlternateCharacters()) {
-            super.setAlternateCharacters(alternate);
-            this.updateFromConfig();
-        }
-    }
-    /**
-     * Draw the background of the canvas.
-     */
-    drawBackground() {
-        const width = this.canvas.width;
-        const height = this.canvas.height;
-        const radius = this.getBorderRadius();
-        this.context.fillStyle = this.getBackgroundColor();
-        this.context.beginPath();
-        this.context.moveTo(radius, 0);
-        this.context.arcTo(width, 0, width, radius, radius);
-        this.context.arcTo(width, height, width - radius, height, radius);
-        this.context.arcTo(0, height, 0, height - radius, radius);
-        this.context.arcTo(0, 0, radius, 0, radius);
-        this.context.fill();
-    }
-    /**
-     * Refresh the display based on what we've kept track of.
-     */
-    refresh() {
-        for (let offset = 0; offset < this.memory.length; offset++) {
-            this.drawChar(offset, this.memory[offset]);
-        }
-    }
-    /**
-     * Returns the canvas as an <img> element that can be resized. This is relatively
-     * expensive.
-     *
-     * This method is deprecated, use asImageAsync instead.
-     */
-    asImage() {
-        const image = document.createElement("img");
-        image.src = this.canvas.toDataURL();
-        return image;
-    }
-    /**
-     * Returns the canvas as an <img> element that can be resized. Despite the
-     * "async" name, there's still some synchronous work, about 13ms.
-     */
-    asImageAsync() {
-        return new Promise((resolve, reject) => {
-            // According to this answer:
-            //     https://stackoverflow.com/a/59025746/211234
-            // the toBlob() method still has to copy the image synchronously, so this whole method still
-            // takes about 13ms. It's better than toDataUrl() because it doesn't have to make an actual
-            // base64 string. The Object URL is just a reference to the blob.
-            this.canvas.toBlob(blob => {
-                if (blob === null) {
-                    reject("Cannot make image from screen");
-                }
-                else {
-                    const image = document.createElement("img");
-                    const url = URL.createObjectURL(blob);
-                    image.addEventListener("load", () => {
-                        URL.revokeObjectURL(url);
-                        // Resolve when the image is fully loaded so that there's no UI glitching.
-                        resolve(image);
-                    });
-                    image.src = url;
-                }
-            });
-        });
-    }
-}
-exports.CanvasScreen = CanvasScreen;
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SettingsPanel = exports.PanelType = void 0;
-const Utils_1 = __webpack_require__(20);
-const Config_1 = __webpack_require__(15);
-const CanvasScreen_1 = __webpack_require__(39);
-const gCssPrefix = Utils_1.CSS_PREFIX + "-settings-panel";
-const gScreenNodeCssClass = gCssPrefix + "-screen-node";
-const gPanelCssClass = gCssPrefix + "-panel";
-const gShownCssClass = gCssPrefix + "-shown";
-const gAcceptButtonCssClass = gCssPrefix + "-accept";
-const gRebootButtonCssClass = gCssPrefix + "-reboot";
-const gOptionsClass = gCssPrefix + "-options";
-const gButtonsClass = gCssPrefix + "-buttons";
-const gColorButtonClass = gCssPrefix + "-color-button";
-const gDarkColorButtonClass = gCssPrefix + "-dark-color-button";
-const gAcceptButtonColor = "#449944";
-const GLOBAL_CSS = `
-.${gPanelCssClass} {
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .20s ease-in-out, visibility .20s ease-in-out;
-}
-
-.${gPanelCssClass}.${gShownCssClass} {
-    opacity: 1;
-    visibility: visible;
-}
-
-.${gPanelCssClass} > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    
-    background-color: rgba(40, 40, 40, 0.8);
-    border-radius: 15px;
-    color: #ccc;
-    font-family: sans-serif;
-    font-size: 10pt;
-    line-height: normal;
-    margin: 20px 0;
-    padding: 10px 30px;
-    min-width: 200px;
-}
-
-.${gPanelCssClass} h1 {
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: .5px;
-    font-size: 10pt;
-    margin: 0 0 10px 0;
-}
-
-.${gPanelCssClass} .${gOptionsClass} {
-    display: flex;
-    justify-content: center;
-}
-
-.${gPanelCssClass} input[type=radio] {
-    display: none;
-}
-
-.${gPanelCssClass} input[type=radio] + label {
-    display: block;
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: center;
-    padding: 4px 16px;
-    margin-left: 10px;
-    border-radius: 3px;
-    background-color: #44443A;
-    white-space: nowrap;
-}
-
-.${gPanelCssClass} input[type=radio] + label.${gColorButtonClass} {
-    flex-grow: 0;
-    flex-basis: auto;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border-radius: 999px;
-    border: 2px solid transparent;
-    color: transparent;
-    transition: color .20s ease-in-out;
-}
-
-.${gPanelCssClass} input[type=radio] + label.${gColorButtonClass}.${gDarkColorButtonClass} {
-    border: solid 2px #ccc;
-}
-
-.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass}::after {
-    content: "✓";
-    font-size: 20px;
-}
-
-.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass} {
-    color: black;
-}
-
-.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass}.${gDarkColorButtonClass} {
-    color: #ccc;
-}
-
-.${gPanelCssClass} input[type=radio] + label:first-of-type {
-    margin-left: 0;
-}
-
-.${gPanelCssClass} input[type=radio]:enabled + label:hover {
-    background-color: #66665A;
-}
-
-.${gPanelCssClass} input[type=radio]:disabled + label {
-    color: #666;
-}
-
-.${gPanelCssClass} input[type=radio]:enabled:checked + label {
-    color: #444;
-    background-color: #ccc;
-}
-
-.${gPanelCssClass} .${gButtonsClass} {
-    display: flex;
-}
-
-.${gPanelCssClass} a {
-    display: block;
-    flex-grow: 1;
-    flex-basis: 0;
-    text-align: center;
-    padding: 4px 16px;
-    border-radius: 3px;
-    margin-left: 10px;
-    color: #ccc;
-    background-color: #44443A;
-    cursor: default;
-}
-
-.${gPanelCssClass} a:first-of-type {
-    margin-left: 0;
-}
-
-.${gPanelCssClass} a.${gAcceptButtonCssClass} {
-    font-weight: bold;
-    color: #eee;
-    background-color: ${gAcceptButtonColor};
-}
-
-.${gPanelCssClass} a.${gAcceptButtonCssClass}:hover {
-    background-color: #338833;
-}
-
-.${gPanelCssClass} a.${gRebootButtonCssClass} {
-    background-color: #D25F43;
-}
-
-.${gPanelCssClass} a:hover {
-    background-color: #66665A;
-}
-
-.${gPanelCssClass} a.${gRebootButtonCssClass}:hover {
-    background-color: #BD563C;
-}
-
-.${gScreenNodeCssClass} {
-    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
-    position: relative;
-}
-`;
-/**
- * An option that's currently displayed to the user.
- */
-class DisplayedOption {
-    constructor(input, block, option) {
-        this.input = input;
-        this.block = block;
-        this.option = option;
-    }
-}
-// Convert RGB array (0-255) to a CSS string.
-function rgbToCss(color) {
-    return "#" + color.map(c => c.toString(16).padStart(2, "0").toUpperCase()).join("");
-}
-// Multiplies an RGB (0-255) color by a factor.
-function adjustColor(color, factor) {
-    return color.map(c => Math.max(0, Math.min(255, Math.round(c * factor))));
-}
-/**
- * Our full configuration options.
- */
-const HARDWARE_OPTION_BLOCKS = [
-    {
-        title: "Model",
-        isChecked: (modelType, config) => modelType === config.modelType,
-        updateConfig: (modelType, config) => config.withModelType(modelType),
-        options: [
-            {
-                label: "Model I",
-                value: Config_1.ModelType.MODEL1,
-            },
-            {
-                label: "Model III",
-                value: Config_1.ModelType.MODEL3,
-            },
-        ]
-    },
-    {
-        title: "Basic",
-        isChecked: (basicLevel, config) => basicLevel === config.basicLevel,
-        updateConfig: (basicLevel, config) => config.withBasicLevel(basicLevel),
-        options: [
-            {
-                label: "Level 1",
-                value: Config_1.BasicLevel.LEVEL1,
-            },
-            {
-                label: "Level 2",
-                value: Config_1.BasicLevel.LEVEL2,
-            },
-        ]
-    },
-    {
-        title: "Characters",
-        isChecked: (cgChip, config) => cgChip === config.cgChip,
-        updateConfig: (cgChip, config) => config.withCGChip(cgChip),
-        options: [
-            {
-                label: "Original",
-                value: Config_1.CGChip.ORIGINAL,
-            },
-            {
-                label: "Lower case",
-                value: Config_1.CGChip.LOWER_CASE,
-            },
-        ]
-    },
-    {
-        title: "RAM",
-        isChecked: (ramSize, config) => ramSize === config.ramSize,
-        updateConfig: (ramSize, config) => config.withRamSize(ramSize),
-        options: [
-            {
-                label: "4 kB",
-                value: Config_1.RamSize.RAM_4_KB,
-            },
-            {
-                label: "16 kB",
-                value: Config_1.RamSize.RAM_16_KB,
-            },
-            {
-                label: "32 kB",
-                value: Config_1.RamSize.RAM_32_KB,
-            },
-            {
-                label: "48 kB",
-                value: Config_1.RamSize.RAM_48_KB,
-            },
-        ]
-    },
-];
-const VIEW_OPTION_BLOCKS = [
-    {
-        title: "Phosphor",
-        isChecked: (phosphor, config) => phosphor === config.phosphor,
-        updateConfig: (phosphor, config) => config.withPhosphor(phosphor),
-        options: [
-            {
-                label: rgbToCss(adjustColor(CanvasScreen_1.phosphorToRgb(Config_1.Phosphor.WHITE), 0.8)),
-                value: Config_1.Phosphor.WHITE,
-            },
-            {
-                // Cheat and use the green from the OK button so that the two greens don't clash.
-                label: gAcceptButtonColor,
-                value: Config_1.Phosphor.GREEN,
-            },
-            {
-                label: rgbToCss(adjustColor(CanvasScreen_1.phosphorToRgb(Config_1.Phosphor.AMBER), 0.8)),
-                value: Config_1.Phosphor.AMBER,
-            },
-        ]
-    },
-    {
-        title: "Background",
-        isChecked: (background, config) => background === config.background,
-        updateConfig: (background, config) => config.withBackground(background),
-        options: [
-            {
-                label: CanvasScreen_1.BLACK_BACKGROUND,
-                value: Config_1.Background.BLACK,
-            },
-            {
-                label: CanvasScreen_1.AUTHENTIC_BACKGROUND,
-                value: Config_1.Background.AUTHENTIC,
-            },
-        ]
-    },
-    {
-        title: "Scan Lines",
-        isChecked: (scanLines, config) => scanLines === config.scanLines,
-        updateConfig: (scanLines, config) => config.withScanLines(scanLines),
-        options: [
-            {
-                label: "Off",
-                value: Config_1.ScanLines.OFF,
-            },
-            {
-                label: "On",
-                value: Config_1.ScanLines.ON,
-            },
-        ]
-    },
-];
-// Type of panel to show.
-var PanelType;
-(function (PanelType) {
-    // Model, RAM, etc.
-    PanelType[PanelType["HARDWARE"] = 0] = "HARDWARE";
-    // Phosphor color, background, etc.
-    PanelType[PanelType["VIEW"] = 1] = "VIEW";
-})(PanelType = exports.PanelType || (exports.PanelType = {}));
-// Get the right options blocks for the panel type.
-function optionBlocksForPanelType(panelType) {
-    switch (panelType) {
-        case PanelType.HARDWARE:
-        default:
-            return HARDWARE_OPTION_BLOCKS;
-        case PanelType.VIEW:
-            return VIEW_OPTION_BLOCKS;
-    }
-}
-/**
- * Whether the given CSS color is dark.
- *
- * @param color an CSS color in the form "#rrggbb".
- */
-function isDarkColor(color) {
-    if (!color.startsWith("#") || color.length !== 7) {
-        throw new Error("isDarkColor: not a color (" + color + ")");
-    }
-    const red = parseInt(color.substr(1, 2), 16);
-    const grn = parseInt(color.substr(3, 2), 16);
-    const blu = parseInt(color.substr(5, 2), 16);
-    const gray = red * 0.3 + grn * 0.6 + blu * 0.1;
-    return gray < 110;
-}
-let gRadioButtonCounter = 1;
-/**
- * A full-screen control panel for configuring the emulator.
- */
-class SettingsPanel {
-    constructor(screenNode, trs80, panelType) {
-        this.displayedOptions = [];
-        this.panelType = panelType;
-        this.trs80 = trs80;
-        // Make global CSS if necessary.
-        SettingsPanel.configureStyle();
-        screenNode.classList.add(gScreenNodeCssClass);
-        this.panelNode = document.createElement("div");
-        this.panelNode.classList.add(gPanelCssClass);
-        screenNode.appendChild(this.panelNode);
-        const div = document.createElement("div");
-        this.panelNode.appendChild(div);
-        for (const block of optionBlocksForPanelType(panelType)) {
-            const name = gCssPrefix + "-" + gRadioButtonCounter++;
-            const blockDiv = document.createElement("div");
-            div.appendChild(blockDiv);
-            const h1 = document.createElement("h1");
-            h1.innerText = block.title;
-            blockDiv.appendChild(h1);
-            const optionsDiv = document.createElement("div");
-            optionsDiv.classList.add(gOptionsClass);
-            blockDiv.appendChild(optionsDiv);
-            for (const option of block.options) {
-                const id = gCssPrefix + "-" + gRadioButtonCounter++;
-                const input = document.createElement("input");
-                input.id = id;
-                input.type = "radio";
-                input.name = name;
-                input.addEventListener("change", () => this.updateEnabledOptions());
-                optionsDiv.appendChild(input);
-                const label = document.createElement("label");
-                label.htmlFor = id;
-                if (option.label.startsWith("#")) {
-                    // It's a color, show a swatch.
-                    label.classList.add(gColorButtonClass);
-                    label.style.backgroundColor = option.label;
-                    if (isDarkColor(option.label)) {
-                        label.classList.add(gDarkColorButtonClass);
-                    }
-                }
-                else {
-                    label.innerText = option.label;
-                }
-                optionsDiv.appendChild(label);
-                this.displayedOptions.push(new DisplayedOption(input, block, option));
-            }
-        }
-        const buttonsDiv = document.createElement("div");
-        buttonsDiv.classList.add(gButtonsClass);
-        div.appendChild(buttonsDiv);
-        this.acceptButton = document.createElement("a");
-        this.acceptButton.classList.add(gAcceptButtonCssClass);
-        this.acceptButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            this.accept();
-        });
-        buttonsDiv.appendChild(this.acceptButton);
-        this.configureAcceptButton(this.trs80.getConfig());
-        const cancelButton = document.createElement("a");
-        cancelButton.innerText = "Cancel";
-        cancelButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            this.close();
-        });
-        buttonsDiv.appendChild(cancelButton);
-    }
-    /**
-     * Open the settings panel.
-     */
-    open() {
-        if (this.onOpen !== undefined) {
-            this.onOpen();
-        }
-        // Configure options.
-        for (const displayedOption of this.displayedOptions) {
-            displayedOption.input.checked = displayedOption.block.isChecked(displayedOption.option.value, this.trs80.getConfig());
-        }
-        this.updateEnabledOptions();
-        this.panelNode.classList.add(gShownCssClass);
-    }
-    /**
-     * Accept the changes, configure the machine, and close the dialog box.
-     */
-    accept() {
-        this.trs80.setConfig(this.getConfig());
-        this.close();
-    }
-    /**
-     * Close the settings panel.
-     */
-    close() {
-        this.panelNode.classList.remove(gShownCssClass);
-        if (this.onClose !== undefined) {
-            this.onClose();
-        }
-    }
-    /**
-     * Update which options are enabled based on the current selection.
-     */
-    updateEnabledOptions() {
-        const config = this.getConfig();
-        for (const displayedOption of this.displayedOptions) {
-            const enabled = displayedOption.block.updateConfig(displayedOption.option.value, config).isValid();
-            displayedOption.input.disabled = !enabled;
-        }
-        this.configureAcceptButton(config);
-    }
-    /**
-     * Set the accept button to be OK or Reboot.
-     */
-    configureAcceptButton(config) {
-        if (config.needsReboot(this.trs80.getConfig())) {
-            this.acceptButton.classList.add(gRebootButtonCssClass);
-            this.acceptButton.innerText = "Reboot";
-        }
-        else {
-            this.acceptButton.classList.remove(gRebootButtonCssClass);
-            this.acceptButton.innerText = "OK";
-        }
-    }
-    /**
-     * Make a new config from the user's currently selected options.
-     */
-    getConfig() {
-        let config = this.trs80.getConfig();
-        for (const displayedOption of this.displayedOptions) {
-            if (displayedOption.input.checked) {
-                config = displayedOption.block.updateConfig(displayedOption.option.value, config);
-            }
-        }
-        return config;
-    }
-    /**
-     * Make a global stylesheet for all TRS-80 emulators on this page.
-     */
-    static configureStyle() {
-        const styleId = gCssPrefix;
-        if (document.getElementById(styleId) !== null) {
-            // Already created.
-            return;
-        }
-        const node = document.createElement("style");
-        node.id = styleId;
-        node.innerHTML = GLOBAL_CSS;
-        document.head.appendChild(node);
-    }
-}
-exports.SettingsPanel = SettingsPanel;
-
-
-/***/ }),
-/* 41 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3657,46 +479,7 @@ exports.Instruction = Instruction;
 
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TRS80_MODEL_III_KNOWN_LABELS = void 0;
-exports.TRS80_MODEL_III_KNOWN_LABELS = [
-    [0x0298, "clkon"],
-    [0x02a1, "clkoff"],
-    [0x0296, "cshin"],
-    [0x0235, "csin"],
-    [0x0287, "cshwr"],
-    [0x01f8, "csoff"],
-    [0x0264, "csout"],
-    [0x3033, "date"],
-    [0x0060, "delay"],
-    [0x0069, "initio"],
-    [0x002b, "kbchar"],
-    [0x0040, "kbline"],
-    [0x0049, "kbwait"],
-    [0x028d, "kbbrk"],
-    [0x003b, "prchar"],
-    [0x01d9, "prscn"],
-    [0x1a19, "ready"],
-    [0x0000, "reset"],
-    [0x006c, "route"],
-    [0x005a, "rsinit"],
-    [0x0050, "rsrcv"],
-    [0x0055, "rstx"],
-    [0x3042, "setcas"],
-    [0x3036, "time"],
-    [0x0033, "vdchar"],
-    [0x01c9, "vdcls"],
-    [0x021b, "vdline"],
-];
-
-
-/***/ }),
-/* 43 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3721,7 +504,20 @@ function symbolObservablePonyfill(root) {
 
 
 /***/ }),
-/* 44 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(26));
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3735,8 +531,8 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DispatcherWrapper = exports.EventListBase = exports.DispatcherBase = void 0;
-var management_1 = __webpack_require__(45);
-var subscription_1 = __webpack_require__(22);
+var management_1 = __webpack_require__(12);
+var subscription_1 = __webpack_require__(6);
 /**
  * Base class for implementation of the dispatcher. It facilitates the subscribe
  * and unsubscribe methods based on generic handlers. The TEventType specifies
@@ -4002,7 +798,7 @@ exports.DispatcherWrapper = DispatcherWrapper;
 
 
 /***/ }),
-/* 45 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4029,14 +825,14 @@ exports.EventManagement = EventManagement;
 
 
 /***/ }),
-/* 46 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = void 0;
-var events_1 = __webpack_require__(47);
+var events_1 = __webpack_require__(14);
 Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return events_1.EventDispatcher; } });
 Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return events_1.EventHandlingBase; } });
 Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return events_1.EventList; } });
@@ -4044,7 +840,7 @@ Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: f
 
 
 /***/ }),
-/* 47 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4064,7 +860,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventHandlingBase = exports.EventList = exports.NonUniformEventList = exports.EventDispatcher = void 0;
-var ste_core_1 = __webpack_require__(11);
+var ste_core_1 = __webpack_require__(3);
 /**
  * Dispatcher implementation for events. Can be used to subscribe, unsubscribe
  * or dispatch events. Use the ToEvent() method to expose the event.
@@ -4231,14 +1027,14 @@ exports.EventHandlingBase = EventHandlingBase;
 
 
 /***/ }),
-/* 48 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = void 0;
-var simple_events_1 = __webpack_require__(49);
+var simple_events_1 = __webpack_require__(16);
 Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return simple_events_1.SimpleEventDispatcher; } });
 Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return simple_events_1.SimpleEventHandlingBase; } });
 Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return simple_events_1.SimpleEventList; } });
@@ -4246,7 +1042,7 @@ Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, 
 
 
 /***/ }),
-/* 49 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4266,7 +1062,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SimpleEventHandlingBase = exports.SimpleEventList = exports.NonUniformSimpleEventList = exports.SimpleEventDispatcher = void 0;
-var ste_core_1 = __webpack_require__(11);
+var ste_core_1 = __webpack_require__(3);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a simple event
@@ -4428,21 +1224,21 @@ exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
 
 
 /***/ }),
-/* 50 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = void 0;
-var signals_1 = __webpack_require__(51);
+var signals_1 = __webpack_require__(18);
 Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return signals_1.SignalDispatcher; } });
 Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return signals_1.SignalHandlingBase; } });
 Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return signals_1.SignalList; } });
 
 
 /***/ }),
-/* 51 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4462,7 +1258,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignalHandlingBase = exports.SignalList = exports.SignalDispatcher = void 0;
-var ste_core_1 = __webpack_require__(11);
+var ste_core_1 = __webpack_require__(3);
 /**
  * The dispatcher handles the storage of subsciptions and facilitates
  * subscription, unsubscription and dispatching of a signal event.
@@ -4586,7 +1382,7 @@ exports.SignalHandlingBase = SignalHandlingBase;
 
 
 /***/ }),
-/* 52 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4617,13 +1413,13 @@ exports.isByteReg = isByteReg;
 
 
 /***/ }),
-/* 53 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const Utils_1 = __webpack_require__(23);
+const Utils_1 = __webpack_require__(7);
 /**
  * All registers in a Z80.
  */
@@ -4744,7 +1540,7 @@ exports.registerSetFields = [
 
 
 /***/ }),
-/* 54 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4796,7 +1592,7 @@ var Flag;
 
 
 /***/ }),
-/* 55 */
+/* 22 */
 /***/ (function(module, exports) {
 
 var g;
@@ -4822,7 +1618,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 56 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = function(originalModule) {
@@ -4852,7 +1648,7 @@ module.exports = function(originalModule) {
 
 
 /***/ }),
-/* 57 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4914,7 +1710,7 @@ exports.startTimer = startTimer;
 
 
 /***/ }),
-/* 58 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4996,2205 +1792,14 @@ exports.ByteReader = ByteReader;
 
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeJv3FloppyDisk = exports.Jv3FloppyDisk = void 0;
-const z80_base_1 = __webpack_require__(0);
-const FloppyDisk_1 = __webpack_require__(7);
-const ProgramAnnotation_1 = __webpack_require__(5);
-// The JV3 file consists of sectors of different sizes all bunched together. Before that
-// comes a directory of these sectors, with three bytes per directory entry (track,
-// sector, and flags), mapping in order to the subsequent sectors.
-// The directory is in this header:
-const HEADER_SIZE = 34 * 256;
-// We can fit this many 3-byte records into it:
-const RECORD_COUNT = Math.floor(HEADER_SIZE / 3);
-// Flags for SectorInfo.
-var Flags;
-(function (Flags) {
-    Flags[Flags["SIZE_CODE_MASK"] = 3] = "SIZE_CODE_MASK";
-    Flags[Flags["NON_IBM"] = 4] = "NON_IBM";
-    Flags[Flags["BAD_CRC"] = 8] = "BAD_CRC";
-    Flags[Flags["SIDE"] = 16] = "SIDE";
-    Flags[Flags["DAM_MASK"] = 96] = "DAM_MASK";
-    // Single-density.
-    Flags[Flags["DAM_SD_FB"] = 0] = "DAM_SD_FB";
-    Flags[Flags["DAM_SD_FA"] = 32] = "DAM_SD_FA";
-    Flags[Flags["DAM_SD_F9"] = 64] = "DAM_SD_F9";
-    Flags[Flags["DAM_SD_F8"] = 96] = "DAM_SD_F8";
-    // Double-density.
-    Flags[Flags["DAM_DD_FB"] = 0] = "DAM_DD_FB";
-    Flags[Flags["DAM_DD_F8"] = 32] = "DAM_DD_F8";
-    Flags[Flags["DOUBLE_DENSITY"] = 128] = "DOUBLE_DENSITY";
-})(Flags || (Flags = {}));
-const FREE = 0xFF;
-const SIZE_CODE_MASK = 0x03;
-class SectorInfo {
-    constructor(track, sector, flags, offset) {
-        // Make both FREE to avoid confusion.
-        if (track === FREE || sector === FREE) {
-            track = FREE;
-            sector = FREE;
-        }
-        this.track = track;
-        this.sector = sector;
-        this.flags = flags;
-        this.offset = offset;
-        // In used sectors: 0=256,1=128,2=1024,3=512
-        // In free sectors: 0=512,1=1024,2=128,3=256
-        const sizeCode = (flags & SIZE_CODE_MASK) ^ (this.isFree() ? 0x02 : 0x01);
-        this.size = 128 << sizeCode;
-    }
-    getSide() {
-        return (this.flags & Flags.SIDE) === 0 ? FloppyDisk_1.Side.FRONT : FloppyDisk_1.Side.BACK;
-    }
-    /**
-     * Return the flags as a string, for debugging.
-     */
-    flagsToString() {
-        const parts = [];
-        parts.push(this.size + " bytes");
-        if ((this.flags & Flags.NON_IBM) !== 0) {
-            parts.push("non-IBM");
-        }
-        if ((this.flags & Flags.BAD_CRC) !== 0) {
-            parts.push("bad CRC");
-        }
-        parts.push("side " + ((this.flags & Flags.SIDE) === 0 ? 0 : 1));
-        if ((this.flags & Flags.DOUBLE_DENSITY) !== 0) {
-            parts.push("double density");
-        }
-        else {
-            parts.push("single density");
-        }
-        return parts.join(", ");
-    }
-    /**
-     * Whether the sector entry is free (doesn't represent real space in the file).
-     */
-    isFree() {
-        return this.track === FREE;
-    }
-    /**
-     * Whether the sector is encoded with MFM (instead of FM).
-     */
-    isDoubleDensity() {
-        return (this.flags & Flags.DOUBLE_DENSITY) !== 0;
-    }
-    /**
-     * Whether the sector's data is invalid.
-     *
-     * Normally FB is normal and F8 is deleted, but the single-density version has
-     * two other values (F9 and FA), which we also consider deleted, to match xtrs.
-     */
-    isDeleted() {
-        const dam = this.flags & Flags.DAM_MASK;
-        if (this.isDoubleDensity()) {
-            return dam === Flags.DAM_DD_F8;
-        }
-        else {
-            return dam !== Flags.DAM_SD_FB;
-        }
-    }
-    /**
-     * Whether the floppy had a bar CRC when reading it.
-     */
-    hasCrcError() {
-        return (this.flags & Flags.BAD_CRC) !== 0;
-    }
-}
-/**
- * Floppy disk in the JV3 format.
- */
-class Jv3FloppyDisk extends FloppyDisk_1.FloppyDisk {
-    constructor(binary, error, annotations, sectorInfos, writeProtected) {
-        super(binary, error, annotations, true);
-        this.sectorInfos = sectorInfos;
-        this.writeProtected = writeProtected;
-    }
-    getDescription() {
-        return "Floppy disk (JV3)";
-    }
-    readSector(trackNumber, side, sectorNumber) {
-        const sectorInfo = this.findSectorInfo(trackNumber, side, sectorNumber);
-        if (sectorInfo === undefined) {
-            return undefined;
-        }
-        const data = this.padSector(this.binary.subarray(sectorInfo.offset, sectorInfo.offset + sectorInfo.size), sectorInfo.size);
-        const sectorData = new FloppyDisk_1.SectorData(data);
-        sectorData.deleted = sectorInfo.isDeleted();
-        sectorData.crcError = sectorInfo.hasCrcError();
-        return sectorData;
-    }
-    /**
-     * Find the sector for the specified track and side.
-     */
-    findSectorInfo(track, side, sector) {
-        for (const sectorInfo of this.sectorInfos) {
-            if (!sectorInfo.isFree() &&
-                sectorInfo.track === track &&
-                sectorInfo.getSide() === side &&
-                (sector === undefined || sectorInfo.sector === sector)) {
-                return sectorInfo;
-            }
-        }
-        return undefined;
-    }
-}
-exports.Jv3FloppyDisk = Jv3FloppyDisk;
-/**
- * Decode a JV3 floppy disk file.
- */
-function decodeJv3FloppyDisk(binary) {
-    let error;
-    const annotations = [];
-    const sectorInfos = [];
-    // Read the directory.
-    let sectorOffset = HEADER_SIZE;
-    for (let i = 0; i < RECORD_COUNT; i++) {
-        const offset = i * 3;
-        if (offset + 2 >= binary.length) {
-            error = "Directory truncated at entry " + i;
-            break;
-        }
-        const track = binary[offset];
-        const sector = binary[offset + 1];
-        const flags = binary[offset + 2];
-        const sectorInfo = new SectorInfo(track, sector, flags, sectorOffset);
-        sectorOffset += sectorInfo.size;
-        if (!sectorInfo.isFree()) {
-            if (sectorOffset > binary.length) {
-                error = `Sector truncated at entry ${i} (${sectorOffset} > ${binary.length})`;
-                break;
-            }
-            annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Track " + sectorInfo.track + ", sector " +
-                sectorInfo.sector + ", " + sectorInfo.flagsToString(), offset, offset + 3));
-            sectorInfos.push(sectorInfo);
-        }
-    }
-    // Annotate the sectors themselves.
-    for (const sectorInfo of sectorInfos) {
-        annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Track " + sectorInfo.track + ", sector " + sectorInfo.sector, sectorInfo.offset, sectorInfo.offset + sectorInfo.size));
-    }
-    const writableOffset = RECORD_COUNT * 3;
-    const writable = binary[writableOffset];
-    if (writable !== 0 && writable !== 0xFF) {
-        error = "Invalid \"writable\" byte: 0x" + z80_base_1.toHexByte(writable);
-    }
-    const writeProtected = writable === 0;
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(writeProtected ? "Write protected" : "Writable", writableOffset, writableOffset + 1));
-    return new Jv3FloppyDisk(binary, error, annotations, sectorInfos, writeProtected);
-}
-exports.decodeJv3FloppyDisk = decodeJv3FloppyDisk;
-
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Handles DMK floppy disk images.
- *
- * https://retrocomputing.stackexchange.com/questions/15282/understanding-the-dmk-disk-image-file-format-used-by-trs-80-emulators
- * http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-dm.htm
- * http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/trs80/trstech.htm
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeDmkFloppyDisk = exports.DmkFloppyDisk = void 0;
-const z80_base_1 = __webpack_require__(0);
-const z80_base_2 = __webpack_require__(0);
-const Crc16_1 = __webpack_require__(61);
-const FloppyDisk_1 = __webpack_require__(7);
-const ProgramAnnotation_1 = __webpack_require__(5);
-const FILE_HEADER_SIZE = 16;
-const TRACK_HEADER_SIZE = 128;
-/**
- * Represents a single sector on a DMK floppy.
- */
-class DmkSector {
-    constructor(track, doubleDensity, offset) {
-        this.track = track;
-        this.doubleDensity = doubleDensity;
-        this.offset = offset;
-        this.dataIndex = this.findDataIndex();
-    }
-    /**
-     * Get the cylinder for this sector. This is 0-based.
-     */
-    getCylinder() {
-        return this.getByte(1);
-    }
-    /**
-     * Get the side for this sector.
-     */
-    getSide() {
-        return FloppyDisk_1.numberToSide(this.getByte(2));
-    }
-    /**
-     * Get the sector number for this sector. This is 1-based.
-     */
-    getSectorNumber() {
-        return this.getByte(3);
-    }
-    /**
-     * Get the sector length in bytes.
-     */
-    getLength() {
-        return 128 * (1 << this.getByte(4));
-    }
-    /**
-     * Get the CRC for the IDAM.
-     */
-    getIdamCrc() {
-        // Bit endian.
-        return (this.getByte(5) << 8) + this.getByte(6);
-    }
-    /**
-     * Compute the CRC for the IDAM.
-     */
-    computeIdemCrc() {
-        let crc = 0xFFFF;
-        for (let i = -3; i < 5; i++) {
-            crc = Crc16_1.CRC_16_CCITT.update(crc, this.getByte(i));
-        }
-        return crc;
-    }
-    /**
-     * Get the CRC for the data bytes.
-     */
-    getDataCrc() {
-        // Bit endian.
-        const index = this.dataIndex + this.getLength();
-        return (this.getByte(index) << 8) + this.getByte(index + 1);
-    }
-    /**
-     * Compute the CRC for the data bytes.
-     */
-    computeDataCrc() {
-        let crc = 0xFFFF;
-        const index = this.dataIndex;
-        const begin = index - 4;
-        const end = index + this.getLength();
-        for (let i = begin; i < end; i++) {
-            crc = Crc16_1.CRC_16_CCITT.update(crc, this.getByte(i));
-        }
-        return crc;
-    }
-    /**
-     * Whether the sector data should be considered invalid.
-     */
-    isDeleted() {
-        const dam = this.getByte(this.dataIndex - 1);
-        if (dam !== 0xF8 && dam !== 0xFB) {
-            console.error("Unknown DAM: " + z80_base_2.toHexByte(dam));
-        }
-        // Normally, 0xFB, but 0xF8 if sector is considered deleted.
-        return dam === 0xF8;
-    }
-    /**
-     * Get a byte from the sector data.
-     *
-     * @param index index into the sector, relative to the 0xFE byte. Can be negative.
-     */
-    getByte(index) {
-        return this.track.floppyDisk.binary[this.track.offset + this.offset + index];
-    }
-    /**
-     * Look for the byte that indicates the start of data (0xFB or 0xF8). Various
-     * floppy disk documentation specify an exact number here, but I've seen a variety
-     * of values, so just search.
-     */
-    findDataIndex() {
-        for (let i = 7; i < 55; i++) {
-            const byte = this.track.floppyDisk.binary[this.track.offset + this.offset + i];
-            if (byte === 0xFB || byte === 0xF8) {
-                // Maybe also check that the previous three bytes are 0xA1.
-                return i + 1;
-            }
-        }
-        // Not sure what to do here. trs80gp says that this is valid.
-        throw new Error(`Can't find byte at start of DAM (track ${this.track.trackNumber}, offset 0x${z80_base_1.toHexWord(this.offset)})`);
-    }
-}
-/**
- * Represents a single track on a DMK floppy.
- */
-class DmkTrack {
-    constructor(floppyDisk, trackNumber, side, offset) {
-        /**
-         * Sectors in this track.
-         */
-        this.sectors = [];
-        this.floppyDisk = floppyDisk;
-        this.trackNumber = trackNumber;
-        this.side = side;
-        this.offset = offset;
-    }
-}
-/**
- * Handles the DMK floppy disk file format, developed by David M. Keil.
- *
- * http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-dm.htm
- * http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/trs80/trstech.htm
- */
-class DmkFloppyDisk extends FloppyDisk_1.FloppyDisk {
-    constructor(binary, error, annotations, supportsDoubleDensity, writeProtected, trackCount, trackLength, flags) {
-        super(binary, error, annotations, supportsDoubleDensity);
-        this.tracks = [];
-        this.writeProtected = writeProtected;
-        this.trackCount = trackCount;
-        this.trackLength = trackLength;
-        this.flags = flags;
-    }
-    getDescription() {
-        return "Floppy disk (DMK)";
-    }
-    readSector(trackNumber, side, sectorNumber) {
-        // console.log(`readSector(${trackNumber}, ${sectorNumber}, ${side})`);
-        for (const track of this.tracks) {
-            if (track.trackNumber === trackNumber) { // TODO not checking side.
-                for (const sector of track.sectors) {
-                    if (sectorNumber === undefined || (sector.getSectorNumber() === sectorNumber &&
-                        sector.getSide() === side)) {
-                        const begin = track.offset + sector.offset + sector.dataIndex;
-                        const end = begin + sector.getLength();
-                        const sectorData = new FloppyDisk_1.SectorData(this.binary.subarray(begin, end));
-                        sectorData.crcError = sector.getDataCrc() !== sector.computeDataCrc();
-                        sectorData.deleted = sector.isDeleted();
-                        // console.log(sectorData);
-                        return sectorData;
-                    }
-                }
-            }
-        }
-        return undefined;
-    }
-}
-exports.DmkFloppyDisk = DmkFloppyDisk;
-/**
- * Decode a DMK floppy disk file.
- */
-function decodeDmkFloppyDisk(binary) {
-    const error = undefined;
-    const annotations = [];
-    if (binary.length < FILE_HEADER_SIZE) {
-        return undefined;
-    }
-    // Decode the header. Comments marked [DMK] are from David Keil's original documentation.
-    // [DMK] If this byte is set to FFH the disk is `write protected', 00H allows writing.
-    const writeProtected = binary[0] === 0xFF;
-    if (binary[0] !== 0x00 && binary[0] !== 0xFF) {
-        return undefined;
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(writeProtected ? "Write protected" : "Writable", 0, 1));
-    // [DMK] Number of tracks on virtual disk. Since tracks start at 0 this value will be one greater
-    // than the highest track written to the disk. So a disk with 40 tracks will have a value
-    // of 40 (28H) in this field after formatting while the highest track written would be 39.
-    // This field is updated after a track is formatted if the track formatted is greater than
-    // or equal to the current number of tracks. Re-formatting a disk with fewer tracks will
-    // NOT reduce the number of tracks on the virtual disk. Once a virtual disk has allocated
-    // space for a track it will NEVER release it. Formatting a virtual disk with 80 tracks
-    // then re-formatting it with 40 tracks would waste space just like formatting only 40
-    // tracks on an 80 track drive. The emulator and TRS-80 operating system don't care.
-    // To re-format a virtual disk with fewer tracks use the /I option at start-up to
-    // delete and re-create the virtual disk first, then re-format to save space.
-    //
-    // [DMK] Note: This field should NEVER be modified. Changing this number will cause TRS-80
-    // operating system disk errors. (Like reading an 80 track disk in a 40 track drive)
-    const trackCount = binary[1];
-    if (trackCount > 160) {
-        // Not sure what a reasonable maximum is. I've only see 80.
-        return undefined;
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(trackCount + " tracks", 1, 2));
-    // [DMK] This is the track length for the virtual disk. By default the value is 1900H, 80H bytes
-    // more than the actual track length, this gives a track length of 6272 bytes. A real double
-    // density track length is approx. 6250 bytes. This is the default value when a virtual disk is created.
-    // Values for other disk and format types are 0CC0H for single density 5.25" floppies,
-    // 14E0H for single density 8" floppies and 2940H for double density 8" floppies. The max value is 2940H.
-    // For normal formatting of disks the values of 1900H and 2940H for 5.25" and 8" are used.
-    // The emulator will write two bytes and read every second byte when  in single density to maintain
-    // proper sector spacing, allowing mixed density disks. Setting the track length must be done before
-    // a virtual disk is formatted or the disk will have to be re-formatted and since the space for the
-    // disk has already been allocated no space will be saved.
-    //
-    // [DMK] WARNING: Bytes are entered in reverse order (ex. 2940H would be entered, byte 2=40, byte 3=29).
-    //
-    // [DMK] Note: No modification of the track length is necessary, doing so only saves space and is not
-    // necessary to normal operation. The values for all normal 5.25" and 8" disks are set when the
-    // virtual disk is created. DON'T modify the track length unless you understand these instructions completely.
-    // Nothing in the PC world can be messed up by improper modification but any other virtual disk mounted
-    // in the emulator with an improperly modified disk could have their data scrambled.
-    const trackLength = binary[2] + (binary[3] << 8);
-    if (trackLength > 0x2940) {
-        return undefined;
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation(trackLength + " bytes per track", 2, 4));
-    // [DMK] Virtual disk option flags.
-    //
-    // [DMK] Bit 4 of this byte, if set, means this is a single sided ONLY disk. This bit is set if the
-    // user selects single sided during disk creation and should not require modification. This flag is
-    // used only to save PC hard disk space and is never required.
-    //
-    // [DMK] Bit 6 of this byte, if set, means this disk is to be single density size and the emulator
-    // will access one byte instead of two when doing I/O in single density. Double density can still
-    // be written to a single density disk but with half the track length only 10 256 byte sectors can be
-    // written in either density. Mixed density is also possible but sector timing may be off so protected
-    // disks may not work, a maximum of 10 256 byte sectors of mixed density can be written to a
-    // single density disk. A program like "Spook House" which has a mixed density track 0 with 1 SD sector
-    // and 1 DD sector and the rest of the disk consisting of 10 SD sectors/track will work with this flag set
-    // and save half the PC hard disk space. The protected disk "Super Utility + 3.0" however has 6 SD and 6 DD
-    // sectors/track for a total of 12 256 byte sectors/track. This disk cannot be single density.
-    // This bit is set if the user selects single density during disk creation and should
-    // not require modification. This flag is used only to save PC hard disk space and is never required.
-    //
-    // [DMK] Bit 7 of this byte, if set, means density is to be ignored when accessing this disk. The disk MUST
-    // be formatted in double density but the emulator will then read and write the sectors in either density.
-    // The emulator will access one byte instead of two when doing I/O in single density.
-    // This flag was an early way to support mixed density disks it is no longer needed for this purpose.
-    // It is now used for compatibility with old virtual disks created without the double byte now used when in
-    // single density. This bit can be set manually in a hex editor to access old virtual disks written
-    // in single density.
-    const flags = binary[4];
-    const flagParts = [];
-    const singleSided = (flags & 0x10) !== 0;
-    if (singleSided) {
-        flagParts.push("SS");
-    }
-    if ((flags & 0x40) !== 0) {
-        flagParts.push("SD");
-    }
-    if ((flags & 0x80) !== 0) {
-        flagParts.push("ignore density");
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Flags: [" + flagParts.join(",") + "]", 4, 5));
-    // Sanity check.
-    const sideCount = singleSided ? 1 : 2;
-    const expectedLength = FILE_HEADER_SIZE + sideCount * trackCount * trackLength;
-    if (binary.length !== expectedLength) {
-        console.error(`DMK file wrong size (${binary.length} != ${expectedLength})`);
-        return undefined;
-    }
-    // Check that these are zero.
-    for (let i = 5; i < 12; i++) {
-        if (binary[i] !== 0x00) {
-            console.error("DMK: Reserved byte " + i + " is not zero: 0x" + z80_base_2.toHexByte(binary[i]));
-            return undefined;
-        }
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Reserved", 5, 12));
-    // [DMK] Must be zero if virtual disk is in emulator's native format.
-    //
-    // [DMK] Must be 12345678h if virtual disk is a REAL disk specification file used to access
-    // REAL TRS-80 floppies in compatible PC drives.
-    if (binary[12] + binary[13] + binary[14] + binary[15] !== 0x00) {
-        return undefined;
-    }
-    annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Virtual disk", 12, 16));
-    const floppyDisk = new DmkFloppyDisk(binary, error, annotations, true, writeProtected, trackCount, trackLength, flags);
-    // Read the tracks.
-    let binaryOffset = FILE_HEADER_SIZE;
-    for (let trackNumber = 0; trackNumber < trackCount; trackNumber++) {
-        for (let side = 0; side < sideCount; side++) {
-            const trackOffset = binaryOffset;
-            const track = new DmkTrack(floppyDisk, trackNumber, FloppyDisk_1.numberToSide(side), trackOffset);
-            // Read the track header. The term "IDAM" in the comment below refers to the "ID access mark",
-            // where "ID" is referring to the sector ID, the few byte just before the sector data.
-            // [DMK] Each side of each track has a 128 (80H) byte header which contains an offset pointer
-            // to each IDAM in the track. This allows a maximum of 64 sector IDAMs/track. This is more than
-            // twice what an 8 inch disk would require and 3.5 times that of a normal TRS-80 5 inch DD disk.
-            // This should more than enough for any protected disk also.
-            //
-            // [DMK] These IDAM pointers MUST adhere to the following rules:
-            //
-            // * Each pointer is a 2 byte offset to the FEh byte of the IDAM. In double byte single density
-            //   the pointer is to the first FEh.
-            // * The offset includes the 128 byte header. For example, an IDAM 10h bytes into the track would
-            //   have a pointer of 90h, 10h+80h=90h.
-            // * The IDAM offsets MUST be in ascending order with no unused or bad pointers.
-            // * If all the entries are not used the header is terminated with a 0000h entry. Unused entries
-            //   must also be zero filled..
-            // * Any IDAMs overwritten during a sector write command should have their entry removed from the
-            //   header and all other pointer entries shifted to fill in.
-            // * The IDAM pointers are created during the track write command (format). A completed track write
-            //   MUST remove all previous IDAM pointers. A partial track write (aborted with the forced interrupt
-            //   command) MUST have it's previous pointers that were not overwritten added to the new IDAM pointers.
-            // * The pointer bytes are stored in reverse order (LSB/MSB).
-            //
-            // [DMK] Each IDAM pointer has two flags. Bit 15 is set if the sector is double density. Bit 14 is
-            // currently undefined. These bits must be masked to get the actual sector offset. For example,
-            // an offset to an IDAM at byte 90h would be 0090h if single density and 8090h if double density.
-            for (let i = 0; i < TRACK_HEADER_SIZE; i += 2) {
-                const sectorOffset = binary[binaryOffset + i] + (binary[binaryOffset + i + 1] << 8);
-                if (sectorOffset !== 0) {
-                    track.sectors.push(new DmkSector(track, (sectorOffset & 0x8000) !== 0, sectorOffset & 0x3FFF));
-                }
-            }
-            annotations.push(new ProgramAnnotation_1.ProgramAnnotation(`Track ${trackNumber} header`, binaryOffset, binaryOffset + TRACK_HEADER_SIZE));
-            for (const sector of track.sectors) {
-                let i = trackOffset + sector.offset;
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Sector ID access mark", i, i + 1));
-                i++;
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Cylinder " + sector.getCylinder(), i, i + 1));
-                i++;
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Side " + sector.getSide(), i, i + 1));
-                i++;
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Sector " + sector.getSectorNumber(), i, i + 1));
-                i++;
-                const sectorLength = sector.getLength();
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Length " + sectorLength, i, i + 1));
-                i++;
-                const actualIdamCrc = sector.computeIdemCrc();
-                const expectedIdamCrc = sector.getIdamCrc();
-                let idamCrcLabel = "IDAM CRC";
-                if (actualIdamCrc === expectedIdamCrc) {
-                    idamCrcLabel += " (valid)";
-                }
-                else {
-                    idamCrcLabel += ` (got 0x${z80_base_1.toHexWord(actualIdamCrc)}, expected 0x${z80_base_1.toHexWord(expectedIdamCrc)})`;
-                }
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation(idamCrcLabel, i, i + 2));
-                i += 2;
-                i = trackOffset + sector.offset + sector.dataIndex;
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation("Sector data", i, i + sectorLength));
-                i += sectorLength;
-                const actualDataCrc = sector.computeDataCrc();
-                const expectedDataCrc = sector.getDataCrc();
-                let dataCrcLabel = "Data CRC";
-                if (actualDataCrc === expectedDataCrc) {
-                    dataCrcLabel += " (valid)";
-                }
-                else {
-                    dataCrcLabel += ` (got 0x${z80_base_1.toHexWord(actualDataCrc)}, expected 0x${z80_base_1.toHexWord(expectedDataCrc)})`;
-                }
-                annotations.push(new ProgramAnnotation_1.ProgramAnnotation(dataCrcLabel, i, i + 2));
-                i += 2;
-            }
-            floppyDisk.tracks.push(track);
-            binaryOffset += trackLength;
-        }
-    }
-    return floppyDisk;
-}
-exports.decodeDmkFloppyDisk = decodeDmkFloppyDisk;
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CRC_16_CCITT = exports.Crc16 = void 0;
-/**
- * Performs CRC-16 operations treating bits as big-endian.
- *
- * https://en.wikipedia.org/wiki/Cyclic_redundancy_check
- * https://en.wikipedia.org/wiki/Computation_of_cyclic_redundancy_checks
- * https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks
- */
-class Crc16 {
-    /**
-     * Specifies the generator, which must be a 16-bit value.
-     */
-    constructor(generator) {
-        this.generator = generator;
-    }
-    /**
-     * Update the CRC with the new data, which must be a byte.
-     *
-     * @return the new CRC.
-     */
-    update(crc, data) {
-        for (let shift = 8; shift < 16; shift++) {
-            const isOne = ((crc ^ (data << shift)) & 0x8000) !== 0;
-            crc <<= 1;
-            if (isOne) {
-                crc ^= this.generator;
-            }
-        }
-        return crc & 0xFFFF;
-    }
-}
-exports.Crc16 = Crc16;
-/**
- * The CRC-16-CCITT polynomial, used for floppy disks. The polynomial is
- * x^16 + x^12 + x^5 + 1, which maps to 0x11021, but the leading 1 is
- * removed because it doesn't affect the outcome.
- */
-exports.CRC_16_CCITT = new Crc16(0x1021);
-
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Classes for handling TRSDOS diskettes.
- *
- * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/zaps-and-patches/#guidedtour
- * http://www.manmrk.net/tutorials/TRS80/Software/ldos/trs80/doc/prgguide.pdf
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeTrsdos = exports.Trsdos = exports.TrsdosDirEntry = exports.TrsdosHitInfo = exports.TrsdosGatInfo = exports.TrsdosExtent = exports.trsdosProtectionLevelToString = exports.TrsdosProtectionLevel = void 0;
-const teamten_ts_utils_1 = __webpack_require__(12);
-const FloppyDisk_1 = __webpack_require__(7);
-// Number of bytes per dir entry in the sector.
-const DIR_ENTRY_LENGTH = 48;
-// Apparently this is constant in TRSDOS.
-const BYTES_PER_SECTOR = 256;
-// Apparently this is 3, but somewhere else I read 6.
-const SECTORS_PER_GRANULE = 3;
-// The number of sectors on each track, numbered 1 to 18.
-const SECTORS_PER_TRACK = 18;
-// Copyright in the last 16 bytes of each directory sector.
-const EXPECTED_TANDY = "(c) 1980 Tandy";
-// Password value that means "no password".
-const NO_PASSWORD = 0xEF5C;
-// Password value for "PASSWORD".
-const PASSWORD = 0xD38F;
-/**
- * Decodes binary into an ASCII string. Returns undefined if any non-ASCII value is
- * found in the string, where "ASCII" is defined as being in the range 32 to 126 inclusive.
- */
-function decodeAscii(binary, trim = true) {
-    const parts = [];
-    for (const b of binary) {
-        if (b === 0x0D) {
-            // Auto command ends with carriage return.
-            break;
-        }
-        if (b < 32 || b >= 127) {
-            return undefined;
-        }
-        parts.push(String.fromCodePoint(b));
-    }
-    let s = parts.join("");
-    if (trim) {
-        s = s.trim();
-    }
-    return s;
-}
-/**
- * Lowest three bits of the directory entry's flag.
- */
-var TrsdosProtectionLevel;
-(function (TrsdosProtectionLevel) {
-    // Keep this values in this order, they match the bit values (0 to 7).
-    TrsdosProtectionLevel[TrsdosProtectionLevel["FULL"] = 0] = "FULL";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["REMOVE"] = 1] = "REMOVE";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["RENAME"] = 2] = "RENAME";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["WRITE"] = 3] = "WRITE";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["UPDATE"] = 4] = "UPDATE";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["READ"] = 5] = "READ";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["EXEC"] = 6] = "EXEC";
-    TrsdosProtectionLevel[TrsdosProtectionLevel["NO_ACCESS"] = 7] = "NO_ACCESS";
-})(TrsdosProtectionLevel = exports.TrsdosProtectionLevel || (exports.TrsdosProtectionLevel = {}));
-/**
- * Gets the string version of the protection level enum.
- * @param level
- */
-function trsdosProtectionLevelToString(level) {
-    switch (level) {
-        case TrsdosProtectionLevel.FULL:
-            return "FULL";
-        case TrsdosProtectionLevel.REMOVE:
-            return "REMOVE";
-        case TrsdosProtectionLevel.RENAME:
-            return "RENAME";
-        case TrsdosProtectionLevel.WRITE:
-            return "WRITE";
-        case TrsdosProtectionLevel.UPDATE:
-            return "UPDATE";
-        case TrsdosProtectionLevel.READ:
-            return "READ";
-        case TrsdosProtectionLevel.EXEC:
-            return "EXEC";
-        case TrsdosProtectionLevel.NO_ACCESS:
-            return "NO_ACCESS";
-        default:
-            return "UNKNOWN";
-    }
-}
-exports.trsdosProtectionLevelToString = trsdosProtectionLevelToString;
-/**
- * A contiguous number of sectors for storing part of a file.
- */
-class TrsdosExtent {
-    constructor(trackNumber, granuleOffset, granuleCount) {
-        this.trackNumber = trackNumber;
-        this.granuleOffset = granuleOffset;
-        this.granuleCount = granuleCount;
-    }
-}
-exports.TrsdosExtent = TrsdosExtent;
-/**
- * Decode an array of extents.
- *
- * @param binary byte we'll be pulling the extents from.
- * @param begin index of first extent in binary.
- * @param end index past last extent in binary.
- * @param trackFirst whether the track comes first or second.
- */
-function decodeExtents(binary, begin, end, trackFirst) {
-    const extents = [];
-    for (let i = begin; i < end; i += 2) {
-        if (binary[i] === 0xFF && binary[i + 1] === 0xFF) {
-            break;
-        }
-        const trackNumber = binary[trackFirst ? i : i + 1];
-        const granuleByte = binary[trackFirst ? i + 1 : i];
-        const granuleOffset = granuleByte >> 5;
-        const granuleCount = granuleByte & 0x1F;
-        if (trackNumber >= 40) {
-            // Not a TRSDOS disk.
-            return undefined;
-        }
-        extents.push(new TrsdosExtent(trackNumber, granuleOffset, granuleCount));
-    }
-    return extents;
-}
-/**
- * The Granule Allocation Table sector info.
- */
-class TrsdosGatInfo {
-    constructor(gat, password, name, date, autoCommand) {
-        this.gat = gat;
-        this.password = password;
-        this.name = name;
-        this.date = date;
-        this.autoCommand = autoCommand;
-    }
-}
-exports.TrsdosGatInfo = TrsdosGatInfo;
-/**
- * Converts a sector to a GAT object, or undefined if we don't think this is a GAT sector.
- */
-function decodeGatInfo(binary) {
-    // One byte for each track.
-    const gat = binary.subarray(0, 40);
-    // Top two bits don't map to anything, so must be zero.
-    for (const g of gat) {
-        if ((g & 0xC0) !== 0) {
-            return undefined;
-        }
-    }
-    // Assume big endian.
-    const password = (binary[0xCE] << 8) | binary[0xCF];
-    const name = decodeAscii(binary.subarray(0xD0, 0xD8));
-    const date = decodeAscii(binary.subarray(0xD8, 0xE0));
-    const autoCommand = decodeAscii(binary.subarray(0xE0));
-    // Implies that this is not a TRSDOS disk.
-    if (name === undefined || date === undefined || autoCommand === undefined) {
-        return undefined;
-    }
-    return new TrsdosGatInfo(gat, password, name, date, autoCommand);
-}
-/**
- * The Hash Allocation Table sector info.
- */
-class TrsdosHitInfo {
-    constructor(hit, systemFiles) {
-        this.hit = hit;
-        this.systemFiles = systemFiles;
-    }
-}
-exports.TrsdosHitInfo = TrsdosHitInfo;
-/**
- * Decode the Hash Index Table sector, or undefined if we don't think this is a TRSDOS disk.
- */
-function decodeHitInfo(binary) {
-    // One byte for each file.
-    const hit = binary.subarray(0, 80);
-    const systemFiles = decodeExtents(binary, 0xE0, binary.length, false);
-    if (systemFiles === undefined) {
-        return undefined;
-    }
-    return new TrsdosHitInfo(hit, systemFiles);
-}
-/**
- * Single (valid) directory entry for a file.
- */
-class TrsdosDirEntry {
-    constructor(flags, month, year, lastSectorSize, lrl, filename, updatePassword, accessPassword, sectorCount, extents) {
-        this.flags = flags;
-        this.month = month;
-        this.year = year;
-        this.lastSectorSize = lastSectorSize;
-        this.lrl = lrl;
-        this.rawFilename = filename;
-        this.updatePassword = updatePassword;
-        this.accessPassword = accessPassword;
-        this.sectorCount = sectorCount;
-        this.extents = extents;
-    }
-    /**
-     * Get the protection level for the file.
-     */
-    getProtectionLevel() {
-        return (this.flags & 0x07);
-    }
-    /**
-     * Whether the file is hidden in a directory listing.
-     */
-    isHidden() {
-        return (this.flags & 0x08) !== 0;
-    }
-    /**
-     * Whether the file has an entry in the HIT table. This bit is set to 0 when
-     * deleting a file.
-     */
-    isActive() {
-        return (this.flags & 0x10) !== 0;
-    }
-    /**
-     * Whether there should be limitations to how many times you can copy this file.
-     * Other docs (maybe for LDOS) say that this indicates "Partitioned Data Set".
-     */
-    hasBackupLimitation() {
-        return (this.flags & 0x20) !== 0;
-    }
-    /**
-     * Whether this is a system file (as opposed to user file).
-     */
-    isSystemFile() {
-        return (this.flags & 0x40) !== 0;
-    }
-    /**
-     * Whether this is an extended entry (as opposed to primary entry). Each entry can
-     * only encode four extents, so subsequent extents are stored in extended entries.
-     * TODO this says max four extents, but we have space for 13 extents in the binary.
-     */
-    isExtendedEntry() {
-        return (this.flags & 0x80) !== 0;
-    }
-    getFlagsString() {
-        const parts = [];
-        parts.push(trsdosProtectionLevelToString(this.getProtectionLevel()));
-        if (this.isHidden()) {
-            parts.push("hidden");
-        }
-        if (!this.isActive()) {
-            // Should never happen.
-            parts.push("inactive");
-        }
-        if (this.hasBackupLimitation()) {
-            parts.push("limits");
-        }
-        if (this.isSystemFile()) {
-            parts.push("system");
-        }
-        if (this.isExtendedEntry()) {
-            parts.push("extended");
-        }
-        return "[" + parts.join(",") + "]";
-    }
-    /**
-     * Get the basename (part before the period) of the filename.
-     */
-    getBasename() {
-        return this.rawFilename.substr(0, 8).trim();
-    }
-    /**
-     * Get the extension of the filename.
-     */
-    getExtension() {
-        return this.rawFilename.substr(8).trim();
-    }
-    /**
-     * Get the full filename (without the internal spaces of the raw filename). If the
-     * file has an extension, it will be preceded by the specified separator.
-     */
-    getFilename(extensionSeparator) {
-        const extension = this.getExtension();
-        return this.getBasename() + (extension === "" ? "" : extensionSeparator + extension);
-    }
-    /**
-     * Return the size in bytes.
-     */
-    getSize() {
-        return this.sectorCount * BYTES_PER_SECTOR + this.lastSectorSize;
-    }
-    /**
-     * Return the date in MM/YY format.
-     */
-    getDateString() {
-        return this.month.toString().padStart(2, "0") + "/" + this.year.toString().padStart(2, "0");
-    }
-    /**
-     * Return the date as an object.
-     */
-    getDate() {
-        return new Date(1900 + this.year, this.month - 1);
-    }
-}
-exports.TrsdosDirEntry = TrsdosDirEntry;
-/**
- * Decodes a directory entry from a 48-byte chunk, or undefined if the directory entry is empty.
- */
-function decodeDirEntry(binary) {
-    const flags = binary[0];
-    // Check "active" bit. Setting this to zero is how files are deleted. Also check empty filename.
-    if ((flags & 0x10) === 0 || binary[5] === 0) {
-        return undefined;
-    }
-    const month = binary[1];
-    const year = binary[2];
-    const lastSectorSize = binary[3];
-    const lrl = ((binary[4] - 1) & 0xFF) + 1; // 0 -> 256.
-    const filename = decodeAscii(binary.subarray(5, 16));
-    // Not sure how to convert these two into a number. Just use big endian.
-    const updatePassword = (binary[16] << 8) | binary[17];
-    const accessPassword = (binary[18] << 8) | binary[19];
-    // Little endian.
-    const sectorCount = (binary[21] << 8) | binary[20];
-    const extents = decodeExtents(binary, 22, binary.length, true);
-    if (filename === undefined || extents === undefined) {
-        // This signals empty directory, but really should imply a non-TRSDOS disk.
-        return undefined;
-    }
-    return new TrsdosDirEntry(flags, month, year, lastSectorSize, lrl, filename, updatePassword, accessPassword, sectorCount, extents);
-}
-/**
- * A decoded TRSDOS diskette.
- */
-class Trsdos {
-    constructor(disk, gatInfo, hitInfo, dirEntries) {
-        this.disk = disk;
-        this.gatInfo = gatInfo;
-        this.hitInfo = hitInfo;
-        this.dirEntries = dirEntries;
-    }
-    /**
-     * Read the binary for a file on the diskette.
-     */
-    readFile(dirEntry) {
-        const parts = [];
-        let sectorCount = dirEntry.sectorCount + (dirEntry.lastSectorSize > 0 ? 1 : 0);
-        for (const extent of dirEntry.extents) {
-            let trackNumber = extent.trackNumber;
-            let sectorNumber = extent.granuleOffset * SECTORS_PER_GRANULE + 1;
-            for (let i = 0; i < extent.granuleCount * SECTORS_PER_GRANULE && sectorCount > 0; i++, sectorNumber++, sectorCount--) {
-                if (sectorNumber > SECTORS_PER_TRACK) {
-                    // Move to the next track.
-                    sectorNumber -= SECTORS_PER_TRACK;
-                    trackNumber += 1;
-                }
-                const sector = this.disk.readSector(trackNumber, FloppyDisk_1.Side.FRONT, sectorNumber);
-                if (sector === undefined) {
-                    console.log(`Sector couldn't be read ${trackNumber}, ${sectorNumber}`);
-                    // TODO
-                }
-                else {
-                    // TODO check deleted?
-                    if (sector.crcError) {
-                        console.log("Sector has CRC error");
-                    }
-                    if (sector.deleted) {
-                        // console.log("Sector " + sectorNumber + " is deleted");
-                    }
-                    parts.push(sector.data);
-                }
-            }
-        }
-        // Clip last sector.
-        if (parts.length > 0 && dirEntry.lastSectorSize > 0) {
-            parts[parts.length - 1] = parts[parts.length - 1].subarray(0, dirEntry.lastSectorSize);
-        }
-        return teamten_ts_utils_1.concatByteArrays(parts);
-    }
-}
-exports.Trsdos = Trsdos;
-/**
- * Decode a TRSDOS diskette, or return undefined if this does not look like such a diskette.
- */
-function decodeTrsdos(disk) {
-    // Decode Granule Allocation Table sector.
-    const gatSector = disk.readSector(17, FloppyDisk_1.Side.FRONT, 1);
-    if (gatSector === undefined || gatSector.deleted) {
-        return undefined;
-    }
-    const gatInfo = decodeGatInfo(gatSector.data);
-    if (gatInfo === undefined) {
-        return undefined;
-    }
-    // Decode Hash Index Table sector.
-    const hitSector = disk.readSector(17, FloppyDisk_1.Side.FRONT, 2);
-    if (hitSector === undefined || hitSector.deleted) {
-        return undefined;
-    }
-    const hitInfo = decodeHitInfo(hitSector.data);
-    if (hitInfo === undefined) {
-        return undefined;
-    }
-    // Decode directory entries.
-    const dirEntries = [];
-    for (let k = 0; k < 16; k++) {
-        const dirSector = disk.readSector(17, FloppyDisk_1.Side.FRONT, k + 3);
-        if (dirSector !== undefined) {
-            const tandy = decodeAscii(dirSector.data.subarray(5 * DIR_ENTRY_LENGTH));
-            if (tandy !== EXPECTED_TANDY) {
-                console.error(`Expected "${EXPECTED_TANDY}", got "${tandy}"`);
-                return undefined;
-            }
-            for (let j = 0; j < 5; j++) {
-                const dirEntry = decodeDirEntry(dirSector.data.subarray(j * DIR_ENTRY_LENGTH, (j + 1) * DIR_ENTRY_LENGTH));
-                if (dirEntry !== undefined) {
-                    dirEntries.push(dirEntry);
-                }
-            }
-        }
-    }
-    return new Trsdos(disk, gatInfo, hitInfo, dirEntries);
-}
-exports.decodeTrsdos = decodeTrsdos;
-
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TRS80_SCREEN_END = exports.TRS80_SCREEN_BEGIN = void 0;
-// RAM address range of screen.
-exports.TRS80_SCREEN_BEGIN = 15 * 1024;
-exports.TRS80_SCREEN_END = 16 * 1024;
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CassettePlayer = void 0;
-/**
- * Interface for fetching cassette audio data. We make this a concrete
- * class because rollup.js can't handle exported interfaces.
- */
-class CassettePlayer {
-    constructor() {
-        /**
-         * The number of samples per second that this audio represents.
-         */
-        this.samplesPerSecond = 44100;
-    }
-    /**
-     * Called when the motor starts.
-     */
-    onMotorStart() {
-        // Optional function.
-    }
-    /**
-     * Read the next sample. Must be in the range -1 to 1. If we try to read off
-     * the end of the cassette, just return zero.
-     */
-    readSample() {
-        return 0;
-    }
-    /**
-     * Called when the motor stops.
-     */
-    onMotorStop() {
-        // Optional function.
-    }
-}
-exports.CassettePlayer = CassettePlayer;
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trs80 = void 0;
-const z80_base_1 = __webpack_require__(0);
-const z80_emulator_1 = __webpack_require__(66);
-const Keyboard_1 = __webpack_require__(69);
-const Model1Level1Rom_1 = __webpack_require__(70);
-const Model1Level2Rom_1 = __webpack_require__(71);
-const Model3Rom_1 = __webpack_require__(72);
-const Config_1 = __webpack_require__(15);
-const trs80_base_1 = __webpack_require__(1);
-const z80_base_2 = __webpack_require__(0);
-const FloppyDisk_1 = __webpack_require__(7);
-const FloppyDiskController_1 = __webpack_require__(73);
-const EventScheduler_1 = __webpack_require__(38);
-// IRQs
-const M1_TIMER_IRQ_MASK = 0x80;
-const M3_CASSETTE_RISE_IRQ_MASK = 0x01;
-const M3_CASSETTE_FALL_IRQ_MASK = 0x02;
-const M3_TIMER_IRQ_MASK = 0x04;
-const M3_IO_BUS_IRQ_MASK = 0x08;
-const M3_UART_SED_IRQ_MASK = 0x10;
-const M3_UART_RECEIVE_IRQ_MASK = 0x20;
-const M3_UART_ERROR_IRQ_MASK = 0x40;
-const CASSETTE_IRQ_MASKS = M3_CASSETTE_RISE_IRQ_MASK | M3_CASSETTE_FALL_IRQ_MASK;
-// NMIs
-const RESET_NMI_MASK = 0x20;
-const DISK_MOTOR_OFF_NMI_MASK = 0x40;
-const DISK_INTRQ_NMI_MASK = 0x80;
-// Timer.
-const M1_TIMER_HZ = 40;
-const M3_TIMER_HZ = 30;
-const M4_TIMER_HZ = 60;
-const ROM_SIZE = 14 * 1024;
-const RAM_START = 16 * 1024;
-// CPU clock speeds.
-const M1_CLOCK_HZ = 1774080;
-const M3_CLOCK_HZ = 2027520;
-const M4_CLOCK_HZ = 4055040;
-const INITIAL_CLICKS_PER_TICK = 2000;
-const CASSETTE_THRESHOLD = 5000 / 32768.0;
-// State of the cassette hardware. We don't support writing.
-var CassetteState;
-(function (CassetteState) {
-    CassetteState[CassetteState["CLOSE"] = 0] = "CLOSE";
-    CassetteState[CassetteState["READ"] = 1] = "READ";
-    CassetteState[CassetteState["FAIL"] = 2] = "FAIL";
-})(CassetteState || (CassetteState = {}));
-// Value of wave in audio: negative, neutral (around zero), or positive.
-var CassetteValue;
-(function (CassetteValue) {
-    CassetteValue[CassetteValue["NEGATIVE"] = 0] = "NEGATIVE";
-    CassetteValue[CassetteValue["NEUTRAL"] = 1] = "NEUTRAL";
-    CassetteValue[CassetteValue["POSITIVE"] = 2] = "POSITIVE";
-})(CassetteValue || (CassetteValue = {}));
-/**
- * Whether the memory address maps to a screen location.
- */
-function isScreenAddress(address) {
-    return address >= trs80_base_1.TRS80_SCREEN_BEGIN && address < trs80_base_1.TRS80_SCREEN_END;
-}
-/**
- * See the FONT.md file for an explanation of this, but basically bit 6 is the NOR of bits 5 and 7.
- */
-function computeVideoBit6(value) {
-    const bit5 = (value >> 5) & 1;
-    const bit7 = (value >> 7) & 1;
-    const bit6 = (bit5 | bit7) ^ 1;
-    return (value & 0xBF) | (bit6 << 6);
-}
-const WARN_ONCE_SET = new Set();
-/**
- * Send this warning message to the console once. This is to avoid a program repeatedly doing something
- * that results in a warning (such as reading from an unmapped memory address) and crashing the browser.
- */
-function warnOnce(message) {
-    if (!WARN_ONCE_SET.has(message)) {
-        WARN_ONCE_SET.add(message);
-        console.warn(message + " (further warnings suppressed)");
-    }
-}
-/**
- * HAL for the TRS-80 Model III.
- */
-class Trs80 {
-    constructor(screen, cassette) {
-        this.timerHz = M3_TIMER_HZ;
-        this.clockHz = M3_CLOCK_HZ;
-        this.tStateCount = 0;
-        this.fdc = new FloppyDiskController_1.FloppyDiskController(this);
-        this.memory = new Uint8Array(0);
-        this.keyboard = new Keyboard_1.Keyboard();
-        this.modeImage = 0x80;
-        // Which IRQs should be handled.
-        this.irqMask = 0;
-        // Which IRQs have been requested by the hardware.
-        this.irqLatch = 0;
-        // Which NMIs should be handled.
-        this.nmiMask = 0;
-        // Which NMIs have been requested by the hardware.
-        this.nmiLatch = 0;
-        // Whether we've seen this NMI and handled it.
-        this.nmiSeen = false;
-        this.previousTimerClock = 0;
-        this.z80 = new z80_emulator_1.Z80(this);
-        this.clocksPerTick = INITIAL_CLICKS_PER_TICK;
-        this.startTime = Date.now();
-        this.started = false;
-        // Internal state of the cassette controller.
-        // Whether the motor is running.
-        this.cassetteMotorOn = false;
-        // State machine.
-        this.cassetteState = CassetteState.CLOSE;
-        // Internal register state.
-        this.cassetteValue = CassetteValue.NEUTRAL;
-        this.cassetteLastNonZeroValue = CassetteValue.NEUTRAL;
-        this.cassetteFlipFlop = false;
-        // When we turned on the motor (started reading the file) and how many samples
-        // we've read since then.
-        this.cassetteMotorOnClock = 0;
-        this.cassetteSamplesRead = 0;
-        this.cassetteRiseInterruptCount = 0;
-        this.cassetteFallInterruptCount = 0;
-        this.eventScheduler = new EventScheduler_1.EventScheduler();
-        this.screen = screen;
-        this.cassette = cassette;
-        this.config = Config_1.Config.makeDefault();
-        this.updateFromConfig();
-        this.loadRom();
-        this.tStateCount = 0;
-        this.keyboard.configureKeyboard();
-        this.fdc.onMotorOn.subscribe(drive => console.log("Drive " + drive));
-    }
-    /**
-     * Get the current emulator's configuration.
-     */
-    getConfig() {
-        return this.config;
-    }
-    /**
-     * Sets a new configuration and reboots into it if necessary.
-     */
-    setConfig(config) {
-        const needsReboot = config.needsReboot(this.config);
-        this.config = config;
-        this.screen.setConfig(this.config);
-        if (needsReboot) {
-            this.updateFromConfig();
-            this.reset();
-        }
-    }
-    /**
-     * Update our settings based on the config. Wipes memory.
-     */
-    updateFromConfig() {
-        this.memory = new Uint8Array(RAM_START + this.config.getRamSize());
-        this.memory.fill(0);
-        this.loadRom();
-        switch (this.config.modelType) {
-            case Config_1.ModelType.MODEL1:
-                this.timerHz = M1_TIMER_HZ;
-                this.clockHz = M1_CLOCK_HZ;
-                break;
-            case Config_1.ModelType.MODEL3:
-            default:
-                this.timerHz = M3_TIMER_HZ;
-                this.clockHz = M3_CLOCK_HZ;
-                break;
-        }
-    }
-    /**
-     * Load the config-specific ROM into memory.
-     */
-    loadRom() {
-        let rom;
-        switch (this.config.modelType) {
-            case Config_1.ModelType.MODEL1:
-                switch (this.config.basicLevel) {
-                    case Config_1.BasicLevel.LEVEL1:
-                        rom = Model1Level1Rom_1.model1Level1Rom;
-                        break;
-                    case Config_1.BasicLevel.LEVEL2:
-                    default:
-                        rom = Model1Level2Rom_1.model1Level2Rom;
-                        break;
-                }
-                break;
-            case Config_1.ModelType.MODEL3:
-            default:
-                rom = Model3Rom_1.model3Rom;
-                break;
-        }
-        const raw = window.atob(rom);
-        for (let i = 0; i < raw.length; i++) {
-            this.memory[i] = raw.charCodeAt(i);
-        }
-    }
-    /**
-     * Reset the state of the Z80 and hardware.
-     */
-    reset() {
-        this.setIrqMask(0);
-        this.setNmiMask(0);
-        this.resetCassette();
-        this.keyboard.clearKeyboard();
-        this.setTimerInterrupt(false);
-        this.z80.reset();
-    }
-    /**
-     * Jump the Z80 emulator to the specified address.
-     */
-    jumpTo(address) {
-        this.z80.regs.pc = address;
-    }
-    /**
-     * Set the stack pointer to the specified address.
-     */
-    setStackPointer(address) {
-        this.z80.regs.sp = address;
-    }
-    /**
-     * Start the executable at the given address. This sets up some
-     * state and jumps to the address.
-     */
-    startExecutable(address) {
-        // Disable the cursor.
-        this.writeMemory(0x4022, 0);
-        // Disable interrupts.
-        this.z80.regs.iff1 = 0;
-        this.z80.regs.iff2 = 0;
-        this.jumpTo(address);
-    }
-    /**
-     * Start the CPU and intercept browser keys.
-     */
-    start() {
-        if (!this.started) {
-            this.keyboard.interceptKeys = true;
-            this.scheduleNextTick();
-            this.started = true;
-        }
-    }
-    /**
-     * Stop the CPU and no longer intercept browser keys.
-     *
-     * @return whether it was started.
-     */
-    stop() {
-        if (this.started) {
-            this.keyboard.interceptKeys = false;
-            this.cancelTickTimeout();
-            this.started = false;
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    /**
-     * Set the mask for IRQ (regular) interrupts.
-     */
-    setIrqMask(irqMask) {
-        this.irqMask = irqMask;
-    }
-    /**
-     * Set the mask for non-maskable interrupts. (Yes.)
-     */
-    setNmiMask(nmiMask) {
-        // Reset is always allowed:
-        this.nmiMask = nmiMask | RESET_NMI_MASK;
-        this.updateNmiSeen();
-    }
-    interruptLatchRead() {
-        if (this.config.modelType === Config_1.ModelType.MODEL1) {
-            const irqLatch = this.irqLatch;
-            this.setTimerInterrupt(false);
-            // TODO irq = this.irqLatch !== 0;
-            return irqLatch;
-        }
-        else {
-            return ~this.irqLatch & 0xFF;
-        }
-    }
-    /**
-     * Take one Z80 step and update the state of the hardware.
-     */
-    step() {
-        this.z80.step();
-        // Handle non-maskable interrupts.
-        if ((this.nmiLatch & this.nmiMask) !== 0 && !this.nmiSeen) {
-            this.z80.nonMaskableInterrupt();
-            this.nmiSeen = true;
-            // Simulate the reset button being released.
-            this.resetButtonInterrupt(false);
-        }
-        // Handle interrupts.
-        if ((this.irqLatch & this.irqMask) !== 0) {
-            this.z80.maskableInterrupt();
-        }
-        // Set off a timer interrupt.
-        if (this.tStateCount > this.previousTimerClock + this.clockHz / this.timerHz) {
-            this.handleTimer();
-            this.previousTimerClock = this.tStateCount;
-        }
-        // Update cassette state.
-        this.updateCassette();
-        // Dispatch scheduled events.
-        this.eventScheduler.dispatch(this.tStateCount);
-    }
-    contendMemory(address) {
-        // Ignore.
-    }
-    contendPort(address) {
-        // Ignore.
-    }
-    readMemory(address) {
-        if (address < ROM_SIZE || address >= RAM_START || isScreenAddress(address)) {
-            return address < this.memory.length ? this.memory[address] : 0xFF;
-        }
-        else if (address === 0x37E8) {
-            // Printer. 0x30 = Printer selected, ready, with paper, not busy.
-            return 0x30;
-        }
-        else if (Keyboard_1.Keyboard.isInRange(address)) {
-            // Keyboard.
-            return this.keyboard.readKeyboard(address, this.tStateCount);
-        }
-        else {
-            // Unmapped memory.
-            warnOnce("Reading from unmapped memory at 0x" + z80_base_1.toHex(address, 4));
-            return 0;
-        }
-    }
-    readPort(address) {
-        const port = address & 0xFF;
-        let value = 0xFF; // Default value for missing ports.
-        switch (port) {
-            case 0x00:
-                // Joystick.
-                value = 0xFF;
-                break;
-            case 0xE0:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // IRQ latch read.
-                    value = this.interruptLatchRead();
-                }
-                break;
-            case 0xE4:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // NMI latch read.
-                    value = ~this.nmiLatch & 0xFF;
-                }
-                break;
-            case 0xEC:
-            case 0xED:
-            case 0xEE:
-            case 0xEF:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // Acknowledge timer.
-                    this.setTimerInterrupt(false);
-                    value = 0xFF;
-                }
-                break;
-            case 0xF0:
-                value = this.fdc.readStatus();
-                break;
-            case 0xF1:
-                value = this.fdc.readTrack();
-                break;
-            case 0xF2:
-                value = this.fdc.readSector();
-                break;
-            case 0xF3:
-                value = this.fdc.readData();
-                break;
-            case 0xF8:
-                // Printer status. Printer selected, ready, with paper, not busy.
-                value = 0x30;
-                break;
-            case 0xFF:
-                // Cassette and various flags.
-                if (this.config.modelType === Config_1.ModelType.MODEL1) {
-                    value = 0x3F;
-                    if (!this.screen.isExpandedCharacters()) {
-                        value |= 0x40;
-                    }
-                }
-                else {
-                    value = this.modeImage & 0x7E;
-                }
-                value |= this.getCassetteByte();
-                break;
-            default:
-                // Not sure what a good default value is, but other emulators use 0xFF.
-                warnOnce("Reading from unknown port 0x" + z80_base_1.toHex(z80_base_1.lo(address), 2));
-                value = 0xFF;
-                break;
-        }
-        // console.log("Reading 0x" + toHex(value, 2) + " from port 0x" + toHex(lo(address), 2));
-        return value;
-    }
-    writePort(address, value) {
-        const port = address & 0xFF;
-        switch (port) {
-            case 0xE0:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // Set interrupt mask.
-                    this.setIrqMask(value);
-                }
-                break;
-            case 0xE4:
-            case 0xE5:
-            case 0xE6:
-            case 0xE7:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // Set NMI state.
-                    this.setNmiMask(value);
-                }
-                break;
-            case 0xEC:
-            case 0xED:
-            case 0xEE:
-            case 0xEF:
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    // Various controls.
-                    this.modeImage = value;
-                    this.setCassetteMotor((value & 0x02) !== 0);
-                    this.screen.setExpandedCharacters((value & 0x04) !== 0);
-                    this.screen.setAlternateCharacters((value & 0x08) === 0);
-                }
-                break;
-            case 0xF0:
-                this.fdc.writeCommand(value);
-                break;
-            case 0xF1:
-                this.fdc.writeTrack(value);
-                break;
-            case 0xF2:
-                this.fdc.writeSector(value);
-                break;
-            case 0xF3:
-                this.fdc.writeData(value);
-                break;
-            case 0xF4:
-            case 0xF5:
-            case 0xF6:
-            case 0xF7:
-                this.fdc.writeSelect(value);
-                break;
-            case 0xF8:
-            case 0xF9:
-            case 0xFA:
-            case 0xFB:
-                // Printer write.
-                console.log("Writing \"" + String.fromCodePoint(value) + "\" to printer");
-                break;
-            case 0xFC:
-            case 0xFD:
-            case 0xFE:
-            case 0xFF:
-                if (this.config.modelType === Config_1.ModelType.MODEL1) {
-                    this.setCassetteMotor((value & 0x04) !== 0);
-                    this.screen.setExpandedCharacters((value & 0x08) !== 0);
-                }
-                if ((value & 0x20) !== 0) {
-                    // Model III Micro Labs graphics card.
-                    console.log("Sending 0x" + z80_base_1.toHex(value, 2) + " to Micro Labs graphics card");
-                }
-                else {
-                    // Do cassette emulation.
-                    this.putCassetteByte(value & 0x03);
-                }
-                break;
-            default:
-                warnOnce("Writing 0x" + z80_base_1.toHex(value, 2) + " to unknown port 0x" + z80_base_1.toHex(port, 2));
-                return;
-        }
-        // console.log("Wrote 0x" + toHex(value, 2) + " to port 0x" + toHex(port, 2));
-    }
-    writeMemory(address, value) {
-        if (address < ROM_SIZE) {
-            warnOnce("Warning: Writing to ROM location 0x" + z80_base_1.toHex(address, 4));
-        }
-        else {
-            if (address >= trs80_base_1.TRS80_SCREEN_BEGIN && address < trs80_base_1.TRS80_SCREEN_END) {
-                if (this.config.cgChip === Config_1.CGChip.ORIGINAL) {
-                    // No bit 6 in video memory, need to compute it.
-                    value = computeVideoBit6(value);
-                }
-                this.screen.writeChar(address, value);
-            }
-            else if (address < RAM_START) {
-                warnOnce("Writing to unmapped memory at 0x" + z80_base_1.toHex(address, 4));
-            }
-            this.memory[address] = value;
-        }
-    }
-    /**
-     * Write a block of data to memory.
-     *
-     * @return the address just past the block.
-     */
-    writeMemoryBlock(address, values, startIndex = 0, length) {
-        length = length !== null && length !== void 0 ? length : values.length;
-        for (let i = 0; i < length; i++) {
-            this.writeMemory(address++, values[startIndex + i]);
-        }
-        return address;
-    }
-    /**
-     * Reset cassette edge interrupts.
-     */
-    cassetteClearInterrupt() {
-        this.irqLatch &= ~CASSETTE_IRQ_MASKS;
-    }
-    /**
-     * Check whether the software has enabled these interrupts.
-     */
-    cassetteInterruptsEnabled() {
-        return (this.irqMask & CASSETTE_IRQ_MASKS) !== 0;
-    }
-    /**
-     * Get an opaque string that represents the state of the screen. Flashes the screen.
-     */
-    getScreenshot() {
-        const buf = [];
-        // First byte is screen mode, where 0 means normal (64 columns) and 1 means wide (32 columns).
-        buf.push(this.screen.isExpandedCharacters() ? 1 : 0);
-        // Run-length encode bytes with (value,count) pairs, with a max count of 255. Bytes
-        // in the range 33 to 127 inclusive have an implicit count of 1.
-        for (let address = trs80_base_1.TRS80_SCREEN_BEGIN; address < trs80_base_1.TRS80_SCREEN_END; address++) {
-            const value = this.memory[address];
-            if (value > 32 && value < 128) {
-                // Bytes in this range don't store a count.
-                buf.push(value);
-            }
-            else if (buf.length < 2 || buf[buf.length - 1] === 255 || buf[buf.length - 2] !== value) {
-                // New entry.
-                buf.push(value);
-                buf.push(1);
-            }
-            else {
-                // Increment existing count.
-                buf[buf.length - 1] += 1;
-            }
-        }
-        // Convert to a binary string.
-        let s = buf.map(n => String.fromCharCode(n)).join("");
-        // Start visual flash effect.
-        Trs80.flashNode(this.screen.getNode());
-        // Base-64 encode and prefix with version number.
-        return "0:" + btoa(s);
-    }
-    /**
-     * Flash the node as if a photo were taken.
-     */
-    static flashNode(node) {
-        // Position a semi-transparent white div over the screen, and reduce its transparency over time.
-        const oldNodePosition = node.style.position;
-        node.style.position = "relative";
-        const overlay = document.createElement("div");
-        overlay.style.position = "absolute";
-        overlay.style.left = "0";
-        overlay.style.top = "0";
-        overlay.style.right = "0";
-        overlay.style.bottom = "0";
-        overlay.style.backgroundColor = "#ffffff";
-        // Fade out.
-        let opacity = 1;
-        const updateOpacity = () => {
-            overlay.style.opacity = opacity.toString();
-            opacity -= 0.1;
-            if (opacity >= 0) {
-                window.requestAnimationFrame(updateOpacity);
-            }
-            else {
-                node.removeChild(overlay);
-                node.style.position = oldNodePosition;
-            }
-        };
-        updateOpacity();
-        node.appendChild(overlay);
-    }
-    // Reset whether we've seen this NMI interrupt if the mask and latch no longer overlap.
-    updateNmiSeen() {
-        if ((this.nmiLatch & this.nmiMask) === 0) {
-            this.nmiSeen = false;
-        }
-    }
-    /**
-     * Run a certain number of CPU instructions and schedule another tick.
-     */
-    tick() {
-        for (let i = 0; i < this.clocksPerTick && this.started; i++) {
-            this.step();
-        }
-        // We might have stopped in the step() routine (e.g., with scheduled event).
-        if (this.started) {
-            this.scheduleNextTick();
-        }
-    }
-    /**
-     * Figure out how many CPU cycles we should optimally run and how long
-     * to wait until scheduling it, then schedule it to be run later.
-     */
-    scheduleNextTick() {
-        let delay;
-        if (this.cassetteMotorOn || this.keyboard.keyQueue.length > 4) {
-            // Go fast if we're accessing the cassette or pasting.
-            this.clocksPerTick = 100000;
-            delay = 0;
-        }
-        else {
-            // Delay to match original clock speed.
-            const now = Date.now();
-            const actualElapsed = now - this.startTime;
-            const expectedElapsed = this.tStateCount * 1000 / this.clockHz;
-            let behind = expectedElapsed - actualElapsed;
-            if (behind < -100 || behind > 100) {
-                // We're too far behind or ahead. Catch up artificially.
-                this.startTime = now - expectedElapsed;
-                behind = 0;
-            }
-            delay = Math.round(Math.max(0, behind));
-            if (delay === 0) {
-                // Delay too short, do more each tick.
-                this.clocksPerTick = Math.min(this.clocksPerTick + 100, 10000);
-            }
-            else if (delay > 1) {
-                // Delay too long, do less each tick.
-                this.clocksPerTick = Math.max(this.clocksPerTick - 100, 100);
-            }
-        }
-        // console.log(this.clocksPerTick, delay);
-        this.cancelTickTimeout();
-        this.tickHandle = window.setTimeout(() => {
-            this.tickHandle = undefined;
-            this.tick();
-        }, delay);
-    }
-    /**
-     * Stop the tick timeout, if it's running.
-     */
-    cancelTickTimeout() {
-        if (this.tickHandle !== undefined) {
-            window.clearTimeout(this.tickHandle);
-            this.tickHandle = undefined;
-        }
-    }
-    // Set or reset the timer interrupt.
-    setTimerInterrupt(state) {
-        if (this.config.modelType === Config_1.ModelType.MODEL1) {
-            if (state) {
-                this.irqLatch |= M1_TIMER_IRQ_MASK;
-            }
-            else {
-                this.irqLatch &= ~M1_TIMER_IRQ_MASK;
-            }
-        }
-        else {
-            if (state) {
-                this.irqLatch |= M3_TIMER_IRQ_MASK;
-            }
-            else {
-                this.irqLatch &= ~M3_TIMER_IRQ_MASK;
-            }
-        }
-    }
-    // What to do when the hardware timer goes off.
-    handleTimer() {
-        this.setTimerInterrupt(true);
-    }
-    // Set the state of the reset button interrupt.
-    resetButtonInterrupt(state) {
-        if (state) {
-            this.nmiLatch |= RESET_NMI_MASK;
-        }
-        else {
-            this.nmiLatch &= ~RESET_NMI_MASK;
-        }
-        this.updateNmiSeen();
-    }
-    // Set the state of the disk motor off interrupt.
-    diskMotorOffInterrupt(state) {
-        if (state) {
-            this.nmiLatch |= DISK_MOTOR_OFF_NMI_MASK;
-        }
-        else {
-            this.nmiLatch &= ~DISK_MOTOR_OFF_NMI_MASK;
-        }
-        this.updateNmiSeen();
-    }
-    // Set the state of the disk interrupt.
-    diskIntrqInterrupt(state) {
-        if (state) {
-            this.nmiLatch |= DISK_INTRQ_NMI_MASK;
-        }
-        else {
-            this.nmiLatch &= ~DISK_INTRQ_NMI_MASK;
-        }
-        this.updateNmiSeen();
-    }
-    // Set the state of the disk interrupt.
-    diskDrqInterrupt(state) {
-        // No effect.
-    }
-    // Reset the controller to a known state.
-    resetCassette() {
-        this.setCassetteState(CassetteState.CLOSE);
-    }
-    // Get a byte from the I/O port.
-    getCassetteByte() {
-        // If the motor's running, and we're reading a byte, then get into read mode.
-        if (this.cassetteMotorOn) {
-            this.setCassetteState(CassetteState.READ);
-        }
-        // Clear any interrupt that may have triggered this read.
-        this.cassetteClearInterrupt();
-        // Cassette owns bits 0 and 7.
-        let b = 0;
-        if (this.cassetteFlipFlop) {
-            b |= 0x80;
-        }
-        if (this.config.modelType !== Config_1.ModelType.MODEL1 && this.cassetteLastNonZeroValue === CassetteValue.POSITIVE) {
-            b |= 0x01;
-        }
-        return b;
-    }
-    // Write to the cassette port. We don't support writing tapes, but this is used
-    // for 500-baud reading to trigger the next analysis of the tape.
-    putCassetteByte(b) {
-        if (this.cassetteMotorOn) {
-            if (this.cassetteState === CassetteState.READ) {
-                this.updateCassette();
-                this.cassetteFlipFlop = false;
-            }
-        }
-    }
-    // Kick off the reading process when doing 1500-baud reads.
-    kickOffCassette() {
-        if (this.cassetteMotorOn &&
-            this.cassetteState === CassetteState.CLOSE &&
-            this.cassetteInterruptsEnabled()) {
-            // Kick off the process.
-            this.cassetteRiseInterrupt();
-            this.cassetteFallInterrupt();
-        }
-    }
-    // Turn the motor on or off.
-    setCassetteMotor(cassetteMotorOn) {
-        if (cassetteMotorOn !== this.cassetteMotorOn) {
-            if (cassetteMotorOn) {
-                this.cassetteFlipFlop = false;
-                this.cassetteLastNonZeroValue = CassetteValue.NEUTRAL;
-                // Waits a second before kicking off the cassette.
-                // TODO this should be in CPU cycles, not browser cycles.
-                if (this.config.modelType !== Config_1.ModelType.MODEL1) {
-                    setTimeout(() => this.kickOffCassette(), 1000);
-                }
-            }
-            else {
-                this.setCassetteState(CassetteState.CLOSE);
-            }
-            this.cassetteMotorOn = cassetteMotorOn;
-            if (cassetteMotorOn) {
-                this.cassette.onMotorStart();
-            }
-            else {
-                this.cassette.onMotorStop();
-            }
-        }
-    }
-    // Read some of the cassette to see if we should be triggering a rise/fall interrupt.
-    updateCassette() {
-        if (this.cassetteMotorOn && this.setCassetteState(CassetteState.READ) >= 0) {
-            // See how many samples we should have read by now.
-            const samplesToRead = Math.round((this.tStateCount - this.cassetteMotorOnClock) *
-                this.cassette.samplesPerSecond / this.clockHz);
-            // Catch up.
-            while (this.cassetteSamplesRead < samplesToRead) {
-                const sample = this.cassette.readSample();
-                this.cassetteSamplesRead++;
-                // Convert to state, where neutral is some noisy in-between state.
-                let cassetteValue = CassetteValue.NEUTRAL;
-                if (sample > CASSETTE_THRESHOLD) {
-                    cassetteValue = CassetteValue.POSITIVE;
-                }
-                else if (sample < -CASSETTE_THRESHOLD) {
-                    cassetteValue = CassetteValue.NEGATIVE;
-                }
-                // See if we've changed value.
-                if (cassetteValue !== this.cassetteValue) {
-                    if (cassetteValue === CassetteValue.POSITIVE) {
-                        // Positive edge.
-                        this.cassetteFlipFlop = true;
-                        this.cassetteRiseInterrupt();
-                    }
-                    else if (cassetteValue === CassetteValue.NEGATIVE) {
-                        // Negative edge.
-                        this.cassetteFlipFlop = true;
-                        this.cassetteFallInterrupt();
-                    }
-                    this.cassetteValue = cassetteValue;
-                    if (cassetteValue !== CassetteValue.NEUTRAL) {
-                        this.cassetteLastNonZeroValue = cassetteValue;
-                    }
-                }
-            }
-        }
-    }
-    // Returns 0 if the state was changed, 1 if it wasn't, and -1 on error.
-    setCassetteState(newState) {
-        const oldCassetteState = this.cassetteState;
-        // See if we're changing anything.
-        if (oldCassetteState === newState) {
-            return 1;
-        }
-        // Once in error, everything will fail until we close.
-        if (oldCassetteState === CassetteState.FAIL && newState !== CassetteState.CLOSE) {
-            return -1;
-        }
-        // Change things based on new state.
-        switch (newState) {
-            case CassetteState.READ:
-                this.openCassetteFile();
-                break;
-        }
-        // Update state.
-        this.cassetteState = newState;
-        return 0;
-    }
-    // Open file, get metadata, and get read to read the tape.
-    openCassetteFile() {
-        // TODO open/rewind cassette?
-        // Reset the clock.
-        this.cassetteMotorOnClock = this.tStateCount;
-        this.cassetteSamplesRead = 0;
-    }
-    // Saw a positive edge on cassette.
-    cassetteRiseInterrupt() {
-        this.cassetteRiseInterruptCount++;
-        this.irqLatch = (this.irqLatch & ~M3_CASSETTE_RISE_IRQ_MASK) |
-            (this.irqMask & M3_CASSETTE_RISE_IRQ_MASK);
-    }
-    // Saw a negative edge on cassette.
-    cassetteFallInterrupt() {
-        this.cassetteFallInterruptCount++;
-        this.irqLatch = (this.irqLatch & ~M3_CASSETTE_FALL_IRQ_MASK) |
-            (this.irqMask & M3_CASSETTE_FALL_IRQ_MASK);
-    }
-    /**
-     * Clear screen and home cursor.
-     */
-    cls() {
-        for (let address = trs80_base_1.TRS80_SCREEN_BEGIN; address < trs80_base_1.TRS80_SCREEN_END; address++) {
-            this.writeMemory(address, 32);
-        }
-        this.positionCursor(0, 0);
-    }
-    /**
-     * Move the cursor (where the ROM's write routine will write to next) to the
-     * given location.
-     *
-     * @param col 0-based text column.
-     * @param row 0-based text row.
-     */
-    positionCursor(col, row) {
-        const address = trs80_base_1.TRS80_SCREEN_BEGIN + row * 64 + col;
-        // This works on Model III, not sure if it works on Model I or in wide mode.
-        this.writeMemory(0x4020, z80_base_1.lo(address));
-        this.writeMemory(0x4021, z80_base_1.hi(address));
-    }
-    /**
-     * Run a TRS-80 program. The exact behavior depends on the type of program.
-     */
-    runTrs80File(trs80File) {
-        if (trs80File instanceof trs80_base_1.CmdProgram) {
-            this.runCmdProgram(trs80File);
-        }
-        else if (trs80File instanceof trs80_base_1.Cassette) {
-            if (trs80File.files.length === 1) {
-                this.runTrs80File(trs80File.files[0].file);
-            }
-            else {
-                // TODO.
-                console.error("Can't currently run multiple cassette files");
-            }
-        }
-        else if (trs80File instanceof trs80_base_1.SystemProgram) {
-            this.runSystemProgram(trs80File);
-        }
-        else if (trs80File instanceof trs80_base_1.BasicProgram) {
-            this.runBasicProgram(trs80File);
-        }
-        else if (trs80File instanceof FloppyDisk_1.FloppyDisk) {
-            this.runFloppyDisk(trs80File);
-        }
-        else {
-            // TODO.
-            console.error("Don't know how to run", trs80File);
-        }
-    }
-    /**
-     * Load a CMD program into memory and run it.
-     */
-    runCmdProgram(cmdProgram) {
-        this.reset();
-        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
-            this.cls();
-            for (const chunk of cmdProgram.chunks) {
-                if (chunk instanceof trs80_base_1.CmdLoadBlockChunk) {
-                    this.writeMemoryBlock(chunk.address, chunk.loadData);
-                }
-                else if (chunk instanceof trs80_base_1.CmdTransferAddressChunk) {
-                    this.startExecutable(chunk.address);
-                    // Don't load any more after this. I assume on a real machine the jump
-                    // happens immediately and CMD parsing ends.
-                    break;
-                }
-            }
-        });
-    }
-    /**
-     * Load a system program into memory and run it.
-     */
-    runSystemProgram(systemProgram) {
-        this.reset();
-        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
-            this.cls();
-            for (const chunk of systemProgram.chunks) {
-                this.writeMemoryBlock(chunk.loadAddress, chunk.data);
-            }
-            // Do what the SYSTEM command does.
-            this.setStackPointer(0x4288);
-            this.startExecutable(systemProgram.entryPointAddress);
-        });
-    }
-    /**
-     * Load a Basic program into memory and run it.
-     */
-    runBasicProgram(basicProgram) {
-        this.reset();
-        // Wait for Cass?
-        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
-            this.keyboard.simulateKeyboardText("\n0\n");
-            // Wait for Ready prompt.
-            this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.2, () => {
-                this.loadBasicProgram(basicProgram);
-                this.keyboard.simulateKeyboardText("RUN\n");
-            });
-        });
-    }
-    /**
-     * Load a Basic program into memory, replacing the one that's there. Does not run it.
-     */
-    loadBasicProgram(basicProgram) {
-        // Find address to load to.
-        let addr = this.readMemory(0x40A4) + (this.readMemory(0x40A5) << 8);
-        if (addr < 0x4200 || addr >= 0x4500) {
-            console.error("Basic load address (0x" + z80_base_2.toHexWord(addr) + ") is uninitialized");
-            return;
-        }
-        // Terminate current line (if any) and set up the new one.
-        let lineStart;
-        const newLine = () => {
-            if (lineStart !== undefined) {
-                // End-of-line marker.
-                this.writeMemory(addr++, 0);
-                // Update previous line's next-line pointer.
-                this.writeMemory(lineStart, z80_base_1.lo(addr));
-                this.writeMemory(lineStart + 1, z80_base_1.hi(addr));
-            }
-            // Remember address of next-line pointer.
-            lineStart = addr;
-            // Next-line pointer.
-            this.writeMemory(addr++, 0);
-            this.writeMemory(addr++, 0);
-        };
-        // Write elements to memory.
-        for (const e of basicProgram.elements) {
-            if (e.offset !== undefined) {
-                if (e.elementType === trs80_base_1.ElementType.LINE_NUMBER) {
-                    newLine();
-                }
-                // Write element.
-                addr = this.writeMemoryBlock(addr, basicProgram.binary, e.offset, e.length);
-            }
-        }
-        newLine();
-        // End of Basic program pointer.
-        this.writeMemory(0x40F9, z80_base_1.lo(addr));
-        this.writeMemory(0x40FA, z80_base_1.hi(addr));
-        // Start of array variables pointer.
-        this.writeMemory(0x40FB, z80_base_1.lo(addr));
-        this.writeMemory(0x40FC, z80_base_1.hi(addr));
-        // Start of free memory pointer.
-        this.writeMemory(0x40FD, z80_base_1.lo(addr));
-        this.writeMemory(0x40FE, z80_base_1.hi(addr));
-    }
-    /**
-     * Load the floppy disk into the specified drive.
-     * @param floppyDisk the floppy, or undefined to unmount.
-     * @param driveNumber the drive number, 0-based.
-     */
-    loadFloppyDisk(floppyDisk, driveNumber) {
-        this.fdc.loadFloppyDisk(floppyDisk, driveNumber);
-    }
-    /**
-     * Load a floppy and reboot into it.
-     */
-    runFloppyDisk(floppyDisk) {
-        // Mount floppy.
-        this.loadFloppyDisk(floppyDisk, 0);
-        // Reboot.
-        this.reset();
-    }
-    /**
-     * Pulls the Basic program currently in memory, or returns a string with an error.
-     */
-    getBasicProgramFromMemory() {
-        let addr = this.readMemory(0x40A4) + (this.readMemory(0x40A5) << 8);
-        if (addr < 0x4200 || addr >= 0x4500) {
-            return "Basic load address (0x" + z80_base_2.toHexWord(addr) + ") is uninitialized";
-        }
-        // Walk through the program lines to find the end.
-        const beginAddr = addr;
-        while (true) {
-            // Find end address.
-            const nextLine = this.readMemory(addr) + (this.readMemory(addr + 1) << 8);
-            if (nextLine === 0) {
-                break;
-            }
-            if (nextLine < addr) {
-                // Error, went backward.
-                return `Next address 0x${z80_base_2.toHexWord(nextLine)} is less than current address 0x${z80_base_2.toHexWord(addr)}`;
-            }
-            addr = nextLine;
-        }
-        const endAddr = addr + 2;
-        // Put together the binary of just the program.
-        const binary = new Uint8Array(endAddr - beginAddr + 1);
-        binary[0] = trs80_base_1.BASIC_HEADER_BYTE;
-        binary.set(this.memory.subarray(beginAddr, endAddr), 1);
-        // Decode the program.
-        const basic = trs80_base_1.decodeBasicProgram(binary);
-        if (basic === undefined) {
-            return "Basic couldn't be decoded";
-        }
-        return basic;
-    }
-}
-exports.Trs80 = Trs80;
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(67));
-
-
-/***/ }),
-/* 67 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const z80_base_1 = __webpack_require__(0);
-const Decode_1 = __webpack_require__(68);
+const Decode_1 = __webpack_require__(27);
 /**
  * Emulated Z80 processor.
  */
@@ -7383,7 +1988,7 @@ exports.Z80 = Z80;
 
 
 /***/ }),
-/* 68 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16264,4854 +10869,7 @@ exports.decode = decode;
 
 
 /***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-// Handle keyboard mapping. The TRS-80 Model III keyboard has keys in different
-// places, so we must occasionally fake a Shift key being up or down when it's
-// really not.
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Keyboard = void 0;
-// Keyboard is in several identical (mirrored) banks.
-const BANK_SIZE = 0x100;
-const BANK_COUNT = 4;
-const BEGIN_ADDR = 0x3800;
-const END_ADDR = BEGIN_ADDR + BANK_SIZE * BANK_COUNT;
-const KEY_DELAY_CLOCK_CYCLES = 50000;
-// Whether to force a Shift key, and how.
-var ShiftState;
-(function (ShiftState) {
-    ShiftState[ShiftState["NEUTRAL"] = 0] = "NEUTRAL";
-    ShiftState[ShiftState["FORCE_DOWN"] = 1] = "FORCE_DOWN";
-    ShiftState[ShiftState["FORCE_UP"] = 2] = "FORCE_UP";
-})(ShiftState || (ShiftState = {}));
-// For each ASCII character or key we keep track of how to trigger it.
-class KeyInfo {
-    constructor(byteIndex, bitNumber, shiftForce) {
-        this.byteIndex = byteIndex;
-        this.bitNumber = bitNumber;
-        this.shiftForce = shiftForce;
-    }
-}
-// A queued-up key.
-class KeyActivity {
-    constructor(keyInfo, isPressed) {
-        this.keyInfo = keyInfo;
-        this.isPressed = isPressed;
-    }
-}
-// Map from ASCII or special key to the info of which byte and bit it's mapped
-// to, and whether to force Shift.
-const keyMap = new Map();
-// http://www.trs-80.com/trs80-zaps-internals.htm#keyboard13
-keyMap.set("@", new KeyInfo(0, 0, ShiftState.FORCE_UP));
-keyMap.set("A", new KeyInfo(0, 1, ShiftState.FORCE_DOWN));
-keyMap.set("B", new KeyInfo(0, 2, ShiftState.FORCE_DOWN));
-keyMap.set("C", new KeyInfo(0, 3, ShiftState.FORCE_DOWN));
-keyMap.set("D", new KeyInfo(0, 4, ShiftState.FORCE_DOWN));
-keyMap.set("E", new KeyInfo(0, 5, ShiftState.FORCE_DOWN));
-keyMap.set("F", new KeyInfo(0, 6, ShiftState.FORCE_DOWN));
-keyMap.set("G", new KeyInfo(0, 7, ShiftState.FORCE_DOWN));
-keyMap.set("H", new KeyInfo(1, 0, ShiftState.FORCE_DOWN));
-keyMap.set("I", new KeyInfo(1, 1, ShiftState.FORCE_DOWN));
-keyMap.set("J", new KeyInfo(1, 2, ShiftState.FORCE_DOWN));
-keyMap.set("K", new KeyInfo(1, 3, ShiftState.FORCE_DOWN));
-keyMap.set("L", new KeyInfo(1, 4, ShiftState.FORCE_DOWN));
-keyMap.set("M", new KeyInfo(1, 5, ShiftState.FORCE_DOWN));
-keyMap.set("N", new KeyInfo(1, 6, ShiftState.FORCE_DOWN));
-keyMap.set("O", new KeyInfo(1, 7, ShiftState.FORCE_DOWN));
-keyMap.set("P", new KeyInfo(2, 0, ShiftState.FORCE_DOWN));
-keyMap.set("Q", new KeyInfo(2, 1, ShiftState.FORCE_DOWN));
-keyMap.set("R", new KeyInfo(2, 2, ShiftState.FORCE_DOWN));
-keyMap.set("S", new KeyInfo(2, 3, ShiftState.FORCE_DOWN));
-keyMap.set("T", new KeyInfo(2, 4, ShiftState.FORCE_DOWN));
-keyMap.set("U", new KeyInfo(2, 5, ShiftState.FORCE_DOWN));
-keyMap.set("V", new KeyInfo(2, 6, ShiftState.FORCE_DOWN));
-keyMap.set("W", new KeyInfo(2, 7, ShiftState.FORCE_DOWN));
-keyMap.set("X", new KeyInfo(3, 0, ShiftState.FORCE_DOWN));
-keyMap.set("Y", new KeyInfo(3, 1, ShiftState.FORCE_DOWN));
-keyMap.set("Z", new KeyInfo(3, 2, ShiftState.FORCE_DOWN));
-keyMap.set("a", new KeyInfo(0, 1, ShiftState.FORCE_UP));
-keyMap.set("b", new KeyInfo(0, 2, ShiftState.FORCE_UP));
-keyMap.set("c", new KeyInfo(0, 3, ShiftState.FORCE_UP));
-keyMap.set("d", new KeyInfo(0, 4, ShiftState.FORCE_UP));
-keyMap.set("e", new KeyInfo(0, 5, ShiftState.FORCE_UP));
-keyMap.set("f", new KeyInfo(0, 6, ShiftState.FORCE_UP));
-keyMap.set("g", new KeyInfo(0, 7, ShiftState.FORCE_UP));
-keyMap.set("h", new KeyInfo(1, 0, ShiftState.FORCE_UP));
-keyMap.set("i", new KeyInfo(1, 1, ShiftState.FORCE_UP));
-keyMap.set("j", new KeyInfo(1, 2, ShiftState.FORCE_UP));
-keyMap.set("k", new KeyInfo(1, 3, ShiftState.FORCE_UP));
-keyMap.set("l", new KeyInfo(1, 4, ShiftState.FORCE_UP));
-keyMap.set("m", new KeyInfo(1, 5, ShiftState.FORCE_UP));
-keyMap.set("n", new KeyInfo(1, 6, ShiftState.FORCE_UP));
-keyMap.set("o", new KeyInfo(1, 7, ShiftState.FORCE_UP));
-keyMap.set("p", new KeyInfo(2, 0, ShiftState.FORCE_UP));
-keyMap.set("q", new KeyInfo(2, 1, ShiftState.FORCE_UP));
-keyMap.set("r", new KeyInfo(2, 2, ShiftState.FORCE_UP));
-keyMap.set("s", new KeyInfo(2, 3, ShiftState.FORCE_UP));
-keyMap.set("t", new KeyInfo(2, 4, ShiftState.FORCE_UP));
-keyMap.set("u", new KeyInfo(2, 5, ShiftState.FORCE_UP));
-keyMap.set("v", new KeyInfo(2, 6, ShiftState.FORCE_UP));
-keyMap.set("w", new KeyInfo(2, 7, ShiftState.FORCE_UP));
-keyMap.set("x", new KeyInfo(3, 0, ShiftState.FORCE_UP));
-keyMap.set("y", new KeyInfo(3, 1, ShiftState.FORCE_UP));
-keyMap.set("z", new KeyInfo(3, 2, ShiftState.FORCE_UP));
-keyMap.set("0", new KeyInfo(4, 0, ShiftState.FORCE_UP));
-keyMap.set("1", new KeyInfo(4, 1, ShiftState.FORCE_UP));
-keyMap.set("2", new KeyInfo(4, 2, ShiftState.FORCE_UP));
-keyMap.set("3", new KeyInfo(4, 3, ShiftState.FORCE_UP));
-keyMap.set("4", new KeyInfo(4, 4, ShiftState.FORCE_UP));
-keyMap.set("5", new KeyInfo(4, 5, ShiftState.FORCE_UP));
-keyMap.set("6", new KeyInfo(4, 6, ShiftState.FORCE_UP));
-keyMap.set("7", new KeyInfo(4, 7, ShiftState.FORCE_UP));
-keyMap.set("8", new KeyInfo(5, 0, ShiftState.FORCE_UP));
-keyMap.set("9", new KeyInfo(5, 1, ShiftState.FORCE_UP));
-keyMap.set("`", new KeyInfo(4, 0, ShiftState.FORCE_DOWN)); // Simulate Shift-0.
-keyMap.set("!", new KeyInfo(4, 1, ShiftState.FORCE_DOWN));
-keyMap.set("\"", new KeyInfo(4, 2, ShiftState.FORCE_DOWN));
-keyMap.set("#", new KeyInfo(4, 3, ShiftState.FORCE_DOWN));
-keyMap.set("$", new KeyInfo(4, 4, ShiftState.FORCE_DOWN));
-keyMap.set("%", new KeyInfo(4, 5, ShiftState.FORCE_DOWN));
-keyMap.set("&", new KeyInfo(4, 6, ShiftState.FORCE_DOWN));
-keyMap.set("'", new KeyInfo(4, 7, ShiftState.FORCE_DOWN));
-keyMap.set("(", new KeyInfo(5, 0, ShiftState.FORCE_DOWN));
-keyMap.set(")", new KeyInfo(5, 1, ShiftState.FORCE_DOWN));
-keyMap.set(":", new KeyInfo(5, 2, ShiftState.FORCE_UP));
-keyMap.set(";", new KeyInfo(5, 3, ShiftState.FORCE_UP));
-keyMap.set(",", new KeyInfo(5, 4, ShiftState.FORCE_UP));
-keyMap.set("-", new KeyInfo(5, 5, ShiftState.FORCE_UP));
-keyMap.set(".", new KeyInfo(5, 6, ShiftState.FORCE_UP));
-keyMap.set("/", new KeyInfo(5, 7, ShiftState.FORCE_UP));
-keyMap.set("*", new KeyInfo(5, 2, ShiftState.FORCE_DOWN));
-keyMap.set("+", new KeyInfo(5, 3, ShiftState.FORCE_DOWN));
-keyMap.set("<", new KeyInfo(5, 4, ShiftState.FORCE_DOWN));
-keyMap.set("=", new KeyInfo(5, 5, ShiftState.FORCE_DOWN));
-keyMap.set(">", new KeyInfo(5, 6, ShiftState.FORCE_DOWN));
-keyMap.set("?", new KeyInfo(5, 7, ShiftState.FORCE_DOWN));
-keyMap.set("Enter", new KeyInfo(6, 0, ShiftState.NEUTRAL));
-keyMap.set("Tab", new KeyInfo(6, 1, ShiftState.NEUTRAL)); // Clear
-keyMap.set("Escape", new KeyInfo(6, 2, ShiftState.NEUTRAL)); // Break
-keyMap.set("ArrowUp", new KeyInfo(6, 3, ShiftState.NEUTRAL));
-keyMap.set("ArrowDown", new KeyInfo(6, 4, ShiftState.NEUTRAL));
-keyMap.set("ArrowLeft", new KeyInfo(6, 5, ShiftState.NEUTRAL));
-keyMap.set("Backspace", new KeyInfo(6, 5, ShiftState.NEUTRAL)); // Left arrow
-keyMap.set("ArrowRight", new KeyInfo(6, 6, ShiftState.NEUTRAL));
-keyMap.set(" ", new KeyInfo(6, 7, ShiftState.NEUTRAL));
-keyMap.set("Shift", new KeyInfo(7, 0, ShiftState.NEUTRAL));
-class Keyboard {
-    constructor() {
-        // We queue up keystrokes so that we don't overwhelm the ROM polling routines.
-        this.keyQueue = [];
-        // Whether browser keys should be intercepted.
-        this.interceptKeys = false;
-        this.keyProcessMinClock = 0;
-        // 8 bytes, each a bitfield of keys currently pressed.
-        this.keys = new Uint8Array(8);
-        this.shiftForce = ShiftState.NEUTRAL;
-    }
-    static isInRange(address) {
-        return address >= BEGIN_ADDR && address < END_ADDR;
-    }
-    // Release all keys.
-    clearKeyboard() {
-        this.keys.fill(0);
-        this.shiftForce = ShiftState.NEUTRAL;
-    }
-    // Read a byte from the keyboard memory bank. This is an odd system where
-    // bits in the address map to the various bytes, and you can read the OR'ed
-    // addresses to read more than one byte at a time. For the last byte we fake
-    // the Shift key if necessary.
-    readKeyboard(addr, clock) {
-        addr = (addr - BEGIN_ADDR) % BANK_SIZE;
-        let b = 0;
-        // Dequeue if necessary.
-        if (clock > this.keyProcessMinClock) {
-            const keyWasPressed = this.processKeyQueue();
-            if (keyWasPressed) {
-                this.keyProcessMinClock = clock + KEY_DELAY_CLOCK_CYCLES;
-            }
-        }
-        // OR together the various bytes.
-        for (let i = 0; i < this.keys.length; i++) {
-            let keys = this.keys[i];
-            if ((addr & (1 << i)) !== 0) {
-                if (i === 7) {
-                    // Modify keys based on the shift force.
-                    switch (this.shiftForce) {
-                        case ShiftState.NEUTRAL:
-                            // Nothing.
-                            break;
-                        case ShiftState.FORCE_UP:
-                            // On the Model III the first two bits are left and right shift,
-                            // though we don't handle the right shift anywhere.
-                            keys &= ~0x03;
-                            break;
-                        case ShiftState.FORCE_DOWN:
-                            keys |= 0x01;
-                            break;
-                    }
-                }
-                b |= keys;
-            }
-        }
-        return b;
-    }
-    // Enqueue a key press or release.
-    keyEvent(key, isPressed) {
-        // Look up the key info.
-        const keyInfo = keyMap.get(key);
-        if (keyInfo === undefined) {
-            if (key !== "Meta" && key !== "Control" && key !== "Alt") {
-                console.log("Unknown key \"" + key + "\"");
-            }
-        }
-        else {
-            // Append key to queue.
-            this.keyQueue.push(new KeyActivity(keyInfo, isPressed));
-        }
-    }
-    // Convert keys on the keyboard to ASCII letters or special strings like "Enter".
-    configureKeyboard() {
-        // Handle a key event by mapping it and sending it to the emulator.
-        const keyEvent = (event, isPressed) => {
-            // Don't do anything if we're not active.
-            if (!this.interceptKeys) {
-                return;
-            }
-            // Don't send to virtual computer if a text input field is selected.
-            // if ($(document.activeElement).attr("type") === "text") {
-            //     return;
-            // }
-            // Don't interfere with browser keys.
-            if (event.metaKey || event.ctrlKey) {
-                return;
-            }
-            const key = event.key;
-            if (key !== "") {
-                this.keyEvent(key, isPressed);
-                event.preventDefault();
-            }
-        };
-        const body = document.getElementsByTagName("body")[0];
-        body.addEventListener("keydown", (event) => keyEvent(event, true));
-        body.addEventListener("keyup", (event) => keyEvent(event, false));
-        body.addEventListener("paste", (event) => {
-            // Don't do anything if we're not active.
-            if (!this.interceptKeys) {
-                return;
-            }
-            if (event.clipboardData) {
-                const pastedText = event.clipboardData.getData("text/plain");
-                if (pastedText) {
-                    this.simulateKeyboardText(pastedText);
-                }
-            }
-            event.preventDefault();
-        });
-    }
-    /**
-     * Simulate this text being entered by the user.
-     */
-    simulateKeyboardText(text) {
-        for (let ch of text) {
-            if (ch === "\n" || ch === "\r") {
-                ch = "Enter";
-            }
-            this.keyEvent(ch, true);
-            this.keyEvent(ch, false);
-        }
-    }
-    // Dequeue the next key and set its bit. Return whether a key was processed.
-    processKeyQueue() {
-        const keyActivity = this.keyQueue.shift();
-        if (keyActivity === undefined) {
-            return false;
-        }
-        this.shiftForce = keyActivity.keyInfo.shiftForce;
-        const bit = 1 << keyActivity.keyInfo.bitNumber;
-        if (keyActivity.isPressed) {
-            this.keys[keyActivity.keyInfo.byteIndex] |= bit;
-        }
-        else {
-            this.keys[keyActivity.keyInfo.byteIndex] &= ~bit;
-        }
-        return true;
-    }
-}
-exports.Keyboard = Keyboard;
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.model1Level1Rom = void 0;
-exports.model1Level1Rom = `
-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
-`;
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.model1Level2Rom = void 0;
-exports.model1Level2Rom = `
-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
-`;
-
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.model3Rom = void 0;
-exports.model3Rom = `
-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
-`;
-
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Floppy disk controller for the TRS-80.
- *
- * References:
- *
- * https://hansotten.file-hunter.com/technical-info/wd1793/
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.FloppyDiskController = void 0;
-const trs80_base_1 = __webpack_require__(1);
-const strongly_typed_events_1 = __webpack_require__(74);
-const z80_base_1 = __webpack_require__(0);
-const EventScheduler_1 = __webpack_require__(38);
-// Whether this controller supports writing.
-const SUPPORT_WRITING = false;
-// Number of physical drives.
-const DRIVE_COUNT = 4;
-// Width of the index hole as a fraction of the circumference.
-const HOLE_WIDTH = 0.01;
-// Speed of disk.
-const RPM = 300;
-// How long the disk motor stays on after drive selected, in seconds.
-const MOTOR_TIME_AFTER_SELECT = 2;
-/**
- * Converts boolean for "back" to a Side.
- */
-function booleanToSide(back) {
-    return back ? trs80_base_1.Side.BACK : trs80_base_1.Side.FRONT;
-}
-// Type I status bits.
-const STATUS_BUSY = 0x01; // Whether a command is in progress.
-const STATUS_INDEX = 0x02; // The head is currently over the index hole.
-const STATUS_TRACK_ZERO = 0x04; // Head is on track 0.
-const STATUS_CRC_ERROR = 0x08; // CRC error.
-const STATUS_SEEK_ERROR = 0x10; // Seek error.
-const STATUS_HEAD_ENGAGED = 0x20; // Head engaged.
-const STATUS_WRITE_PROTECTED = 0x40; // Write-protected.
-const STATUS_NOT_READY = 0x80; // Disk not ready (motor not running).
-// Type II and III status bits.
-//    STATUS_BUSY = 0x01;
-const STATUS_DRQ = 0x02; // Data is ready to be read or written.
-const STATUS_LOST_DATA = 0x04; // CPU was too slow to read.
-//    STATUS_CRC_ERROR = 0x08;
-const STATUS_NOT_FOUND = 0x10; // Track, sector, or side were not found.
-const STATUS_DELETED = 0x20; // On read: Sector was deleted (data is invalid, 0xF8 DAM).
-const STATUS_FAULT = 0x20; // On write: Indicates a write fault.
-const STATUS_REC_TYPE = 0x60;
-//    STATUS_WRITE_PROTECTED = 0x40;
-//    STATUS_NOT_READY = 0x80;
-// Select register bits for writeSelect().
-const SELECT_DRIVE_0 = 0x01;
-const SELECT_DRIVE_1 = 0x02;
-const SELECT_DRIVE_2 = 0x04;
-const SELECT_DRIVE_3 = 0x08;
-const SELECT_SIDE = 0x10; // 0 = front, 1 = back.
-const SELECT_PRECOMP = 0x20;
-const SELECT_WAIT = 0x40; // Controller should block OUT until operation is done.
-const SELECT_MFM = 0x80; // Double density.
-const SELECT_DRIVE_MASK = SELECT_DRIVE_0 | SELECT_DRIVE_1 | SELECT_DRIVE_2 | SELECT_DRIVE_3;
-// Type of command (see below for specific commands in each type).
-var CommandType;
-(function (CommandType) {
-    CommandType[CommandType["TYPE_I"] = 0] = "TYPE_I";
-    CommandType[CommandType["TYPE_II"] = 1] = "TYPE_II";
-    CommandType[CommandType["TYPE_III"] = 2] = "TYPE_III";
-    CommandType[CommandType["TYPE_IV"] = 3] = "TYPE_IV";
-})(CommandType || (CommandType = {}));
-// Commands and various sub-flags.
-const COMMAND_MASK = 0xF0;
-// Type I commands: cccchvrr, where
-//     cccc = command number
-//     h = head load
-//     v = verify (i.e., read next address to check we're on the right track)
-//     rr = step rate:  00=6ms, 01=12ms, 10=20ms, 11=40ms
-const COMMAND_RESTORE = 0x00;
-const COMMAND_SEEK = 0x10;
-const COMMAND_STEP = 0x20; // Doesn't update track register.
-const COMMAND_STEPU = 0x30; // Updates track register.
-const COMMAND_STEP_IN = 0x40;
-const COMMAND_STEP_INU = 0x50;
-const COMMAND_STEP_OUT = 0x60;
-const COMMAND_STEP_OUTU = 0x70;
-const MASK_H = 0x08;
-const MASK_V = 0x04;
-// Type II commands: ccccbecd, where
-//     cccc = command number
-//     e = delay for head engage (10ms)
-//     b = side expected
-//     c = side compare (0=disable, 1=enable)
-//     d = select data address mark (writes only, 0 for reads):
-//         0=FB (normal), 1=F8 (deleted)
-const COMMAND_READ = 0x80; // Single sector.
-const COMMAND_READM = 0x90; // Multiple sectors.
-const COMMAND_WRITE = 0xA0;
-const COMMAND_WRITEM = 0xB0;
-const MASK_B = 0x08; // Side (0 = front, 1 = back).
-const MASK_E = 0x04;
-const MASK_C = 0x02; // Whether side (MASK_B) is defined.
-const MASK_D = 0x01; // Deleted: 0 = Data is valid, DAM is 0xFB; 1 = Data is invalid, DAM is 0xF8.
-// Type III commands: ccccxxxs (?), where
-//     cccc = command number
-//     xxx = ?? (usually 010)
-//     s = 1=READ_TRACK no synchronize; otherwise 0
-const COMMAND_READ_ADDRESS = 0xC0;
-const COMMAND_READ_TRACK = 0xE0;
-const COMMAND_WRITE_TRACK = 0xF0;
-// Type IV command: cccciiii, where
-//     cccc = command number
-//     iiii = bitmask of events to terminate and interrupt on (unused on TRS-80).
-//            0000 for immediate terminate with no interrupt.
-const COMMAND_FORCE_INTERRUPT = 0xD0;
-/**
- * Given a command, returns its type.
- */
-function getCommandType(command) {
-    switch (command & COMMAND_MASK) {
-        case COMMAND_RESTORE:
-        case COMMAND_SEEK:
-        case COMMAND_STEP:
-        case COMMAND_STEPU:
-        case COMMAND_STEP_IN:
-        case COMMAND_STEP_INU:
-        case COMMAND_STEP_OUT:
-        case COMMAND_STEP_OUTU:
-            return CommandType.TYPE_I;
-        case COMMAND_READ:
-        case COMMAND_READM:
-        case COMMAND_WRITE:
-        case COMMAND_WRITEM:
-            return CommandType.TYPE_II;
-        case COMMAND_READ_ADDRESS:
-        case COMMAND_READ_TRACK:
-        case COMMAND_WRITE_TRACK:
-            return CommandType.TYPE_III;
-        case COMMAND_FORCE_INTERRUPT:
-            return CommandType.TYPE_IV;
-        default:
-            throw new Error("Unknown command 0x" + z80_base_1.toHexByte(command));
-    }
-}
-/**
- * Whether a command is for reading or writing.
- */
-function isReadWriteCommand(command) {
-    switch (getCommandType(command)) {
-        case CommandType.TYPE_II:
-        case CommandType.TYPE_III:
-            return true;
-        default:
-            return false;
-    }
-}
-/**
- * State of a physical drive.
- */
-class FloppyDrive {
-    constructor() {
-        this.physicalTrack = 0;
-        this.writeProtected = true;
-        this.floppyDisk = undefined;
-    }
-}
-/**
- * The disk controller. We only emulate the WD1791/93, not the Model I's WD1771.
- */
-class FloppyDiskController {
-    constructor(foo) {
-        // Registers.
-        this.status = STATUS_TRACK_ZERO | STATUS_NOT_READY;
-        this.track = 0;
-        this.sector = 0;
-        this.data = 0;
-        // Internal state.
-        this.currentCommand = COMMAND_RESTORE;
-        this.side = trs80_base_1.Side.FRONT;
-        this.doubleDensity = false;
-        this.currentDrive = 0;
-        this.motorOn = false;
-        // ID index found in by last COMMAND_READ_ADDRESS.
-        this.lastReadAddress = undefined;
-        // State for current command.
-        this.dataIndex = 0;
-        this.sectorData = undefined;
-        // Floppy drives.
-        this.drives = [];
-        // Timeout handle for turning off the motor.
-        this.motorOffTimeoutHandle = undefined;
-        // Which drive is currently active, for lighting up an LED.
-        this.onMotorOn = new strongly_typed_events_1.SimpleEventDispatcher();
-        this.machine = foo;
-        for (let i = 0; i < DRIVE_COUNT; i++) {
-            this.drives.push(new FloppyDrive());
-        }
-    }
-    /**
-     * Put a floppy in the specified drive (0 to 3).
-     */
-    loadFloppyDisk(floppyDisk, driveNumber) {
-        if (driveNumber < 0 || driveNumber >= this.drives.length) {
-            throw new Error("Invalid drive number " + driveNumber);
-        }
-        this.drives[driveNumber].floppyDisk = floppyDisk;
-    }
-    readStatus() {
-        // If no disk was loaded into drive 0, just pretend that we don't
-        // have a disk system. Otherwise we have to hold down Break while
-        // booting (to get to cassette BASIC) and that's annoying.
-        if (this.drives[0].floppyDisk === undefined) {
-            return 0xFF;
-        }
-        this.updateStatus();
-        // Clear interrupt.
-        this.machine.diskIntrqInterrupt(false);
-        return this.status;
-    }
-    readTrack() {
-        return this.track;
-    }
-    readSector() {
-        return this.sector;
-    }
-    /**
-     * Read a byte of data from the sector.
-     */
-    readData() {
-        const drive = this.drives[this.currentDrive];
-        // The read command can do various things depending on the specific
-        // current command, but we only support reading from the diskette.
-        switch (this.currentCommand & COMMAND_MASK) {
-            case COMMAND_READ:
-                // Keep reading from the buffer.
-                if (this.sectorData !== undefined && (this.status & STATUS_DRQ) !== 0 && drive.floppyDisk !== undefined) {
-                    this.data = this.sectorData.data[this.dataIndex];
-                    this.dataIndex++;
-                    if (this.dataIndex >= this.sectorData.data.length) {
-                        this.sectorData = undefined;
-                        this.status &= ~STATUS_DRQ;
-                        this.machine.diskDrqInterrupt(false);
-                        this.machine.eventScheduler.cancelByEventTypeMask(EventScheduler_1.EventType.DISK_LOST_DATA);
-                        this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_DONE, this.machine.tStateCount + 64, () => this.done(0));
-                    }
-                }
-                break;
-            default:
-                // Might be okay, not sure.
-                throw new Error("Unhandled case in readData()");
-        }
-        return this.data;
-    }
-    /**
-     * Set current command.
-     */
-    writeCommand(cmd) {
-        const drive = this.drives[this.currentDrive];
-        // Cancel "lost data" event.
-        this.machine.eventScheduler.cancelByEventTypeMask(EventScheduler_1.EventType.DISK_LOST_DATA);
-        this.machine.diskIntrqInterrupt(false);
-        this.sectorData = undefined;
-        this.currentCommand = cmd;
-        // Kick off anything that's based on the command.
-        switch (cmd & COMMAND_MASK) {
-            case COMMAND_RESTORE:
-                this.lastReadAddress = undefined;
-                drive.physicalTrack = 0;
-                this.track = 0;
-                this.status = STATUS_TRACK_ZERO | STATUS_BUSY;
-                if ((cmd & MASK_V) != 0) {
-                    this.verify();
-                }
-                this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_DONE, this.machine.tStateCount + 2000, () => this.done(0));
-                break;
-            case COMMAND_SEEK:
-                this.lastReadAddress = undefined;
-                drive.physicalTrack += this.data - this.track;
-                this.track = this.data;
-                if (drive.physicalTrack <= 0) {
-                    // this.track too?
-                    drive.physicalTrack = 0;
-                    this.status = STATUS_TRACK_ZERO | STATUS_BUSY;
-                }
-                else {
-                    this.status = STATUS_BUSY;
-                }
-                // Should this set lastDirection?
-                if ((cmd & MASK_V) != 0) {
-                    this.verify();
-                }
-                this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_DONE, this.machine.tStateCount + 2000, () => this.done(0));
-                break;
-            case COMMAND_READ:
-                // Read the sector. The bytes will be read later.
-                this.lastReadAddress = undefined;
-                this.status = STATUS_BUSY;
-                // Not sure how to use this. Ignored for now:
-                const goalSide = (cmd & MASK_C) === 0 ? undefined : booleanToSide((cmd & MASK_B) !== 0);
-                console.log(`Sector read: ${drive.physicalTrack}, ${this.sector}, ${this.side}`);
-                const sectorData = drive.floppyDisk === undefined
-                    ? undefined
-                    : drive.floppyDisk.readSector(drive.physicalTrack, this.side, this.sector);
-                if (sectorData === undefined) {
-                    this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_DONE, this.machine.tStateCount + 512, () => this.done(0));
-                    console.error(`Didn't find sector ${this.sector} on track ${drive.physicalTrack}`);
-                }
-                else {
-                    let newStatus = 0;
-                    if (sectorData.deleted) {
-                        newStatus |= STATUS_DELETED;
-                    }
-                    if (sectorData.crcError) {
-                        newStatus |= STATUS_CRC_ERROR;
-                    }
-                    this.sectorData = sectorData;
-                    this.dataIndex = 0;
-                    this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_FIRST_DRQ, this.machine.tStateCount + 64, () => this.firstDrq(newStatus));
-                }
-                break;
-            case COMMAND_WRITE:
-                console.log(`Sector write: ${drive.physicalTrack}, ${this.sector}, ${this.side}`);
-                this.status = STATUS_WRITE_PROTECTED;
-                break;
-            case COMMAND_FORCE_INTERRUPT:
-                // Stop whatever is going on and forget it.
-                this.machine.eventScheduler.cancelByEventTypeMask(EventScheduler_1.EventType.DISK_ALL);
-                this.status = 0;
-                this.updateStatus();
-                if ((cmd & 0x07) !== 0) {
-                    throw new Error("Conditional interrupt features not implemented");
-                }
-                else if ((cmd & 0x08) !== 0) {
-                    // Immediate interrupt.
-                    this.machine.diskIntrqInterrupt(true);
-                }
-                else {
-                    this.machine.diskIntrqInterrupt(false);
-                }
-                break;
-            default:
-                throw new Error("Don't handle command 0x" + z80_base_1.toHexByte(cmd));
-        }
-    }
-    writeTrack(track) {
-        this.track = track;
-    }
-    writeSector(sector) {
-        this.sector = sector;
-    }
-    writeData(data) {
-        const command = this.currentCommand & COMMAND_MASK;
-        if (command === COMMAND_WRITE || command === COMMAND_WRITE_TRACK) {
-            throw new Error("Can't yet write data");
-        }
-        this.data = data;
-    }
-    /**
-     * Select a drive.
-     */
-    writeSelect(value) {
-        this.status &= ~STATUS_NOT_READY;
-        this.side = booleanToSide((value & SELECT_SIDE) !== 0);
-        this.doubleDensity = (value & SELECT_MFM) != 0;
-        if ((value & SELECT_WAIT) != 0) {
-            // If there was an event pending, simulate waiting until it was due.
-            const event = this.machine.eventScheduler.getFirstEvent(EventScheduler_1.EventType.DISK_ALL & ~EventScheduler_1.EventType.DISK_LOST_DATA);
-            if (event !== undefined) {
-                // This puts the clock ahead immediately, but the main loop of the emulator
-                // will then sleep to make the real-time correct.
-                // TODO is this legit? Can we use another method?
-                this.machine.tStateCount = event.tStateCount;
-                this.machine.eventScheduler.dispatch(this.machine.tStateCount);
-            }
-        }
-        // Which drive is being enabled?
-        const previousDrive = this.currentDrive;
-        switch (value & SELECT_DRIVE_MASK) {
-            case 0:
-                this.status |= STATUS_NOT_READY;
-                break;
-            case SELECT_DRIVE_0:
-                this.currentDrive = 0;
-                break;
-            case SELECT_DRIVE_1:
-                this.currentDrive = 1;
-                break;
-            case SELECT_DRIVE_2:
-                this.currentDrive = 2;
-                break;
-            case SELECT_DRIVE_3:
-                this.currentDrive = 3;
-                break;
-            default:
-                throw new Error("Not drive specified in select: 0x" + z80_base_1.toHexByte(value));
-        }
-        if (this.currentDrive !== previousDrive) {
-            this.updateMotorOn();
-        }
-        // If a drive was selected, turn on its motor.
-        if ((this.status & STATUS_NOT_READY) == 0) {
-            this.setMotorOn(true);
-            // Set timer to later turn off motor.
-            if (this.motorOffTimeoutHandle !== undefined) {
-                this.machine.eventScheduler.cancel(this.motorOffTimeoutHandle);
-            }
-            this.motorOffTimeoutHandle = this.machine.eventScheduler.add(undefined, this.machine.tStateCount + MOTOR_TIME_AFTER_SELECT * this.machine.clockHz, () => {
-                this.motorOffTimeoutHandle = undefined;
-                this.status |= STATUS_NOT_READY;
-                this.setMotorOn(false);
-            });
-        }
-    }
-    /**
-     * Verify that head is on the expected track. Set either STATUS_NOT_FOUND or
-     * STATUS_SEEK_ERROR if a problem is found.
-     */
-    verify() {
-        const drive = this.drives[this.currentDrive];
-        if (drive.floppyDisk === undefined) {
-            this.status |= STATUS_NOT_FOUND;
-        }
-        else if (drive.physicalTrack !== this.track) {
-            this.status |= STATUS_SEEK_ERROR;
-        }
-        else {
-            // Make sure a sector exists on this track.
-            const sectorData = drive.floppyDisk.readSector(this.track, trs80_base_1.Side.FRONT, undefined);
-            if (sectorData === undefined) {
-                this.status |= STATUS_NOT_FOUND;
-            }
-            if (this.doubleDensity && !drive.floppyDisk.supportsDoubleDensity) {
-                this.status |= STATUS_NOT_FOUND;
-            }
-        }
-    }
-    /**
-     * If we're doing a non-read/write command, update the status with the state
-     * of the disk, track, and head position.
-     */
-    updateStatus() {
-        if (isReadWriteCommand(this.currentCommand)) {
-            // Don't modify status.
-            return;
-        }
-        const drive = this.drives[this.currentDrive];
-        if (drive.floppyDisk === undefined) {
-            this.status |= STATUS_INDEX;
-        }
-        else {
-            // See if we're over the index hole.
-            if (this.angle() < HOLE_WIDTH) {
-                this.status |= STATUS_INDEX;
-            }
-            else {
-                this.status &= ~STATUS_INDEX;
-            }
-            // See if the diskette is write protected.
-            if (drive.writeProtected || !SUPPORT_WRITING) {
-                this.status |= STATUS_WRITE_PROTECTED;
-            }
-            else {
-                this.status &= ~STATUS_WRITE_PROTECTED;
-            }
-        }
-        // See if we're on track 0, which for some reason has a special bit.
-        if (drive.physicalTrack === 0) {
-            this.status |= STATUS_TRACK_ZERO;
-        }
-        else {
-            this.status &= ~STATUS_TRACK_ZERO;
-        }
-        // RDY and HLT inputs are wired together on TRS-80 I/III/4/4P.
-        if ((this.status & STATUS_NOT_READY) !== 0) {
-            this.status &= ~STATUS_HEAD_ENGAGED;
-        }
-        else {
-            this.status |= STATUS_HEAD_ENGAGED;
-        }
-    }
-    /**
-     * Turn motor on or off.
-     */
-    setMotorOn(motorOn) {
-        if (motorOn !== this.motorOn) {
-            this.motorOn = motorOn;
-            this.machine.diskMotorOffInterrupt(!motorOn);
-            this.updateMotorOn();
-        }
-    }
-    /**
-     * Dispatch a change to the motor light.
-     */
-    updateMotorOn() {
-        this.onMotorOn.dispatch(this.motorOn ? this.currentDrive : undefined);
-    }
-    // Return a value in [0,1) indicating how far we've rotated
-    // from the leading edge of the index hole. For the first HOLE_WIDTH we're
-    // on the hole itself.
-    angle() {
-        // Use simulated time.
-        const clocksPerRevolution = Math.round(this.machine.clockHz / (RPM / 60));
-        return (this.machine.tStateCount % clocksPerRevolution) / clocksPerRevolution;
-    }
-    /**
-     * Event used for delayed command completion.  Clears BUSY,
-     * sets any additional bits specified, and generates a command
-     * completion interrupt.
-     */
-    done(bits) {
-        this.status &= ~STATUS_BUSY;
-        this.status |= bits;
-        this.machine.diskIntrqInterrupt(true);
-    }
-    /**
-     * Event to abort the last command with LOST_DATA if it is
-     * still in progress.
-     */
-    lostData(cmd) {
-        if (this.currentCommand === cmd) {
-            this.status &= ~STATUS_BUSY;
-            this.status |= STATUS_LOST_DATA;
-            this.sectorData = undefined;
-            this.machine.diskIntrqInterrupt(true);
-        }
-    }
-    /**
-     * Event used as a delayed command start. Sets DRQ, generates a DRQ interrupt,
-     * sets any additional bits specified, and schedules a lostData() event.
-     */
-    firstDrq(bits) {
-        this.status |= STATUS_DRQ | bits;
-        this.machine.diskDrqInterrupt(true);
-        // Evaluate this now, not when the callback is run.
-        const currentCommand = this.currentCommand;
-        // If we've not finished our work within half a second, trigger a lost data interrupt.
-        this.machine.eventScheduler.add(EventScheduler_1.EventType.DISK_LOST_DATA, this.machine.tStateCount + this.machine.clockHz / 2, () => this.lostData(currentCommand));
-    }
-}
-exports.FloppyDiskController = FloppyDiskController;
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformPromiseSimpleEventList = exports.PromiseSimpleEventList = exports.PromiseSimpleEventHandlingBase = exports.PromiseSimpleEventDispatcher = exports.PromiseSignalList = exports.PromiseSignalHandlingBase = exports.PromiseSignalDispatcher = exports.NonUniformPromiseEventList = exports.PromiseEventList = exports.PromiseEventHandlingBase = exports.PromiseEventDispatcher = exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = exports.HandlingBase = exports.PromiseDispatcherBase = exports.PromiseSubscription = exports.DispatchError = exports.EventManagement = exports.EventListBase = exports.DispatcherWrapper = exports.DispatcherBase = exports.Subscription = void 0;
-var ste_core_1 = __webpack_require__(4);
-Object.defineProperty(exports, "Subscription", { enumerable: true, get: function () { return ste_core_1.Subscription; } });
-Object.defineProperty(exports, "DispatcherBase", { enumerable: true, get: function () { return ste_core_1.DispatcherBase; } });
-Object.defineProperty(exports, "DispatcherWrapper", { enumerable: true, get: function () { return ste_core_1.DispatcherWrapper; } });
-Object.defineProperty(exports, "EventListBase", { enumerable: true, get: function () { return ste_core_1.EventListBase; } });
-Object.defineProperty(exports, "EventManagement", { enumerable: true, get: function () { return ste_core_1.EventManagement; } });
-Object.defineProperty(exports, "DispatchError", { enumerable: true, get: function () { return ste_core_1.DispatchError; } });
-Object.defineProperty(exports, "PromiseSubscription", { enumerable: true, get: function () { return ste_core_1.PromiseSubscription; } });
-Object.defineProperty(exports, "PromiseDispatcherBase", { enumerable: true, get: function () { return ste_core_1.PromiseDispatcherBase; } });
-Object.defineProperty(exports, "HandlingBase", { enumerable: true, get: function () { return ste_core_1.HandlingBase; } });
-var ste_events_1 = __webpack_require__(84);
-Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return ste_events_1.EventDispatcher; } });
-Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return ste_events_1.EventHandlingBase; } });
-Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return ste_events_1.EventList; } });
-Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return ste_events_1.NonUniformEventList; } });
-var ste_simple_events_1 = __webpack_require__(87);
-Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventDispatcher; } });
-Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventHandlingBase; } });
-Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.SimpleEventList; } });
-Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return ste_simple_events_1.NonUniformSimpleEventList; } });
-var ste_signals_1 = __webpack_require__(90);
-Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return ste_signals_1.SignalDispatcher; } });
-Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return ste_signals_1.SignalHandlingBase; } });
-Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return ste_signals_1.SignalList; } });
-var ste_promise_events_1 = __webpack_require__(92);
-Object.defineProperty(exports, "PromiseEventDispatcher", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventDispatcher; } });
-Object.defineProperty(exports, "PromiseEventHandlingBase", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventHandlingBase; } });
-Object.defineProperty(exports, "PromiseEventList", { enumerable: true, get: function () { return ste_promise_events_1.PromiseEventList; } });
-Object.defineProperty(exports, "NonUniformPromiseEventList", { enumerable: true, get: function () { return ste_promise_events_1.NonUniformPromiseEventList; } });
-var ste_promise_signals_1 = __webpack_require__(35);
-Object.defineProperty(exports, "PromiseSignalDispatcher", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalDispatcher; } });
-Object.defineProperty(exports, "PromiseSignalHandlingBase", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalHandlingBase; } });
-Object.defineProperty(exports, "PromiseSignalList", { enumerable: true, get: function () { return ste_promise_signals_1.PromiseSignalList; } });
-var ste_promise_simple_events_1 = __webpack_require__(115);
-Object.defineProperty(exports, "PromiseSimpleEventDispatcher", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventDispatcher; } });
-Object.defineProperty(exports, "PromiseSimpleEventHandlingBase", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventHandlingBase; } });
-Object.defineProperty(exports, "PromiseSimpleEventList", { enumerable: true, get: function () { return ste_promise_simple_events_1.PromiseSimpleEventList; } });
-Object.defineProperty(exports, "NonUniformPromiseSimpleEventList", { enumerable: true, get: function () { return ste_promise_simple_events_1.NonUniformPromiseSimpleEventList; } });
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(4);
-/**
- * Base class for implementation of the dispatcher. It facilitates the subscribe
- * and unsubscribe methods based on generic handlers. The TEventType specifies
- * the type of event that should be exposed. Use the asEvent to expose the
- * dispatcher as event.
- */
-class DispatcherBase {
-    constructor() {
-        this._wrap = new __1.DispatcherWrapper(this);
-        this._subscriptions = new Array();
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     *
-     * @memberOf DispatcherBase
-     */
-    get count() {
-        return this._subscriptions.length;
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, false));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    one(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, true));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        if (!fn)
-            return false;
-        return this._subscriptions.some((sub) => sub.handler == fn);
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsubscribe(fn) {
-        if (!fn)
-            return;
-        for (let i = 0; i < this._subscriptions.length; i++) {
-            if (this._subscriptions[i].handler == fn) {
-                this._subscriptions.splice(i, 1);
-                break;
-            }
-        }
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    _dispatch(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let s = sub;
-            s.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.Subscription(handler, isOnce);
-    }
-    /**
-     * Cleans up subs that ran and should run only once.
-     */
-    cleanup(sub) {
-        if (sub.isOnce && sub.isExecuted) {
-            let i = this._subscriptions.indexOf(sub);
-            if (i > -1) {
-                this._subscriptions.splice(i, 1);
-            }
-        }
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return this._wrap;
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._subscriptions.splice(0, this._subscriptions.length);
-    }
-}
-exports.DispatcherBase = DispatcherBase;
-
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatchError = void 0;
-/**
- * Indicates an error with dispatching.
- *
- * @export
- * @class DispatchError
- * @extends {Error}
- */
-class DispatchError extends Error {
-    constructor(message) {
-        super(message);
-    }
-}
-exports.DispatchError = DispatchError;
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherWrapper = void 0;
-/**
- * Hides the implementation of the event dispatcher. Will expose methods that
- * are relevent to the event.
- */
-class DispatcherWrapper {
-    /**
-     * Creates a new EventDispatcherWrapper instance.
-     * @param dispatcher The dispatcher.
-     */
-    constructor(dispatcher) {
-        this._subscribe = (fn) => dispatcher.subscribe(fn);
-        this._unsubscribe = (fn) => dispatcher.unsubscribe(fn);
-        this._one = (fn) => dispatcher.one(fn);
-        this._has = (fn) => dispatcher.has(fn);
-        this._clear = () => dispatcher.clear();
-        this._count = () => dispatcher.count;
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     * @type {number}
-     * @memberOf DispatcherWrapper
-     */
-    get count() {
-        return this._count();
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        return this._subscribe(fn);
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsubscribe(fn) {
-        this._unsubscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    one(fn) {
-        return this._one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        return this._has(fn);
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._clear();
-    }
-}
-exports.DispatcherWrapper = DispatcherWrapper;
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventListBase = void 0;
-/**
- * Base class for event lists classes. Implements the get and remove.
- */
-class EventListBase {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        let event = this._events[name];
-        if (event) {
-            return event;
-        }
-        event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-}
-exports.EventListBase = EventListBase;
-
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventManagement = void 0;
-/**
- * Allows the user to interact with the event.
- *
- * @class EventManagement
- * @implements {IEventManagement}
- */
-class EventManagement {
-    constructor(unsub) {
-        this.unsub = unsub;
-        this.propagationStopped = false;
-    }
-    stopPropagation() {
-        this.propagationStopped = true;
-    }
-}
-exports.EventManagement = EventManagement;
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = void 0;
-/**
- * Base class that implements event handling. With a an
- * event list this base class will expose events that can be
- * subscribed to. This will give your class generic events.
- *
- * @export
- * @abstract
- * @class HandlingBase
- * @template TEventHandler
- * @template TDispatcher
- * @template TList
- */
-class HandlingBase {
-    constructor(events) {
-        this.events = events;
-    }
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    one(name, fn) {
-        this.events.get(name).one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    has(name, fn) {
-        return this.events.get(name).has(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    subscribe(name, fn) {
-        this.events.get(name).subscribe(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    sub(name, fn) {
-        this.subscribe(name, fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsubscribe(name, fn) {
-        this.events.get(name).unsubscribe(fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsub(name, fn) {
-        this.unsubscribe(name, fn);
-    }
-}
-exports.HandlingBase = HandlingBase;
-
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(4);
-class PromiseDispatcherBase extends __1.DispatcherBase {
-    constructor() {
-        super();
-    }
-    _dispatch(executeAsync, scope, args) {
-        throw new __1.DispatchError("_dispatch not supported. Use _dispatchAsPromise.");
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.PromiseSubscription(handler, isOnce);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    async _dispatchAsPromise(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let ps = sub;
-            await ps.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-}
-exports.PromiseDispatcherBase = PromiseDispatcherBase;
-
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSubscription = void 0;
-class PromiseSubscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    async execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            //TODO: do we need to cast to any -- seems yuck
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-                return;
-            }
-            let result = fn.apply(scope, args);
-            await result;
-        }
-    }
-}
-exports.PromiseSubscription = PromiseSubscription;
-
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Subscription = void 0;
-/**
- * Stores a handler. Manages execution meta data.
- * @class Subscription
- * @template TEventHandler
- */
-class Subscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-            }
-            else {
-                fn.apply(scope, args);
-            }
-        }
-    }
-}
-exports.Subscription = Subscription;
-
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformEventList = exports.EventList = exports.EventHandlingBase = exports.EventDispatcher = void 0;
-const EventDispatcher_1 = __webpack_require__(16);
-Object.defineProperty(exports, "EventDispatcher", { enumerable: true, get: function () { return EventDispatcher_1.EventDispatcher; } });
-const EventHandlingBase_1 = __webpack_require__(85);
-Object.defineProperty(exports, "EventHandlingBase", { enumerable: true, get: function () { return EventHandlingBase_1.EventHandlingBase; } });
-const EventList_1 = __webpack_require__(30);
-Object.defineProperty(exports, "EventList", { enumerable: true, get: function () { return EventList_1.EventList; } });
-const NonUniformEventList_1 = __webpack_require__(86);
-Object.defineProperty(exports, "NonUniformEventList", { enumerable: true, get: function () { return NonUniformEventList_1.NonUniformEventList; } });
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(4);
-const EventList_1 = __webpack_require__(30);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class EventHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new EventList_1.EventList());
-    }
-}
-exports.EventHandlingBase = EventHandlingBase;
-
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformEventList = void 0;
-const EventDispatcher_1 = __webpack_require__(16);
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-class NonUniformEventList {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        const event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new EventDispatcher_1.EventDispatcher();
-    }
-}
-exports.NonUniformEventList = NonUniformEventList;
-
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformSimpleEventList = exports.SimpleEventList = exports.SimpleEventHandlingBase = exports.SimpleEventDispatcher = void 0;
-const SimpleEventDispatcher_1 = __webpack_require__(17);
-Object.defineProperty(exports, "SimpleEventDispatcher", { enumerable: true, get: function () { return SimpleEventDispatcher_1.SimpleEventDispatcher; } });
-const SimpleEventHandlingBase_1 = __webpack_require__(88);
-Object.defineProperty(exports, "SimpleEventHandlingBase", { enumerable: true, get: function () { return SimpleEventHandlingBase_1.SimpleEventHandlingBase; } });
-const NonUniformSimpleEventList_1 = __webpack_require__(89);
-Object.defineProperty(exports, "NonUniformSimpleEventList", { enumerable: true, get: function () { return NonUniformSimpleEventList_1.NonUniformSimpleEventList; } });
-const SimpleEventList_1 = __webpack_require__(31);
-Object.defineProperty(exports, "SimpleEventList", { enumerable: true, get: function () { return SimpleEventList_1.SimpleEventList; } });
-
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SimpleEventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(4);
-const SimpleEventList_1 = __webpack_require__(31);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class SimpleEventHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new SimpleEventList_1.SimpleEventList());
-    }
-}
-exports.SimpleEventHandlingBase = SimpleEventHandlingBase;
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformSimpleEventList = void 0;
-const SimpleEventDispatcher_1 = __webpack_require__(17);
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-class NonUniformSimpleEventList {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        const event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new SimpleEventDispatcher_1.SimpleEventDispatcher();
-    }
-}
-exports.NonUniformSimpleEventList = NonUniformSimpleEventList;
-
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Promise Signals
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SignalList = exports.SignalHandlingBase = exports.SignalDispatcher = void 0;
-const SignalDispatcher_1 = __webpack_require__(32);
-Object.defineProperty(exports, "SignalDispatcher", { enumerable: true, get: function () { return SignalDispatcher_1.SignalDispatcher; } });
-const SignalHandlingBase_1 = __webpack_require__(91);
-Object.defineProperty(exports, "SignalHandlingBase", { enumerable: true, get: function () { return SignalHandlingBase_1.SignalHandlingBase; } });
-const SignalList_1 = __webpack_require__(33);
-Object.defineProperty(exports, "SignalList", { enumerable: true, get: function () { return SignalList_1.SignalList; } });
-
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.SignalHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(4);
-const SignalList_1 = __webpack_require__(33);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class SignalHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new SignalList_1.SignalList());
-    }
-}
-exports.SignalHandlingBase = SignalHandlingBase;
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformPromiseEventList = exports.PromiseEventList = exports.PromiseEventHandlingBase = exports.PromiseEventDispatcher = void 0;
-const PromiseEventDispatcher_1 = __webpack_require__(18);
-Object.defineProperty(exports, "PromiseEventDispatcher", { enumerable: true, get: function () { return PromiseEventDispatcher_1.PromiseEventDispatcher; } });
-const PromiseEventHandlingBase_1 = __webpack_require__(102);
-Object.defineProperty(exports, "PromiseEventHandlingBase", { enumerable: true, get: function () { return PromiseEventHandlingBase_1.PromiseEventHandlingBase; } });
-const PromiseEventList_1 = __webpack_require__(34);
-Object.defineProperty(exports, "PromiseEventList", { enumerable: true, get: function () { return PromiseEventList_1.PromiseEventList; } });
-const NonUniformPromiseEventList_1 = __webpack_require__(103);
-Object.defineProperty(exports, "NonUniformPromiseEventList", { enumerable: true, get: function () { return NonUniformPromiseEventList_1.NonUniformPromiseEventList; } });
-
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(8);
-/**
- * Base class for implementation of the dispatcher. It facilitates the subscribe
- * and unsubscribe methods based on generic handlers. The TEventType specifies
- * the type of event that should be exposed. Use the asEvent to expose the
- * dispatcher as event.
- */
-class DispatcherBase {
-    constructor() {
-        this._wrap = new __1.DispatcherWrapper(this);
-        this._subscriptions = new Array();
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     *
-     * @memberOf DispatcherBase
-     */
-    get count() {
-        return this._subscriptions.length;
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, false));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    one(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, true));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        if (!fn)
-            return false;
-        return this._subscriptions.some((sub) => sub.handler == fn);
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsubscribe(fn) {
-        if (!fn)
-            return;
-        for (let i = 0; i < this._subscriptions.length; i++) {
-            if (this._subscriptions[i].handler == fn) {
-                this._subscriptions.splice(i, 1);
-                break;
-            }
-        }
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    _dispatch(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let s = sub;
-            s.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.Subscription(handler, isOnce);
-    }
-    /**
-     * Cleans up subs that ran and should run only once.
-     */
-    cleanup(sub) {
-        if (sub.isOnce && sub.isExecuted) {
-            let i = this._subscriptions.indexOf(sub);
-            if (i > -1) {
-                this._subscriptions.splice(i, 1);
-            }
-        }
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return this._wrap;
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._subscriptions.splice(0, this._subscriptions.length);
-    }
-}
-exports.DispatcherBase = DispatcherBase;
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatchError = void 0;
-/**
- * Indicates an error with dispatching.
- *
- * @export
- * @class DispatchError
- * @extends {Error}
- */
-class DispatchError extends Error {
-    constructor(message) {
-        super(message);
-    }
-}
-exports.DispatchError = DispatchError;
-
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherWrapper = void 0;
-/**
- * Hides the implementation of the event dispatcher. Will expose methods that
- * are relevent to the event.
- */
-class DispatcherWrapper {
-    /**
-     * Creates a new EventDispatcherWrapper instance.
-     * @param dispatcher The dispatcher.
-     */
-    constructor(dispatcher) {
-        this._subscribe = (fn) => dispatcher.subscribe(fn);
-        this._unsubscribe = (fn) => dispatcher.unsubscribe(fn);
-        this._one = (fn) => dispatcher.one(fn);
-        this._has = (fn) => dispatcher.has(fn);
-        this._clear = () => dispatcher.clear();
-        this._count = () => dispatcher.count;
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     * @type {number}
-     * @memberOf DispatcherWrapper
-     */
-    get count() {
-        return this._count();
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        return this._subscribe(fn);
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsubscribe(fn) {
-        this._unsubscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    one(fn) {
-        return this._one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        return this._has(fn);
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._clear();
-    }
-}
-exports.DispatcherWrapper = DispatcherWrapper;
-
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventListBase = void 0;
-/**
- * Base class for event lists classes. Implements the get and remove.
- */
-class EventListBase {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        let event = this._events[name];
-        if (event) {
-            return event;
-        }
-        event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-}
-exports.EventListBase = EventListBase;
-
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventManagement = void 0;
-/**
- * Allows the user to interact with the event.
- *
- * @class EventManagement
- * @implements {IEventManagement}
- */
-class EventManagement {
-    constructor(unsub) {
-        this.unsub = unsub;
-        this.propagationStopped = false;
-    }
-    stopPropagation() {
-        this.propagationStopped = true;
-    }
-}
-exports.EventManagement = EventManagement;
-
-
-/***/ }),
-/* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = void 0;
-/**
- * Base class that implements event handling. With a an
- * event list this base class will expose events that can be
- * subscribed to. This will give your class generic events.
- *
- * @export
- * @abstract
- * @class HandlingBase
- * @template TEventHandler
- * @template TDispatcher
- * @template TList
- */
-class HandlingBase {
-    constructor(events) {
-        this.events = events;
-    }
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    one(name, fn) {
-        this.events.get(name).one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    has(name, fn) {
-        return this.events.get(name).has(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    subscribe(name, fn) {
-        this.events.get(name).subscribe(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    sub(name, fn) {
-        this.subscribe(name, fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsubscribe(name, fn) {
-        this.events.get(name).unsubscribe(fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsub(name, fn) {
-        this.unsubscribe(name, fn);
-    }
-}
-exports.HandlingBase = HandlingBase;
-
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(8);
-class PromiseDispatcherBase extends __1.DispatcherBase {
-    constructor() {
-        super();
-    }
-    _dispatch(executeAsync, scope, args) {
-        throw new __1.DispatchError("_dispatch not supported. Use _dispatchAsPromise.");
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.PromiseSubscription(handler, isOnce);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    async _dispatchAsPromise(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let ps = sub;
-            await ps.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-}
-exports.PromiseDispatcherBase = PromiseDispatcherBase;
-
-
-/***/ }),
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSubscription = void 0;
-class PromiseSubscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    async execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            //TODO: do we need to cast to any -- seems yuck
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-                return;
-            }
-            let result = fn.apply(scope, args);
-            await result;
-        }
-    }
-}
-exports.PromiseSubscription = PromiseSubscription;
-
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Subscription = void 0;
-/**
- * Stores a handler. Manages execution meta data.
- * @class Subscription
- * @template TEventHandler
- */
-class Subscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-            }
-            else {
-                fn.apply(scope, args);
-            }
-        }
-    }
-}
-exports.Subscription = Subscription;
-
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseEventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(8);
-const PromiseEventList_1 = __webpack_require__(34);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class PromiseEventHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new PromiseEventList_1.PromiseEventList());
-    }
-}
-exports.PromiseEventHandlingBase = PromiseEventHandlingBase;
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformPromiseEventList = void 0;
-const PromiseEventDispatcher_1 = __webpack_require__(18);
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-class NonUniformPromiseEventList {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        const event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new PromiseEventDispatcher_1.PromiseEventDispatcher();
-    }
-}
-exports.NonUniformPromiseEventList = NonUniformPromiseEventList;
-
-
-/***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSignalDispatcher = void 0;
-const ste_core_1 = __webpack_require__(9);
-/**
- * The dispatcher handles the storage of subsciptions and facilitates
- * subscription, unsubscription and dispatching of a signal event.
- */
-class PromiseSignalDispatcher extends ste_core_1.PromiseDispatcherBase {
-    /**
-     * Creates a new SignalDispatcher instance.
-     */
-    constructor() {
-        super();
-    }
-    /**
-     * Dispatches the signal.
-     *
-     * @returns {IPropagationStatus} The status of the dispatch.
-     *
-     * @memberOf SignalDispatcher
-     */
-    async dispatch() {
-        const result = await this._dispatchAsPromise(false, this, arguments);
-        if (result == null) {
-            throw new ste_core_1.DispatchError("Got `null` back from dispatch.");
-        }
-        return result;
-    }
-    /**
-     * Dispatches the signal threaded.
-     */
-    dispatchAsync() {
-        this._dispatchAsPromise(true, this, arguments);
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return super.asEvent();
-    }
-}
-exports.PromiseSignalDispatcher = PromiseSignalDispatcher;
-
-
-/***/ }),
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(9);
-/**
- * Base class for implementation of the dispatcher. It facilitates the subscribe
- * and unsubscribe methods based on generic handlers. The TEventType specifies
- * the type of event that should be exposed. Use the asEvent to expose the
- * dispatcher as event.
- */
-class DispatcherBase {
-    constructor() {
-        this._wrap = new __1.DispatcherWrapper(this);
-        this._subscriptions = new Array();
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     *
-     * @memberOf DispatcherBase
-     */
-    get count() {
-        return this._subscriptions.length;
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, false));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    one(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, true));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        if (!fn)
-            return false;
-        return this._subscriptions.some((sub) => sub.handler == fn);
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsubscribe(fn) {
-        if (!fn)
-            return;
-        for (let i = 0; i < this._subscriptions.length; i++) {
-            if (this._subscriptions[i].handler == fn) {
-                this._subscriptions.splice(i, 1);
-                break;
-            }
-        }
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    _dispatch(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let s = sub;
-            s.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.Subscription(handler, isOnce);
-    }
-    /**
-     * Cleans up subs that ran and should run only once.
-     */
-    cleanup(sub) {
-        if (sub.isOnce && sub.isExecuted) {
-            let i = this._subscriptions.indexOf(sub);
-            if (i > -1) {
-                this._subscriptions.splice(i, 1);
-            }
-        }
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return this._wrap;
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._subscriptions.splice(0, this._subscriptions.length);
-    }
-}
-exports.DispatcherBase = DispatcherBase;
-
-
-/***/ }),
-/* 106 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatchError = void 0;
-/**
- * Indicates an error with dispatching.
- *
- * @export
- * @class DispatchError
- * @extends {Error}
- */
-class DispatchError extends Error {
-    constructor(message) {
-        super(message);
-    }
-}
-exports.DispatchError = DispatchError;
-
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherWrapper = void 0;
-/**
- * Hides the implementation of the event dispatcher. Will expose methods that
- * are relevent to the event.
- */
-class DispatcherWrapper {
-    /**
-     * Creates a new EventDispatcherWrapper instance.
-     * @param dispatcher The dispatcher.
-     */
-    constructor(dispatcher) {
-        this._subscribe = (fn) => dispatcher.subscribe(fn);
-        this._unsubscribe = (fn) => dispatcher.unsubscribe(fn);
-        this._one = (fn) => dispatcher.one(fn);
-        this._has = (fn) => dispatcher.has(fn);
-        this._clear = () => dispatcher.clear();
-        this._count = () => dispatcher.count;
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     * @type {number}
-     * @memberOf DispatcherWrapper
-     */
-    get count() {
-        return this._count();
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        return this._subscribe(fn);
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsubscribe(fn) {
-        this._unsubscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    one(fn) {
-        return this._one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        return this._has(fn);
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._clear();
-    }
-}
-exports.DispatcherWrapper = DispatcherWrapper;
-
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventListBase = void 0;
-/**
- * Base class for event lists classes. Implements the get and remove.
- */
-class EventListBase {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        let event = this._events[name];
-        if (event) {
-            return event;
-        }
-        event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-}
-exports.EventListBase = EventListBase;
-
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventManagement = void 0;
-/**
- * Allows the user to interact with the event.
- *
- * @class EventManagement
- * @implements {IEventManagement}
- */
-class EventManagement {
-    constructor(unsub) {
-        this.unsub = unsub;
-        this.propagationStopped = false;
-    }
-    stopPropagation() {
-        this.propagationStopped = true;
-    }
-}
-exports.EventManagement = EventManagement;
-
-
-/***/ }),
-/* 110 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = void 0;
-/**
- * Base class that implements event handling. With a an
- * event list this base class will expose events that can be
- * subscribed to. This will give your class generic events.
- *
- * @export
- * @abstract
- * @class HandlingBase
- * @template TEventHandler
- * @template TDispatcher
- * @template TList
- */
-class HandlingBase {
-    constructor(events) {
-        this.events = events;
-    }
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    one(name, fn) {
-        this.events.get(name).one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    has(name, fn) {
-        return this.events.get(name).has(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    subscribe(name, fn) {
-        this.events.get(name).subscribe(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    sub(name, fn) {
-        this.subscribe(name, fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsubscribe(name, fn) {
-        this.events.get(name).unsubscribe(fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsub(name, fn) {
-        this.unsubscribe(name, fn);
-    }
-}
-exports.HandlingBase = HandlingBase;
-
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(9);
-class PromiseDispatcherBase extends __1.DispatcherBase {
-    constructor() {
-        super();
-    }
-    _dispatch(executeAsync, scope, args) {
-        throw new __1.DispatchError("_dispatch not supported. Use _dispatchAsPromise.");
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.PromiseSubscription(handler, isOnce);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    async _dispatchAsPromise(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let ps = sub;
-            await ps.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-}
-exports.PromiseDispatcherBase = PromiseDispatcherBase;
-
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSubscription = void 0;
-class PromiseSubscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    async execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            //TODO: do we need to cast to any -- seems yuck
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-                return;
-            }
-            let result = fn.apply(scope, args);
-            await result;
-        }
-    }
-}
-exports.PromiseSubscription = PromiseSubscription;
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Subscription = void 0;
-/**
- * Stores a handler. Manages execution meta data.
- * @class Subscription
- * @template TEventHandler
- */
-class Subscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-            }
-            else {
-                fn.apply(scope, args);
-            }
-        }
-    }
-}
-exports.Subscription = Subscription;
-
-
-/***/ }),
-/* 114 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSignalHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(9);
-const PromiseSignalList_1 = __webpack_require__(36);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class PromiseSignalHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new PromiseSignalList_1.PromiseSignalList());
-    }
-}
-exports.PromiseSignalHandlingBase = PromiseSignalHandlingBase;
-
-
-/***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*!
- * Strongly Typed Events for TypeScript - Core
- * https://github.com/KeesCBakker/StronlyTypedEvents/
- * http://keestalkstech.com
- *
- * Copyright Kees C. Bakker / KeesTalksTech
- * Released under the MIT license
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformPromiseSimpleEventList = exports.PromiseSimpleEventList = exports.PromiseSimpleEventHandlingBase = exports.PromiseSimpleEventDispatcher = void 0;
-const NonUniformPromiseSimpleEventList_1 = __webpack_require__(116);
-Object.defineProperty(exports, "NonUniformPromiseSimpleEventList", { enumerable: true, get: function () { return NonUniformPromiseSimpleEventList_1.NonUniformPromiseSimpleEventList; } });
-const PromiseSimpleEventDispatcher_1 = __webpack_require__(19);
-Object.defineProperty(exports, "PromiseSimpleEventDispatcher", { enumerable: true, get: function () { return PromiseSimpleEventDispatcher_1.PromiseSimpleEventDispatcher; } });
-const PromiseSimpleEventHandlingBase_1 = __webpack_require__(126);
-Object.defineProperty(exports, "PromiseSimpleEventHandlingBase", { enumerable: true, get: function () { return PromiseSimpleEventHandlingBase_1.PromiseSimpleEventHandlingBase; } });
-const PromiseSimpleEventList_1 = __webpack_require__(37);
-Object.defineProperty(exports, "PromiseSimpleEventList", { enumerable: true, get: function () { return PromiseSimpleEventList_1.PromiseSimpleEventList; } });
-
-
-/***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.NonUniformPromiseSimpleEventList = void 0;
-const PromiseSimpleEventDispatcher_1 = __webpack_require__(19);
-/**
- * Similar to EventList, but instead of TArgs, a map of event names ang argument types is provided with TArgsMap.
- */
-class NonUniformPromiseSimpleEventList {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        if (this._events[name]) {
-            // @TODO avoid typecasting. Not sure why TS thinks this._events[name] could still be undefined.
-            return this._events[name];
-        }
-        const event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-    /**
-     * Creates a new dispatcher instance.
-     */
-    createDispatcher() {
-        return new PromiseSimpleEventDispatcher_1.PromiseSimpleEventDispatcher();
-    }
-}
-exports.NonUniformPromiseSimpleEventList = NonUniformPromiseSimpleEventList;
-
-
-/***/ }),
-/* 117 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherBase = void 0;
-const __1 = __webpack_require__(10);
-/**
- * Base class for implementation of the dispatcher. It facilitates the subscribe
- * and unsubscribe methods based on generic handlers. The TEventType specifies
- * the type of event that should be exposed. Use the asEvent to expose the
- * dispatcher as event.
- */
-class DispatcherBase {
-    constructor() {
-        this._wrap = new __1.DispatcherWrapper(this);
-        this._subscriptions = new Array();
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     *
-     * @memberOf DispatcherBase
-     */
-    get count() {
-        return this._subscriptions.length;
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, false));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    one(fn) {
-        if (fn) {
-            this._subscriptions.push(this.createSubscription(fn, true));
-        }
-        return () => {
-            this.unsubscribe(fn);
-        };
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        if (!fn)
-            return false;
-        return this._subscriptions.some((sub) => sub.handler == fn);
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsubscribe(fn) {
-        if (!fn)
-            return;
-        for (let i = 0; i < this._subscriptions.length; i++) {
-            if (this._subscriptions[i].handler == fn) {
-                this._subscriptions.splice(i, 1);
-                break;
-            }
-        }
-    }
-    /**
-     * Unsubscribes the handler from the dispatcher.
-     * @param fn The event handler.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    _dispatch(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let s = sub;
-            s.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.Subscription(handler, isOnce);
-    }
-    /**
-     * Cleans up subs that ran and should run only once.
-     */
-    cleanup(sub) {
-        if (sub.isOnce && sub.isExecuted) {
-            let i = this._subscriptions.indexOf(sub);
-            if (i > -1) {
-                this._subscriptions.splice(i, 1);
-            }
-        }
-    }
-    /**
-     * Creates an event from the dispatcher. Will return the dispatcher
-     * in a wrapper. This will prevent exposure of any dispatcher methods.
-     */
-    asEvent() {
-        return this._wrap;
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._subscriptions.splice(0, this._subscriptions.length);
-    }
-}
-exports.DispatcherBase = DispatcherBase;
-
-
-/***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatchError = void 0;
-/**
- * Indicates an error with dispatching.
- *
- * @export
- * @class DispatchError
- * @extends {Error}
- */
-class DispatchError extends Error {
-    constructor(message) {
-        super(message);
-    }
-}
-exports.DispatchError = DispatchError;
-
-
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DispatcherWrapper = void 0;
-/**
- * Hides the implementation of the event dispatcher. Will expose methods that
- * are relevent to the event.
- */
-class DispatcherWrapper {
-    /**
-     * Creates a new EventDispatcherWrapper instance.
-     * @param dispatcher The dispatcher.
-     */
-    constructor(dispatcher) {
-        this._subscribe = (fn) => dispatcher.subscribe(fn);
-        this._unsubscribe = (fn) => dispatcher.unsubscribe(fn);
-        this._one = (fn) => dispatcher.one(fn);
-        this._has = (fn) => dispatcher.has(fn);
-        this._clear = () => dispatcher.clear();
-        this._count = () => dispatcher.count;
-    }
-    /**
-     * Returns the number of subscriptions.
-     *
-     * @readonly
-     * @type {number}
-     * @memberOf DispatcherWrapper
-     */
-    get count() {
-        return this._count();
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    subscribe(fn) {
-        return this._subscribe(fn);
-    }
-    /**
-     * Subscribe to the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     * @returns A function that unsubscribes the event handler from the event.
-     */
-    sub(fn) {
-        return this.subscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsubscribe(fn) {
-        this._unsubscribe(fn);
-    }
-    /**
-     * Unsubscribe from the event dispatcher.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    unsub(fn) {
-        this.unsubscribe(fn);
-    }
-    /**
-     * Subscribe once to the event with the specified name.
-     * @param fn The event handler that is called when the event is dispatched.
-     */
-    one(fn) {
-        return this._one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param fn The event handler.
-     */
-    has(fn) {
-        return this._has(fn);
-    }
-    /**
-     * Clears all the subscriptions.
-     */
-    clear() {
-        this._clear();
-    }
-}
-exports.DispatcherWrapper = DispatcherWrapper;
-
-
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventListBase = void 0;
-/**
- * Base class for event lists classes. Implements the get and remove.
- */
-class EventListBase {
-    constructor() {
-        this._events = {};
-    }
-    /**
-     * Gets the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    get(name) {
-        let event = this._events[name];
-        if (event) {
-            return event;
-        }
-        event = this.createDispatcher();
-        this._events[name] = event;
-        return event;
-    }
-    /**
-     * Removes the dispatcher associated with the name.
-     * @param name The name of the event.
-     */
-    remove(name) {
-        delete this._events[name];
-    }
-}
-exports.EventListBase = EventListBase;
-
-
-/***/ }),
-/* 121 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.EventManagement = void 0;
-/**
- * Allows the user to interact with the event.
- *
- * @class EventManagement
- * @implements {IEventManagement}
- */
-class EventManagement {
-    constructor(unsub) {
-        this.unsub = unsub;
-        this.propagationStopped = false;
-    }
-    stopPropagation() {
-        this.propagationStopped = true;
-    }
-}
-exports.EventManagement = EventManagement;
-
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandlingBase = void 0;
-/**
- * Base class that implements event handling. With a an
- * event list this base class will expose events that can be
- * subscribed to. This will give your class generic events.
- *
- * @export
- * @abstract
- * @class HandlingBase
- * @template TEventHandler
- * @template TDispatcher
- * @template TList
- */
-class HandlingBase {
-    constructor(events) {
-        this.events = events;
-    }
-    /**
-     * Subscribes once to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    one(name, fn) {
-        this.events.get(name).one(fn);
-    }
-    /**
-     * Checks it the event has a subscription for the specified handler.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    has(name, fn) {
-        return this.events.get(name).has(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    subscribe(name, fn) {
-        this.events.get(name).subscribe(fn);
-    }
-    /**
-     * Subscribes to the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    sub(name, fn) {
-        this.subscribe(name, fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsubscribe(name, fn) {
-        this.events.get(name).unsubscribe(fn);
-    }
-    /**
-     * Unsubscribes from the event with the specified name.
-     * @param name The name of the event.
-     * @param fn The event handler.
-     */
-    unsub(name, fn) {
-        this.unsubscribe(name, fn);
-    }
-}
-exports.HandlingBase = HandlingBase;
-
-
-/***/ }),
-/* 123 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseDispatcherBase = void 0;
-const __1 = __webpack_require__(10);
-class PromiseDispatcherBase extends __1.DispatcherBase {
-    constructor() {
-        super();
-    }
-    _dispatch(executeAsync, scope, args) {
-        throw new __1.DispatchError("_dispatch not supported. Use _dispatchAsPromise.");
-    }
-    createSubscription(handler, isOnce) {
-        return new __1.PromiseSubscription(handler, isOnce);
-    }
-    /**
-     * Generic dispatch will dispatch the handlers with the given arguments.
-     *
-     * @protected
-     * @param {boolean} executeAsync `True` if the even should be executed async.
-     * @param {*} scrop The scope of the event. The scope becomes the `this` for handler.
-     * @param {IArguments} args The arguments for the event.
-     * @returns {(IPropagationStatus | null)} The propagation status, or if an `executeAsync` is used `null`.
-     *
-     * @memberOf DispatcherBase
-     */
-    async _dispatchAsPromise(executeAsync, scope, args) {
-        //execute on a copy because of bug #9
-        for (let sub of [...this._subscriptions]) {
-            let ev = new __1.EventManagement(() => this.unsub(sub.handler));
-            let nargs = Array.prototype.slice.call(args);
-            nargs.push(ev);
-            let ps = sub;
-            await ps.execute(executeAsync, scope, nargs);
-            //cleanup subs that are no longer needed
-            this.cleanup(sub);
-            if (!executeAsync && ev.propagationStopped) {
-                return { propagationStopped: true };
-            }
-        }
-        if (executeAsync) {
-            return null;
-        }
-        return { propagationStopped: false };
-    }
-}
-exports.PromiseDispatcherBase = PromiseDispatcherBase;
-
-
-/***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSubscription = void 0;
-class PromiseSubscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    async execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            //TODO: do we need to cast to any -- seems yuck
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-                return;
-            }
-            let result = fn.apply(scope, args);
-            await result;
-        }
-    }
-}
-exports.PromiseSubscription = PromiseSubscription;
-
-
-/***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Subscription = void 0;
-/**
- * Stores a handler. Manages execution meta data.
- * @class Subscription
- * @template TEventHandler
- */
-class Subscription {
-    /**
-     * Creates an instance of Subscription.
-     *
-     * @param {TEventHandler} handler The handler for the subscription.
-     * @param {boolean} isOnce Indicates if the handler should only be executed once.
-     */
-    constructor(handler, isOnce) {
-        this.handler = handler;
-        this.isOnce = isOnce;
-        /**
-         * Indicates if the subscription has been executed before.
-         */
-        this.isExecuted = false;
-    }
-    /**
-     * Executes the handler.
-     *
-     * @param {boolean} executeAsync True if the even should be executed async.
-     * @param {*} scope The scope the scope of the event.
-     * @param {IArguments} args The arguments for the event.
-     */
-    execute(executeAsync, scope, args) {
-        if (!this.isOnce || !this.isExecuted) {
-            this.isExecuted = true;
-            var fn = this.handler;
-            if (executeAsync) {
-                setTimeout(() => {
-                    fn.apply(scope, args);
-                }, 1);
-            }
-            else {
-                fn.apply(scope, args);
-            }
-        }
-    }
-}
-exports.Subscription = Subscription;
-
-
-/***/ }),
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PromiseSimpleEventHandlingBase = void 0;
-const ste_core_1 = __webpack_require__(10);
-const PromiseSimpleEventList_1 = __webpack_require__(37);
-/**
- * Extends objects with signal event handling capabilities.
- */
-class PromiseSimpleEventHandlingBase extends ste_core_1.HandlingBase {
-    constructor() {
-        super(new PromiseSimpleEventList_1.PromiseSimpleEventList());
-    }
-}
-exports.PromiseSimpleEventHandlingBase = PromiseSimpleEventHandlingBase;
-
-
-/***/ }),
-/* 127 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Trs80Screen = void 0;
-const trs80_base_1 = __webpack_require__(1);
-/**
- * Abstract base class for displaying a screen.
- */
-class Trs80Screen {
-    constructor() {
-        this.expanded = false;
-        this.alternate = false;
-    }
-    /**
-     * Set the config for this screen. Before this is called, the screen is permitted to use any config
-     * it wants.
-     */
-    setConfig(config) {
-        throw new Error("Must be implemented");
-    }
-    /**
-     * Write a character to the screen.
-     * @param address address of the character, where 15360 is the upper-left of the screen.
-     * @param value the 0-255 value to write.
-     */
-    writeChar(address, value) {
-        throw new Error("Must be implemented");
-    }
-    /**
-     * Get the HTML node for this screen.
-     */
-    getNode() {
-        throw new Error("Must be implemented");
-    }
-    /**
-     * Enable or disable expanded (wide) character mode.
-     */
-    setExpandedCharacters(expanded) {
-        this.expanded = expanded;
-    }
-    /**
-     * Return whether we're in expanded (wide) character mode.
-     */
-    isExpandedCharacters() {
-        return this.expanded;
-    }
-    /**
-     * Enable or disable alternate (Katakana) character mode.
-     */
-    setAlternateCharacters(alternate) {
-        this.alternate = alternate;
-    }
-    /**
-     * Return whether we're in alternate (Katakana) character mode.
-     */
-    isAlternateCharacters() {
-        return this.alternate;
-    }
-    /**
-     * Fill the screen with the screenshot.
-     */
-    displayScreenshot(screenshot) {
-        // Leave it blank if screenshot string is blank.
-        if (screenshot === "") {
-            return;
-        }
-        if (!screenshot.startsWith("0:")) {
-            throw new Error("Invalid screenshot version number");
-        }
-        // Decode screenshot.
-        const s = atob(screenshot.substring(2));
-        if (s.length === 0) {
-            throw new Error("Screenshot string is empty");
-        }
-        // Set expanded mode.
-        this.setExpandedCharacters(s.charCodeAt(0) === 1);
-        let address = trs80_base_1.TRS80_SCREEN_BEGIN;
-        for (let i = 1; i < s.length; i++) {
-            const value = s.charCodeAt(i);
-            let count = 1;
-            if (value > 32 && value < 128) {
-                // Implicit count of 1.
-            }
-            else {
-                i++;
-                if (i === s.length) {
-                    throw new Error("Missing count in RLE");
-                }
-                count = s.charCodeAt(i);
-            }
-            // Emit "count" values.
-            while (count--) {
-                this.writeChar(address++, value);
-            }
-        }
-        if (address !== trs80_base_1.TRS80_SCREEN_END) {
-            throw new Error("Screenshot was of the wrong length");
-        }
-    }
-}
-exports.Trs80Screen = Trs80Screen;
-
-
-/***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * These fonts are from the xtrs emulator, and the CG# references match those.
- * They're identical to the fonts in the sdltrs emulator. They don't include
- * the 2x3 graphical characters; we generate those procedurally.
- *
- * See the original trs_chars.c file for Tim Mann's explanations and historical
- * notes.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MODEL3_ALT_FONT = exports.MODEL3_FONT = exports.MODEL1B_FONT = exports.MODEL1A_FONT = exports.Font = void 0;
-// Here is the LICENSE file from the xtrs emulator:
-/*
-
-Copyright (C) 1992 Clarendon Hill Software.
-
-Permission is granted to any individual or institution to use, copy,
-or redistribute this software, provided this copyright notice is retained.
-
-This software is provided "as is" without any expressed or implied
-warranty.  If this software brings on any sort of damage -- physical,
-monetary, emotional, or brain -- too bad.  You've got no one to blame
-but yourself.
-
-The software may be modified for your own purposes, but modified versions
-must retain this notice.
-
-***
-
-Copyright (c) 1996-2020, Timothy P. Mann
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use, copy,
-modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-*/
-/**
- * Original Model I character set.
- */
-const GLYPH_CG1 = [
-    0x00, 0x1f, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x04, 0x08, 0x1e, 0x04, 0x08, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x11, 0x1b, 0x15, 0x1b, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x08, 0x05, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x1f, 0x0a, 0x0a, 0x1b, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x02, 0x0f, 0x12, 0x14, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x15, 0x0e, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x1b, 0x15, 0x1b, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x15, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x15, 0x15, 0x1d, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x1d, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x17, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x15, 0x15, 0x17, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x14, 0x08, 0x15, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x1b, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x10, 0x10, 0x1f, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x0e, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x01, 0x02, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x15, 0x15, 0x17, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x11, 0x11, 0x17, 0x15, 0x15, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x11, 0x11, 0x1d, 0x15, 0x15, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x15, 0x15, 0x1d, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0a, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0a, 0x0a, 0x1f, 0x0a, 0x1f, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x1e, 0x05, 0x0e, 0x14, 0x0f, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x03, 0x13, 0x08, 0x04, 0x02, 0x19, 0x18, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x05, 0x05, 0x02, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x08, 0x04, 0x02, 0x02, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x04, 0x08, 0x08, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x15, 0x0e, 0x1f, 0x0e, 0x15, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x08, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x19, 0x15, 0x13, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x06, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x10, 0x0e, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x10, 0x0c, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x08, 0x0c, 0x0a, 0x09, 0x1f, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x01, 0x0f, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0c, 0x02, 0x01, 0x0f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x0e, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x1e, 0x10, 0x08, 0x06, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x08, 0x04, 0x02, 0x01, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x04, 0x08, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x10, 0x08, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0c, 0x0c, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0e, 0x10, 0x1e, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x01, 0x01, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0e, 0x11, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x10, 0x16, 0x19, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0e, 0x11, 0x1f, 0x01, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x08, 0x14, 0x04, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x16, 0x19, 0x19, 0x16, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x01, 0x01, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x00, 0x06, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x00, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x01, 0x01, 0x09, 0x05, 0x03, 0x05, 0x09, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x06, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0b, 0x15, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x16, 0x19, 0x11, 0x19, 0x16, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x0d, 0x13, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x1e, 0x01, 0x0e, 0x10, 0x0f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x14, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x11, 0x11, 0x15, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x11, 0x11, 0x11, 0x1e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x1f, 0x08, 0x04, 0x02, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x08, 0x04, 0x04, 0x02, 0x04, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x04, 0x00, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x04, 0x04, 0x08, 0x04, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x15, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
-];
-/**
- * Model I character set with official Radio Shack upgrade.
- */
-const GLYPH_CG2 = [
-    0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0a, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0a, 0x0a, 0x1f, 0x0a, 0x1f, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x1e, 0x05, 0x0e, 0x14, 0x0f, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x03, 0x13, 0x08, 0x04, 0x02, 0x19, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x05, 0x05, 0x02, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x04, 0x02, 0x02, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x04, 0x08, 0x08, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x15, 0x0e, 0x1f, 0x0e, 0x15, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x08, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x19, 0x15, 0x13, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x06, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x10, 0x0e, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x10, 0x0c, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x0c, 0x0a, 0x09, 0x1f, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x01, 0x0f, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0c, 0x02, 0x01, 0x0f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x10, 0x08, 0x04, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x0e, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x1e, 0x10, 0x08, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x04, 0x02, 0x01, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x04, 0x08, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x10, 0x08, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0a, 0x02, 0x07, 0x02, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0e, 0x10, 0x1e, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x01, 0x01, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0e, 0x11, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x16, 0x19, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0e, 0x11, 0x1f, 0x01, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x14, 0x04, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0e, 0x11, 0x11, 0x1e, 0x10, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x01, 0x01, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x00, 0x06, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x00, 0x18, 0x10, 0x10, 0x10, 0x12, 0x0c, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x12, 0x0a, 0x06, 0x0a, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x06, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0b, 0x15, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0d, 0x13, 0x13, 0x0d, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x16, 0x19, 0x19, 0x16, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x0d, 0x13, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x1e, 0x01, 0x0e, 0x10, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x0e, 0x04, 0x04, 0x14, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x11, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x15, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x11, 0x11, 0x11, 0x1e, 0x10, 0x0e, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x1f, 0x08, 0x04, 0x02, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x04, 0x04, 0x02, 0x04, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x04, 0x00, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x04, 0x04, 0x08, 0x04, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x11, 0x0a, 0x04, 0x1f, 0x04, 0x1f, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
-];
-/**
- * Original Model III character set.
- */
-const GLYPH_CG4 = [
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x30, 0x48, 0x08, 0x3e, 0x08, 0x48, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x3c, 0x42, 0x7e, 0x02, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x00, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x7e, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x28, 0x00, 0x38, 0x44, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0xb8, 0x44, 0x64, 0x54, 0x4c, 0x44, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x10, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4c, 0x32, 0x00, 0x34, 0x4c, 0x44, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1c, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x5e, 0x22, 0x22, 0x1e, 0x12, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x28, 0x00, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4c, 0x32, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4c, 0x32, 0x44, 0x4c, 0x54, 0x64, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x28, 0x38, 0x44, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x90, 0x68, 0x64, 0x54, 0x4c, 0x2c, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4c, 0x32, 0x00, 0x3c, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x44, 0x44, 0x3c, 0x44, 0x44, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x00, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4c, 0x32, 0x00, 0x18, 0x24, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x54, 0x50, 0x38, 0x14, 0x54, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x14, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x08, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x02, 0x3e, 0x42, 0x7c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x7c, 0x04, 0x7c, 0x04, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x78, 0x24, 0x64, 0x3c, 0x24, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x04, 0x04, 0x44, 0x38, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x4c, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x24, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x24, 0x7e, 0x24, 0x7e, 0x24, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x78, 0x14, 0x38, 0x50, 0x3c, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x46, 0x26, 0x10, 0x08, 0x64, 0x62, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0c, 0x12, 0x12, 0x0c, 0x52, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x08, 0x08, 0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x08, 0x10, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x54, 0x38, 0x7c, 0x38, 0x54, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x10, 0x7c, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x62, 0x5a, 0x46, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x18, 0x14, 0x10, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x40, 0x30, 0x0c, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x40, 0x38, 0x40, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x30, 0x28, 0x24, 0x7e, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x02, 0x1e, 0x20, 0x40, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x04, 0x02, 0x3e, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x42, 0x20, 0x10, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x42, 0x3c, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x42, 0x7c, 0x40, 0x20, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x00, 0x00, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
-    0x60, 0x30, 0x18, 0x0c, 0x18, 0x30, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7e, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x06, 0x0c, 0x18, 0x30, 0x18, 0x0c, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x40, 0x30, 0x08, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x52, 0x6a, 0x32, 0x04, 0x78, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x18, 0x24, 0x42, 0x7e, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3e, 0x44, 0x44, 0x3c, 0x44, 0x44, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x02, 0x02, 0x02, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1e, 0x24, 0x44, 0x44, 0x44, 0x24, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x02, 0x02, 0x1e, 0x02, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x02, 0x02, 0x1e, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x02, 0x72, 0x42, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x42, 0x7e, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x10, 0x10, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x70, 0x20, 0x20, 0x20, 0x20, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x22, 0x12, 0x0e, 0x12, 0x22, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x66, 0x5a, 0x5a, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x46, 0x4a, 0x52, 0x62, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3e, 0x42, 0x42, 0x3e, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x42, 0x42, 0x52, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3e, 0x42, 0x42, 0x3e, 0x12, 0x22, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0x02, 0x3c, 0x40, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x42, 0x24, 0x24, 0x18, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x42, 0x5a, 0x5a, 0x66, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x24, 0x18, 0x24, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x44, 0x44, 0x44, 0x38, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x20, 0x18, 0x04, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x04, 0x04, 0x04, 0x04, 0x04, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x20, 0x20, 0x20, 0x20, 0x20, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x3a, 0x46, 0x42, 0x46, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3c, 0x42, 0x02, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x40, 0x40, 0x5c, 0x62, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3c, 0x42, 0x7e, 0x02, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x30, 0x48, 0x08, 0x3e, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x5c, 0x62, 0x62, 0x5c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x3a, 0x46, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x00, 0x18, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x00, 0x30, 0x20, 0x20, 0x20, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x22, 0x12, 0x0a, 0x16, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x18, 0x10, 0x10, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x6e, 0x92, 0x92, 0x92, 0x92, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3a, 0x46, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3c, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3a, 0x46, 0x46, 0x3a, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x5c, 0x62, 0x62, 0x5c, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3a, 0x46, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x02, 0x3c, 0x40, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x08, 0x3e, 0x08, 0x08, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x42, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x82, 0x92, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x42, 0x24, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x42, 0x42, 0x62, 0x5c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7e, 0x20, 0x18, 0x04, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x30, 0x08, 0x08, 0x04, 0x08, 0x08, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x10, 0x00, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0c, 0x10, 0x10, 0x20, 0x10, 0x10, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0c, 0x92, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x10, 0x7c, 0x10, 0x10, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x7c, 0xfe, 0xfe, 0x7c, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x6c, 0xfe, 0xfe, 0x7c, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x7c, 0xfe, 0x7c, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x38, 0x10, 0xd6, 0xfe, 0xd6, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0xa5, 0x81, 0xa5, 0x99, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0xa5, 0x81, 0x99, 0xa5, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x08, 0x04, 0x08, 0x10, 0x20, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x08, 0x10, 0x20, 0x10, 0x08, 0x04, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x9c, 0x62, 0x62, 0x9c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x44, 0x3c, 0x44, 0x44, 0x3c, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
-    0x86, 0x48, 0x28, 0x18, 0x08, 0x0c, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x30, 0x48, 0x08, 0x30, 0x50, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x60, 0x10, 0x08, 0x7c, 0x08, 0x10, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x68, 0x60, 0x10, 0x08, 0x38, 0x40, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x34, 0x4a, 0x48, 0x48, 0x40, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x44, 0x7c, 0x44, 0x28, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x04, 0x04, 0x04, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x12, 0x0a, 0x06, 0x0a, 0x52, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x08, 0x08, 0x08, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x24, 0x24, 0x24, 0x5c, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x4c, 0x48, 0x28, 0x18, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x04, 0x18, 0x04, 0x38, 0x40, 0x30, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x18, 0x24, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x2a, 0x28, 0x28, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x18, 0x24, 0x24, 0x1c, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x12, 0x12, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x12, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x40, 0x26, 0x24, 0x24, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x54, 0x54, 0x54, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x46, 0x28, 0x10, 0x28, 0xc4, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x92, 0x54, 0x54, 0x38, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x44, 0x82, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x82, 0x82, 0xc6, 0x44, 0xc6, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x78, 0x08, 0x08, 0x08, 0x0a, 0x0c, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x10, 0x00, 0x7c, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x04, 0x08, 0x30, 0x08, 0x04, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x4c, 0x32, 0x00, 0x4c, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x28, 0x44, 0xfe, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x08, 0x08, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00,
-    0x80, 0x40, 0xfe, 0x10, 0xfe, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x10, 0x20, 0x7c, 0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0xfc, 0x4a, 0x24, 0x10, 0x48, 0xa4, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x82, 0x82, 0xfe, 0x44, 0x44, 0xc6, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x6c, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x40, 0x20, 0x12, 0x0a, 0x06, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x78, 0x04, 0x38, 0x44, 0x38, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x44, 0xaa, 0x54, 0x28, 0x54, 0xaa, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x42, 0xb9, 0x85, 0x85, 0xb9, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x24, 0x18, 0x24, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x52, 0x52, 0x5c, 0x50, 0x50, 0x50, 0x50, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x54, 0x14, 0x54, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x5e, 0xa5, 0xa5, 0x9d, 0x95, 0x66, 0x3c, 0x00, 0x00, 0x00, 0x00,
-    0xfa, 0x06, 0xc6, 0x46, 0x26, 0xde, 0x06, 0xfa, 0x00, 0x00, 0x00, 0x00,
-    0xff, 0x20, 0xc0, 0x3f, 0x40, 0x3f, 0x20, 0x1f, 0x00, 0x00, 0x00, 0x00,
-    0x3f, 0x40, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1e, 0x22, 0x22, 0x1e, 0x52, 0x22, 0xd2, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x86, 0x41, 0x21, 0x16, 0x68, 0x94, 0x92, 0x61, 0x00, 0x00, 0x00, 0x00,
-    0x70, 0x60, 0x50, 0x0e, 0x09, 0x09, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x44, 0x44, 0x44, 0x38, 0x10, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00,
-    0x70, 0x10, 0x10, 0x70, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0xff, 0xc7, 0xbb, 0xcf, 0xef, 0xff, 0xef, 0xff, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x10, 0x38, 0x54, 0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x10, 0x38, 0x54, 0x28, 0x7c, 0x28, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x28, 0x44, 0x44, 0x44, 0x54, 0x6c, 0x44, 0x00, 0x00, 0x00, 0x00,
-    0x44, 0x28, 0x10, 0x7c, 0x10, 0x7c, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x00, 0x04, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x02, 0x04, 0x08, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x3c, 0x20, 0x3c, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x40, 0x30, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x20, 0x10, 0x18, 0x14, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x7c, 0x44, 0x40, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x38, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x10, 0x3c, 0x18, 0x14, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x08, 0x7c, 0x48, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x38, 0x20, 0x20, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x7c, 0x40, 0x78, 0x40, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x54, 0x54, 0x44, 0x20, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x28, 0x18, 0x08, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x40, 0x20, 0x10, 0x18, 0x14, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x7c, 0x44, 0x44, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x10, 0x10, 0x10, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x7e, 0x10, 0x18, 0x14, 0x12, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x7e, 0x48, 0x48, 0x48, 0x44, 0x72, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x38, 0x10, 0x7c, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7c, 0x44, 0x44, 0x42, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x7c, 0x14, 0x12, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x24, 0x7e, 0x24, 0x24, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x1c, 0x40, 0x4e, 0x40, 0x40, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x20, 0x10, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x7e, 0x48, 0x28, 0x08, 0x48, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x44, 0x48, 0x20, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x42, 0x42, 0x50, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x50, 0x3e, 0x10, 0x7c, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x00, 0x7e, 0x40, 0x20, 0x10, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x00, 0x7c, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x1c, 0x24, 0x44, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x7c, 0x10, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x40, 0x28, 0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x7e, 0x40, 0x20, 0x30, 0x58, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x60, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x20, 0x50, 0x50, 0x50, 0x48, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x02, 0x7e, 0x02, 0x02, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x40, 0x20, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x00, 0x00, 0x08, 0x14, 0x22, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x10, 0x7c, 0x10, 0x54, 0x54, 0x54, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x40, 0x28, 0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x02, 0x3c, 0x42, 0x3c, 0x42, 0x3c, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x20, 0x10, 0x08, 0x04, 0x12, 0x22, 0x5e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x40, 0x44, 0x28, 0x10, 0x28, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x08, 0x3c, 0x08, 0x08, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x7e, 0x48, 0x28, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x3c, 0x20, 0x20, 0x20, 0x10, 0x08, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x40, 0x40, 0x7c, 0x40, 0x40, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x54, 0x54, 0x44, 0x40, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x42, 0x42, 0x42, 0x42, 0x22, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x0a, 0x0a, 0x0a, 0x4a, 0x4a, 0x2a, 0x1a, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x04, 0x04, 0x44, 0x44, 0x24, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x42, 0x42, 0x42, 0x42, 0x42, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x7e, 0x42, 0x42, 0x40, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x4e, 0x40, 0x40, 0x40, 0x20, 0x12, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x08, 0x12, 0x24, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-    0x04, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-];
-/**
- * Class representing a font and able to generate its glyphs.
- */
-class Font {
-    constructor(bits, width, height, banks) {
-        // Cache from glyph key (see makeImage()) to the canvas element for it.
-        this.glyphCache = new Map();
-        this.bits = bits;
-        this.width = width;
-        this.height = height;
-        this.banks = banks;
-    }
-    /**
-     * Make a bitmap for the specified character (0-255). "on" pixels are the
-     * specified color, "off" pixels are fully transparent.
-     */
-    makeImage(char, expanded, options) {
-        const key = {
-            char: char,
-            expanded: expanded,
-            options: options,
-        };
-        const stringKey = JSON.stringify(key);
-        // Cache the glyph since we create a set of these for each created canvas.
-        let glyph = this.glyphCache.get(stringKey);
-        if (glyph === undefined) {
-            glyph = this.makeImageInternal(char, expanded, options);
-            this.glyphCache.set(stringKey, glyph);
-        }
-        return glyph;
-    }
-    /**
-     * Actually creates the glyph.
-     */
-    makeImageInternal(char, expanded, options) {
-        const canvas = document.createElement("canvas");
-        let expandedMultiplier = expanded ? 2 : 1;
-        canvas.width = this.width * expandedMultiplier;
-        canvas.height = this.height * 2;
-        const ctx = canvas.getContext("2d");
-        if (ctx === null) {
-            throw new Error("2d context not supported");
-        }
-        const imageData = ctx.createImageData(canvas.width, canvas.height);
-        // Light pixel at (x,y) in imageData if bit "bit" of "byte" is on.
-        const lightPixel = (x, y, byte, bit) => {
-            const pixel = (byte & (1 << bit)) !== 0;
-            if (pixel) {
-                const pixelOffset = (y * canvas.width + x) * 4;
-                const alpha = options.scanLines ? (y % 2 == 0 ? 0xFF : 0xAA) : 0xFF;
-                imageData.data[pixelOffset + 0] = options.color[0];
-                imageData.data[pixelOffset + 1] = options.color[1];
-                imageData.data[pixelOffset + 2] = options.color[2];
-                imageData.data[pixelOffset + 3] = alpha;
-            }
-        };
-        const bankOffset = this.banks[Math.floor(char / 64)];
-        if (bankOffset === -1) {
-            // Graphical character.
-            const byte = char % 64;
-            for (let y = 0; y < canvas.height; y++) {
-                const py = Math.floor(y / (canvas.height / 3));
-                for (let x = 0; x < canvas.width; x++) {
-                    const px = Math.floor(x / (canvas.width / 2));
-                    const bit = py * 2 + px;
-                    lightPixel(x, y, byte, bit);
-                }
-            }
-        }
-        else {
-            // Bitmap character.
-            const charOffset = bankOffset + char % 64;
-            const byteOffset = charOffset * 12;
-            for (let y = 0; y < canvas.height; y++) {
-                const byte = this.bits[byteOffset + Math.floor(y / 2)];
-                for (let x = 0; x < canvas.width; x++) {
-                    lightPixel(x, y, byte, Math.floor(x / expandedMultiplier));
-                }
-            }
-        }
-        ctx.putImageData(imageData, 0, 0);
-        return canvas;
-    }
-}
-exports.Font = Font;
-// Original Model I.
-exports.MODEL1A_FONT = new Font(GLYPH_CG1, 6, 12, [0, 64, -1, -1]);
-// Model I with lower case mod.
-exports.MODEL1B_FONT = new Font(GLYPH_CG2, 6, 12, [0, 64, -1, -1]);
-// Original Model III, with special symbols.
-exports.MODEL3_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 128]);
-// Original Model III, with Katakana.
-exports.MODEL3_ALT_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 192]);
-
-
-/***/ }),
-/* 129 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ControlPanel = void 0;
-const Utils_1 = __webpack_require__(20);
-const SettingsPanel_1 = __webpack_require__(40);
-const gCssPrefix = Utils_1.CSS_PREFIX + "-control-panel";
-const gScreenNodeCssClass = gCssPrefix + "-screen-node";
-const gPanelCssClass = gCssPrefix + "-panel";
-const gButtonCssClass = gCssPrefix + "-button";
-const gShowingOtherPanelCssClass = gCssPrefix + "-showing-other-panel";
-// https://thenounproject.com/search/?q=reset&i=3012384
-const RESET_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100" xml:space="preserve">
-    <switch>
-        <g fill="white">
-            <path d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z"/>
-            <path d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z"/>
-            <path d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z"/>
-            <path d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z"/>
-            <path d="M84.3,18C67.1,0.8,39.5,0.4,21.8,16.5l-4.1-4.1c-1.6-1.6-4-2.2-6.2-1.6c-2.2,0.7-3.9,2.5-4.3,4.7L2.6,36.9    c-0.4,2.1,0.2,4.2,1.7,5.7c1.5,1.5,3.6,2.1,5.7,1.7l21.4-4.5c1.2-0.3,2.3-0.9,3.1-1.7c0.7-0.7,1.3-1.6,1.6-2.6    c0.6-2.2,0-4.6-1.6-6.2l-3.9-3.9C43.5,14,63.1,14.5,75.4,26.8c12.8,12.8,12.8,33.6,0,46.4C62.6,86,41.8,86,29,73.2    c-4.1-4.1-7-9.2-8.5-14.8c-0.9-3.3-4.3-5.3-7.6-4.4c-3.3,0.9-5.3,4.3-4.4,7.6c2,7.7,6.1,14.8,11.8,20.4    c17.7,17.7,46.4,17.7,64.1,0C101.9,64.4,101.9,35.6,84.3,18z"/>
-        </g>
-    </switch>
-</svg>
-`;
-// https://thenounproject.com/search/?q=camera&i=1841396
-const CAMERA_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
-    <g fill="white">
-        <circle cx="50" cy="55.4" r="13.8"/>
-        <path d="M80.6,25.4H67.1l-1.8-7.2c-0.5-2.1-2.5-3.6-4.7-3.6H39.3c-2.2,0-4.1,1.5-4.7,3.6l-1.8,7.2H19.4C11.5,25.4,5,31.9,5,39.8V71   c0,7.9,6.5,14.4,14.4,14.4h61.2C88.5,85.4,95,78.9,95,71V39.8C95,31.9,88.5,25.4,80.6,25.4z M50,76.4c-11.6,0-21-9.4-21-21   s9.4-21,21-21s21,9.4,21,21S61.6,76.4,50,76.4z M81.4,40.3c-2,0-3.6-1.6-3.6-3.6c0-2,1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6   C85,38.7,83.4,40.3,81.4,40.3z"/>
-    </g>
-</svg>
-`;
-// https://thenounproject.com/search/?q=previous%20track&i=658409
-const PREVIOUS_TRACK_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -2 16 21" version="1.1">
-    <g fill="white" fill-rule="evenodd">
-        <g transform="translate(-320.000000, -618.000000)">
-            <path d="M330,628.032958 L330,634.00004 C330,634.545291 330.45191,635 331.009369,635 L332.990631,635 C333.556647,635 334,634.552303 334,634.00004 L334,618.99996 C334,618.454709 333.54809,618 332.990631,618 L331.009369,618 C330.443353,618 330,618.447697 330,618.99996 L330,624.967057 C329.894605,624.850473 329.775773,624.739153 329.643504,624.634441 L322.356496,618.865559 C321.054403,617.834736 320,618.3432 320,620.000122 L320,632.999878 C320,634.663957 321.055039,635.164761 322.356496,634.134441 L329.643504,628.365559 C329.775779,628.260841 329.894611,628.149527 330,628.032958 Z" transform="translate(327.000000, 626.500000) scale(-1, 1) translate(-327.000000, -626.500000) "/>
-        </g>
-    </g>
-</svg>
-`;
-// https://thenounproject.com/search/?q=settings&i=3593545
-const HARDWARE_SETTINGS_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="7 7 121 121" version="1.1">
-    <g fill="white" transform="translate(0,-161.53332)">
-        <path d="m 61.57997,173.33818 c -1.653804,0 -3.159177,0.77847 -4.132553,1.85984 -0.973402,1.08136 -1.513575,2.40442 -1.771491,3.76721 a 2.1609049,2.1609049 0 0 0 0,0.002 l -1.654678,8.74831 c -2.047981,0.67947 -4.038494,1.50768 -5.964476,2.48047 l -7.367508,-5.02347 c -1.145302,-0.78076 -2.462953,-1.33572 -3.916045,-1.41232 -1.4546,-0.0764 -3.068029,0.44118 -4.235926,1.60921 l -8.699209,8.69921 c -1.169405,1.16909 -1.685211,2.78351 -1.609725,4.23643 0.07501,1.45291 0.629259,2.7738 1.410256,3.92018 l 5.001762,7.336 c -0.9702,1.93582 -1.794192,3.93628 -2.468589,5.99392 l -8.740034,1.65417 c -1.362789,0.25787 -2.688378,0.79815 -3.769783,1.77147 -1.081405,0.97346 -1.859333,2.4815 -1.859333,4.13526 v 12.30262 c 0,1.65378 0.777928,3.1592 1.859333,4.13255 1.081405,0.97338 2.406994,1.51567 3.769783,1.77353 l 8.754004,1.6583 c 0.679477,2.04603 1.506088,4.03461 2.478379,5.95882 l -5.025522,7.3675 c -0.781606,1.14644 -1.334744,2.4664 -1.410256,3.91967 -0.07498,1.45325 0.439817,3.06745 1.609725,4.23643 l 8.699209,8.69921 c 1.1693,1.16941 2.782914,1.68325 4.235926,1.60713 1.452986,-0.0761 2.771908,-0.63037 3.918109,-1.41179 l 7.33597,-5.00022 c 1.9363,0.97001 3.937926,1.79294 5.996014,2.46702 l 1.654175,8.74004 c 0.257889,1.36284 0.798486,2.68843 1.771994,3.76981 0.973402,1.08138 2.478749,1.8593 4.132553,1.8593 H 73.88672 c 1.653805,0 3.159152,-0.77792 4.132554,-1.8593 0.973005,-1.0809 1.513999,-2.40554 1.771994,-3.76772 v -0.003 l 1.656212,-8.74778 c 2.048113,-0.67943 4.038415,-1.50768 5.964502,-2.48047 l 7.365445,5.02142 c 1.146095,0.78144 2.465096,1.33567 3.918108,1.41179 1.452905,0.0761 3.068585,-0.43786 4.237995,-1.60713 l 8.6992,-8.69921 c 1.16931,-1.16946 1.68395,-2.78551 1.60767,-4.23852 -0.076,-1.45301 -0.63074,-2.77196 -1.41232,-3.91811 l -5.00177,-7.33547 c 0.9705,-1.93617 1.79398,-3.93639 2.46857,-5.99445 l 8.74003,-1.65418 c 1.36271,-0.25794 2.68841,-0.80018 3.76981,-1.77352 1.0813,-0.97335 1.85931,-2.47881 1.85931,-4.13256 v -12.30312 c 0,-1.65378 -0.77801,-3.16127 -1.85931,-4.13465 -1.0809,-0.97292 -2.40562,-1.51344 -3.76772,-1.77146 l -8.74988,-1.65624 c -0.67918,-2.04684 -1.50825,-4.03585 -2.48046,-5.96088 l 5.02348,-7.36698 c 0.78118,-1.14583 1.33572,-2.46501 1.41232,-3.91811 0.077,-1.45309 -0.43952,-3.06905 -1.60973,-4.2385 l -8.69714,-8.69921 c -1.16962,-1.16891 -2.78461,-1.68557 -4.238494,-1.6092 -1.4528,0.0768 -2.770425,0.63186 -3.915542,1.41232 l -7.33597,5.00176 c -1.9363,-0.96998 -3.937926,-1.79297 -5.996014,-2.46703 l -1.656768,-8.74211 c -0.257783,-1.36269 -0.798062,-2.68582 -1.771464,-3.76721 -0.973297,-1.0814 -2.478749,-1.85984 -4.132554,-1.85984 z m 6.152595,34.74051 c 11.726704,0 21.185664,9.46065 21.185267,21.18735 0,11.7262 -9.459066,21.18696 -21.185267,21.18733 -11.726704,0 -21.187463,-9.4606 -21.18786,-21.18733 0,-11.72726 9.460653,-21.18772 21.18786,-21.18735 z"/>
-    </g>
-</svg>
-`;
-// https://thenounproject.com/search/?q=view&i=485540
-const VIEW_SETTINGS_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="20 20 60 60">
-    <g fill="white">
-        <path d="M80,48.6c-7.8-10.4-18.4-16.7-30-16.7c-11.6,0-22.2,6.4-30,16.7c-0.6,0.9-0.6,2,0,2.9c7.8,10.4,18.4,16.7,30,16.7  s22.2-6.4,30-16.7C80.7,50.6,80.7,49.4,80,48.6z M62.8,50.8c-0.4,6.4-5.6,11.6-12,12c-7.7,0.5-14.1-5.9-13.6-13.6  c0.4-6.4,5.6-11.6,12-12C56.9,36.7,63.3,43.1,62.8,50.8z M56.9,50.4c-0.2,3.4-3,6.2-6.4,6.4c-4.2,0.3-7.6-3.2-7.3-7.3  c0.2-3.4,3-6.2,6.4-6.4C53.7,42.8,57.2,46.3,56.9,50.4z"/>
-    </g>
-</svg>
-`;
-// https://thenounproject.com/search/?q=edit&i=1072354
-const EDIT_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-25 -25 562 562">
-    <g fill="white">
-        <path d="M318.37,85.45L422.53,190.11,158.89,455,54.79,350.38ZM501.56,60.2L455.11,13.53a45.93,45.93,0,0,0-65.11,0L345.51,58.24,449.66,162.9l51.9-52.15A35.8,35.8,0,0,0,501.56,60.2ZM0.29,497.49a11.88,11.88,0,0,0,14.34,14.17l116.06-28.28L26.59,378.72Z"/>
-    </g>
-</svg>
-`;
-// https://thenounproject.com/search/?q=checkmark&i=1409439
-const CHECK_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <g fill="white">
-        <line x1="19.713" y1="55.055" x2="33.258" y2="68.6"/>
-        <path d="M92.059,19.7c-2.733-2.733-7.165-2.734-9.9,0L33.258,68.6L17.841,53.183c-2.734-2.732-7.166-2.733-9.899,0.001   c-2.734,2.733-2.734,7.165,0,9.899l20.367,20.366c1.367,1.366,3.158,2.05,4.95,2.05s3.583-0.684,4.95-2.05l53.85-53.85   C94.792,26.866,94.792,22.434,92.059,19.7z"/>
-    </g>
-</svg>
-
-`;
-// https://thenounproject.com/search/?q=close&i=1609004
-const CROSS_ICON = `
-<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="-5 -5 110 110">
-    <style type="text/css">
-        .st0 {
-            fill-rule: evenodd;
-            clip-rule: evenodd;
-        }
-    </style>
-    <path fill="white" class="st0" d="M61.2,50.5l32.1,32.1c3,3,3,7.7,0,10.7c-3,3-7.7,3-10.7,0L50.5,61.2L18.4,93.3c-3,3-7.7,3-10.7,0  c-3-3-3-7.7,0-10.7l32.1-32.1L7.7,18.4c-3-3-3-7.7,0-10.7s7.7-3,10.7,0l32.1,32.1L82.6,7.7c3-3,7.7-3,10.7,0c3,3,3,7.7,0,10.7  L61.2,50.5z"/>
-</svg>
-`;
-const GLOBAL_CSS = `
-.${gPanelCssClass} {
-    background-color: rgba(40, 40, 40, 0.8);
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity .20s ease-in-out;
-}
-
-.${gScreenNodeCssClass} {
-    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
-    position: relative;
-}
-
-.${gScreenNodeCssClass}:hover .${gPanelCssClass} {
-    opacity: 1;
-}
-
-/* Hide the control panel if any other panel is showing (like settings). */
-.${gScreenNodeCssClass}.${gShowingOtherPanelCssClass}:hover .${gPanelCssClass} {
-    opacity: 0;
-}
-
-.${gButtonCssClass} {
-    display: block;
-    /* background-color: red; */
-    margin: 15px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: opacity .05s ease-in-out, transform 0.05s ease-in-out;
-}
-
-.${gButtonCssClass}:hover {
-    opacity: 1;
-}
-
-.${gButtonCssClass}:active {
-    transform: scale(1.15);
-}
-`;
-/**
- * Control panel that hovers in the screen for doing things like resetting the computer.
- */
-class ControlPanel {
-    /**
-     * @param screenNode the node from the Trs80Screen object's getNode() method.
-     */
-    constructor(screenNode) {
-        // Make global CSS if necessary.
-        ControlPanel.configureStyle();
-        this.screenNode = screenNode;
-        screenNode.classList.add(gScreenNodeCssClass);
-        this.panelNode = document.createElement("div");
-        this.panelNode.classList.add(gPanelCssClass);
-        screenNode.appendChild(this.panelNode);
-    }
-    /**
-     * Generic function to add a button to the control panel.
-     */
-    addButton(iconSvg, title, callback) {
-        let icon = document.createElement("img");
-        icon.classList.add(gButtonCssClass);
-        icon.width = 30;
-        icon.height = 30;
-        icon.src = "data:image/svg+xml;base64," + btoa(iconSvg);
-        icon.title = title;
-        icon.addEventListener("click", callback);
-        this.panelNode.appendChild(icon);
-    }
-    /**
-     * Add a reset button.
-     */
-    addResetButton(callback) {
-        this.addButton(RESET_ICON, "Reboot the computer", callback);
-    }
-    /**
-     * Add a screenshot button.
-     */
-    addScreenshotButton(callback) {
-        this.addButton(CAMERA_ICON, "Take a screenshot", callback);
-    }
-    /**
-     * Add a tape rewind button.
-     */
-    addTapeRewindButton(callback) {
-        this.addButton(PREVIOUS_TRACK_ICON, "Rewind the cassette", callback);
-    }
-    /**
-     * Add a settings button.
-     */
-    addSettingsButton(settingsPanel) {
-        settingsPanel.onOpen = () => this.screenNode.classList.add(gShowingOtherPanelCssClass);
-        settingsPanel.onClose = () => this.screenNode.classList.remove(gShowingOtherPanelCssClass);
-        let iconSvg;
-        switch (settingsPanel.panelType) {
-            case SettingsPanel_1.PanelType.HARDWARE:
-            default:
-                iconSvg = HARDWARE_SETTINGS_ICON;
-                break;
-            case SettingsPanel_1.PanelType.VIEW:
-                iconSvg = VIEW_SETTINGS_ICON;
-                break;
-        }
-        let icon = document.createElement("img");
-        icon.classList.add(gButtonCssClass);
-        icon.src = "data:image/svg+xml;base64," + btoa(iconSvg);
-        icon.title = "Show the settings panel";
-        icon.addEventListener("click", () => settingsPanel.open());
-        this.panelNode.appendChild(icon);
-    }
-    /**
-     * Add a button to edit the program.
-     */
-    addEditorButton(callback) {
-        this.addButton(EDIT_ICON, "Edit the program (Ctrl-Enter)", callback);
-    }
-    /**
-     * Add a button to save.
-     */
-    addSaveButton(callback) {
-        this.addButton(CHECK_ICON, "Save (Ctrl-Enter)", callback);
-    }
-    /**
-     * Add a button to cancel.
-     */
-    addCancelButton(callback) {
-        this.addButton(CROSS_ICON, "Cancel", callback);
-    }
-    /**
-     * Make a global stylesheet for all TRS-80 emulators on this page.
-     */
-    static configureStyle() {
-        const styleId = gCssPrefix;
-        if (document.getElementById(styleId) !== null) {
-            // Already created.
-            return;
-        }
-        const node = document.createElement("style");
-        node.id = styleId;
-        node.innerHTML = GLOBAL_CSS;
-        document.head.appendChild(node);
-    }
-}
-exports.ControlPanel = ControlPanel;
-
-
-/***/ }),
-/* 130 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProgressBar = void 0;
-const Utils_1 = __webpack_require__(20);
-const gCssPrefix = Utils_1.CSS_PREFIX + "-progress-bar";
-const gScreenNodeCssClass = gCssPrefix + "-screen-node";
-const gBarCssClass = gCssPrefix + "-bar";
-const gSubbarCssClass = gCssPrefix + "-subbar";
-const GLOBAL_CSS = "." + gBarCssClass + ` {
-    background-color: rgba(0, 0, 0, 0.2);
-    position: absolute;
-    left: 15%;
-    width: 70%;
-    bottom: 10%;
-    height: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-    opacity: 0;
-    transition: opacity .20s ease-in-out;
-}
-
-.` + gSubbarCssClass + ` {
-    background-color: rgba(255, 255, 255, 0.4);
-    width: 0;
-    height: 20px;
-}
-
-.` + gScreenNodeCssClass + ` {
-    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
-    position: relative;
-}
-
-`;
-/**
- * Overlay on top of a screen to show progress, for instance the position of a cassette tape.
- */
-class ProgressBar {
-    /**
-     * @param screenNode the node from the Trs80Screen object's getNode() method.
-     */
-    constructor(screenNode) {
-        this.maxValue = 100;
-        // Make global CSS if necessary.
-        ProgressBar.configureStyle();
-        screenNode.classList.add(gScreenNodeCssClass);
-        this.barNode = document.createElement("div");
-        this.barNode.classList.add(gBarCssClass);
-        screenNode.appendChild(this.barNode);
-        this.subbarNode = document.createElement("div");
-        this.subbarNode.classList.add(gSubbarCssClass);
-        this.barNode.appendChild(this.subbarNode);
-    }
-    setMaxValue(maxValue) {
-        this.maxValue = maxValue;
-    }
-    setValue(value) {
-        this.subbarNode.style.width = "" + Math.round(value * 100 / this.maxValue) + "%";
-    }
-    show() {
-        this.barNode.style.opacity = "1";
-    }
-    hide() {
-        this.barNode.style.opacity = "0";
-    }
-    /**
-     * Make a global stylesheet for all TRS-80 emulators on this page.
-     */
-    static configureStyle() {
-        const styleId = gCssPrefix;
-        if (document.getElementById(styleId) !== null) {
-            // Already created.
-            return;
-        }
-        const node = document.createElement("style");
-        node.id = styleId;
-        node.innerHTML = GLOBAL_CSS;
-        document.head.appendChild(node);
-    }
-}
-exports.ProgressBar = ProgressBar;
-
-
-/***/ }),
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.disasmForTrs80Program = void 0;
-const trs80_base_1 = __webpack_require__(1);
-const z80_disasm_1 = __webpack_require__(132);
-const KnownLabels_1 = __webpack_require__(42);
-// Whether to try to disassemble this chunk.
-function shouldDisassembleSystemProgramChunk(chunk) {
-    if (chunk.loadAddress >= trs80_base_1.TRS80_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= trs80_base_1.TRS80_SCREEN_END) {
-        return false;
-    }
-    // Various addresses that don't represent code.
-    if (chunk.loadAddress === 0x4210 || chunk.loadAddress === 0x401E) {
-        return false;
-    }
-    return true;
-}
-/**
- * Create and configure a disassembler for the specified program.
- */
-function disasmForTrs80Program(program) {
-    const disasm = new z80_disasm_1.Disasm();
-    disasm.addLabels(z80_disasm_1.Z80_KNOWN_LABELS);
-    disasm.addLabels(KnownLabels_1.TRS80_MODEL_III_KNOWN_LABELS);
-    if (program.entryPointAddress !== undefined) {
-        disasm.addLabels([[program.entryPointAddress, "main"]]);
-    }
-    if (program instanceof trs80_base_1.CmdProgram) {
-        for (const chunk of program.chunks) {
-            if (chunk instanceof trs80_base_1.CmdLoadBlockChunk) {
-                disasm.addChunk(chunk.loadData, chunk.address);
-            }
-            if (chunk instanceof trs80_base_1.CmdTransferAddressChunk) {
-                // Not sure what to do here. I've seen junk after this block, and we risk
-                // overwriting valid things in memory. I suspect that CMD parsers of the time,
-                // when running into this block, would immediately just jump to the address
-                // and ignore everything after it, so let's emulate that.
-                break;
-            }
-        }
-    }
-    else {
-        for (const chunk of program.chunks) {
-            if (shouldDisassembleSystemProgramChunk(chunk)) {
-                disasm.addChunk(chunk.data, chunk.loadAddress);
-            }
-        }
-    }
-    if (program.entryPointAddress !== undefined) {
-        disasm.addEntryPoint(program.entryPointAddress);
-    }
-    return disasm;
-}
-exports.disasmForTrs80Program = disasmForTrs80Program;
-
-
-/***/ }),
-/* 132 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-var Disasm_1 = __webpack_require__(133);
-exports.Disasm = Disasm_1.Disasm;
-var Instruction_1 = __webpack_require__(41);
-exports.Instruction = Instruction_1.Instruction;
-__export(__webpack_require__(136));
-__export(__webpack_require__(137));
-
-
-/***/ }),
-/* 133 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21120,10 +10878,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Opcodes_json_1 = __importDefault(__webpack_require__(134));
-const Instruction_1 = __webpack_require__(41);
+const Opcodes_json_1 = __importDefault(__webpack_require__(29));
+const Instruction_1 = __webpack_require__(8);
 const z80_base_1 = __webpack_require__(0);
-const Preamble_1 = __webpack_require__(135);
+const Preamble_1 = __webpack_require__(30);
 // Temporary string used for address substitution.
 const TARGET = "TARGET";
 // Number of bytes in memory.
@@ -21484,13 +11242,13 @@ exports.Disasm = Disasm;
 
 
 /***/ }),
-/* 134 */
+/* 29 */
 /***/ (function(module) {
 
 module.exports = JSON.parse("{\"0\":{\"mnemonic\":\"nop\"},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"nnnn\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"(bc)\",\"a\"]},\"3\":{\"mnemonic\":\"inc\",\"params\":[\"bc\"]},\"4\":{\"mnemonic\":\"inc\",\"params\":[\"b\"]},\"5\":{\"mnemonic\":\"dec\",\"params\":[\"b\"]},\"6\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"nn\"]},\"7\":{\"mnemonic\":\"rlca\"},\"8\":{\"mnemonic\":\"ex\",\"params\":[\"af\",\"af'\"]},\"9\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"bc\"]},\"10\":{\"mnemonic\":\"djnz\",\"params\":[\"offset\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"nnnn\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"(de)\",\"a\"]},\"13\":{\"mnemonic\":\"inc\",\"params\":[\"de\"]},\"14\":{\"mnemonic\":\"inc\",\"params\":[\"d\"]},\"15\":{\"mnemonic\":\"dec\",\"params\":[\"d\"]},\"16\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"nn\"]},\"17\":{\"mnemonic\":\"rla\"},\"18\":{\"mnemonic\":\"jr\",\"params\":[\"offset\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"de\"]},\"20\":{\"mnemonic\":\"jr\",\"params\":[\"nz\",\"offset\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"hl\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"h\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"nn\"]},\"27\":{\"mnemonic\":\"daa\"},\"28\":{\"mnemonic\":\"jr\",\"params\":[\"z\",\"offset\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"hl\"]},\"30\":{\"mnemonic\":\"jr\",\"params\":[\"nc\",\"offset\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"nnnn\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"a\"]},\"33\":{\"mnemonic\":\"inc\",\"params\":[\"sp\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(hl)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(hl)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"nn\"]},\"37\":{\"mnemonic\":\"scf\"},\"38\":{\"mnemonic\":\"jr\",\"params\":[\"c\",\"offset\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"hl\",\"sp\"]},\"40\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"b\"]},\"41\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"c\"]},\"42\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"d\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"e\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"h\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"l\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(hl)\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"a\"]},\"48\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"b\"]},\"49\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"c\"]},\"50\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"b\"]},\"51\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"c\"]},\"52\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"d\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"e\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"h\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"l\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(hl)\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"a\"]},\"58\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"b\"]},\"59\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"c\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"h\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"l\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(hl)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"l\"]},\"76\":{\"mnemonic\":\"halt\"},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(hl)\",\"a\"]},\"78\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"b\"]},\"79\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"c\"]},\"80\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"b\"]},\"81\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"c\"]},\"82\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"d\"]},\"83\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"e\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"h\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"l\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(hl)\"]},\"87\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"a\"]},\"88\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"b\"]},\"89\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"c\"]},\"90\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"b\"]},\"91\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"c\"]},\"92\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"d\"]},\"93\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"e\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"h\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"l\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(hl)\"]},\"97\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"a\"]},\"98\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"b\"]},\"99\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"c\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(bc)\"]},\"b\":{\"mnemonic\":\"dec\",\"params\":[\"bc\"]},\"c\":{\"mnemonic\":\"inc\",\"params\":[\"c\"]},\"d\":{\"mnemonic\":\"dec\",\"params\":[\"c\"]},\"e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"nn\"]},\"f\":{\"mnemonic\":\"rrca\"},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(de)\"]},\"1b\":{\"mnemonic\":\"dec\",\"params\":[\"de\"]},\"1c\":{\"mnemonic\":\"inc\",\"params\":[\"e\"]},\"1d\":{\"mnemonic\":\"dec\",\"params\":[\"e\"]},\"1e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"nn\"]},\"1f\":{\"mnemonic\":\"rra\"},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"hl\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"l\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"nn\"]},\"2f\":{\"mnemonic\":\"cpl\"},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(nnnn)\"]},\"3b\":{\"mnemonic\":\"dec\",\"params\":[\"sp\"]},\"3c\":{\"mnemonic\":\"inc\",\"params\":[\"a\"]},\"3d\":{\"mnemonic\":\"dec\",\"params\":[\"a\"]},\"3e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"nn\"]},\"3f\":{\"mnemonic\":\"ccf\"},\"4a\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"d\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"e\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"h\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"l\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"a\"]},\"5a\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"d\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"e\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"h\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"l\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"a\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"h\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"l\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"a\"]},\"7a\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"d\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"e\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"h\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"l\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"a\"]},\"8a\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"d\"]},\"8b\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"e\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"h\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"l\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"a\"]},\"9a\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"d\"]},\"9b\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"e\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"h\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"l\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"a\"]},\"a0\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"b\"]},\"a1\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"c\"]},\"a2\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"d\"]},\"a3\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"e\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"h\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"l\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"a\"]},\"a8\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"b\"]},\"a9\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"c\"]},\"aa\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"d\"]},\"ab\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"e\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"h\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"l\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(hl)\"]},\"af\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"a\"]},\"b0\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"b\"]},\"b1\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"c\"]},\"b2\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"d\"]},\"b3\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"e\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"h\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"l\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"a\"]},\"b8\":{\"mnemonic\":\"cp\",\"params\":[\"b\"]},\"b9\":{\"mnemonic\":\"cp\",\"params\":[\"c\"]},\"ba\":{\"mnemonic\":\"cp\",\"params\":[\"d\"]},\"bb\":{\"mnemonic\":\"cp\",\"params\":[\"e\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"h\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"l\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(hl)\"]},\"bf\":{\"mnemonic\":\"cp\",\"params\":[\"a\"]},\"c0\":{\"mnemonic\":\"ret\",\"params\":[\"nz\"]},\"c1\":{\"mnemonic\":\"pop\",\"params\":[\"bc\"]},\"c2\":{\"mnemonic\":\"jp\",\"params\":[\"nz\",\"nnnn\"]},\"c3\":{\"mnemonic\":\"jp\",\"params\":[\"nnnn\"]},\"c4\":{\"mnemonic\":\"call\",\"params\":[\"nz\",\"nnnn\"]},\"c5\":{\"mnemonic\":\"push\",\"params\":[\"bc\"]},\"c6\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"nn\"]},\"c7\":{\"mnemonic\":\"rst\",\"params\":[\"00\"]},\"c8\":{\"mnemonic\":\"ret\",\"params\":[\"z\"]},\"c9\":{\"mnemonic\":\"ret\"},\"ca\":{\"mnemonic\":\"jp\",\"params\":[\"z\",\"nnnn\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"rlc\",\"params\":[\"b\"]},\"1\":{\"mnemonic\":\"rlc\",\"params\":[\"c\"]},\"2\":{\"mnemonic\":\"rlc\",\"params\":[\"d\"]},\"3\":{\"mnemonic\":\"rlc\",\"params\":[\"e\"]},\"4\":{\"mnemonic\":\"rlc\",\"params\":[\"h\"]},\"5\":{\"mnemonic\":\"rlc\",\"params\":[\"l\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(hl)\"]},\"7\":{\"mnemonic\":\"rlc\",\"params\":[\"a\"]},\"8\":{\"mnemonic\":\"rrc\",\"params\":[\"b\"]},\"9\":{\"mnemonic\":\"rrc\",\"params\":[\"c\"]},\"10\":{\"mnemonic\":\"rl\",\"params\":[\"b\"]},\"11\":{\"mnemonic\":\"rl\",\"params\":[\"c\"]},\"12\":{\"mnemonic\":\"rl\",\"params\":[\"d\"]},\"13\":{\"mnemonic\":\"rl\",\"params\":[\"e\"]},\"14\":{\"mnemonic\":\"rl\",\"params\":[\"h\"]},\"15\":{\"mnemonic\":\"rl\",\"params\":[\"l\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(hl)\"]},\"17\":{\"mnemonic\":\"rl\",\"params\":[\"a\"]},\"18\":{\"mnemonic\":\"rr\",\"params\":[\"b\"]},\"19\":{\"mnemonic\":\"rr\",\"params\":[\"c\"]},\"20\":{\"mnemonic\":\"sla\",\"params\":[\"b\"]},\"21\":{\"mnemonic\":\"sla\",\"params\":[\"c\"]},\"22\":{\"mnemonic\":\"sla\",\"params\":[\"d\"]},\"23\":{\"mnemonic\":\"sla\",\"params\":[\"e\"]},\"24\":{\"mnemonic\":\"sla\",\"params\":[\"h\"]},\"25\":{\"mnemonic\":\"sla\",\"params\":[\"l\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(hl)\"]},\"27\":{\"mnemonic\":\"sla\",\"params\":[\"a\"]},\"28\":{\"mnemonic\":\"sra\",\"params\":[\"b\"]},\"29\":{\"mnemonic\":\"sra\",\"params\":[\"c\"]},\"30\":{\"mnemonic\":\"sll\",\"params\":[\"b\"]},\"31\":{\"mnemonic\":\"sll\",\"params\":[\"c\"]},\"32\":{\"mnemonic\":\"sll\",\"params\":[\"d\"]},\"33\":{\"mnemonic\":\"sll\",\"params\":[\"e\"]},\"34\":{\"mnemonic\":\"sll\",\"params\":[\"h\"]},\"35\":{\"mnemonic\":\"sll\",\"params\":[\"l\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(hl)\"]},\"37\":{\"mnemonic\":\"sll\",\"params\":[\"a\"]},\"38\":{\"mnemonic\":\"srl\",\"params\":[\"b\"]},\"39\":{\"mnemonic\":\"srl\",\"params\":[\"c\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"b\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"c\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"d\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"e\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"h\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"l\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(hl)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"a\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"b\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"c\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"b\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"c\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"d\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"e\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"h\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"l\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(hl)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"a\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"b\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"c\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"b\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"c\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"d\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"e\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"h\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"l\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(hl)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"a\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"b\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"c\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"b\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"c\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"d\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"e\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"h\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"l\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(hl)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"a\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"b\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"c\"]},\"80\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"b\"]},\"81\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"c\"]},\"82\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"d\"]},\"83\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"e\"]},\"84\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"h\"]},\"85\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"l\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(hl)\"]},\"87\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"a\"]},\"88\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"b\"]},\"89\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"c\"]},\"90\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"b\"]},\"91\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"c\"]},\"92\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"d\"]},\"93\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"e\"]},\"94\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"h\"]},\"95\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"l\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(hl)\"]},\"97\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"a\"]},\"98\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"b\"]},\"99\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"c\"]},\"a\":{\"mnemonic\":\"rrc\",\"params\":[\"d\"]},\"b\":{\"mnemonic\":\"rrc\",\"params\":[\"e\"]},\"c\":{\"mnemonic\":\"rrc\",\"params\":[\"h\"]},\"d\":{\"mnemonic\":\"rrc\",\"params\":[\"l\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(hl)\"]},\"f\":{\"mnemonic\":\"rrc\",\"params\":[\"a\"]},\"1a\":{\"mnemonic\":\"rr\",\"params\":[\"d\"]},\"1b\":{\"mnemonic\":\"rr\",\"params\":[\"e\"]},\"1c\":{\"mnemonic\":\"rr\",\"params\":[\"h\"]},\"1d\":{\"mnemonic\":\"rr\",\"params\":[\"l\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(hl)\"]},\"1f\":{\"mnemonic\":\"rr\",\"params\":[\"a\"]},\"2a\":{\"mnemonic\":\"sra\",\"params\":[\"d\"]},\"2b\":{\"mnemonic\":\"sra\",\"params\":[\"e\"]},\"2c\":{\"mnemonic\":\"sra\",\"params\":[\"h\"]},\"2d\":{\"mnemonic\":\"sra\",\"params\":[\"l\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(hl)\"]},\"2f\":{\"mnemonic\":\"sra\",\"params\":[\"a\"]},\"3a\":{\"mnemonic\":\"srl\",\"params\":[\"d\"]},\"3b\":{\"mnemonic\":\"srl\",\"params\":[\"e\"]},\"3c\":{\"mnemonic\":\"srl\",\"params\":[\"h\"]},\"3d\":{\"mnemonic\":\"srl\",\"params\":[\"l\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(hl)\"]},\"3f\":{\"mnemonic\":\"srl\",\"params\":[\"a\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"d\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"e\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"h\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"l\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(hl)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"a\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"d\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"e\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"h\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"l\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(hl)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"a\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"d\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"e\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"h\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"l\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(hl)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"a\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"d\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"e\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"h\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"l\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(hl)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"a\"]},\"8a\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"d\"]},\"8b\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"e\"]},\"8c\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"h\"]},\"8d\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"l\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(hl)\"]},\"8f\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"a\"]},\"9a\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"d\"]},\"9b\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"e\"]},\"9c\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"h\"]},\"9d\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"l\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(hl)\"]},\"9f\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"a\"]},\"a0\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"b\"]},\"a1\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"c\"]},\"a2\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"d\"]},\"a3\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"e\"]},\"a4\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"h\"]},\"a5\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"l\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(hl)\"]},\"a7\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"a\"]},\"a8\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"b\"]},\"a9\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"c\"]},\"aa\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"d\"]},\"ab\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"e\"]},\"ac\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"h\"]},\"ad\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"l\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(hl)\"]},\"af\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"a\"]},\"b0\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"b\"]},\"b1\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"c\"]},\"b2\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"d\"]},\"b3\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"e\"]},\"b4\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"h\"]},\"b5\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"l\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(hl)\"]},\"b7\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"a\"]},\"b8\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"b\"]},\"b9\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"c\"]},\"ba\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"d\"]},\"bb\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"e\"]},\"bc\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"h\"]},\"bd\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"l\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(hl)\"]},\"bf\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"a\"]},\"c0\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"b\"]},\"c1\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"c\"]},\"c2\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"d\"]},\"c3\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"e\"]},\"c4\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"h\"]},\"c5\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"l\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(hl)\"]},\"c7\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"a\"]},\"c8\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"b\"]},\"c9\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"c\"]},\"ca\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"d\"]},\"cb\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"e\"]},\"cc\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"h\"]},\"cd\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"l\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(hl)\"]},\"cf\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"a\"]},\"d0\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"b\"]},\"d1\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"c\"]},\"d2\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"d\"]},\"d3\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"e\"]},\"d4\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"h\"]},\"d5\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"l\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(hl)\"]},\"d7\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"a\"]},\"d8\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"b\"]},\"d9\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"c\"]},\"da\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"d\"]},\"db\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"e\"]},\"dc\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"h\"]},\"dd\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"l\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(hl)\"]},\"df\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"a\"]},\"e0\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"b\"]},\"e1\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"c\"]},\"e2\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"d\"]},\"e3\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"e\"]},\"e4\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"h\"]},\"e5\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"l\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(hl)\"]},\"e7\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"a\"]},\"e8\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"b\"]},\"e9\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"c\"]},\"ea\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"d\"]},\"eb\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"e\"]},\"ec\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"h\"]},\"ed\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"l\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(hl)\"]},\"ef\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"a\"]},\"f0\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"b\"]},\"f1\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"c\"]},\"f2\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"d\"]},\"f3\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"e\"]},\"f4\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"h\"]},\"f5\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"l\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(hl)\"]},\"f7\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"a\"]},\"f8\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"b\"]},\"f9\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"c\"]},\"fa\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"d\"]},\"fb\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"e\"]},\"fc\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"h\"]},\"fd\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"l\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(hl)\"]},\"ff\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"a\"]}}},\"cc\":{\"mnemonic\":\"call\",\"params\":[\"z\",\"nnnn\"]},\"cd\":{\"mnemonic\":\"call\",\"params\":[\"nnnn\"]},\"ce\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"nn\"]},\"cf\":{\"mnemonic\":\"rst\",\"params\":[\"8\"]},\"d0\":{\"mnemonic\":\"ret\",\"params\":[\"nc\"]},\"d1\":{\"mnemonic\":\"pop\",\"params\":[\"de\"]},\"d2\":{\"mnemonic\":\"jp\",\"params\":[\"nc\",\"nnnn\"]},\"d3\":{\"mnemonic\":\"out\",\"params\":[\"(nn)\",\"a\"]},\"d4\":{\"mnemonic\":\"call\",\"params\":[\"nc\",\"nnnn\"]},\"d5\":{\"mnemonic\":\"push\",\"params\":[\"de\"]},\"d6\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"nn\"]},\"d7\":{\"mnemonic\":\"rst\",\"params\":[\"10\"]},\"d8\":{\"mnemonic\":\"ret\",\"params\":[\"c\"]},\"d9\":{\"mnemonic\":\"exx\"},\"da\":{\"mnemonic\":\"jp\",\"params\":[\"c\",\"nnnn\"]},\"db\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(nn)\"]},\"dc\":{\"mnemonic\":\"call\",\"params\":[\"c\",\"nnnn\"]},\"dd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"ix\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"ix\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"ixh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"ixh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"ix\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"ix\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"ixl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"ixl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"ixl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"ixh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(ix+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"ixl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"ixl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"ix\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"ix\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"ixl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"ixl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"ixl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"ixl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"ixl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"ixl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"ixl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"ixl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"ixl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"ixl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"ixl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"ixl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"ixh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"ixl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(ix+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(ix+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(ix+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(ix+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(ix+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(ix+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(ix+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(ix+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(ix+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(ix+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(ix+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(ix+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(ix+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(ix+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(ix+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(ix+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(ix+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(ix+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(ix+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(ix+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(ix+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(ix+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(ix+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(ix+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(ix+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(ix+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(ix+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(ix+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(ix+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(ix+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(ix+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(ix+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(ix+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(ix+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(ix+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(ix+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(ix+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(ix+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(ix+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(ix+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(ix+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(ix+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(ix+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(ix+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(ix+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(ix+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(ix+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(ix+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(ix+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"ix\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"ix\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"ix\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"ix\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"ix\"]}}},\"de\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"nn\"]},\"df\":{\"mnemonic\":\"rst\",\"params\":[\"18\"]},\"e0\":{\"mnemonic\":\"ret\",\"params\":[\"po\"]},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"hl\"]},\"e2\":{\"mnemonic\":\"jp\",\"params\":[\"po\",\"nnnn\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"hl\"]},\"e4\":{\"mnemonic\":\"call\",\"params\":[\"po\",\"nnnn\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"hl\"]},\"e6\":{\"mnemonic\":\"and\",\"params\":[\"nn\"]},\"e7\":{\"mnemonic\":\"rst\",\"params\":[\"20\"]},\"e8\":{\"mnemonic\":\"ret\",\"params\":[\"pe\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"hl\"]},\"ea\":{\"mnemonic\":\"jp\",\"params\":[\"pe\",\"nnnn\"]},\"eb\":{\"mnemonic\":\"ex\",\"params\":[\"de\",\"hl\"]},\"ec\":{\"mnemonic\":\"call\",\"params\":[\"pe\",\"nnnn\"]},\"ed\":{\"shift\":{\"40\":{\"mnemonic\":\"in\",\"params\":[\"b\",\"(c)\"]},\"41\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"b\"]},\"42\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"bc\"]},\"43\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"bc\"]},\"44\":{\"mnemonic\":\"neg\"},\"45\":{\"mnemonic\":\"retn\"},\"46\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"47\":{\"mnemonic\":\"ld\",\"params\":[\"i\",\"a\"]},\"48\":{\"mnemonic\":\"in\",\"params\":[\"c\",\"(c)\"]},\"49\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"c\"]},\"50\":{\"mnemonic\":\"in\",\"params\":[\"d\",\"(c)\"]},\"51\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"d\"]},\"52\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"de\"]},\"53\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"de\"]},\"54\":{\"mnemonic\":\"neg\"},\"55\":{\"mnemonic\":\"retn\"},\"56\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"57\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"i\"]},\"58\":{\"mnemonic\":\"in\",\"params\":[\"e\",\"(c)\"]},\"59\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"e\"]},\"60\":{\"mnemonic\":\"in\",\"params\":[\"h\",\"(c)\"]},\"61\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"h\"]},\"62\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"hl\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"hl\"]},\"64\":{\"mnemonic\":\"neg\"},\"65\":{\"mnemonic\":\"retn\"},\"66\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"67\":{\"mnemonic\":\"rrd\"},\"68\":{\"mnemonic\":\"in\",\"params\":[\"l\",\"(c)\"]},\"69\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"l\"]},\"70\":{\"mnemonic\":\"in\",\"params\":[\"f\",\"(c)\"]},\"71\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"0\"]},\"72\":{\"mnemonic\":\"sbc\",\"params\":[\"hl\",\"sp\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"sp\"]},\"74\":{\"mnemonic\":\"neg\"},\"75\":{\"mnemonic\":\"retn\"},\"76\":{\"mnemonic\":\"im\",\"params\":[\"1\"]},\"78\":{\"mnemonic\":\"in\",\"params\":[\"a\",\"(c)\"]},\"79\":{\"mnemonic\":\"out\",\"params\":[\"(c)\",\"a\"]},\"4c\":{\"mnemonic\":\"neg\"},\"5c\":{\"mnemonic\":\"neg\"},\"6c\":{\"mnemonic\":\"neg\"},\"7c\":{\"mnemonic\":\"neg\"},\"5d\":{\"mnemonic\":\"retn\"},\"6d\":{\"mnemonic\":\"retn\"},\"7d\":{\"mnemonic\":\"retn\"},\"4e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"6e\":{\"mnemonic\":\"im\",\"params\":[\"0\"]},\"4a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"bc\"]},\"4b\":{\"mnemonic\":\"ld\",\"params\":[\"bc\",\"(nnnn)\"]},\"4d\":{\"mnemonic\":\"reti\"},\"4f\":{\"mnemonic\":\"ld\",\"params\":[\"r\",\"a\"]},\"5a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"de\"]},\"5b\":{\"mnemonic\":\"ld\",\"params\":[\"de\",\"(nnnn)\"]},\"5e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"7e\":{\"mnemonic\":\"im\",\"params\":[\"2\"]},\"5f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"r\"]},\"6a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"hl\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"hl\",\"(nnnn)\"]},\"6f\":{\"mnemonic\":\"rld\"},\"7a\":{\"mnemonic\":\"adc\",\"params\":[\"hl\",\"sp\"]},\"7b\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"(nnnn)\"]},\"a0\":{\"mnemonic\":\"ldi\"},\"a1\":{\"mnemonic\":\"cpi\"},\"a2\":{\"mnemonic\":\"ini\"},\"a3\":{\"mnemonic\":\"outi\"},\"a8\":{\"mnemonic\":\"ldd\"},\"a9\":{\"mnemonic\":\"cpd\"},\"aa\":{\"mnemonic\":\"ind\"},\"ab\":{\"mnemonic\":\"outd\"},\"b0\":{\"mnemonic\":\"ldir\"},\"b1\":{\"mnemonic\":\"cpir\"},\"b2\":{\"mnemonic\":\"inir\"},\"b3\":{\"mnemonic\":\"otir\"},\"b8\":{\"mnemonic\":\"lddr\"},\"b9\":{\"mnemonic\":\"cpdr\"},\"ba\":{\"mnemonic\":\"indr\"},\"bb\":{\"mnemonic\":\"otdr\"}}},\"ee\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"nn\"]},\"ef\":{\"mnemonic\":\"rst\",\"params\":[\"28\"]},\"f0\":{\"mnemonic\":\"ret\",\"params\":[\"p\"]},\"f1\":{\"mnemonic\":\"pop\",\"params\":[\"af\"]},\"f2\":{\"mnemonic\":\"jp\",\"params\":[\"p\",\"nnnn\"]},\"f3\":{\"mnemonic\":\"di\"},\"f4\":{\"mnemonic\":\"call\",\"params\":[\"p\",\"nnnn\"]},\"f5\":{\"mnemonic\":\"push\",\"params\":[\"af\"]},\"f6\":{\"mnemonic\":\"or\",\"params\":[\"nn\"]},\"f7\":{\"mnemonic\":\"rst\",\"params\":[\"30\"]},\"f8\":{\"mnemonic\":\"ret\",\"params\":[\"m\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"hl\"]},\"fa\":{\"mnemonic\":\"jp\",\"params\":[\"m\",\"nnnn\"]},\"fb\":{\"mnemonic\":\"ei\"},\"fc\":{\"mnemonic\":\"call\",\"params\":[\"m\",\"nnnn\"]},\"fd\":{\"shift\":{\"9\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"bc\"]},\"19\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"de\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"nnnn\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"(nnnn)\",\"iy\"]},\"23\":{\"mnemonic\":\"inc\",\"params\":[\"iy\"]},\"24\":{\"mnemonic\":\"inc\",\"params\":[\"iyh\"]},\"25\":{\"mnemonic\":\"dec\",\"params\":[\"iyh\"]},\"26\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"nn\"]},\"29\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"iy\"]},\"34\":{\"mnemonic\":\"inc\",\"params\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"dec\",\"params\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"nn\"]},\"39\":{\"mnemonic\":\"add\",\"params\":[\"iy\",\"sp\"]},\"44\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyh\"]},\"45\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"iyl\"]},\"46\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyh\"]},\"55\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"iyl\"]},\"56\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"b\"]},\"61\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"c\"]},\"62\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"d\"]},\"63\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"e\"]},\"64\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyh\"]},\"65\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"iyl\"]},\"66\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"ld\",\"params\":[\"iyh\",\"a\"]},\"68\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"b\"]},\"69\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"c\"]},\"70\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"b\"]},\"71\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"c\"]},\"72\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"d\"]},\"73\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"e\"]},\"74\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"h\"]},\"75\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"l\"]},\"77\":{\"mnemonic\":\"ld\",\"params\":[\"(iy+dd)\",\"a\"]},\"84\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyh\"]},\"85\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"iyl\"]},\"86\":{\"mnemonic\":\"add\",\"params\":[\"a\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyh\"]},\"95\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"iyl\"]},\"96\":{\"mnemonic\":\"sub\",\"params\":[\"a\",\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"iy\",\"(nnnn)\"]},\"2b\":{\"mnemonic\":\"dec\",\"params\":[\"iy\"]},\"2c\":{\"mnemonic\":\"inc\",\"params\":[\"iyl\"]},\"2d\":{\"mnemonic\":\"dec\",\"params\":[\"iyl\"]},\"2e\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"nn\"]},\"4c\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyh\"]},\"4d\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"iyl\"]},\"4e\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyh\"]},\"5d\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"iyl\"]},\"5e\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"d\"]},\"6b\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"e\"]},\"6c\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyh\"]},\"6d\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"iyl\"]},\"6e\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"ld\",\"params\":[\"iyl\",\"a\"]},\"7c\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyh\"]},\"7d\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"iyl\"]},\"7e\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyh\"]},\"8d\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"iyl\"]},\"8e\":{\"mnemonic\":\"adc\",\"params\":[\"a\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyh\"]},\"9d\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"iyl\"]},\"9e\":{\"mnemonic\":\"sbc\",\"params\":[\"a\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyh\"]},\"a5\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"iyl\"]},\"a6\":{\"mnemonic\":\"and\",\"params\":[\"a\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyh\"]},\"ad\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"iyl\"]},\"ae\":{\"mnemonic\":\"xor\",\"params\":[\"a\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyh\"]},\"b5\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"iyl\"]},\"b6\":{\"mnemonic\":\"or\",\"params\":[\"a\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"cp\",\"params\":[\"iyh\"]},\"bd\":{\"mnemonic\":\"cp\",\"params\":[\"iyl\"]},\"be\":{\"mnemonic\":\"cp\",\"params\":[\"(iy+dd)\"]},\"cb\":{\"shift\":{\"0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"6\":{\"mnemonic\":\"rlc\",\"params\":[\"(iy+dd)\"]},\"7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rlc\"],\"extra\":[\"(iy+dd)\"]},\"8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"10\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"11\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"12\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"13\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"14\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"15\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"16\":{\"mnemonic\":\"rl\",\"params\":[\"(iy+dd)\"]},\"17\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rl\"],\"extra\":[\"(iy+dd)\"]},\"18\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"19\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"20\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"21\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"22\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"23\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"24\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"25\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"26\":{\"mnemonic\":\"sla\",\"params\":[\"(iy+dd)\"]},\"27\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sla\"],\"extra\":[\"(iy+dd)\"]},\"28\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"29\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"30\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"31\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"32\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"33\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"34\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"35\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"36\":{\"mnemonic\":\"sll\",\"params\":[\"(iy+dd)\"]},\"37\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sll\"],\"extra\":[\"(iy+dd)\"]},\"38\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"39\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"40\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"41\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"42\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"43\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"44\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"45\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"46\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"47\":{\"mnemonic\":\"bit\",\"params\":[\"0\",\"(iy+dd)\"]},\"48\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"49\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"50\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"51\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"52\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"53\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"54\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"55\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"56\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"57\":{\"mnemonic\":\"bit\",\"params\":[\"2\",\"(iy+dd)\"]},\"58\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"59\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"60\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"61\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"62\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"63\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"64\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"65\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"66\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"67\":{\"mnemonic\":\"bit\",\"params\":[\"4\",\"(iy+dd)\"]},\"68\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"69\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"70\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"71\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"72\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"73\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"74\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"75\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"76\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"77\":{\"mnemonic\":\"bit\",\"params\":[\"6\",\"(iy+dd)\"]},\"78\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"79\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"80\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"81\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"82\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"83\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"84\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"85\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"86\":{\"mnemonic\":\"res\",\"params\":[\"0\",\"(iy+dd)\"]},\"87\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"88\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"89\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"90\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"91\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"92\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"93\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"94\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"95\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"96\":{\"mnemonic\":\"res\",\"params\":[\"2\",\"(iy+dd)\"]},\"97\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"98\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"99\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"e\":{\"mnemonic\":\"rrc\",\"params\":[\"(iy+dd)\"]},\"f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rrc\"],\"extra\":[\"(iy+dd)\"]},\"1a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"1e\":{\"mnemonic\":\"rr\",\"params\":[\"(iy+dd)\"]},\"1f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"rr\"],\"extra\":[\"(iy+dd)\"]},\"2a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"2e\":{\"mnemonic\":\"sra\",\"params\":[\"(iy+dd)\"]},\"2f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"sra\"],\"extra\":[\"(iy+dd)\"]},\"3a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"3e\":{\"mnemonic\":\"srl\",\"params\":[\"(iy+dd)\"]},\"3f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"srl\"],\"extra\":[\"(iy+dd)\"]},\"4a\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4b\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4c\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4d\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4e\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"4f\":{\"mnemonic\":\"bit\",\"params\":[\"1\",\"(iy+dd)\"]},\"5a\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5b\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5c\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5d\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5e\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"5f\":{\"mnemonic\":\"bit\",\"params\":[\"3\",\"(iy+dd)\"]},\"6a\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6b\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6c\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6d\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6e\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"6f\":{\"mnemonic\":\"bit\",\"params\":[\"5\",\"(iy+dd)\"]},\"7a\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7b\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7c\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7d\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7e\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"7f\":{\"mnemonic\":\"bit\",\"params\":[\"7\",\"(iy+dd)\"]},\"8a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"8e\":{\"mnemonic\":\"res\",\"params\":[\"1\",\"(iy+dd)\"]},\"8f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"9a\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9b\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9c\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9d\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"9e\":{\"mnemonic\":\"res\",\"params\":[\"3\",\"(iy+dd)\"]},\"9f\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"a0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a6\":{\"mnemonic\":\"res\",\"params\":[\"4\",\"(iy+dd)\"]},\"a7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"a8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"a9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"aa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ab\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ac\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ad\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ae\":{\"mnemonic\":\"res\",\"params\":[\"5\",\"(iy+dd)\"]},\"af\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"b0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b6\":{\"mnemonic\":\"res\",\"params\":[\"6\",\"(iy+dd)\"]},\"b7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"b8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"b9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"ba\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"bd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"be\":{\"mnemonic\":\"res\",\"params\":[\"7\",\"(iy+dd)\"]},\"bf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"res\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"c0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c6\":{\"mnemonic\":\"set\",\"params\":[\"0\",\"(iy+dd)\"]},\"c7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"0\",\"(iy+dd)\"]},\"c8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"c9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ca\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"cd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"ce\":{\"mnemonic\":\"set\",\"params\":[\"1\",\"(iy+dd)\"]},\"cf\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"1\",\"(iy+dd)\"]},\"d0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d6\":{\"mnemonic\":\"set\",\"params\":[\"2\",\"(iy+dd)\"]},\"d7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"2\",\"(iy+dd)\"]},\"d8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"d9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"da\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"db\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"dd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"de\":{\"mnemonic\":\"set\",\"params\":[\"3\",\"(iy+dd)\"]},\"df\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"3\",\"(iy+dd)\"]},\"e0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e6\":{\"mnemonic\":\"set\",\"params\":[\"4\",\"(iy+dd)\"]},\"e7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"4\",\"(iy+dd)\"]},\"e8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"e9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ea\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"eb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ec\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ed\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"ee\":{\"mnemonic\":\"set\",\"params\":[\"5\",\"(iy+dd)\"]},\"ef\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"5\",\"(iy+dd)\"]},\"f0\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f1\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f2\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f3\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f4\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f5\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f6\":{\"mnemonic\":\"set\",\"params\":[\"6\",\"(iy+dd)\"]},\"f7\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"6\",\"(iy+dd)\"]},\"f8\":{\"mnemonic\":\"ld\",\"params\":[\"b\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"c\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fa\":{\"mnemonic\":\"ld\",\"params\":[\"d\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fb\":{\"mnemonic\":\"ld\",\"params\":[\"e\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fc\":{\"mnemonic\":\"ld\",\"params\":[\"h\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fd\":{\"mnemonic\":\"ld\",\"params\":[\"l\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]},\"fe\":{\"mnemonic\":\"set\",\"params\":[\"7\",\"(iy+dd)\"]},\"ff\":{\"mnemonic\":\"ld\",\"params\":[\"a\",\"set\"],\"extra\":[\"7\",\"(iy+dd)\"]}}},\"e1\":{\"mnemonic\":\"pop\",\"params\":[\"iy\"]},\"e3\":{\"mnemonic\":\"ex\",\"params\":[\"(sp)\",\"iy\"]},\"e5\":{\"mnemonic\":\"push\",\"params\":[\"iy\"]},\"e9\":{\"mnemonic\":\"jp\",\"params\":[\"iy\"]},\"f9\":{\"mnemonic\":\"ld\",\"params\":[\"sp\",\"iy\"]}}},\"fe\":{\"mnemonic\":\"cp\",\"params\":[\"nn\"]},\"ff\":{\"mnemonic\":\"rst\",\"params\":[\"38\"]}}");
 
 /***/ }),
-/* 135 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21545,7 +11303,7 @@ exports.Preamble = Preamble;
 
 
 /***/ }),
-/* 136 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21564,7 +11322,7 @@ exports.Z80_KNOWN_LABELS = [
 
 
 /***/ }),
-/* 137 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21598,7 +11356,7 @@ exports.instructionsToText = instructionsToText;
 
 
 /***/ }),
-/* 138 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23454,6 +13212,7 @@ class Decoder_Decoder {
 
 
 
+
 const LOCAL_DATA_KEY = "tapes";
 class Tape_Tape {
     /**
@@ -23498,6 +13257,21 @@ class Tape_Tape {
      */
     asCasFile() {
         return concatByteArrays(this.programs.map(program => program.asCasFile()));
+    }
+    /**
+     * Return a .wav file version of the tape.
+     */
+    asWavFile() {
+        const audioParts = [];
+        for (const program of this.programs) {
+            // One second of silence before each program.
+            audioParts.push(new Int16Array(DEFAULT_SAMPLE_RATE));
+            // The program itself.
+            audioParts.push(program.asAudio());
+            // One second of silence after each program.
+            audioParts.push(new Int16Array(DEFAULT_SAMPLE_RATE));
+        }
+        return writeWavFile(concatAudio(audioParts), DEFAULT_SAMPLE_RATE);
     }
     /**
      * Listen for changes to local storage and apply them.
@@ -25986,7 +15760,7 @@ var jss_plugin_rule_value_function_esm_functionPlugin = function functionPlugin(
 /* harmony default export */ var jss_plugin_rule_value_function_esm = (jss_plugin_rule_value_function_esm_functionPlugin);
 
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js
-var es = __webpack_require__(21);
+var es = __webpack_require__(4);
 
 // CONCATENATED MODULE: ./node_modules/jss-plugin-rule-value-observable/dist/jss-plugin-rule-value-observable.esm.js
 
@@ -28247,8 +18021,2378 @@ class Highlighter_Highlighter {
     }
 }
 
-// EXTERNAL MODULE: ./node_modules/trs80-base/dist/index.js
-var trs80_base_dist = __webpack_require__(1);
+// EXTERNAL MODULE: ./node_modules/teamten-ts-utils/dist/index.js
+var teamten_ts_utils_dist = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/ProgramAnnotation.js
+/**
+ * Information about one particular section of a program. The indices refer back to a binary
+ * that the program was parsed from.
+ */
+class ProgramAnnotation {
+    constructor(text, begin, end) {
+        this.text = text;
+        this.begin = begin;
+        this.end = end;
+    }
+    /**
+     * Create a new program annotation with the begin and end increased by the specified offset.
+     */
+    adjusted(offset) {
+        return new ProgramAnnotation(this.text, this.begin + offset, this.end + offset);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Trs80File.js
+/**
+ * Base class for decoded TRS-80 files.
+ */
+class AbstractTrs80File {
+    constructor(binary, error, annotations) {
+        this.binary = binary;
+        this.error = error;
+        this.annotations = annotations;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Basic.js
+// Tools for decoding Basic programs.
+
+
+
+
+const BASIC_TAPE_HEADER_BYTE = 0xD3;
+const BASIC_HEADER_BYTE = 0xFF;
+const FIRST_TOKEN = 0x80;
+const TOKENS = [
+    "END", "FOR", "RESET", "SET", "CLS", "CMD", "RANDOM", "NEXT",
+    "DATA", "INPUT", "DIM", "READ", "LET", "GOTO", "RUN", "IF",
+    "RESTORE", "GOSUB", "RETURN", "REM", "STOP", "ELSE", "TRON", "TROFF",
+    "DEFSTR", "DEFINT", "DEFSNG", "DEFDBL", "LINE", "EDIT", "ERROR", "RESUME",
+    "OUT", "ON", "OPEN", "FIELD", "GET", "PUT", "CLOSE", "LOAD",
+    "MERGE", "NAME", "KILL", "LSET", "RSET", "SAVE", "SYSTEM", "LPRINT",
+    "DEF", "POKE", "PRINT", "CONT", "LIST", "LLIST", "DELETE", "AUTO",
+    "CLEAR", "CLOAD", "CSAVE", "NEW", "TAB(", "TO", "FN", "USING",
+    "VARPTR", "USR", "ERL", "ERR", "STRING$", "INSTR", "POINT", "TIME$",
+    "MEM", "INKEY$", "THEN", "NOT", "STEP", "+", "-", "*",
+    "/", "[", "AND", "OR", ">", "=", "<", "SGN",
+    "INT", "ABS", "FRE", "INP", "POS", "SQR", "RND", "LOG",
+    "EXP", "COS", "SIN", "TAN", "ATN", "PEEK", "CVI", "CVS",
+    "CVD", "EOF", "LOC", "LOF", "MKI$", "MKS$", "MKD$", "CINT",
+    "CSNG", "CDBL", "FIX", "LEN", "STR$", "VAL", "ASC", "CHR$",
+    "LEFT$", "RIGHT$", "MID$",
+];
+const DOUBLE_QUOTE = 0x22;
+const SINGLE_QUOTE = 0x27;
+const COLON = 0x3A;
+const REM = 0x93;
+const DATA = 0x88;
+const REMQUOT = 0xFB;
+const ELSE = 0x95;
+/**
+ * Parser state.
+ */
+var ParserState;
+(function (ParserState) {
+    // Normal part of line.
+    ParserState[ParserState["NORMAL"] = 0] = "NORMAL";
+    // Inside string literal.
+    ParserState[ParserState["STRING"] = 1] = "STRING";
+    // After REM token to end of line.
+    ParserState[ParserState["REM"] = 2] = "REM";
+    // After DATA token to end of statement.
+    ParserState[ParserState["DATA"] = 3] = "DATA";
+})(ParserState || (ParserState = {}));
+/**
+ * Get the token for the byte value, or undefined if the value does
+ * not map to a token.
+ */
+function getToken(c) {
+    return c >= FIRST_TOKEN && c < FIRST_TOKEN + TOKENS.length ? TOKENS[c - FIRST_TOKEN] : undefined;
+}
+/**
+ * Generate a 3-character octal version of a number.
+ */
+function toOctal(n) {
+    return n.toString(8).padStart(3, "0");
+}
+/**
+ * Type of Basic element, for syntax highlighting.
+ */
+var ElementType;
+(function (ElementType) {
+    ElementType[ElementType["ERROR"] = 0] = "ERROR";
+    ElementType[ElementType["LINE_NUMBER"] = 1] = "LINE_NUMBER";
+    ElementType[ElementType["PUNCTUATION"] = 2] = "PUNCTUATION";
+    ElementType[ElementType["KEYWORD"] = 3] = "KEYWORD";
+    ElementType[ElementType["REGULAR"] = 4] = "REGULAR";
+    ElementType[ElementType["STRING"] = 5] = "STRING";
+    ElementType[ElementType["COMMENT"] = 6] = "COMMENT";
+})(ElementType || (ElementType = {}));
+/**
+ * Piece of a Basic program (token, character, line number).
+ */
+class BasicElement {
+    constructor(offset, text, elementType, length = 1) {
+        this.offset = offset;
+        this.length = length;
+        this.text = text;
+        this.elementType = elementType;
+    }
+    /**
+     * Get the element's text so that it will display properly in "Another Man's Treasure" font.
+     *
+     * https://www.kreativekorp.com/software/fonts/trs80.shtml
+     */
+    asAnotherMansTreasure() {
+        if (this.elementType === ElementType.STRING) {
+            const parts = [];
+            // Convert non-ASCII to the right value for our font.
+            for (const ch of this.text) {
+                let c = ch.charCodeAt(0);
+                if (c < 32 || c >= 127) {
+                    c += 0xE000;
+                }
+                parts.push(String.fromCodePoint(c));
+            }
+            return parts.join("");
+        }
+        else {
+            return this.text;
+        }
+    }
+    /**
+     * Get the element's text so that it will display properly in ASCII.
+     */
+    asAscii() {
+        if (this.elementType === ElementType.STRING) {
+            const parts = [];
+            for (const ch of this.text) {
+                const c = ch.charCodeAt(0);
+                if (ch === "\r") {
+                    parts.push("\\r");
+                }
+                else if (c >= 32 && c < 128 && ch !== "\\") {
+                    parts.push(ch);
+                }
+                else {
+                    parts.push("\\" + toOctal(c));
+                }
+            }
+            return parts.join("");
+        }
+        else {
+            return this.text;
+        }
+    }
+}
+/**
+ * Class representing a Basic program. If the "error" field is set, then something
+ * went wrong with the program and the data may be partially loaded.
+ */
+class Basic_BasicProgram extends AbstractTrs80File {
+    constructor(binary, error, annotations, elements) {
+        super(binary, error, annotations);
+        this.className = "BasicProgram";
+        this.elements = elements;
+    }
+    getDescription() {
+        // Don't include filename, it's usually worthless.
+        return "Basic program";
+    }
+}
+/**
+ * Adds the header bytes necessary for writing Basic cassettes.
+ */
+function wrapBasic(bytes) {
+    // Add Basic header.
+    const buffers = [
+        new Uint8Array([BASIC_TAPE_HEADER_BYTE, BASIC_TAPE_HEADER_BYTE, BASIC_TAPE_HEADER_BYTE]),
+        bytes,
+    ];
+    return Object(teamten_ts_utils_dist["concatByteArrays"])(buffers);
+}
+/**
+ * Set the one-letter Basic name in the binary to the first letter of the name.
+ *
+ * @return a new array with the modified name.
+ */
+function setBasicName(bytes, name) {
+    if (name === "") {
+        // Pick anything.
+        name = "A";
+    }
+    // Make a copy for modifying.
+    const newName = new Uint8Array(bytes);
+    if (newName[0] === BASIC_TAPE_HEADER_BYTE &&
+        newName[1] === BASIC_TAPE_HEADER_BYTE &&
+        newName[2] === BASIC_TAPE_HEADER_BYTE &&
+        newName.length > 3) {
+        newName[3] = name.charCodeAt(0);
+    }
+    else if (newName[0] === BASIC_HEADER_BYTE &&
+        newName.length > 1) {
+        newName[1] = name.charCodeAt(0);
+    }
+    return newName;
+}
+/**
+ * Decode a tokenized Basic program.
+ * @param binary tokenized program. May be in tape format (D3 D3 D3 followed by a one-letter program
+ * name) or not (FF).
+ * @return the Basic program, or undefined if the header did not indicate that this was a Basic program.
+ */
+function decodeBasicProgram(binary) {
+    const b = new teamten_ts_utils_dist["ByteReader"](binary);
+    let state;
+    let preStringState = ParserState.NORMAL;
+    let error;
+    const annotations = [];
+    // Map from byte address to BasicElement for that byte.
+    const elements = [];
+    const firstByte = b.read();
+    if (firstByte === BASIC_TAPE_HEADER_BYTE) {
+        if (b.read() !== BASIC_TAPE_HEADER_BYTE || b.read() !== BASIC_TAPE_HEADER_BYTE) {
+            return undefined;
+        }
+        annotations.push(new ProgramAnnotation("Header", 0, b.addr()));
+        // One-byte ASCII program name. This is nearly always meaningless, so we do nothing with it.
+        b.read();
+        annotations.push(new ProgramAnnotation("Name", b.addr() - 1, b.addr()));
+    }
+    else if (firstByte === BASIC_HEADER_BYTE) {
+        // All good.
+        annotations.push(new ProgramAnnotation("Header", 0, b.addr()));
+    }
+    else {
+        return undefined;
+    }
+    while (true) {
+        // Read the address of the next line. We ignore this (as does Basic when
+        // loading programs), only using it to detect end of program. (In the real
+        // Basic these are regenerated after loading.)
+        const address = b.readShort(true);
+        if (address === teamten_ts_utils_dist["EOF"]) {
+            error = "EOF in next line's address";
+            break;
+        }
+        // Zero address indicates end of program.
+        if (address === 0) {
+            annotations.push(new ProgramAnnotation("End-of-program marker", b.addr() - 2, b.addr()));
+            break;
+        }
+        annotations.push(new ProgramAnnotation("Address of next line (0x" + Object(z80_base_dist["toHexWord"])(address) + ")", b.addr() - 2, b.addr()));
+        // Read current line number.
+        const lineNumber = b.readShort(false);
+        if (lineNumber === teamten_ts_utils_dist["EOF"]) {
+            error = "EOF in line number";
+            break;
+        }
+        annotations.push(new ProgramAnnotation("Line number (" + lineNumber + ")", b.addr() - 2, b.addr()));
+        elements.push(new BasicElement(b.addr() - 2, lineNumber.toString(), ElementType.LINE_NUMBER, 2));
+        elements.push(new BasicElement(undefined, " ", ElementType.REGULAR));
+        // Read rest of line.
+        const lineAddr = b.addr();
+        const lineElementsIndex = elements.length;
+        let c; // Uint8 value.
+        let ch; // String value.
+        state = ParserState.NORMAL;
+        while (true) {
+            c = b.read();
+            if (c === teamten_ts_utils_dist["EOF"] || c === 0) {
+                break;
+            }
+            ch = String.fromCharCode(c);
+            // Special handling of sequences of characters that start with a colon.
+            if (ch === ":" && state === ParserState.NORMAL) {
+                const colonAddr = b.addr() - 1;
+                if (b.peek(0) === ELSE) {
+                    // :ELSE gets translated to just ELSE, probably because an old version
+                    // of Basic only supported ELSE after a colon.
+                    b.read(); // ELSE
+                    elements.push(new BasicElement(colonAddr, "ELSE", ElementType.KEYWORD, b.addr() - colonAddr));
+                }
+                else if (b.peek(0) === REM && b.peek(1) === REMQUOT) {
+                    // Detect the ":REM'" sequence (colon, REM, single quote), because
+                    // that translates to a single quote. Must be a backward-compatible
+                    // way to add a single quote as a comment.
+                    b.read(); // REM
+                    b.read(); // REMQUOT
+                    elements.push(new BasicElement(colonAddr, "'", ElementType.COMMENT, b.addr() - colonAddr));
+                    state = ParserState.REM;
+                }
+                else {
+                    elements.push(new BasicElement(colonAddr, ":", ElementType.PUNCTUATION));
+                }
+            }
+            else {
+                switch (state) {
+                    case ParserState.NORMAL:
+                        const token = getToken(c);
+                        elements.push(token !== undefined
+                            ? new BasicElement(b.addr() - 1, token, c === DATA || c === REM ? ElementType.COMMENT
+                                : token.length === 1 ? ElementType.PUNCTUATION
+                                    : ElementType.KEYWORD)
+                            : new BasicElement(b.addr() - 1, ch, ch === '"' ? ElementType.STRING : ElementType.REGULAR));
+                        if (c === REM) {
+                            state = ParserState.REM;
+                        }
+                        else if (c === DATA) {
+                            state = ParserState.DATA;
+                        }
+                        else if (ch === '"') {
+                            preStringState = state;
+                            state = ParserState.STRING;
+                        }
+                        break;
+                    case ParserState.STRING:
+                        // Put the real value in the string. Code displaying can use the methods of
+                        // BasicElement to convert it before printing.
+                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.STRING));
+                        if (ch === '"') {
+                            // End of string.
+                            state = preStringState;
+                        }
+                        break;
+                    case ParserState.REM:
+                        elements.push(new BasicElement(b.addr() - 1, ch, ElementType.COMMENT));
+                        break;
+                    case ParserState.DATA:
+                        let elementType = ElementType.COMMENT;
+                        if (ch === ":") {
+                            elementType = ElementType.PUNCTUATION;
+                            state = ParserState.NORMAL;
+                        }
+                        if (ch === '"') {
+                            elementType = ElementType.STRING;
+                            preStringState = state;
+                            state = ParserState.STRING;
+                        }
+                        elements.push(new BasicElement(b.addr() - 1, ch, elementType));
+                        break;
+                }
+            }
+        }
+        if (c === teamten_ts_utils_dist["EOF"]) {
+            error = "EOF in line";
+            annotations.push(new ProgramAnnotation("Partial line", lineAddr, b.addr()));
+            break;
+        }
+        const textLineParts = [];
+        for (let i = lineElementsIndex; i < elements.length; i++) {
+            textLineParts.push(elements[i].text);
+        }
+        let textLine = textLineParts.join("").replace(/[\n\r]+/, " ");
+        if (textLine.length > 33) {
+            textLine = textLine.substr(0, 30) + "...";
+        }
+        annotations.push(new ProgramAnnotation("Line: " + textLine, lineAddr, b.addr() - 1));
+        annotations.push(new ProgramAnnotation("End-of-line marker", b.addr() - 1, b.addr()));
+    }
+    return new Basic_BasicProgram(binary, error, annotations, elements);
+}
+/**
+ * Parser for a single line of Basic code.
+ */
+class Basic_BasicParser {
+    constructor(line) {
+        this.result = [];
+        this.lineNumber = undefined;
+        this.pos = 0;
+        // Only trim the start, spaces at the end should be kept.
+        this.line = line.trimStart();
+    }
+    /**
+     * Parse the line, returning the binary for it or an error. The binary includes
+     * the line number and the terminating nul, but not the "next-line" pointer.
+     */
+    parse() {
+        // Parse line number.
+        this.lineNumber = this.readNumber();
+        if (this.lineNumber === undefined) {
+            return "Missing line number: " + this.line;
+        }
+        this.result.push(Object(z80_base_dist["lo"])(this.lineNumber));
+        this.result.push(Object(z80_base_dist["hi"])(this.lineNumber));
+        // We only trim at the start, so there could be only spaces here, but that's not allowed.
+        if (this.line.substr(this.pos).trim() === "") {
+            return "Empty line " + this.lineNumber;
+        }
+        // Skip single optional whitespace
+        if (this.pos < this.line.length && Basic_BasicParser.isWhitespace(this.line.charCodeAt(this.pos))) {
+            this.pos++;
+        }
+        while (this.pos < this.line.length) {
+            let ch = this.line.charCodeAt(this.pos);
+            // Lower case anything outside of strings.
+            if (ch >= 0x61 && ch < 0x61 + 26) {
+                ch -= 0x20;
+            }
+            // Handle single-quote comment.
+            if (ch === SINGLE_QUOTE) {
+                // Single quote is the start of a comment, but it's encoded in a backward-compatible
+                // way with several tokens.
+                this.result.push(COLON, REM, REMQUOT);
+                this.pos++;
+                // We're done, copy the rest of the line.
+                break;
+            }
+            // Handle string.
+            if (ch === DOUBLE_QUOTE) {
+                this.result.push(ch);
+                this.pos++;
+                while (this.pos < this.line.length) {
+                    ch = this.line.charCodeAt(this.pos++);
+                    this.result.push(ch);
+                    if (ch === DOUBLE_QUOTE) {
+                        break;
+                    }
+                }
+            }
+            else {
+                // See if it should be a token.
+                const token = this.readToken();
+                if (token === undefined) {
+                    // Just a regular letter.
+                    this.result.push(ch);
+                    this.pos++;
+                }
+                else {
+                    // Prefix ELSE with colon for backward compatibility.
+                    if (token === ELSE && this.result[this.result.length - 1] !== COLON) {
+                        this.result.push(COLON);
+                    }
+                    this.result.push(token);
+                    this.pos += TOKENS[token - FIRST_TOKEN].length;
+                    if (token === REM) {
+                        // We're done, copy the rest of the line.
+                        break;
+                    }
+                    if (token === DATA) {
+                        // Copy to end of statement.
+                        let inString = false;
+                        while (this.pos < this.line.length) {
+                            ch = this.line.charCodeAt(this.pos);
+                            if (ch === DOUBLE_QUOTE) {
+                                inString = !inString;
+                            }
+                            else if (ch === COLON && !inString) {
+                                break;
+                            }
+                            this.result.push(ch);
+                            this.pos++;
+                        }
+                    }
+                }
+            }
+        }
+        // Copy rest of line (for comments).
+        while (this.pos < this.line.length) {
+            this.result.push(this.line.charCodeAt(this.pos++));
+        }
+        // End-of-line marker.
+        this.result.push(0);
+        return new Uint8Array(this.result);
+    }
+    /**
+     * If we're at a token, return it, else return undefined. Does not advance past the token.
+     */
+    readToken() {
+        for (let i = 0; i < TOKENS.length; i++) {
+            const token = TOKENS[i];
+            if (token === this.line.substr(this.pos, token.length).toUpperCase()) {
+                return FIRST_TOKEN + i;
+            }
+        }
+        return undefined;
+    }
+    /**
+     * Reads a decimal number and advances past it, or returns undefined if not at a number.
+     */
+    readNumber() {
+        let n;
+        while (this.pos < this.line.length && Basic_BasicParser.isDigit(this.line.charCodeAt(this.pos))) {
+            if (n === undefined) {
+                n = 0;
+            }
+            n = n * 10 + this.line.charCodeAt(this.pos) - 0x30;
+            this.pos++;
+        }
+        return n;
+    }
+    /**
+     * Whether the ASCII value is whitespace.
+     */
+    static isWhitespace(ch) {
+        return ch === 0x20 || ch === 0x09;
+    }
+    /**
+     * Whether the ASCII value is a digit.
+     */
+    static isDigit(ch) {
+        return ch >= 0x30 && ch < 0x3A;
+    }
+}
+/**
+ * Parse a Basic program into a binary with the initial 0xFF header.
+ *
+ * @return the binary or an error.
+ */
+function parseBasicText(text) {
+    // Split into lines. Only trim the start, spaces at the end should be kept.
+    const lines = text.split(/[\n\r]+/)
+        .map((line) => line.trimStart())
+        .filter((line) => line !== "");
+    const binaryParts = [];
+    binaryParts.push(new Uint8Array([BASIC_HEADER_BYTE]));
+    // Parse each line.
+    let lineNumber;
+    for (const line of lines) {
+        const parser = new Basic_BasicParser(line);
+        const binary = parser.parse();
+        if (typeof binary === "string") {
+            return binary;
+        }
+        // Make sure line numbers are consecutive.
+        if (lineNumber !== undefined && parser.lineNumber !== undefined && parser.lineNumber <= lineNumber) {
+            return "Line " + parser.lineNumber + " is out of order";
+        }
+        lineNumber = parser.lineNumber;
+        // Push next-line pointer. Can be anything as long as it's not 0x0000,
+        // it'll get fixed up later.
+        binaryParts.push(new Uint8Array([0xFF, 0xFF]));
+        binaryParts.push(binary);
+    }
+    // End-of-program marker.
+    binaryParts.push(new Uint8Array([0x00, 0x00]));
+    return Object(teamten_ts_utils_dist["concatByteArrays"])(binaryParts);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/CmdProgram.js
+/**
+ * Tools for dealing with CMD (machine language) programs.
+ *
+ * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/#cmdfile
+ */
+
+
+
+
+// Chunk types.
+const CMD_LOAD_BLOCK = 0x01;
+const CMD_TRANSFER_ADDRESS = 0x02;
+const CMD_LOAD_MODULE_HEADER = 0x05;
+const CMD_MAX_TYPE = 0x1F;
+/**
+ * Represents a chunk of bytes from the file.
+ */
+class CmdAbstractChunk {
+    constructor(type, data) {
+        this.type = type;
+        this.rawData = data;
+    }
+    /**
+     * Add annotations about this chunk, assuming its data is at "addr".
+     */
+    addAnnotations(annotations, addr) {
+        // Nothing for unknown chunks.
+    }
+}
+/**
+ * A chunk for loading data into memory.
+ */
+class CmdProgram_CmdLoadBlockChunk extends CmdAbstractChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.className = "CmdLoadBlockChunk";
+        this.address = data[0] + data[1] * 256;
+        this.loadData = data.slice(2);
+    }
+    addAnnotations(annotations, addr) {
+        annotations.push(new ProgramAnnotation("Load address (0x" + Object(z80_base_dist["toHexWord"])(this.address) + ")", addr, addr + 2));
+        annotations.push(new ProgramAnnotation("Data (" + this.loadData.length + " byte" +
+            (this.loadData.length === 1 ? "" : "s") + ")", addr + 2, addr + 2 + this.loadData.length));
+    }
+}
+/**
+ * A chunk for jumping to the start of the program.
+ */
+class CmdProgram_CmdTransferAddressChunk extends CmdAbstractChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.className = "CmdTransferAddressChunk";
+        this.address = data.length === 2 ? (data[0] + data[1] * 256) : 0;
+    }
+    addAnnotations(annotations, addr) {
+        annotations.push(new ProgramAnnotation("Jump address (0x" + Object(z80_base_dist["toHexWord"])(this.address) + ")", addr, addr + 2));
+    }
+}
+/**
+ * A header chunk for the filename.
+ */
+class CmdProgram_CmdLoadModuleHeaderChunk extends CmdAbstractChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.className = "CmdLoadModuleHeaderChunk";
+        this.filename = new TextDecoder("ascii").decode(data).trim().replace(/ +/g, " ");
+    }
+    addAnnotations(annotations, addr) {
+        annotations.push(new ProgramAnnotation("Name (" + this.filename + ")", addr, addr + this.rawData.length));
+    }
+}
+/**
+ * A chunk of unknown meaning.
+ */
+class CmdUnknownChunk extends CmdAbstractChunk {
+    constructor(type, data) {
+        super(type, data);
+        this.className = "CmdUnknownChunk";
+    }
+}
+/**
+ * A friendly (not so technical) name for the block type.
+ * See page 43 of The LDOS Quarterly, Volume 1, Number 4.
+ * https://www.tim-mann.org/trs80/doc/ldosq1-4.pdf
+ * http://www.vintagecomputer.net/fjkraan/comp/trs80/doc/Trscmdff.txt
+ * https://tim-mann.org/trs80/doc/gocmd.pdf
+ * http://www.manmrk.net/tutorials/TRS80/Software/ldos/trs80/doc/ldosq1-4.txt
+ */
+const CMD_CHUNK_TYPE_NAME = new Map([
+    [0x01, "data"],
+    [0x02, "jump address"],
+    [0x04, "end of partitioned data set member"],
+    [0x05, "header"],
+    [0x06, "partitioned data set header"],
+    [0x07, "patch name header"],
+    [0x08, "ISAM directory entry"],
+    [0x0A, "end of ISAM directory"],
+    [0x0C, "PDS directory entry"],
+    [0x0E, "end of PDS directory"],
+    [0x10, "yanked load block"],
+    [0x1F, "copyright block"],
+]);
+/**
+ * Class representing a CMD (machine language) program. If the "error" field is set, then something
+ * went wrong with the program and the data may be partially loaded.
+ */
+class CmdProgram_CmdProgram extends AbstractTrs80File {
+    constructor(binary, error, annotations, chunks, filename, entryPointAddress) {
+        super(binary, error, annotations);
+        this.className = "CmdProgram";
+        this.chunks = chunks;
+        this.filename = filename;
+        this.entryPointAddress = entryPointAddress;
+    }
+    getDescription() {
+        return "CMD program" + (this.filename !== undefined ? " (" + this.filename + ")" : "");
+    }
+    /**
+     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
+     * not found in any chunk.
+     */
+    addressToByteOffset(address) {
+        // Offset in the binary of first byte of chunk.
+        let offset = 0;
+        for (const chunk of this.chunks) {
+            if (chunk.className === "CmdLoadBlockChunk") {
+                if (address >= chunk.address && address < chunk.address + chunk.loadData.length) {
+                    // Skip type, length, and address.
+                    return offset + 4 + (address - chunk.address);
+                }
+            }
+            // Skip type, length and data.
+            offset += 2 + chunk.rawData.length;
+        }
+        return undefined;
+    }
+}
+/**
+ * Decodes a CMD program from the binary. If the binary is not at all a CMD
+ * program, returns undefined. If it's a CMD program with decoding errors, returns
+ * partially-decoded binary and sets the "error" field.
+ */
+function decodeCmdProgram(binary) {
+    var _a;
+    let error;
+    const annotations = [];
+    const chunks = [];
+    let filename;
+    let entryPointAddress = 0;
+    const b = new teamten_ts_utils_dist["ByteReader"](binary);
+    // Read each chunk.
+    while (true) {
+        // First byte is type of chunk.
+        const type = b.read();
+        // End of file?
+        if (type === teamten_ts_utils_dist["EOF"] ||
+            // Invalid type byte?
+            type > CMD_MAX_TYPE ||
+            // Error earlier?
+            error !== undefined ||
+            // Just saw jump? There's typically junk after this and it can make it seem like there's an error.
+            (chunks.length > 0 && chunks[chunks.length - 1].className === "CmdTransferAddressChunk")) {
+            if (chunks.length === 0) {
+                return undefined;
+            }
+            return new CmdProgram_CmdProgram(binary.subarray(0, b.addr()), error, annotations, chunks, filename, entryPointAddress);
+        }
+        annotations.push(new ProgramAnnotation("Type of chunk (" +
+            ((_a = CMD_CHUNK_TYPE_NAME.get(type)) !== null && _a !== void 0 ? _a : "unknown") + ")", b.addr() - 1, b.addr()));
+        // Second byte is length, in bytes.
+        let length = b.read();
+        if (length === teamten_ts_utils_dist["EOF"]) {
+            error = "File is truncated at length";
+            continue;
+        }
+        // Adjust load block length.
+        if (type === CMD_LOAD_BLOCK && length <= 2) {
+            length += 256;
+        }
+        else if (type === CMD_LOAD_MODULE_HEADER && length === 0) {
+            length = 256;
+        }
+        annotations.push(new ProgramAnnotation("Length of chunk (" + length +
+            " byte" + (length === 1 ? "" : "s") + ")", b.addr() - 1, b.addr()));
+        // Read the raw bytes.
+        const dataAddr = b.addr();
+        const data = b.readBytes(length);
+        if (data.length < length) {
+            error = "File is truncated at data";
+            // We continue so we can create a partial chunk. The loop will stop at the top of the next
+            // iteration. Not sure this is the right thing to do.
+        }
+        // Create type-specific chunk objects.
+        let chunk;
+        switch (type) {
+            case CMD_LOAD_BLOCK:
+                chunk = new CmdProgram_CmdLoadBlockChunk(type, data);
+                break;
+            case CMD_TRANSFER_ADDRESS: {
+                const cmdTransferAddressChunk = new CmdProgram_CmdTransferAddressChunk(type, data);
+                entryPointAddress = cmdTransferAddressChunk.address;
+                chunk = cmdTransferAddressChunk;
+                break;
+            }
+            case CMD_LOAD_MODULE_HEADER: {
+                const cmdLoadModuleHeaderChunk = new CmdProgram_CmdLoadModuleHeaderChunk(type, data);
+                filename = cmdLoadModuleHeaderChunk.filename;
+                if (filename === "") {
+                    filename = undefined;
+                }
+                chunk = cmdLoadModuleHeaderChunk;
+                break;
+            }
+            default:
+                chunk = new CmdUnknownChunk(type, data);
+                break;
+        }
+        chunk.addAnnotations(annotations, dataAddr);
+        chunks.push(chunk);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/SystemProgram.js
+/**
+ * Tools for dealing with SYSTEM (machine language) programs.
+ *
+ * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/tape-and-file-formats-structures/
+ */
+
+
+
+
+const FILE_HEADER = 0x55;
+const DATA_HEADER = 0x3C;
+const END_OF_FILE_MARKER = 0x78;
+const FILENAME_LENGTH = 6;
+/**
+ * Represents a chunk of bytes from the file, with a checksum.
+ */
+class SystemChunk {
+    constructor(loadAddress, data, checksum) {
+        this.loadAddress = loadAddress;
+        this.data = data;
+        this.checksum = checksum;
+    }
+    /**
+     * Whether the checksum supplied on tape matches what we compute.
+     */
+    isChecksumValid() {
+        let checksum = 0;
+        // Include load address and data.
+        checksum += (this.loadAddress >> 8) & 0xFF;
+        checksum += this.loadAddress & 0xFF;
+        for (const b of this.data) {
+            checksum += b;
+        }
+        checksum &= 0xFF;
+        return checksum === this.checksum;
+    }
+}
+/**
+ * Class representing a SYSTEM (machine language) program. If the "error" field is set, then something
+ * went wrong with the program and the data may be partially loaded.
+ */
+class SystemProgram_SystemProgram extends AbstractTrs80File {
+    constructor(binary, error, filename, chunks, entryPointAddress, annotations) {
+        super(binary, error, annotations);
+        this.className = "SystemProgram";
+        this.filename = filename;
+        this.chunks = chunks;
+        this.entryPointAddress = entryPointAddress;
+        this.annotations = annotations;
+    }
+    getDescription() {
+        return "System program (" + this.filename + ")";
+    }
+    /**
+     * Convert an address in memory to the original byte offset in the binary. Returns undefined if
+     * not found in any chunk.
+     */
+    addressToByteOffset(address) {
+        // Skip file header and block header.
+        let offset = 1 + FILENAME_LENGTH + 4;
+        for (const chunk of this.chunks) {
+            if (address >= chunk.loadAddress && address < chunk.loadAddress + chunk.data.length) {
+                return offset + (address - chunk.loadAddress);
+            }
+            // Skip checksum and block header of the next block.
+            offset += chunk.data.length + 5;
+        }
+        return undefined;
+    }
+}
+/**
+ * Decodes a system program from the binary. If the binary is not at all a system
+ * program, returns undefined. If it's a system program with decoding errors, returns
+ * partially-decoded binary and sets the "error" field.
+ */
+function decodeSystemProgram(binary) {
+    const chunks = [];
+    const annotations = [];
+    let entryPointAddress = 0;
+    const b = new teamten_ts_utils_dist["ByteReader"](binary);
+    const headerByte = b.read();
+    if (headerByte === teamten_ts_utils_dist["EOF"]) {
+        return undefined;
+    }
+    if (headerByte !== FILE_HEADER) {
+        return undefined;
+    }
+    annotations.push(new ProgramAnnotation("System file header", b.addr() - 1, b.addr()));
+    let filename = b.readString(FILENAME_LENGTH);
+    // Make a SystemProgram object with what we have so far.
+    const makeSystemProgram = (error) => {
+        const programBinary = binary.subarray(0, b.addr());
+        return new SystemProgram_SystemProgram(programBinary, error, filename, chunks, entryPointAddress, annotations);
+    };
+    if (filename.length < FILENAME_LENGTH) {
+        // Binary is truncated.
+        return makeSystemProgram("File is truncated at filename");
+    }
+    filename = filename.trim();
+    annotations.push(new ProgramAnnotation(`Filename "${filename}"`, b.addr() - FILENAME_LENGTH, b.addr()));
+    while (true) {
+        const marker = b.read();
+        if (marker === teamten_ts_utils_dist["EOF"]) {
+            return makeSystemProgram("File is truncated at start of block");
+        }
+        if (marker === END_OF_FILE_MARKER) {
+            annotations.push(new ProgramAnnotation("End of file marker", b.addr() - 1, b.addr()));
+            break;
+        }
+        if (marker !== DATA_HEADER) {
+            // Here if the marker is 0x55, we could guess that it's a high-speed cassette header.
+            return makeSystemProgram("Unexpected byte " + Object(z80_base_dist["toHexByte"])(marker) + " at start of block");
+        }
+        annotations.push(new ProgramAnnotation("Data chunk marker", b.addr() - 1, b.addr()));
+        let length = b.read();
+        if (length === teamten_ts_utils_dist["EOF"]) {
+            return makeSystemProgram("File is truncated at block length");
+        }
+        // 0 means 256.
+        if (length === 0) {
+            length = 256;
+        }
+        annotations.push(new ProgramAnnotation(`Length (${length} byte${length === 1 ? "" : "s"})`, b.addr() - 1, b.addr()));
+        const loadAddress = b.readShort(false);
+        if (loadAddress === teamten_ts_utils_dist["EOF"]) {
+            return makeSystemProgram("File is truncated at load address");
+        }
+        annotations.push(new ProgramAnnotation(`Address (0x${Object(z80_base_dist["toHexWord"])(loadAddress)})`, b.addr() - 2, b.addr()));
+        const dataStartAddr = b.addr();
+        const data = b.readBytes(length);
+        if (data.length < length) {
+            return makeSystemProgram("File is truncated at data");
+        }
+        annotations.push(new ProgramAnnotation(`Chunk data`, dataStartAddr, b.addr()));
+        const checksum = b.read();
+        if (loadAddress === teamten_ts_utils_dist["EOF"]) {
+            return makeSystemProgram("File is truncated at checksum");
+        }
+        const systemChunk = new SystemChunk(loadAddress, data, checksum);
+        chunks.push(systemChunk);
+        annotations.push(new ProgramAnnotation(`Checksum (0x${Object(z80_base_dist["toHexByte"])(checksum)}, ${systemChunk.isChecksumValid() ? "" : "in"}valid)`, b.addr() - 1, b.addr()));
+    }
+    entryPointAddress = b.readShort(false);
+    if (entryPointAddress === teamten_ts_utils_dist["EOF"]) {
+        entryPointAddress = 0;
+        return makeSystemProgram("File is truncated at entry point address");
+    }
+    annotations.push(new ProgramAnnotation(`Jump address (0x${Object(z80_base_dist["toHexWord"])(entryPointAddress)})`, b.addr() - 2, b.addr()));
+    return makeSystemProgram();
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/RawBinaryFile.js
+
+/**
+ * File when we don't recognize the type.
+ */
+class RawBinaryFile_RawBinaryFile extends AbstractTrs80File {
+    constructor(binary) {
+        super(binary, undefined, []);
+        this.className = "RawBinaryFile";
+    }
+    getDescription() {
+        return "Unknown file";
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/FloppyDisk.js
+
+// Side of a floppy disk.
+var Side;
+(function (Side) {
+    Side[Side["FRONT"] = 0] = "FRONT";
+    Side[Side["BACK"] = 1] = "BACK";
+})(Side || (Side = {}));
+/**
+ * Convert a number to a side, where 0 maps to FRONT and 1 maps to BACK.
+ * Other numbers throw an exception.
+ */
+function numberToSide(n) {
+    if (n === 0) {
+        return Side.FRONT;
+    }
+    if (n === 1) {
+        return Side.BACK;
+    }
+    throw new Error("Invalid side number " + n);
+}
+/**
+ * Byte for filling sector data when reading off the end.
+ */
+const FILL_BYTE = 0xE5;
+/**
+ * Data from a sector that was read from a disk.
+ */
+class SectorData {
+    constructor(data) {
+        /**
+         * Whether the sector data is invalid. This is indicated on the floppy by having a 0xF8 data
+         * address mark (DAM) byte, instead of the normal 0xFB. For JV1 this is set to true for the directory track.
+         */
+        this.deleted = false;
+        /**
+         * Whether there was a CRC error when reading the physical disk.
+         */
+        this.crcError = false;
+        this.data = data;
+    }
+}
+/**
+ * Abstract class for virtual floppy disk file formats.
+ */
+class FloppyDisk_FloppyDisk extends AbstractTrs80File {
+    constructor(binary, error, annotations, supportsDoubleDensity) {
+        super(binary, error, annotations);
+        this.supportsDoubleDensity = supportsDoubleDensity;
+    }
+    /**
+     * Pad a sector to its full length.
+     */
+    padSector(data, sectorSize) {
+        if (data.length < sectorSize) {
+            const newData = new Uint8Array(sectorSize);
+            newData.set(data);
+            newData.fill(FILL_BYTE, data.length);
+            data = newData;
+        }
+        return data;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Jv1FloppyDisk.js
+
+
+const BYTES_PER_SECTOR = 256;
+const SECTORS_PER_TRACK = 10;
+const BYTES_PER_TRACK = BYTES_PER_SECTOR * SECTORS_PER_TRACK;
+const DIRECTORY_TRACK = 17;
+/**
+ * Floppy disk in the JV1 format.
+ */
+class Jv1FloppyDisk_Jv1FloppyDisk extends FloppyDisk_FloppyDisk {
+    constructor(binary, error, annotations) {
+        super(binary, error, annotations, false);
+        this.className = "Jv1FloppyDisk";
+    }
+    getDescription() {
+        return "Floppy disk (JV1)";
+    }
+    readSector(trackNumber, side, sectorNumber) {
+        sectorNumber = sectorNumber !== null && sectorNumber !== void 0 ? sectorNumber : 0;
+        // Check for errors.
+        if (trackNumber < 0 ||
+            side === Side.BACK ||
+            sectorNumber >= SECTORS_PER_TRACK) {
+            return undefined;
+        }
+        // Offset straight into data.
+        const offset = (SECTORS_PER_TRACK * trackNumber + sectorNumber) * BYTES_PER_SECTOR;
+        const data = this.padSector(this.binary.subarray(offset, offset + BYTES_PER_SECTOR), BYTES_PER_SECTOR);
+        const sectorData = new SectorData(data);
+        if (trackNumber === DIRECTORY_TRACK) {
+            // I don't know why "deleted" is used for the directory track.
+            sectorData.deleted = true;
+        }
+        return sectorData;
+    }
+}
+/**
+ * Decode a JV1 floppy disk file.
+ */
+function decodeJv1FloppyDisk(binary) {
+    let error;
+    const annotations = [];
+    const length = binary.length;
+    // Magic number check.
+    if (length < 2 || binary[0] !== 0x00 || binary[1] !== 0xFE) {
+        return undefined;
+    }
+    // Basic sanity check.
+    if (length % BYTES_PER_TRACK !== 0) {
+        error = "Length is not a multiple of track size (" + BYTES_PER_TRACK + " bytes)";
+    }
+    // Create annotations.
+    for (let byteOffset = 0; byteOffset < length; byteOffset += BYTES_PER_SECTOR) {
+        const track = Math.floor(byteOffset / BYTES_PER_TRACK);
+        const sector = (byteOffset - track * BYTES_PER_TRACK) / BYTES_PER_SECTOR;
+        annotations.push(new ProgramAnnotation("Track " + track + ", sector " + sector, byteOffset, Math.min(byteOffset + BYTES_PER_SECTOR, length)));
+    }
+    return new Jv1FloppyDisk_Jv1FloppyDisk(binary, error, annotations);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Jv3FloppyDisk.js
+
+
+
+// The JV3 file consists of sectors of different sizes all bunched together. Before that
+// comes a directory of these sectors, with three bytes per directory entry (track,
+// sector, and flags), mapping in order to the subsequent sectors.
+// The directory is in this header:
+const HEADER_SIZE = 34 * 256;
+// We can fit this many 3-byte records into it:
+const RECORD_COUNT = Math.floor(HEADER_SIZE / 3);
+// Flags for SectorInfo.
+var Flags;
+(function (Flags) {
+    Flags[Flags["SIZE_CODE_MASK"] = 3] = "SIZE_CODE_MASK";
+    Flags[Flags["NON_IBM"] = 4] = "NON_IBM";
+    Flags[Flags["BAD_CRC"] = 8] = "BAD_CRC";
+    Flags[Flags["SIDE"] = 16] = "SIDE";
+    Flags[Flags["DAM_MASK"] = 96] = "DAM_MASK";
+    // Single-density.
+    Flags[Flags["DAM_SD_FB"] = 0] = "DAM_SD_FB";
+    Flags[Flags["DAM_SD_FA"] = 32] = "DAM_SD_FA";
+    Flags[Flags["DAM_SD_F9"] = 64] = "DAM_SD_F9";
+    Flags[Flags["DAM_SD_F8"] = 96] = "DAM_SD_F8";
+    // Double-density.
+    Flags[Flags["DAM_DD_FB"] = 0] = "DAM_DD_FB";
+    Flags[Flags["DAM_DD_F8"] = 32] = "DAM_DD_F8";
+    Flags[Flags["DOUBLE_DENSITY"] = 128] = "DOUBLE_DENSITY";
+})(Flags || (Flags = {}));
+const FREE = 0xFF;
+const SIZE_CODE_MASK = 0x03;
+class Jv3FloppyDisk_SectorInfo {
+    constructor(track, sector, flags, offset) {
+        // Make both FREE to avoid confusion.
+        if (track === FREE || sector === FREE) {
+            track = FREE;
+            sector = FREE;
+        }
+        this.track = track;
+        this.sector = sector;
+        this.flags = flags;
+        this.offset = offset;
+        // In used sectors: 0=256,1=128,2=1024,3=512
+        // In free sectors: 0=512,1=1024,2=128,3=256
+        const sizeCode = (flags & SIZE_CODE_MASK) ^ (this.isFree() ? 0x02 : 0x01);
+        this.size = 128 << sizeCode;
+    }
+    getSide() {
+        return (this.flags & Flags.SIDE) === 0 ? Side.FRONT : Side.BACK;
+    }
+    /**
+     * Return the flags as a string, for debugging.
+     */
+    flagsToString() {
+        const parts = [];
+        parts.push(this.size + " bytes");
+        if ((this.flags & Flags.NON_IBM) !== 0) {
+            parts.push("non-IBM");
+        }
+        if ((this.flags & Flags.BAD_CRC) !== 0) {
+            parts.push("bad CRC");
+        }
+        parts.push("side " + ((this.flags & Flags.SIDE) === 0 ? 0 : 1));
+        if ((this.flags & Flags.DOUBLE_DENSITY) !== 0) {
+            parts.push("double density");
+        }
+        else {
+            parts.push("single density");
+        }
+        return parts.join(", ");
+    }
+    /**
+     * Whether the sector entry is free (doesn't represent real space in the file).
+     */
+    isFree() {
+        return this.track === FREE;
+    }
+    /**
+     * Whether the sector is encoded with MFM (instead of FM).
+     */
+    isDoubleDensity() {
+        return (this.flags & Flags.DOUBLE_DENSITY) !== 0;
+    }
+    /**
+     * Whether the sector's data is invalid.
+     *
+     * Normally FB is normal and F8 is deleted, but the single-density version has
+     * two other values (F9 and FA), which we also consider deleted, to match xtrs.
+     */
+    isDeleted() {
+        const dam = this.flags & Flags.DAM_MASK;
+        if (this.isDoubleDensity()) {
+            return dam === Flags.DAM_DD_F8;
+        }
+        else {
+            return dam !== Flags.DAM_SD_FB;
+        }
+    }
+    /**
+     * Whether the floppy had a bar CRC when reading it.
+     */
+    hasCrcError() {
+        return (this.flags & Flags.BAD_CRC) !== 0;
+    }
+}
+/**
+ * Floppy disk in the JV3 format.
+ */
+class Jv3FloppyDisk_Jv3FloppyDisk extends FloppyDisk_FloppyDisk {
+    constructor(binary, error, annotations, sectorInfos, writeProtected) {
+        super(binary, error, annotations, true);
+        this.className = "Jv3FloppyDisk";
+        this.sectorInfos = sectorInfos;
+        this.writeProtected = writeProtected;
+    }
+    getDescription() {
+        return "Floppy disk (JV3)";
+    }
+    readSector(trackNumber, side, sectorNumber) {
+        const sectorInfo = this.findSectorInfo(trackNumber, side, sectorNumber);
+        if (sectorInfo === undefined) {
+            return undefined;
+        }
+        const data = this.padSector(this.binary.subarray(sectorInfo.offset, sectorInfo.offset + sectorInfo.size), sectorInfo.size);
+        const sectorData = new SectorData(data);
+        sectorData.deleted = sectorInfo.isDeleted();
+        sectorData.crcError = sectorInfo.hasCrcError();
+        return sectorData;
+    }
+    /**
+     * Find the sector for the specified track and side.
+     */
+    findSectorInfo(track, side, sector) {
+        for (const sectorInfo of this.sectorInfos) {
+            if (!sectorInfo.isFree() &&
+                sectorInfo.track === track &&
+                sectorInfo.getSide() === side &&
+                (sector === undefined || sectorInfo.sector === sector)) {
+                return sectorInfo;
+            }
+        }
+        return undefined;
+    }
+}
+/**
+ * Decode a JV3 floppy disk file.
+ */
+function decodeJv3FloppyDisk(binary) {
+    let error;
+    const annotations = [];
+    const sectorInfos = [];
+    // Read the directory.
+    let sectorOffset = HEADER_SIZE;
+    for (let i = 0; i < RECORD_COUNT; i++) {
+        const offset = i * 3;
+        if (offset + 2 >= binary.length) {
+            error = "Directory truncated at entry " + i;
+            break;
+        }
+        const track = binary[offset];
+        const sector = binary[offset + 1];
+        const flags = binary[offset + 2];
+        const sectorInfo = new Jv3FloppyDisk_SectorInfo(track, sector, flags, sectorOffset);
+        sectorOffset += sectorInfo.size;
+        if (!sectorInfo.isFree()) {
+            if (sectorOffset > binary.length) {
+                error = `Sector truncated at entry ${i} (${sectorOffset} > ${binary.length})`;
+                break;
+            }
+            annotations.push(new ProgramAnnotation("Track " + sectorInfo.track + ", sector " +
+                sectorInfo.sector + ", " + sectorInfo.flagsToString(), offset, offset + 3));
+            sectorInfos.push(sectorInfo);
+        }
+    }
+    // Annotate the sectors themselves.
+    for (const sectorInfo of sectorInfos) {
+        annotations.push(new ProgramAnnotation("Track " + sectorInfo.track + ", sector " + sectorInfo.sector, sectorInfo.offset, sectorInfo.offset + sectorInfo.size));
+    }
+    const writableOffset = RECORD_COUNT * 3;
+    const writable = binary[writableOffset];
+    if (writable !== 0 && writable !== 0xFF) {
+        error = "Invalid \"writable\" byte: 0x" + Object(z80_base_dist["toHexByte"])(writable);
+    }
+    const writeProtected = writable === 0;
+    annotations.push(new ProgramAnnotation(writeProtected ? "Write protected" : "Writable", writableOffset, writableOffset + 1));
+    return new Jv3FloppyDisk_Jv3FloppyDisk(binary, error, annotations, sectorInfos, writeProtected);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Crc16.js
+/**
+ * Performs CRC-16 operations treating bits as big-endian.
+ *
+ * https://en.wikipedia.org/wiki/Cyclic_redundancy_check
+ * https://en.wikipedia.org/wiki/Computation_of_cyclic_redundancy_checks
+ * https://en.wikipedia.org/wiki/Mathematics_of_cyclic_redundancy_checks
+ */
+class Crc16 {
+    /**
+     * Specifies the generator, which must be a 16-bit value.
+     */
+    constructor(generator) {
+        this.generator = generator;
+    }
+    /**
+     * Update the CRC with the new data, which must be a byte.
+     *
+     * @return the new CRC.
+     */
+    update(crc, data) {
+        for (let shift = 8; shift < 16; shift++) {
+            const isOne = ((crc ^ (data << shift)) & 0x8000) !== 0;
+            crc <<= 1;
+            if (isOne) {
+                crc ^= this.generator;
+            }
+        }
+        return crc & 0xFFFF;
+    }
+}
+/**
+ * The CRC-16-CCITT polynomial, used for floppy disks. The polynomial is
+ * x^16 + x^12 + x^5 + 1, which maps to 0x11021, but the leading 1 is
+ * removed because it doesn't affect the outcome.
+ */
+const CRC_16_CCITT = new Crc16(0x1021);
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/DmkFloppyDisk.js
+/**
+ * Handles DMK floppy disk images.
+ *
+ * https://retrocomputing.stackexchange.com/questions/15282/understanding-the-dmk-disk-image-file-format-used-by-trs-80-emulators
+ * http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-dm.htm
+ * http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/trs80/trstech.htm
+ */
+
+
+
+
+
+const FILE_HEADER_SIZE = 16;
+const TRACK_HEADER_SIZE = 128;
+/**
+ * Represents a single sector on a DMK floppy.
+ */
+class DmkFloppyDisk_DmkSector {
+    constructor(track, doubleDensity, offset) {
+        this.track = track;
+        this.doubleDensity = doubleDensity;
+        this.offset = offset;
+        this.dataIndex = this.findDataIndex();
+    }
+    /**
+     * Get the cylinder for this sector. This is 0-based.
+     */
+    getCylinder() {
+        return this.getByte(1);
+    }
+    /**
+     * Get the side for this sector.
+     */
+    getSide() {
+        return numberToSide(this.getByte(2));
+    }
+    /**
+     * Get the sector number for this sector. This is 1-based.
+     */
+    getSectorNumber() {
+        return this.getByte(3);
+    }
+    /**
+     * Get the sector length in bytes.
+     */
+    getLength() {
+        return 128 * (1 << this.getByte(4));
+    }
+    /**
+     * Get the CRC for the IDAM.
+     */
+    getIdamCrc() {
+        // Bit endian.
+        return (this.getByte(5) << 8) + this.getByte(6);
+    }
+    /**
+     * Compute the CRC for the IDAM.
+     */
+    computeIdemCrc() {
+        let crc = 0xFFFF;
+        for (let i = -3; i < 5; i++) {
+            crc = CRC_16_CCITT.update(crc, this.getByte(i));
+        }
+        return crc;
+    }
+    /**
+     * Get the CRC for the data bytes.
+     */
+    getDataCrc() {
+        // Bit endian.
+        const index = this.dataIndex + this.getLength();
+        return (this.getByte(index) << 8) + this.getByte(index + 1);
+    }
+    /**
+     * Compute the CRC for the data bytes.
+     */
+    computeDataCrc() {
+        let crc = 0xFFFF;
+        const index = this.dataIndex;
+        const begin = index - 4;
+        const end = index + this.getLength();
+        for (let i = begin; i < end; i++) {
+            crc = CRC_16_CCITT.update(crc, this.getByte(i));
+        }
+        return crc;
+    }
+    /**
+     * Whether the sector data should be considered invalid.
+     */
+    isDeleted() {
+        const dam = this.getByte(this.dataIndex - 1);
+        if (dam !== 0xF8 && dam !== 0xFB) {
+            console.error("Unknown DAM: " + Object(z80_base_dist["toHexByte"])(dam));
+        }
+        // Normally, 0xFB, but 0xF8 if sector is considered deleted.
+        return dam === 0xF8;
+    }
+    /**
+     * Get a byte from the sector data.
+     *
+     * @param index index into the sector, relative to the 0xFE byte. Can be negative.
+     */
+    getByte(index) {
+        return this.track.floppyDisk.binary[this.track.offset + this.offset + index];
+    }
+    /**
+     * Look for the byte that indicates the start of data (0xFB or 0xF8). Various
+     * floppy disk documentation specify an exact number here, but I've seen a variety
+     * of values, so just search.
+     */
+    findDataIndex() {
+        for (let i = 7; i < 55; i++) {
+            const byte = this.track.floppyDisk.binary[this.track.offset + this.offset + i];
+            if (byte === 0xFB || byte === 0xF8) {
+                // Maybe also check that the previous three bytes are 0xA1.
+                return i + 1;
+            }
+        }
+        // Not sure what to do here. trs80gp says that this is valid.
+        throw new Error(`Can't find byte at start of DAM (track ${this.track.trackNumber}, offset 0x${Object(z80_base_dist["toHexWord"])(this.offset)})`);
+    }
+}
+/**
+ * Represents a single track on a DMK floppy.
+ */
+class DmkTrack {
+    constructor(floppyDisk, trackNumber, side, offset) {
+        /**
+         * Sectors in this track.
+         */
+        this.sectors = [];
+        this.floppyDisk = floppyDisk;
+        this.trackNumber = trackNumber;
+        this.side = side;
+        this.offset = offset;
+    }
+}
+/**
+ * Handles the DMK floppy disk file format, developed by David M. Keil.
+ *
+ * http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-dm.htm
+ * http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/trs80/trstech.htm
+ */
+class DmkFloppyDisk_DmkFloppyDisk extends FloppyDisk_FloppyDisk {
+    constructor(binary, error, annotations, supportsDoubleDensity, writeProtected, trackCount, trackLength, flags) {
+        super(binary, error, annotations, supportsDoubleDensity);
+        this.className = "DmkFloppyDisk";
+        this.tracks = [];
+        this.writeProtected = writeProtected;
+        this.trackCount = trackCount;
+        this.trackLength = trackLength;
+        this.flags = flags;
+    }
+    getDescription() {
+        return "Floppy disk (DMK)";
+    }
+    readSector(trackNumber, side, sectorNumber) {
+        // console.log(`readSector(${trackNumber}, ${sectorNumber}, ${side})`);
+        for (const track of this.tracks) {
+            if (track.trackNumber === trackNumber) { // TODO not checking side.
+                for (const sector of track.sectors) {
+                    if (sectorNumber === undefined || (sector.getSectorNumber() === sectorNumber &&
+                        sector.getSide() === side)) {
+                        const begin = track.offset + sector.offset + sector.dataIndex;
+                        const end = begin + sector.getLength();
+                        const sectorData = new SectorData(this.binary.subarray(begin, end));
+                        sectorData.crcError = sector.getDataCrc() !== sector.computeDataCrc();
+                        sectorData.deleted = sector.isDeleted();
+                        // console.log(sectorData);
+                        return sectorData;
+                    }
+                }
+            }
+        }
+        return undefined;
+    }
+}
+/**
+ * Decode a DMK floppy disk file.
+ */
+function decodeDmkFloppyDisk(binary) {
+    const error = undefined;
+    const annotations = [];
+    if (binary.length < FILE_HEADER_SIZE) {
+        return undefined;
+    }
+    // Decode the header. Comments marked [DMK] are from David Keil's original documentation.
+    // [DMK] If this byte is set to FFH the disk is `write protected', 00H allows writing.
+    const writeProtected = binary[0] === 0xFF;
+    if (binary[0] !== 0x00 && binary[0] !== 0xFF) {
+        return undefined;
+    }
+    annotations.push(new ProgramAnnotation(writeProtected ? "Write protected" : "Writable", 0, 1));
+    // [DMK] Number of tracks on virtual disk. Since tracks start at 0 this value will be one greater
+    // than the highest track written to the disk. So a disk with 40 tracks will have a value
+    // of 40 (28H) in this field after formatting while the highest track written would be 39.
+    // This field is updated after a track is formatted if the track formatted is greater than
+    // or equal to the current number of tracks. Re-formatting a disk with fewer tracks will
+    // NOT reduce the number of tracks on the virtual disk. Once a virtual disk has allocated
+    // space for a track it will NEVER release it. Formatting a virtual disk with 80 tracks
+    // then re-formatting it with 40 tracks would waste space just like formatting only 40
+    // tracks on an 80 track drive. The emulator and TRS-80 operating system don't care.
+    // To re-format a virtual disk with fewer tracks use the /I option at start-up to
+    // delete and re-create the virtual disk first, then re-format to save space.
+    //
+    // [DMK] Note: This field should NEVER be modified. Changing this number will cause TRS-80
+    // operating system disk errors. (Like reading an 80 track disk in a 40 track drive)
+    const trackCount = binary[1];
+    if (trackCount > 160) {
+        // Not sure what a reasonable maximum is. I've only see 80.
+        return undefined;
+    }
+    annotations.push(new ProgramAnnotation(trackCount + " tracks", 1, 2));
+    // [DMK] This is the track length for the virtual disk. By default the value is 1900H, 80H bytes
+    // more than the actual track length, this gives a track length of 6272 bytes. A real double
+    // density track length is approx. 6250 bytes. This is the default value when a virtual disk is created.
+    // Values for other disk and format types are 0CC0H for single density 5.25" floppies,
+    // 14E0H for single density 8" floppies and 2940H for double density 8" floppies. The max value is 2940H.
+    // For normal formatting of disks the values of 1900H and 2940H for 5.25" and 8" are used.
+    // The emulator will write two bytes and read every second byte when  in single density to maintain
+    // proper sector spacing, allowing mixed density disks. Setting the track length must be done before
+    // a virtual disk is formatted or the disk will have to be re-formatted and since the space for the
+    // disk has already been allocated no space will be saved.
+    //
+    // [DMK] WARNING: Bytes are entered in reverse order (ex. 2940H would be entered, byte 2=40, byte 3=29).
+    //
+    // [DMK] Note: No modification of the track length is necessary, doing so only saves space and is not
+    // necessary to normal operation. The values for all normal 5.25" and 8" disks are set when the
+    // virtual disk is created. DON'T modify the track length unless you understand these instructions completely.
+    // Nothing in the PC world can be messed up by improper modification but any other virtual disk mounted
+    // in the emulator with an improperly modified disk could have their data scrambled.
+    const trackLength = binary[2] + (binary[3] << 8);
+    if (trackLength > 0x2940) {
+        return undefined;
+    }
+    annotations.push(new ProgramAnnotation(trackLength + " bytes per track", 2, 4));
+    // [DMK] Virtual disk option flags.
+    //
+    // [DMK] Bit 4 of this byte, if set, means this is a single sided ONLY disk. This bit is set if the
+    // user selects single sided during disk creation and should not require modification. This flag is
+    // used only to save PC hard disk space and is never required.
+    //
+    // [DMK] Bit 6 of this byte, if set, means this disk is to be single density size and the emulator
+    // will access one byte instead of two when doing I/O in single density. Double density can still
+    // be written to a single density disk but with half the track length only 10 256 byte sectors can be
+    // written in either density. Mixed density is also possible but sector timing may be off so protected
+    // disks may not work, a maximum of 10 256 byte sectors of mixed density can be written to a
+    // single density disk. A program like "Spook House" which has a mixed density track 0 with 1 SD sector
+    // and 1 DD sector and the rest of the disk consisting of 10 SD sectors/track will work with this flag set
+    // and save half the PC hard disk space. The protected disk "Super Utility + 3.0" however has 6 SD and 6 DD
+    // sectors/track for a total of 12 256 byte sectors/track. This disk cannot be single density.
+    // This bit is set if the user selects single density during disk creation and should
+    // not require modification. This flag is used only to save PC hard disk space and is never required.
+    //
+    // [DMK] Bit 7 of this byte, if set, means density is to be ignored when accessing this disk. The disk MUST
+    // be formatted in double density but the emulator will then read and write the sectors in either density.
+    // The emulator will access one byte instead of two when doing I/O in single density.
+    // This flag was an early way to support mixed density disks it is no longer needed for this purpose.
+    // It is now used for compatibility with old virtual disks created without the double byte now used when in
+    // single density. This bit can be set manually in a hex editor to access old virtual disks written
+    // in single density.
+    const flags = binary[4];
+    const flagParts = [];
+    const singleSided = (flags & 0x10) !== 0;
+    if (singleSided) {
+        flagParts.push("SS");
+    }
+    if ((flags & 0x40) !== 0) {
+        flagParts.push("SD");
+    }
+    if ((flags & 0x80) !== 0) {
+        flagParts.push("ignore density");
+    }
+    annotations.push(new ProgramAnnotation("Flags: [" + flagParts.join(",") + "]", 4, 5));
+    // Sanity check.
+    const sideCount = singleSided ? 1 : 2;
+    const expectedLength = FILE_HEADER_SIZE + sideCount * trackCount * trackLength;
+    if (binary.length !== expectedLength) {
+        console.error(`DMK file wrong size (${binary.length} != ${expectedLength})`);
+        return undefined;
+    }
+    // Check that these are zero.
+    for (let i = 5; i < 12; i++) {
+        if (binary[i] !== 0x00) {
+            console.error("DMK: Reserved byte " + i + " is not zero: 0x" + Object(z80_base_dist["toHexByte"])(binary[i]));
+            return undefined;
+        }
+    }
+    annotations.push(new ProgramAnnotation("Reserved", 5, 12));
+    // [DMK] Must be zero if virtual disk is in emulator's native format.
+    //
+    // [DMK] Must be 12345678h if virtual disk is a REAL disk specification file used to access
+    // REAL TRS-80 floppies in compatible PC drives.
+    if (binary[12] + binary[13] + binary[14] + binary[15] !== 0x00) {
+        return undefined;
+    }
+    annotations.push(new ProgramAnnotation("Virtual disk", 12, 16));
+    const floppyDisk = new DmkFloppyDisk_DmkFloppyDisk(binary, error, annotations, true, writeProtected, trackCount, trackLength, flags);
+    // Read the tracks.
+    let binaryOffset = FILE_HEADER_SIZE;
+    for (let trackNumber = 0; trackNumber < trackCount; trackNumber++) {
+        for (let side = 0; side < sideCount; side++) {
+            const trackOffset = binaryOffset;
+            const track = new DmkTrack(floppyDisk, trackNumber, numberToSide(side), trackOffset);
+            // Read the track header. The term "IDAM" in the comment below refers to the "ID access mark",
+            // where "ID" is referring to the sector ID, the few byte just before the sector data.
+            // [DMK] Each side of each track has a 128 (80H) byte header which contains an offset pointer
+            // to each IDAM in the track. This allows a maximum of 64 sector IDAMs/track. This is more than
+            // twice what an 8 inch disk would require and 3.5 times that of a normal TRS-80 5 inch DD disk.
+            // This should more than enough for any protected disk also.
+            //
+            // [DMK] These IDAM pointers MUST adhere to the following rules:
+            //
+            // * Each pointer is a 2 byte offset to the FEh byte of the IDAM. In double byte single density
+            //   the pointer is to the first FEh.
+            // * The offset includes the 128 byte header. For example, an IDAM 10h bytes into the track would
+            //   have a pointer of 90h, 10h+80h=90h.
+            // * The IDAM offsets MUST be in ascending order with no unused or bad pointers.
+            // * If all the entries are not used the header is terminated with a 0000h entry. Unused entries
+            //   must also be zero filled..
+            // * Any IDAMs overwritten during a sector write command should have their entry removed from the
+            //   header and all other pointer entries shifted to fill in.
+            // * The IDAM pointers are created during the track write command (format). A completed track write
+            //   MUST remove all previous IDAM pointers. A partial track write (aborted with the forced interrupt
+            //   command) MUST have it's previous pointers that were not overwritten added to the new IDAM pointers.
+            // * The pointer bytes are stored in reverse order (LSB/MSB).
+            //
+            // [DMK] Each IDAM pointer has two flags. Bit 15 is set if the sector is double density. Bit 14 is
+            // currently undefined. These bits must be masked to get the actual sector offset. For example,
+            // an offset to an IDAM at byte 90h would be 0090h if single density and 8090h if double density.
+            for (let i = 0; i < TRACK_HEADER_SIZE; i += 2) {
+                const sectorOffset = binary[binaryOffset + i] + (binary[binaryOffset + i + 1] << 8);
+                if (sectorOffset !== 0) {
+                    track.sectors.push(new DmkFloppyDisk_DmkSector(track, (sectorOffset & 0x8000) !== 0, sectorOffset & 0x3FFF));
+                }
+            }
+            annotations.push(new ProgramAnnotation(`Track ${trackNumber} header`, binaryOffset, binaryOffset + TRACK_HEADER_SIZE));
+            for (const sector of track.sectors) {
+                let i = trackOffset + sector.offset;
+                annotations.push(new ProgramAnnotation("Sector ID access mark", i, i + 1));
+                i++;
+                annotations.push(new ProgramAnnotation("Cylinder " + sector.getCylinder(), i, i + 1));
+                i++;
+                annotations.push(new ProgramAnnotation("Side " + sector.getSide(), i, i + 1));
+                i++;
+                annotations.push(new ProgramAnnotation("Sector " + sector.getSectorNumber(), i, i + 1));
+                i++;
+                const sectorLength = sector.getLength();
+                annotations.push(new ProgramAnnotation("Length " + sectorLength, i, i + 1));
+                i++;
+                const actualIdamCrc = sector.computeIdemCrc();
+                const expectedIdamCrc = sector.getIdamCrc();
+                let idamCrcLabel = "IDAM CRC";
+                if (actualIdamCrc === expectedIdamCrc) {
+                    idamCrcLabel += " (valid)";
+                }
+                else {
+                    idamCrcLabel += ` (got 0x${Object(z80_base_dist["toHexWord"])(actualIdamCrc)}, expected 0x${Object(z80_base_dist["toHexWord"])(expectedIdamCrc)})`;
+                }
+                annotations.push(new ProgramAnnotation(idamCrcLabel, i, i + 2));
+                i += 2;
+                i = trackOffset + sector.offset + sector.dataIndex;
+                annotations.push(new ProgramAnnotation("Sector data", i, i + sectorLength));
+                i += sectorLength;
+                const actualDataCrc = sector.computeDataCrc();
+                const expectedDataCrc = sector.getDataCrc();
+                let dataCrcLabel = "Data CRC";
+                if (actualDataCrc === expectedDataCrc) {
+                    dataCrcLabel += " (valid)";
+                }
+                else {
+                    dataCrcLabel += ` (got 0x${Object(z80_base_dist["toHexWord"])(actualDataCrc)}, expected 0x${Object(z80_base_dist["toHexWord"])(expectedDataCrc)})`;
+                }
+                annotations.push(new ProgramAnnotation(dataCrcLabel, i, i + 2));
+                i += 2;
+            }
+            floppyDisk.tracks.push(track);
+            binaryOffset += trackLength;
+        }
+    }
+    return floppyDisk;
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Trs80FileDecoder.js
+
+
+
+
+
+
+
+
+/**
+ * Get the extension of the filename, including the dot, in upper case, or
+ * an empty string if the filename does not contain an extension.
+ */
+function getExtension(filename) {
+    // Strip pathname, in case the filename has no dot but a path component does.
+    // Not sure if we need to support backslash here.
+    const slash = filename.lastIndexOf("/");
+    if (slash >= 0) {
+        filename = filename.substr(slash + 1);
+    }
+    // Look for extension.
+    const dot = filename.lastIndexOf(".");
+    // If the dot is at position 0, then it's just a hidden file, not an extension.
+    return dot > 0 ? filename.substr(dot).toUpperCase() : "";
+}
+/**
+ * Decode a file that's known to be a floppy disk, but not what kind specifically.
+ */
+function decodeDsk(binary) {
+    // TODO see trs_disk.c:trs_disk_emutype()
+    // TODO see DiskDrive.cpp:Dectect_JV1, etc.
+    let trs80File;
+    trs80File = decodeDmkFloppyDisk(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    trs80File = decodeJv1FloppyDisk(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    trs80File = decodeJv3FloppyDisk(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    return undefined;
+}
+/**
+ * Top-level decoder for any TRS-80 file.
+ *
+ * @param binary the bytes of the file.
+ * @param filename optional filename to help with detection.
+ */
+function decodeTrs80File(binary, filename) {
+    var _a, _b, _c, _d;
+    let trs80File;
+    const extension = filename === undefined ? "" : getExtension(filename);
+    if (extension === ".JV1") {
+        return (_a = decodeJv1FloppyDisk(binary)) !== null && _a !== void 0 ? _a : new RawBinaryFile_RawBinaryFile(binary);
+    }
+    if (extension === ".DSK") {
+        return (_b = decodeDsk(binary)) !== null && _b !== void 0 ? _b : new RawBinaryFile_RawBinaryFile(binary);
+    }
+    if (extension === ".DMK") {
+        return (_c = decodeDmkFloppyDisk(binary)) !== null && _c !== void 0 ? _c : new RawBinaryFile_RawBinaryFile(binary);
+    }
+    // "Model III BiNary" format, invented by George Phillips for trs80gp.
+    // Rarely used as a stand-alone file, usually just embedded in .CAS files.
+    if (extension === ".3BN") {
+        return (_d = decodeSystemProgram(binary)) !== null && _d !== void 0 ? _d : new RawBinaryFile_RawBinaryFile(binary);
+    }
+    trs80File = decodeCassette(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    trs80File = decodeCmdProgram(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    trs80File = decodeBasicProgram(binary);
+    if (trs80File !== undefined) {
+        return trs80File;
+    }
+    return new RawBinaryFile_RawBinaryFile(binary);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Cassette.js
+
+
+
+
+// Low-speed header and sync constants.
+const LOW_SPEED_HEADER_BYTE = 0x00;
+const LOW_SPEED_SYNC_BYTE = 0xA5;
+const LOW_SPEED_ACCEPTABLE_HEADER = (LOW_SPEED_HEADER_BYTE << 24) |
+    (LOW_SPEED_HEADER_BYTE << 16) |
+    (LOW_SPEED_HEADER_BYTE << 8) |
+    (LOW_SPEED_HEADER_BYTE << 0);
+const LOW_SPEED_DETECT = (LOW_SPEED_HEADER_BYTE << 24) |
+    (LOW_SPEED_HEADER_BYTE << 16) |
+    (LOW_SPEED_HEADER_BYTE << 8) |
+    (LOW_SPEED_SYNC_BYTE << 0);
+// High-speed header and sync constants.
+const HIGH_SPEED_HEADER_BYTE = 0x55;
+const HIGH_SPEED_SYNC_BYTE = 0x7F;
+const HIGH_SPEED_ACCEPTABLE_HEADER1 = (HIGH_SPEED_HEADER_BYTE << 24) |
+    (HIGH_SPEED_HEADER_BYTE << 16) |
+    (HIGH_SPEED_HEADER_BYTE << 8) |
+    (HIGH_SPEED_HEADER_BYTE << 0);
+const HIGH_SPEED_ACCEPTABLE_HEADER2 = ~HIGH_SPEED_ACCEPTABLE_HEADER1;
+const HIGH_SPEED_DETECT = (HIGH_SPEED_HEADER_BYTE << 24) |
+    (HIGH_SPEED_HEADER_BYTE << 16) |
+    (HIGH_SPEED_HEADER_BYTE << 8) |
+    (HIGH_SPEED_SYNC_BYTE << 0);
+var CassetteSpeed;
+(function (CassetteSpeed) {
+    CassetteSpeed[CassetteSpeed["LOW_SPEED"] = 0] = "LOW_SPEED";
+    CassetteSpeed[CassetteSpeed["HIGH_SPEED"] = 1] = "HIGH_SPEED";
+})(CassetteSpeed || (CassetteSpeed = {}));
+/**
+ * See if actual and reference are equal, modulo some bit offset.
+ *
+ * @param actual the last 32 bits of the stream.
+ * @param reference the 32 bits we're looking for.
+ * @return the number of extra bits (0 to 7 inclusive) in "actual" after the end of reference,
+ * or undefined if not a match.
+ */
+function checkMatch(actual, reference) {
+    for (let offset = 0; offset < 8; offset++) {
+        if ((actual & ~((1 << offset) - 1)) === reference << offset) {
+            return offset;
+        }
+    }
+    return undefined;
+}
+/**
+ * Represents a file on a cassette. (Not the CAS file itself.)
+ */
+class CassetteFile {
+    constructor(offset, speed, file) {
+        this.offset = offset;
+        this.speed = speed;
+        this.file = file;
+    }
+    /**
+     * Return the file's annotations adjusted by the offset into the cassette.
+     */
+    adjustedAnnotations() {
+        return this.file.annotations.map(annotation => annotation.adjusted(this.offset));
+    }
+}
+/**
+ * Represents a cassette (CAS file).
+ */
+class Cassette_Cassette extends AbstractTrs80File {
+    constructor(binary, error, annotations, files) {
+        super(binary, error, annotations);
+        this.className = "Cassette";
+        this.files = files;
+    }
+    getDescription() {
+        if (this.files.length === 0) {
+            return "Empty cassette";
+        }
+        else if (this.files.length === 1) {
+            const cassetteFile = this.files[0];
+            return cassetteFile.file.getDescription() + " on a " +
+                (cassetteFile.speed === CassetteSpeed.LOW_SPEED ? "low" : "high") + " speed cassette";
+        }
+        else {
+            return "Cassette with " + this.files.length + " files";
+        }
+    }
+}
+/**
+ * High-speed CAS files have start bits built-in. Strip these out because
+ * we re-insert them below when encoding. We could also remove the
+ * writing of start bits below, but we don't really know how many bits
+ * there are at the end that we shouldn't write.
+ *
+ * Update: We no longer insert start bits in encodeHighSpeed(), so this
+ * routine is no longer necessary, but we keep it around anyway.
+ */
+function Cassette_stripStartBits(inBytes) {
+    // Compute new size of array.
+    const outBytes = new Uint8Array(Math.floor(inBytes.length * 8 / 9));
+    // Fill output buffer.
+    for (let i = 0; i < outBytes.length; i++) {
+        // Index of most-significant data bit.
+        const bitIndex = i * 9 + 1;
+        const byteIndex = Math.floor(bitIndex / 8);
+        const bitOffset = bitIndex % 8;
+        let value = inBytes[byteIndex] << bitOffset;
+        if (bitOffset !== 0) {
+            value |= inBytes[byteIndex + 1] >> (8 - bitOffset);
+        }
+        outBytes[i] = value;
+    }
+    return outBytes;
+}
+/**
+ * Decodes a CAS from the binary. If the binary is not at all a cassette,
+ * returns undefined. If it's a cassette with decoding errors, returns
+ * partially-decoded object and sets the "error" field.
+ */
+function decodeCassette(binary) {
+    const start = 0;
+    const annotations = [];
+    const cassetteFiles = [];
+    while (true) {
+        let recentBits = 0xFFFFFFFF;
+        let programBinary;
+        let speed;
+        let programStartIndex = 0;
+        for (let i = start; i < binary.length; i++) {
+            const byte = binary[i];
+            recentBits = (recentBits << 8) | byte;
+            const lowSpeedBitOffset = checkMatch(recentBits, LOW_SPEED_DETECT);
+            if (lowSpeedBitOffset !== undefined) {
+                if (lowSpeedBitOffset !== 0) {
+                    // TODO
+                    throw new Error("We don't yet handle low-speed cassettes with bit offsets of " + lowSpeedBitOffset);
+                }
+                annotations.push(new ProgramAnnotation("Low speed header", 0, i));
+                annotations.push(new ProgramAnnotation("Low speed sync byte", i, i + 1));
+                speed = CassetteSpeed.LOW_SPEED;
+                programStartIndex = i + 1;
+                programBinary = binary.subarray(programStartIndex);
+                break;
+            }
+            const highSpeedBitOffset = checkMatch(recentBits, HIGH_SPEED_DETECT);
+            if (highSpeedBitOffset !== undefined) {
+                if (highSpeedBitOffset !== 0) {
+                    // TODO
+                    throw new Error("We don't yet handle high-speed cassettes with bit offsets of " +
+                        highSpeedBitOffset);
+                }
+                annotations.push(new ProgramAnnotation("High speed header", 0, i));
+                annotations.push(new ProgramAnnotation("High speed sync byte", i, i + 1));
+                speed = CassetteSpeed.HIGH_SPEED;
+                programStartIndex = i + 1;
+                programBinary = Cassette_stripStartBits(binary.subarray(programStartIndex));
+                break;
+            }
+            if (i >= start + 4 &&
+                recentBits !== LOW_SPEED_ACCEPTABLE_HEADER &&
+                recentBits !== HIGH_SPEED_ACCEPTABLE_HEADER1 &&
+                recentBits !== HIGH_SPEED_ACCEPTABLE_HEADER2) {
+                // We should be seeing the header bits.
+                break;
+            }
+        }
+        if (programBinary === undefined || speed === undefined) {
+            // Not a CAS file.
+            return undefined;
+        }
+        // See what kind of file it is. System program aren't decoded by decodeTrs80File() because
+        // these are always on cassettes or with a .3BN extension. So try that ourselves first.
+        let file = decodeSystemProgram(programBinary);
+        if (file === undefined) {
+            file = decodeTrs80File(programBinary, undefined);
+        }
+        cassetteFiles.push(new CassetteFile(programStartIndex, speed, file));
+        // TODO handle multiple files. See HAUNT.CAS.
+        break;
+    }
+    // Merge the annotations of the files into ours.
+    for (const file of cassetteFiles) {
+        annotations.push(...file.adjustedAnnotations());
+    }
+    return new Cassette_Cassette(binary, undefined, annotations, cassetteFiles);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Trsdos.js
+/**
+ * Classes for handling TRSDOS diskettes.
+ *
+ * http://www.trs-80.com/wordpress/zaps-patches-pokes-tips/zaps-and-patches/#guidedtour
+ * http://www.manmrk.net/tutorials/TRS80/Software/ldos/trs80/doc/prgguide.pdf
+ */
+
+
+// Number of bytes per dir entry in the sector.
+const DIR_ENTRY_LENGTH = 48;
+// Apparently this is constant in TRSDOS.
+const Trsdos_BYTES_PER_SECTOR = 256;
+// Apparently this is 3, but somewhere else I read 6.
+const SECTORS_PER_GRANULE = 3;
+// The number of sectors on each track, numbered 1 to 18.
+const Trsdos_SECTORS_PER_TRACK = 18;
+// Copyright in the last 16 bytes of each directory sector.
+const EXPECTED_TANDY = "(c) 1980 Tandy";
+// Password value that means "no password".
+const NO_PASSWORD = 0xEF5C;
+// Password value for "PASSWORD".
+const PASSWORD = 0xD38F;
+/**
+ * Decodes binary into an ASCII string. Returns undefined if any non-ASCII value is
+ * found in the string, where "ASCII" is defined as being in the range 32 to 126 inclusive.
+ */
+function decodeAscii(binary, trim = true) {
+    const parts = [];
+    for (const b of binary) {
+        if (b === 0x0D) {
+            // Auto command ends with carriage return.
+            break;
+        }
+        if (b < 32 || b >= 127) {
+            return undefined;
+        }
+        parts.push(String.fromCodePoint(b));
+    }
+    let s = parts.join("");
+    if (trim) {
+        s = s.trim();
+    }
+    return s;
+}
+/**
+ * Lowest three bits of the directory entry's flag.
+ */
+var TrsdosProtectionLevel;
+(function (TrsdosProtectionLevel) {
+    // Keep this values in this order, they match the bit values (0 to 7).
+    TrsdosProtectionLevel[TrsdosProtectionLevel["FULL"] = 0] = "FULL";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["REMOVE"] = 1] = "REMOVE";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["RENAME"] = 2] = "RENAME";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["WRITE"] = 3] = "WRITE";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["UPDATE"] = 4] = "UPDATE";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["READ"] = 5] = "READ";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["EXEC"] = 6] = "EXEC";
+    TrsdosProtectionLevel[TrsdosProtectionLevel["NO_ACCESS"] = 7] = "NO_ACCESS";
+})(TrsdosProtectionLevel || (TrsdosProtectionLevel = {}));
+/**
+ * Gets the string version of the protection level enum.
+ * @param level
+ */
+function trsdosProtectionLevelToString(level) {
+    switch (level) {
+        case TrsdosProtectionLevel.FULL:
+            return "FULL";
+        case TrsdosProtectionLevel.REMOVE:
+            return "REMOVE";
+        case TrsdosProtectionLevel.RENAME:
+            return "RENAME";
+        case TrsdosProtectionLevel.WRITE:
+            return "WRITE";
+        case TrsdosProtectionLevel.UPDATE:
+            return "UPDATE";
+        case TrsdosProtectionLevel.READ:
+            return "READ";
+        case TrsdosProtectionLevel.EXEC:
+            return "EXEC";
+        case TrsdosProtectionLevel.NO_ACCESS:
+            return "NO_ACCESS";
+        default:
+            return "UNKNOWN";
+    }
+}
+/**
+ * A contiguous number of sectors for storing part of a file.
+ */
+class TrsdosExtent {
+    constructor(trackNumber, granuleOffset, granuleCount) {
+        this.trackNumber = trackNumber;
+        this.granuleOffset = granuleOffset;
+        this.granuleCount = granuleCount;
+    }
+}
+/**
+ * Decode an array of extents.
+ *
+ * @param binary byte we'll be pulling the extents from.
+ * @param begin index of first extent in binary.
+ * @param end index past last extent in binary.
+ * @param trackFirst whether the track comes first or second.
+ */
+function decodeExtents(binary, begin, end, trackFirst) {
+    const extents = [];
+    for (let i = begin; i < end; i += 2) {
+        if (binary[i] === 0xFF && binary[i + 1] === 0xFF) {
+            break;
+        }
+        const trackNumber = binary[trackFirst ? i : i + 1];
+        const granuleByte = binary[trackFirst ? i + 1 : i];
+        const granuleOffset = granuleByte >> 5;
+        const granuleCount = granuleByte & 0x1F;
+        if (trackNumber >= 40) {
+            // Not a TRSDOS disk.
+            return undefined;
+        }
+        extents.push(new TrsdosExtent(trackNumber, granuleOffset, granuleCount));
+    }
+    return extents;
+}
+/**
+ * The Granule Allocation Table sector info.
+ */
+class TrsdosGatInfo {
+    constructor(gat, password, name, date, autoCommand) {
+        this.gat = gat;
+        this.password = password;
+        this.name = name;
+        this.date = date;
+        this.autoCommand = autoCommand;
+    }
+}
+/**
+ * Converts a sector to a GAT object, or undefined if we don't think this is a GAT sector.
+ */
+function decodeGatInfo(binary) {
+    // One byte for each track.
+    const gat = binary.subarray(0, 40);
+    // Top two bits don't map to anything, so must be zero.
+    for (const g of gat) {
+        if ((g & 0xC0) !== 0) {
+            return undefined;
+        }
+    }
+    // Assume big endian.
+    const password = (binary[0xCE] << 8) | binary[0xCF];
+    const name = decodeAscii(binary.subarray(0xD0, 0xD8));
+    const date = decodeAscii(binary.subarray(0xD8, 0xE0));
+    const autoCommand = decodeAscii(binary.subarray(0xE0));
+    // Implies that this is not a TRSDOS disk.
+    if (name === undefined || date === undefined || autoCommand === undefined) {
+        return undefined;
+    }
+    return new TrsdosGatInfo(gat, password, name, date, autoCommand);
+}
+/**
+ * The Hash Allocation Table sector info.
+ */
+class TrsdosHitInfo {
+    constructor(hit, systemFiles) {
+        this.hit = hit;
+        this.systemFiles = systemFiles;
+    }
+}
+/**
+ * Decode the Hash Index Table sector, or undefined if we don't think this is a TRSDOS disk.
+ */
+function decodeHitInfo(binary) {
+    // One byte for each file.
+    const hit = binary.subarray(0, 80);
+    const systemFiles = decodeExtents(binary, 0xE0, binary.length, false);
+    if (systemFiles === undefined) {
+        return undefined;
+    }
+    return new TrsdosHitInfo(hit, systemFiles);
+}
+/**
+ * Single (valid) directory entry for a file.
+ */
+class TrsdosDirEntry {
+    constructor(flags, month, year, lastSectorSize, lrl, filename, updatePassword, accessPassword, sectorCount, extents) {
+        this.flags = flags;
+        this.month = month;
+        this.year = year;
+        this.lastSectorSize = lastSectorSize;
+        this.lrl = lrl;
+        this.rawFilename = filename;
+        this.updatePassword = updatePassword;
+        this.accessPassword = accessPassword;
+        this.sectorCount = sectorCount;
+        this.extents = extents;
+    }
+    /**
+     * Get the protection level for the file.
+     */
+    getProtectionLevel() {
+        return (this.flags & 0x07);
+    }
+    /**
+     * Whether the file is hidden in a directory listing.
+     */
+    isHidden() {
+        return (this.flags & 0x08) !== 0;
+    }
+    /**
+     * Whether the file has an entry in the HIT table. This bit is set to 0 when
+     * deleting a file.
+     */
+    isActive() {
+        return (this.flags & 0x10) !== 0;
+    }
+    /**
+     * Whether there should be limitations to how many times you can copy this file.
+     * Other docs (maybe for LDOS) say that this indicates "Partitioned Data Set".
+     */
+    hasBackupLimitation() {
+        return (this.flags & 0x20) !== 0;
+    }
+    /**
+     * Whether this is a system file (as opposed to user file).
+     */
+    isSystemFile() {
+        return (this.flags & 0x40) !== 0;
+    }
+    /**
+     * Whether this is an extended entry (as opposed to primary entry). Each entry can
+     * only encode four extents, so subsequent extents are stored in extended entries.
+     * TODO this says max four extents, but we have space for 13 extents in the binary.
+     */
+    isExtendedEntry() {
+        return (this.flags & 0x80) !== 0;
+    }
+    getFlagsString() {
+        const parts = [];
+        parts.push(trsdosProtectionLevelToString(this.getProtectionLevel()));
+        if (this.isHidden()) {
+            parts.push("hidden");
+        }
+        if (!this.isActive()) {
+            // Should never happen.
+            parts.push("inactive");
+        }
+        if (this.hasBackupLimitation()) {
+            parts.push("limits");
+        }
+        if (this.isSystemFile()) {
+            parts.push("system");
+        }
+        if (this.isExtendedEntry()) {
+            parts.push("extended");
+        }
+        return "[" + parts.join(",") + "]";
+    }
+    /**
+     * Get the basename (part before the period) of the filename.
+     */
+    getBasename() {
+        return this.rawFilename.substr(0, 8).trim();
+    }
+    /**
+     * Get the extension of the filename.
+     */
+    getExtension() {
+        return this.rawFilename.substr(8).trim();
+    }
+    /**
+     * Get the full filename (without the internal spaces of the raw filename). If the
+     * file has an extension, it will be preceded by the specified separator.
+     */
+    getFilename(extensionSeparator) {
+        const extension = this.getExtension();
+        return this.getBasename() + (extension === "" ? "" : extensionSeparator + extension);
+    }
+    /**
+     * Return the size in bytes.
+     */
+    getSize() {
+        return this.sectorCount * Trsdos_BYTES_PER_SECTOR + this.lastSectorSize;
+    }
+    /**
+     * Return the date in MM/YY format.
+     */
+    getDateString() {
+        return this.month.toString().padStart(2, "0") + "/" + this.year.toString().padStart(2, "0");
+    }
+    /**
+     * Return the date as an object.
+     */
+    getDate() {
+        return new Date(1900 + this.year, this.month - 1);
+    }
+}
+/**
+ * Decodes a directory entry from a 48-byte chunk, or undefined if the directory entry is empty.
+ */
+function decodeDirEntry(binary) {
+    const flags = binary[0];
+    // Check "active" bit. Setting this to zero is how files are deleted. Also check empty filename.
+    if ((flags & 0x10) === 0 || binary[5] === 0) {
+        return undefined;
+    }
+    const month = binary[1];
+    const year = binary[2];
+    const lastSectorSize = binary[3];
+    const lrl = ((binary[4] - 1) & 0xFF) + 1; // 0 -> 256.
+    const filename = decodeAscii(binary.subarray(5, 16));
+    // Not sure how to convert these two into a number. Just use big endian.
+    const updatePassword = (binary[16] << 8) | binary[17];
+    const accessPassword = (binary[18] << 8) | binary[19];
+    // Little endian.
+    const sectorCount = (binary[21] << 8) | binary[20];
+    const extents = decodeExtents(binary, 22, binary.length, true);
+    if (filename === undefined || extents === undefined) {
+        // This signals empty directory, but really should imply a non-TRSDOS disk.
+        return undefined;
+    }
+    return new TrsdosDirEntry(flags, month, year, lastSectorSize, lrl, filename, updatePassword, accessPassword, sectorCount, extents);
+}
+/**
+ * A decoded TRSDOS diskette.
+ */
+class Trsdos_Trsdos {
+    constructor(disk, gatInfo, hitInfo, dirEntries) {
+        this.disk = disk;
+        this.gatInfo = gatInfo;
+        this.hitInfo = hitInfo;
+        this.dirEntries = dirEntries;
+    }
+    /**
+     * Read the binary for a file on the diskette.
+     */
+    readFile(dirEntry) {
+        const parts = [];
+        let sectorCount = dirEntry.sectorCount + (dirEntry.lastSectorSize > 0 ? 1 : 0);
+        for (const extent of dirEntry.extents) {
+            let trackNumber = extent.trackNumber;
+            let sectorNumber = extent.granuleOffset * SECTORS_PER_GRANULE + 1;
+            for (let i = 0; i < extent.granuleCount * SECTORS_PER_GRANULE && sectorCount > 0; i++, sectorNumber++, sectorCount--) {
+                if (sectorNumber > Trsdos_SECTORS_PER_TRACK) {
+                    // Move to the next track.
+                    sectorNumber -= Trsdos_SECTORS_PER_TRACK;
+                    trackNumber += 1;
+                }
+                const sector = this.disk.readSector(trackNumber, Side.FRONT, sectorNumber);
+                if (sector === undefined) {
+                    console.log(`Sector couldn't be read ${trackNumber}, ${sectorNumber}`);
+                    // TODO
+                }
+                else {
+                    // TODO check deleted?
+                    if (sector.crcError) {
+                        console.log("Sector has CRC error");
+                    }
+                    if (sector.deleted) {
+                        // console.log("Sector " + sectorNumber + " is deleted");
+                    }
+                    parts.push(sector.data);
+                }
+            }
+        }
+        // Clip last sector.
+        if (parts.length > 0 && dirEntry.lastSectorSize > 0) {
+            parts[parts.length - 1] = parts[parts.length - 1].subarray(0, dirEntry.lastSectorSize);
+        }
+        return Object(teamten_ts_utils_dist["concatByteArrays"])(parts);
+    }
+}
+/**
+ * Decode a TRSDOS diskette, or return undefined if this does not look like such a diskette.
+ */
+function decodeTrsdos(disk) {
+    // Decode Granule Allocation Table sector.
+    const gatSector = disk.readSector(17, Side.FRONT, 1);
+    if (gatSector === undefined || gatSector.deleted) {
+        return undefined;
+    }
+    const gatInfo = decodeGatInfo(gatSector.data);
+    if (gatInfo === undefined) {
+        return undefined;
+    }
+    // Decode Hash Index Table sector.
+    const hitSector = disk.readSector(17, Side.FRONT, 2);
+    if (hitSector === undefined || hitSector.deleted) {
+        return undefined;
+    }
+    const hitInfo = decodeHitInfo(hitSector.data);
+    if (hitInfo === undefined) {
+        return undefined;
+    }
+    // Decode directory entries.
+    const dirEntries = [];
+    for (let k = 0; k < 16; k++) {
+        const dirSector = disk.readSector(17, Side.FRONT, k + 3);
+        if (dirSector !== undefined) {
+            const tandy = decodeAscii(dirSector.data.subarray(5 * DIR_ENTRY_LENGTH));
+            if (tandy !== EXPECTED_TANDY) {
+                console.error(`Expected "${EXPECTED_TANDY}", got "${tandy}"`);
+                return undefined;
+            }
+            for (let j = 0; j < 5; j++) {
+                const dirEntry = decodeDirEntry(dirSector.data.subarray(j * DIR_ENTRY_LENGTH, (j + 1) * DIR_ENTRY_LENGTH));
+                if (dirEntry !== undefined) {
+                    dirEntries.push(dirEntry);
+                }
+            }
+        }
+    }
+    return new Trsdos_Trsdos(disk, gatInfo, hitInfo, dirEntries);
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/Addresses.js
+// RAM address range of screen.
+const TRS80_SCREEN_BEGIN = 15 * 1024;
+const TRS80_SCREEN_END = 16 * 1024;
+
+// CONCATENATED MODULE: ./node_modules/trs80-base/dist/index.js
+
+
+
+
+
+
+
+
+
+
 
 // CONCATENATED MODULE: ./src/BasicRender.ts
 
@@ -28345,31 +20489,31 @@ function toDiv(basicProgram, out) {
     let line = undefined;
     for (const basicElement of basicProgram.elements) {
         let className;
-        if (line === undefined || basicElement.elementType === trs80_base_dist["ElementType"].LINE_NUMBER) {
+        if (line === undefined || basicElement.elementType === ElementType.LINE_NUMBER) {
             line = document.createElement("div");
             out.appendChild(line);
         }
         switch (basicElement.elementType) {
-            case trs80_base_dist["ElementType"].ERROR:
+            case ElementType.ERROR:
                 className = classes.error;
                 break;
-            case trs80_base_dist["ElementType"].LINE_NUMBER:
+            case ElementType.LINE_NUMBER:
                 className = classes.lineNumber;
                 break;
-            case trs80_base_dist["ElementType"].PUNCTUATION:
+            case ElementType.PUNCTUATION:
                 className = classes.punctuation;
                 break;
-            case trs80_base_dist["ElementType"].KEYWORD:
+            case ElementType.KEYWORD:
                 className = classes.keyword;
                 break;
-            case trs80_base_dist["ElementType"].REGULAR:
+            case ElementType.REGULAR:
             default:
                 className = classes.regular;
                 break;
-            case trs80_base_dist["ElementType"].STRING:
+            case ElementType.STRING:
                 className = classes.string;
                 break;
-            case trs80_base_dist["ElementType"].COMMENT:
+            case ElementType.COMMENT:
                 className = classes.comment;
                 break;
         }
@@ -28381,14 +20525,4526 @@ function toDiv(basicProgram, out) {
     return elements;
 }
 
-// EXTERNAL MODULE: ./node_modules/trs80-emulator/dist/index.js
-var trs80_emulator_dist = __webpack_require__(3);
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/CassettePlayer.js
+/**
+ * Interface for fetching cassette audio data. We make this a concrete
+ * class because rollup.js can't handle exported interfaces.
+ */
+class CassettePlayer {
+    constructor() {
+        /**
+         * The number of samples per second that this audio represents.
+         */
+        this.samplesPerSecond = 44100;
+    }
+    /**
+     * Called when the motor starts.
+     */
+    onMotorStart() {
+        // Optional function.
+    }
+    /**
+     * Read the next sample. Must be in the range -1 to 1. If we try to read off
+     * the end of the cassette, just return zero.
+     */
+    readSample() {
+        return 0;
+    }
+    /**
+     * Called when the motor stops.
+     */
+    onMotorStop() {
+        // Optional function.
+    }
+}
 
-// EXTERNAL MODULE: ./node_modules/trs80-disasm/dist/index.js
-var trs80_disasm_dist = __webpack_require__(13);
+// EXTERNAL MODULE: ./node_modules/z80-emulator/dist/index.js
+var z80_emulator_dist = __webpack_require__(10);
 
-// EXTERNAL MODULE: ./node_modules/trs80-base/dist/ProgramAnnotation.js
-var ProgramAnnotation = __webpack_require__(5);
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Keyboard.js
+// Handle keyboard mapping. The TRS-80 Model III keyboard has keys in different
+// places, so we must occasionally fake a Shift key being up or down when it's
+// really not.
+// Keyboard is in several identical (mirrored) banks.
+const BANK_SIZE = 0x100;
+const BANK_COUNT = 4;
+const BEGIN_ADDR = 0x3800;
+const END_ADDR = BEGIN_ADDR + BANK_SIZE * BANK_COUNT;
+const KEY_DELAY_CLOCK_CYCLES = 50000;
+// Whether to force a Shift key, and how.
+var ShiftState;
+(function (ShiftState) {
+    ShiftState[ShiftState["NEUTRAL"] = 0] = "NEUTRAL";
+    ShiftState[ShiftState["FORCE_DOWN"] = 1] = "FORCE_DOWN";
+    ShiftState[ShiftState["FORCE_UP"] = 2] = "FORCE_UP";
+})(ShiftState || (ShiftState = {}));
+// For each ASCII character or key we keep track of how to trigger it.
+class KeyInfo {
+    constructor(byteIndex, bitNumber, shiftForce) {
+        this.byteIndex = byteIndex;
+        this.bitNumber = bitNumber;
+        this.shiftForce = shiftForce;
+    }
+}
+// A queued-up key.
+class KeyActivity {
+    constructor(keyInfo, isPressed) {
+        this.keyInfo = keyInfo;
+        this.isPressed = isPressed;
+    }
+}
+// Map from ASCII or special key to the info of which byte and bit it's mapped
+// to, and whether to force Shift.
+const keyMap = new Map();
+// http://www.trs-80.com/trs80-zaps-internals.htm#keyboard13
+keyMap.set("@", new KeyInfo(0, 0, ShiftState.FORCE_UP));
+keyMap.set("`", new KeyInfo(0, 0, ShiftState.FORCE_DOWN));
+keyMap.set("A", new KeyInfo(0, 1, ShiftState.FORCE_DOWN));
+keyMap.set("B", new KeyInfo(0, 2, ShiftState.FORCE_DOWN));
+keyMap.set("C", new KeyInfo(0, 3, ShiftState.FORCE_DOWN));
+keyMap.set("D", new KeyInfo(0, 4, ShiftState.FORCE_DOWN));
+keyMap.set("E", new KeyInfo(0, 5, ShiftState.FORCE_DOWN));
+keyMap.set("F", new KeyInfo(0, 6, ShiftState.FORCE_DOWN));
+keyMap.set("G", new KeyInfo(0, 7, ShiftState.FORCE_DOWN));
+keyMap.set("H", new KeyInfo(1, 0, ShiftState.FORCE_DOWN));
+keyMap.set("I", new KeyInfo(1, 1, ShiftState.FORCE_DOWN));
+keyMap.set("J", new KeyInfo(1, 2, ShiftState.FORCE_DOWN));
+keyMap.set("K", new KeyInfo(1, 3, ShiftState.FORCE_DOWN));
+keyMap.set("L", new KeyInfo(1, 4, ShiftState.FORCE_DOWN));
+keyMap.set("M", new KeyInfo(1, 5, ShiftState.FORCE_DOWN));
+keyMap.set("N", new KeyInfo(1, 6, ShiftState.FORCE_DOWN));
+keyMap.set("O", new KeyInfo(1, 7, ShiftState.FORCE_DOWN));
+keyMap.set("P", new KeyInfo(2, 0, ShiftState.FORCE_DOWN));
+keyMap.set("Q", new KeyInfo(2, 1, ShiftState.FORCE_DOWN));
+keyMap.set("R", new KeyInfo(2, 2, ShiftState.FORCE_DOWN));
+keyMap.set("S", new KeyInfo(2, 3, ShiftState.FORCE_DOWN));
+keyMap.set("T", new KeyInfo(2, 4, ShiftState.FORCE_DOWN));
+keyMap.set("U", new KeyInfo(2, 5, ShiftState.FORCE_DOWN));
+keyMap.set("V", new KeyInfo(2, 6, ShiftState.FORCE_DOWN));
+keyMap.set("W", new KeyInfo(2, 7, ShiftState.FORCE_DOWN));
+keyMap.set("X", new KeyInfo(3, 0, ShiftState.FORCE_DOWN));
+keyMap.set("Y", new KeyInfo(3, 1, ShiftState.FORCE_DOWN));
+keyMap.set("Z", new KeyInfo(3, 2, ShiftState.FORCE_DOWN));
+keyMap.set("a", new KeyInfo(0, 1, ShiftState.FORCE_UP));
+keyMap.set("b", new KeyInfo(0, 2, ShiftState.FORCE_UP));
+keyMap.set("c", new KeyInfo(0, 3, ShiftState.FORCE_UP));
+keyMap.set("d", new KeyInfo(0, 4, ShiftState.FORCE_UP));
+keyMap.set("e", new KeyInfo(0, 5, ShiftState.FORCE_UP));
+keyMap.set("f", new KeyInfo(0, 6, ShiftState.FORCE_UP));
+keyMap.set("g", new KeyInfo(0, 7, ShiftState.FORCE_UP));
+keyMap.set("h", new KeyInfo(1, 0, ShiftState.FORCE_UP));
+keyMap.set("i", new KeyInfo(1, 1, ShiftState.FORCE_UP));
+keyMap.set("j", new KeyInfo(1, 2, ShiftState.FORCE_UP));
+keyMap.set("k", new KeyInfo(1, 3, ShiftState.FORCE_UP));
+keyMap.set("l", new KeyInfo(1, 4, ShiftState.FORCE_UP));
+keyMap.set("m", new KeyInfo(1, 5, ShiftState.FORCE_UP));
+keyMap.set("n", new KeyInfo(1, 6, ShiftState.FORCE_UP));
+keyMap.set("o", new KeyInfo(1, 7, ShiftState.FORCE_UP));
+keyMap.set("p", new KeyInfo(2, 0, ShiftState.FORCE_UP));
+keyMap.set("q", new KeyInfo(2, 1, ShiftState.FORCE_UP));
+keyMap.set("r", new KeyInfo(2, 2, ShiftState.FORCE_UP));
+keyMap.set("s", new KeyInfo(2, 3, ShiftState.FORCE_UP));
+keyMap.set("t", new KeyInfo(2, 4, ShiftState.FORCE_UP));
+keyMap.set("u", new KeyInfo(2, 5, ShiftState.FORCE_UP));
+keyMap.set("v", new KeyInfo(2, 6, ShiftState.FORCE_UP));
+keyMap.set("w", new KeyInfo(2, 7, ShiftState.FORCE_UP));
+keyMap.set("x", new KeyInfo(3, 0, ShiftState.FORCE_UP));
+keyMap.set("y", new KeyInfo(3, 1, ShiftState.FORCE_UP));
+keyMap.set("z", new KeyInfo(3, 2, ShiftState.FORCE_UP));
+keyMap.set("0", new KeyInfo(4, 0, ShiftState.FORCE_UP));
+keyMap.set("1", new KeyInfo(4, 1, ShiftState.FORCE_UP));
+keyMap.set("2", new KeyInfo(4, 2, ShiftState.FORCE_UP));
+keyMap.set("3", new KeyInfo(4, 3, ShiftState.FORCE_UP));
+keyMap.set("4", new KeyInfo(4, 4, ShiftState.FORCE_UP));
+keyMap.set("5", new KeyInfo(4, 5, ShiftState.FORCE_UP));
+keyMap.set("6", new KeyInfo(4, 6, ShiftState.FORCE_UP));
+keyMap.set("7", new KeyInfo(4, 7, ShiftState.FORCE_UP));
+keyMap.set("8", new KeyInfo(5, 0, ShiftState.FORCE_UP));
+keyMap.set("9", new KeyInfo(5, 1, ShiftState.FORCE_UP));
+keyMap.set("_", new KeyInfo(4, 0, ShiftState.FORCE_DOWN)); // Simulate Shift-0, like trsemu.
+keyMap.set("!", new KeyInfo(4, 1, ShiftState.FORCE_DOWN));
+keyMap.set("\"", new KeyInfo(4, 2, ShiftState.FORCE_DOWN));
+keyMap.set("#", new KeyInfo(4, 3, ShiftState.FORCE_DOWN));
+keyMap.set("$", new KeyInfo(4, 4, ShiftState.FORCE_DOWN));
+keyMap.set("%", new KeyInfo(4, 5, ShiftState.FORCE_DOWN));
+keyMap.set("&", new KeyInfo(4, 6, ShiftState.FORCE_DOWN));
+keyMap.set("'", new KeyInfo(4, 7, ShiftState.FORCE_DOWN));
+keyMap.set("(", new KeyInfo(5, 0, ShiftState.FORCE_DOWN));
+keyMap.set(")", new KeyInfo(5, 1, ShiftState.FORCE_DOWN));
+keyMap.set(":", new KeyInfo(5, 2, ShiftState.FORCE_UP));
+keyMap.set(";", new KeyInfo(5, 3, ShiftState.FORCE_UP));
+keyMap.set(",", new KeyInfo(5, 4, ShiftState.FORCE_UP));
+keyMap.set("-", new KeyInfo(5, 5, ShiftState.FORCE_UP));
+keyMap.set(".", new KeyInfo(5, 6, ShiftState.FORCE_UP));
+keyMap.set("/", new KeyInfo(5, 7, ShiftState.FORCE_UP));
+keyMap.set("*", new KeyInfo(5, 2, ShiftState.FORCE_DOWN));
+keyMap.set("+", new KeyInfo(5, 3, ShiftState.FORCE_DOWN));
+keyMap.set("<", new KeyInfo(5, 4, ShiftState.FORCE_DOWN));
+keyMap.set("=", new KeyInfo(5, 5, ShiftState.FORCE_DOWN));
+keyMap.set(">", new KeyInfo(5, 6, ShiftState.FORCE_DOWN));
+keyMap.set("?", new KeyInfo(5, 7, ShiftState.FORCE_DOWN));
+keyMap.set("Enter", new KeyInfo(6, 0, ShiftState.NEUTRAL));
+keyMap.set("\\", new KeyInfo(6, 1, ShiftState.NEUTRAL)); // Clear
+keyMap.set("Escape", new KeyInfo(6, 2, ShiftState.NEUTRAL)); // Break
+keyMap.set("ArrowUp", new KeyInfo(6, 3, ShiftState.NEUTRAL));
+keyMap.set("ArrowDown", new KeyInfo(6, 4, ShiftState.NEUTRAL));
+keyMap.set("ArrowLeft", new KeyInfo(6, 5, ShiftState.NEUTRAL));
+keyMap.set("Backspace", new KeyInfo(6, 5, ShiftState.NEUTRAL)); // Left arrow
+keyMap.set("ArrowRight", new KeyInfo(6, 6, ShiftState.NEUTRAL));
+keyMap.set(" ", new KeyInfo(6, 7, ShiftState.NEUTRAL));
+keyMap.set("Shift", new KeyInfo(7, 0, ShiftState.NEUTRAL));
+class Keyboard {
+    constructor() {
+        // We queue up keystrokes so that we don't overwhelm the ROM polling routines.
+        this.keyQueue = [];
+        // Whether browser keys should be intercepted.
+        this.interceptKeys = false;
+        this.keyProcessMinClock = 0;
+        // 8 bytes, each a bitfield of keys currently pressed.
+        this.keys = new Uint8Array(8);
+        this.shiftForce = ShiftState.NEUTRAL;
+    }
+    static isInRange(address) {
+        return address >= BEGIN_ADDR && address < END_ADDR;
+    }
+    // Release all keys.
+    clearKeyboard() {
+        this.keys.fill(0);
+        this.shiftForce = ShiftState.NEUTRAL;
+    }
+    // Read a byte from the keyboard memory bank. This is an odd system where
+    // bits in the address map to the various bytes, and you can read the OR'ed
+    // addresses to read more than one byte at a time. For the last byte we fake
+    // the Shift key if necessary.
+    readKeyboard(addr, clock) {
+        addr = (addr - BEGIN_ADDR) % BANK_SIZE;
+        let b = 0;
+        // Dequeue if necessary.
+        if (clock > this.keyProcessMinClock) {
+            const keyWasPressed = this.processKeyQueue();
+            if (keyWasPressed) {
+                this.keyProcessMinClock = clock + KEY_DELAY_CLOCK_CYCLES;
+            }
+        }
+        // OR together the various bytes.
+        for (let i = 0; i < this.keys.length; i++) {
+            let keys = this.keys[i];
+            if ((addr & (1 << i)) !== 0) {
+                if (i === 7) {
+                    // Modify keys based on the shift force.
+                    switch (this.shiftForce) {
+                        case ShiftState.NEUTRAL:
+                            // Nothing.
+                            break;
+                        case ShiftState.FORCE_UP:
+                            // On the Model III the first two bits are left and right shift,
+                            // though we don't handle the right shift anywhere.
+                            keys &= ~0x03;
+                            break;
+                        case ShiftState.FORCE_DOWN:
+                            keys |= 0x01;
+                            break;
+                    }
+                }
+                b |= keys;
+            }
+        }
+        return b;
+    }
+    // Enqueue a key press or release.
+    keyEvent(key, isPressed) {
+        // Look up the key info.
+        const keyInfo = keyMap.get(key);
+        if (keyInfo === undefined) {
+            if (key !== "Meta" && key !== "Control" && key !== "Alt" && key !== "Tab") {
+                console.log("Unknown key \"" + key + "\"");
+            }
+        }
+        else {
+            // Append key to queue.
+            this.keyQueue.push(new KeyActivity(keyInfo, isPressed));
+        }
+    }
+    // Convert keys on the keyboard to ASCII letters or special strings like "Enter".
+    configureKeyboard() {
+        // Handle a key event by mapping it and sending it to the emulator.
+        const keyEvent = (event, isPressed) => {
+            // Don't do anything if we're not active.
+            if (!this.interceptKeys) {
+                return;
+            }
+            // Don't send to virtual computer if a text input field is selected.
+            // if ($(document.activeElement).attr("type") === "text") {
+            //     return;
+            // }
+            // Don't interfere with browser keys.
+            if (event.metaKey || event.ctrlKey) {
+                return;
+            }
+            const key = event.key;
+            if (key !== "") {
+                this.keyEvent(key, isPressed);
+                event.preventDefault();
+            }
+        };
+        const body = document.getElementsByTagName("body")[0];
+        body.addEventListener("keydown", (event) => keyEvent(event, true));
+        body.addEventListener("keyup", (event) => keyEvent(event, false));
+        body.addEventListener("paste", (event) => {
+            // Don't do anything if we're not active.
+            if (!this.interceptKeys) {
+                return;
+            }
+            if (event.clipboardData) {
+                const pastedText = event.clipboardData.getData("text/plain");
+                if (pastedText) {
+                    this.simulateKeyboardText(pastedText);
+                }
+            }
+            event.preventDefault();
+        });
+    }
+    /**
+     * Simulate this text being entered by the user.
+     */
+    simulateKeyboardText(text) {
+        for (let ch of text) {
+            if (ch === "\n" || ch === "\r") {
+                ch = "Enter";
+            }
+            this.keyEvent(ch, true);
+            this.keyEvent(ch, false);
+        }
+    }
+    // Dequeue the next key and set its bit. Return whether a key was processed.
+    processKeyQueue() {
+        const keyActivity = this.keyQueue.shift();
+        if (keyActivity === undefined) {
+            return false;
+        }
+        this.shiftForce = keyActivity.keyInfo.shiftForce;
+        const bit = 1 << keyActivity.keyInfo.bitNumber;
+        if (keyActivity.isPressed) {
+            this.keys[keyActivity.keyInfo.byteIndex] |= bit;
+        }
+        else {
+            this.keys[keyActivity.keyInfo.byteIndex] &= ~bit;
+        }
+        return true;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Model1Level1Rom.js
+const model1Level1Rom = `
+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
+`;
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Model1Level2Rom.js
+const model1Level2Rom = `
+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
+`;
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Model3Rom.js
+const model3Rom = `
+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
+`;
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Config.js
+/**
+ * The TRS-80 models we support.
+ */
+var ModelType;
+(function (ModelType) {
+    ModelType[ModelType["MODEL1"] = 0] = "MODEL1";
+    ModelType[ModelType["MODEL3"] = 1] = "MODEL3";
+})(ModelType || (ModelType = {}));
+/**
+ * The levels of Basic.
+ */
+var BasicLevel;
+(function (BasicLevel) {
+    BasicLevel[BasicLevel["LEVEL1"] = 0] = "LEVEL1";
+    BasicLevel[BasicLevel["LEVEL2"] = 1] = "LEVEL2";
+})(BasicLevel || (BasicLevel = {}));
+/**
+ * The character generator chip we support.
+ */
+var CGChip;
+(function (CGChip) {
+    CGChip[CGChip["ORIGINAL"] = 0] = "ORIGINAL";
+    CGChip[CGChip["LOWER_CASE"] = 1] = "LOWER_CASE";
+})(CGChip || (CGChip = {}));
+/**
+ * The amounts of RAM we support.
+ */
+var RamSize;
+(function (RamSize) {
+    RamSize[RamSize["RAM_4_KB"] = 0] = "RAM_4_KB";
+    RamSize[RamSize["RAM_16_KB"] = 1] = "RAM_16_KB";
+    RamSize[RamSize["RAM_32_KB"] = 2] = "RAM_32_KB";
+    RamSize[RamSize["RAM_48_KB"] = 3] = "RAM_48_KB";
+})(RamSize || (RamSize = {}));
+/**
+ * Phosphor color.
+ */
+var Phosphor;
+(function (Phosphor) {
+    Phosphor[Phosphor["WHITE"] = 0] = "WHITE";
+    Phosphor[Phosphor["GREEN"] = 1] = "GREEN";
+    Phosphor[Phosphor["AMBER"] = 2] = "AMBER";
+})(Phosphor || (Phosphor = {}));
+/**
+ * Background color.
+ */
+var Background;
+(function (Background) {
+    Background[Background["BLACK"] = 0] = "BLACK";
+    Background[Background["AUTHENTIC"] = 1] = "AUTHENTIC";
+})(Background || (Background = {}));
+/**
+ * Whether to display scan lines.
+ */
+var ScanLines;
+(function (ScanLines) {
+    ScanLines[ScanLines["OFF"] = 0] = "OFF";
+    ScanLines[ScanLines["ON"] = 1] = "ON";
+})(ScanLines || (ScanLines = {}));
+/**
+ * A specific configuration of model and RAM.
+ */
+class Config {
+    constructor(modelType, basicLevel, cgChip, ramSize, phosphor, background, scanLines) {
+        this.modelType = modelType;
+        this.basicLevel = basicLevel;
+        this.cgChip = cgChip;
+        this.ramSize = ramSize;
+        this.phosphor = phosphor;
+        this.background = background;
+        this.scanLines = scanLines;
+    }
+    withModelType(modelType) {
+        return new Config(modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
+    }
+    withBasicLevel(basicLevel) {
+        return new Config(this.modelType, basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
+    }
+    withCGChip(cgChip) {
+        return new Config(this.modelType, this.basicLevel, cgChip, this.ramSize, this.phosphor, this.background, this.scanLines);
+    }
+    withRamSize(ramSize) {
+        return new Config(this.modelType, this.basicLevel, this.cgChip, ramSize, this.phosphor, this.background, this.scanLines);
+    }
+    withPhosphor(phosphor) {
+        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, phosphor, this.background, this.scanLines);
+    }
+    withBackground(background) {
+        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, background, this.scanLines);
+    }
+    withScanLines(scanLines) {
+        return new Config(this.modelType, this.basicLevel, this.cgChip, this.ramSize, this.phosphor, this.background, scanLines);
+    }
+    /**
+     * Make a default configuration.
+     */
+    static makeDefault() {
+        return new Config(ModelType.MODEL3, BasicLevel.LEVEL2, CGChip.LOWER_CASE, RamSize.RAM_48_KB, Phosphor.WHITE, Background.AUTHENTIC, ScanLines.OFF);
+    }
+    /**
+     * Whether this particular config is valid.
+     */
+    isValid() {
+        // Model III only had Level 2. (I've read that it actually shipped with Level 1, but
+        // we don't have that ROM.)
+        if (this.modelType === ModelType.MODEL3 && this.basicLevel === BasicLevel.LEVEL1) {
+            return false;
+        }
+        // Model III only had lower case.
+        if (this.modelType === ModelType.MODEL3 && this.cgChip === CGChip.ORIGINAL) {
+            return false;
+        }
+        // Rest are okay.
+        return true;
+    }
+    /**
+     * Whether this new config needs to be rebooted, if the emulator currently is running the old config.
+     */
+    needsReboot(oldConfig) {
+        // Maybe here we could not reboot if only the CG chip changed. The software is able to detect the
+        // difference (since bit 6 is synthetic in one case).
+        return this.modelType !== oldConfig.modelType ||
+            this.basicLevel !== oldConfig.basicLevel ||
+            this.cgChip !== oldConfig.cgChip ||
+            this.ramSize !== oldConfig.ramSize;
+    }
+    /**
+     * Return the RAM size in bytes.
+     */
+    getRamSize() {
+        let kb;
+        switch (this.ramSize) {
+            case RamSize.RAM_4_KB:
+                kb = 4;
+                break;
+            case RamSize.RAM_16_KB:
+                kb = 16;
+                break;
+            case RamSize.RAM_32_KB:
+                kb = 32;
+                break;
+            case RamSize.RAM_48_KB:
+            default:
+                kb = 48;
+                break;
+        }
+        return kb * 1024;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/EventScheduler.js
+/**
+ * Type of event, for mass canceling.
+ */
+var EventType;
+(function (EventType) {
+    // Disk events.
+    EventType[EventType["DISK_DONE"] = 1] = "DISK_DONE";
+    EventType[EventType["DISK_LOST_DATA"] = 2] = "DISK_LOST_DATA";
+    EventType[EventType["DISK_FIRST_DRQ"] = 4] = "DISK_FIRST_DRQ";
+    // All disk events.
+    EventType[EventType["DISK_ALL"] = 7] = "DISK_ALL";
+})(EventType || (EventType = {}));
+/**
+ * An event scheduled for the future.
+ */
+class ScheduledEvent {
+    constructor(eventType, handle, tStateCount, callback) {
+        this.eventType = eventType;
+        this.handle = handle;
+        this.tStateCount = Math.round(tStateCount);
+        this.callback = callback;
+    }
+    /**
+     * Whether the event type of this event is included in the mask.
+     */
+    matchesEventTypeMask(eventTypeMask) {
+        return this.eventType !== undefined && (this.eventType & eventTypeMask) !== 0;
+    }
+}
+/**
+ * Stores events in chronological order and fires them off.
+ */
+class EventScheduler {
+    constructor() {
+        this.counter = 1;
+        // Sorted by tStateCount.
+        this.events = [];
+    }
+    /**
+     * Dispatch all events ready to go.
+     *
+     * @param tStateCount current clock count.
+     */
+    dispatch(tStateCount) {
+        while (this.events.length > 0 && tStateCount >= this.events[0].tStateCount) {
+            const scheduledEvent = this.events.shift();
+            scheduledEvent.callback();
+        }
+    }
+    /**
+     * Schedule an event to happen at tStateCount clocks. The callback will be called
+     * at the end of an instruction step.
+     *
+     * @return a handle that can be passed to cancel().
+     */
+    add(eventType, tStateCount, callback) {
+        let handle = this.counter++;
+        this.events.push(new ScheduledEvent(eventType, handle, tStateCount, callback));
+        this.events.sort((a, b) => {
+            if (a.tStateCount < b.tStateCount) {
+                return -1;
+            }
+            else if (a.tStateCount > b.tStateCount) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+        return handle;
+    }
+    /**
+     * Cancel an event scheduled by add().
+     */
+    cancel(handle) {
+        for (let i = 0; i < this.events.length; i++) {
+            if (this.events[i].handle === handle) {
+                this.events.splice(i, 1);
+                break;
+            }
+        }
+    }
+    /**
+     * Cancel all events that are included in the mask.
+     */
+    cancelByEventTypeMask(eventTypeMask) {
+        this.events = this.events.filter(e => !e.matchesEventTypeMask(eventTypeMask));
+    }
+    /**
+     * Returns the first (next to dispatch) event included in the mask, or undefined if none.
+     * Does not remove the event from the queue.
+     */
+    getFirstEvent(eventTypeMask) {
+        for (const event of this.events) {
+            if (event.matchesEventTypeMask(eventTypeMask)) {
+                return event;
+            }
+        }
+        return undefined;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/FloppyDiskController.js
+/**
+ * Floppy disk controller for the TRS-80.
+ *
+ * References:
+ *
+ * https://hansotten.file-hunter.com/technical-info/wd1793/
+ */
+
+
+
+
+// Whether this controller supports writing.
+const SUPPORT_WRITING = false;
+// Number of physical drives.
+const FLOPPY_DRIVE_COUNT = 4;
+// Width of the index hole as a fraction of the circumference.
+const HOLE_WIDTH = 0.01;
+// Speed of disk.
+const RPM = 300;
+// How long the disk motor stays on after drive selected, in seconds.
+const MOTOR_TIME_AFTER_SELECT = 2;
+/**
+ * Converts boolean for "back" to a Side.
+ */
+function booleanToSide(back) {
+    return back ? Side.BACK : Side.FRONT;
+}
+// Type I status bits.
+const STATUS_BUSY = 0x01; // Whether a command is in progress.
+const STATUS_INDEX = 0x02; // The head is currently over the index hole.
+const STATUS_TRACK_ZERO = 0x04; // Head is on track 0.
+const STATUS_CRC_ERROR = 0x08; // CRC error.
+const STATUS_SEEK_ERROR = 0x10; // Seek error.
+const STATUS_HEAD_ENGAGED = 0x20; // Head engaged.
+const STATUS_WRITE_PROTECTED = 0x40; // Write-protected.
+const STATUS_NOT_READY = 0x80; // Disk not ready (motor not running).
+// Type II and III status bits.
+//    STATUS_BUSY = 0x01;
+const STATUS_DRQ = 0x02; // Data is ready to be read or written.
+const STATUS_LOST_DATA = 0x04; // CPU was too slow to read.
+//    STATUS_CRC_ERROR = 0x08;
+const STATUS_NOT_FOUND = 0x10; // Track, sector, or side were not found.
+const STATUS_DELETED = 0x20; // On read: Sector was deleted (data is invalid, 0xF8 DAM).
+const STATUS_FAULT = 0x20; // On write: Indicates a write fault.
+const STATUS_REC_TYPE = 0x60;
+//    STATUS_WRITE_PROTECTED = 0x40;
+//    STATUS_NOT_READY = 0x80;
+// Select register bits for writeSelect().
+const SELECT_DRIVE_0 = 0x01;
+const SELECT_DRIVE_1 = 0x02;
+const SELECT_DRIVE_2 = 0x04;
+const SELECT_DRIVE_3 = 0x08;
+const SELECT_SIDE = 0x10; // 0 = front, 1 = back.
+const SELECT_PRECOMP = 0x20;
+const SELECT_WAIT = 0x40; // Controller should block OUT until operation is done.
+const SELECT_MFM = 0x80; // Double density.
+const SELECT_DRIVE_MASK = SELECT_DRIVE_0 | SELECT_DRIVE_1 | SELECT_DRIVE_2 | SELECT_DRIVE_3;
+// Type of command (see below for specific commands in each type).
+var CommandType;
+(function (CommandType) {
+    CommandType[CommandType["TYPE_I"] = 0] = "TYPE_I";
+    CommandType[CommandType["TYPE_II"] = 1] = "TYPE_II";
+    CommandType[CommandType["TYPE_III"] = 2] = "TYPE_III";
+    CommandType[CommandType["TYPE_IV"] = 3] = "TYPE_IV";
+})(CommandType || (CommandType = {}));
+// Commands and various sub-flags.
+const COMMAND_MASK = 0xF0;
+// Type I commands: cccchvrr, where
+//     cccc = command number
+//     h = head load
+//     v = verify (i.e., read next address to check we're on the right track)
+//     rr = step rate:  00=6ms, 01=12ms, 10=20ms, 11=40ms
+const COMMAND_RESTORE = 0x00;
+const COMMAND_SEEK = 0x10;
+const COMMAND_STEP = 0x20; // Doesn't update track register.
+const COMMAND_STEPU = 0x30; // Updates track register.
+const COMMAND_STEP_IN = 0x40;
+const COMMAND_STEP_INU = 0x50;
+const COMMAND_STEP_OUT = 0x60;
+const COMMAND_STEP_OUTU = 0x70;
+const MASK_H = 0x08;
+const MASK_V = 0x04;
+// Type II commands: ccccbecd, where
+//     cccc = command number
+//     e = delay for head engage (10ms)
+//     b = side expected
+//     c = side compare (0=disable, 1=enable)
+//     d = select data address mark (writes only, 0 for reads):
+//         0=FB (normal), 1=F8 (deleted)
+const COMMAND_READ = 0x80; // Single sector.
+const COMMAND_READM = 0x90; // Multiple sectors.
+const COMMAND_WRITE = 0xA0;
+const COMMAND_WRITEM = 0xB0;
+const MASK_B = 0x08; // Side (0 = front, 1 = back).
+const MASK_E = 0x04;
+const MASK_C = 0x02; // Whether side (MASK_B) is defined.
+const MASK_D = 0x01; // Deleted: 0 = Data is valid, DAM is 0xFB; 1 = Data is invalid, DAM is 0xF8.
+// Type III commands: ccccxxxs (?), where
+//     cccc = command number
+//     xxx = ?? (usually 010)
+//     s = 1=READ_TRACK no synchronize; otherwise 0
+const COMMAND_READ_ADDRESS = 0xC0;
+const COMMAND_READ_TRACK = 0xE0;
+const COMMAND_WRITE_TRACK = 0xF0;
+// Type IV command: cccciiii, where
+//     cccc = command number
+//     iiii = bitmask of events to terminate and interrupt on (unused on TRS-80).
+//            0000 for immediate terminate with no interrupt.
+const COMMAND_FORCE_INTERRUPT = 0xD0;
+/**
+ * Given a command, returns its type.
+ */
+function getCommandType(command) {
+    switch (command & COMMAND_MASK) {
+        case COMMAND_RESTORE:
+        case COMMAND_SEEK:
+        case COMMAND_STEP:
+        case COMMAND_STEPU:
+        case COMMAND_STEP_IN:
+        case COMMAND_STEP_INU:
+        case COMMAND_STEP_OUT:
+        case COMMAND_STEP_OUTU:
+            return CommandType.TYPE_I;
+        case COMMAND_READ:
+        case COMMAND_READM:
+        case COMMAND_WRITE:
+        case COMMAND_WRITEM:
+            return CommandType.TYPE_II;
+        case COMMAND_READ_ADDRESS:
+        case COMMAND_READ_TRACK:
+        case COMMAND_WRITE_TRACK:
+            return CommandType.TYPE_III;
+        case COMMAND_FORCE_INTERRUPT:
+            return CommandType.TYPE_IV;
+        default:
+            throw new Error("Unknown command 0x" + Object(z80_base_dist["toHexByte"])(command));
+    }
+}
+/**
+ * Whether a command is for reading or writing.
+ */
+function isReadWriteCommand(command) {
+    switch (getCommandType(command)) {
+        case CommandType.TYPE_II:
+        case CommandType.TYPE_III:
+            return true;
+        default:
+            return false;
+    }
+}
+/**
+ * State of a physical drive.
+ */
+class FloppyDrive {
+    constructor() {
+        this.physicalTrack = 0;
+        this.writeProtected = true;
+        this.floppyDisk = undefined;
+    }
+}
+/**
+ * The disk controller. We only emulate the WD1791/93, not the Model I's WD1771.
+ */
+class FloppyDiskController_FloppyDiskController {
+    constructor(foo) {
+        // Registers.
+        this.status = STATUS_TRACK_ZERO | STATUS_NOT_READY;
+        this.track = 0;
+        this.sector = 0;
+        this.data = 0;
+        // Internal state.
+        this.currentCommand = COMMAND_RESTORE;
+        this.side = Side.FRONT;
+        this.doubleDensity = false;
+        this.currentDrive = 0;
+        this.motorOn = false;
+        // ID index found in by last COMMAND_READ_ADDRESS.
+        this.lastReadAddress = undefined;
+        // State for current command.
+        this.dataIndex = 0;
+        this.sectorData = undefined;
+        // Floppy drives.
+        this.drives = [];
+        // Timeout handle for turning off the motor.
+        this.motorOffTimeoutHandle = undefined;
+        // Which drive is currently active, for lighting up an LED.
+        this.onActiveDrive = new dist["SimpleEventDispatcher"]();
+        // Event when a drive moves the head this many tracks.
+        this.onTrackMove = new dist["SimpleEventDispatcher"]();
+        this.machine = foo;
+        for (let i = 0; i < FLOPPY_DRIVE_COUNT; i++) {
+            this.drives.push(new FloppyDrive());
+        }
+    }
+    /**
+     * Put a floppy in the specified drive (0 to 3).
+     */
+    loadFloppyDisk(floppyDisk, driveNumber) {
+        if (driveNumber < 0 || driveNumber >= this.drives.length) {
+            throw new Error("Invalid drive number " + driveNumber);
+        }
+        this.drives[driveNumber].floppyDisk = floppyDisk;
+    }
+    readStatus() {
+        // If no disk was loaded into drive 0, just pretend that we don't
+        // have a disk system. Otherwise we have to hold down Break while
+        // booting (to get to cassette BASIC) and that's annoying.
+        if (this.drives[0].floppyDisk === undefined) {
+            return 0xFF;
+        }
+        this.updateStatus();
+        // Clear interrupt.
+        this.machine.diskIntrqInterrupt(false);
+        return this.status;
+    }
+    readTrack() {
+        return this.track;
+    }
+    readSector() {
+        return this.sector;
+    }
+    /**
+     * Read a byte of data from the sector.
+     */
+    readData() {
+        const drive = this.drives[this.currentDrive];
+        // The read command can do various things depending on the specific
+        // current command, but we only support reading from the diskette.
+        switch (this.currentCommand & COMMAND_MASK) {
+            case COMMAND_READ:
+                // Keep reading from the buffer.
+                if (this.sectorData !== undefined && (this.status & STATUS_DRQ) !== 0 && drive.floppyDisk !== undefined) {
+                    this.data = this.sectorData.data[this.dataIndex];
+                    this.dataIndex++;
+                    if (this.dataIndex >= this.sectorData.data.length) {
+                        this.sectorData = undefined;
+                        this.status &= ~STATUS_DRQ;
+                        this.machine.diskDrqInterrupt(false);
+                        this.machine.eventScheduler.cancelByEventTypeMask(EventType.DISK_LOST_DATA);
+                        this.machine.eventScheduler.add(EventType.DISK_DONE, this.machine.tStateCount + 64, () => this.done(0));
+                    }
+                }
+                break;
+            default:
+                // Might be okay, not sure.
+                throw new Error("Unhandled case in readData()");
+        }
+        return this.data;
+    }
+    /**
+     * Set current command.
+     */
+    writeCommand(cmd) {
+        const drive = this.drives[this.currentDrive];
+        // Cancel "lost data" event.
+        this.machine.eventScheduler.cancelByEventTypeMask(EventType.DISK_LOST_DATA);
+        this.machine.diskIntrqInterrupt(false);
+        this.sectorData = undefined;
+        this.currentCommand = cmd;
+        // Kick off anything that's based on the command.
+        switch (cmd & COMMAND_MASK) {
+            case COMMAND_RESTORE:
+                this.lastReadAddress = undefined;
+                drive.physicalTrack = 0;
+                this.track = 0;
+                this.status = STATUS_TRACK_ZERO | STATUS_BUSY;
+                if ((cmd & MASK_V) != 0) {
+                    this.verify();
+                }
+                this.machine.eventScheduler.add(EventType.DISK_DONE, this.machine.tStateCount + 2000, () => this.done(0));
+                break;
+            case COMMAND_SEEK:
+                this.lastReadAddress = undefined;
+                const moveCount = this.data - this.track;
+                if (moveCount !== 0) {
+                    this.onTrackMove.dispatch(moveCount);
+                }
+                drive.physicalTrack += moveCount;
+                this.track = this.data;
+                if (drive.physicalTrack <= 0) {
+                    // this.track too?
+                    drive.physicalTrack = 0;
+                    this.status = STATUS_TRACK_ZERO | STATUS_BUSY;
+                }
+                else {
+                    this.status = STATUS_BUSY;
+                }
+                // Should this set lastDirection?
+                if ((cmd & MASK_V) != 0) {
+                    this.verify();
+                }
+                this.machine.eventScheduler.add(EventType.DISK_DONE, this.machine.tStateCount + 2000, () => this.done(0));
+                break;
+            case COMMAND_READ:
+                // Read the sector. The bytes will be read later.
+                this.lastReadAddress = undefined;
+                this.status = STATUS_BUSY;
+                // Not sure how to use this. Ignored for now:
+                const goalSide = (cmd & MASK_C) === 0 ? undefined : booleanToSide((cmd & MASK_B) !== 0);
+                console.log(`Sector read: ${drive.physicalTrack}, ${this.sector}, ${this.side}`);
+                const sectorData = drive.floppyDisk === undefined
+                    ? undefined
+                    : drive.floppyDisk.readSector(drive.physicalTrack, this.side, this.sector);
+                if (sectorData === undefined) {
+                    this.machine.eventScheduler.add(EventType.DISK_DONE, this.machine.tStateCount + 512, () => this.done(0));
+                    console.error(`Didn't find sector ${this.sector} on track ${drive.physicalTrack}`);
+                }
+                else {
+                    let newStatus = 0;
+                    if (sectorData.deleted) {
+                        newStatus |= STATUS_DELETED;
+                    }
+                    if (sectorData.crcError) {
+                        newStatus |= STATUS_CRC_ERROR;
+                    }
+                    this.sectorData = sectorData;
+                    this.dataIndex = 0;
+                    this.machine.eventScheduler.add(EventType.DISK_FIRST_DRQ, this.machine.tStateCount + 64, () => this.firstDrq(newStatus));
+                }
+                break;
+            case COMMAND_WRITE:
+                console.log(`Sector write: ${drive.physicalTrack}, ${this.sector}, ${this.side}`);
+                this.status = STATUS_WRITE_PROTECTED;
+                break;
+            case COMMAND_FORCE_INTERRUPT:
+                // Stop whatever is going on and forget it.
+                this.machine.eventScheduler.cancelByEventTypeMask(EventType.DISK_ALL);
+                this.status = 0;
+                this.updateStatus();
+                if ((cmd & 0x07) !== 0) {
+                    throw new Error("Conditional interrupt features not implemented");
+                }
+                else if ((cmd & 0x08) !== 0) {
+                    // Immediate interrupt.
+                    this.machine.diskIntrqInterrupt(true);
+                }
+                else {
+                    this.machine.diskIntrqInterrupt(false);
+                }
+                break;
+            default:
+                throw new Error("Don't handle command 0x" + Object(z80_base_dist["toHexByte"])(cmd));
+        }
+    }
+    writeTrack(track) {
+        this.track = track;
+    }
+    writeSector(sector) {
+        this.sector = sector;
+    }
+    writeData(data) {
+        const command = this.currentCommand & COMMAND_MASK;
+        if (command === COMMAND_WRITE || command === COMMAND_WRITE_TRACK) {
+            throw new Error("Can't yet write data");
+        }
+        this.data = data;
+    }
+    /**
+     * Select a drive.
+     */
+    writeSelect(value) {
+        this.status &= ~STATUS_NOT_READY;
+        this.side = booleanToSide((value & SELECT_SIDE) !== 0);
+        this.doubleDensity = (value & SELECT_MFM) != 0;
+        if ((value & SELECT_WAIT) != 0) {
+            // If there was an event pending, simulate waiting until it was due.
+            const event = this.machine.eventScheduler.getFirstEvent(EventType.DISK_ALL & ~EventType.DISK_LOST_DATA);
+            if (event !== undefined) {
+                // This puts the clock ahead immediately, but the main loop of the emulator
+                // will then sleep to make the real-time correct.
+                // TODO is this legit? Can we use another method?
+                this.machine.tStateCount = event.tStateCount;
+                this.machine.eventScheduler.dispatch(this.machine.tStateCount);
+            }
+        }
+        // Which drive is being enabled?
+        const previousDrive = this.currentDrive;
+        switch (value & SELECT_DRIVE_MASK) {
+            case 0:
+                this.status |= STATUS_NOT_READY;
+                break;
+            case SELECT_DRIVE_0:
+                this.currentDrive = 0;
+                break;
+            case SELECT_DRIVE_1:
+                this.currentDrive = 1;
+                break;
+            case SELECT_DRIVE_2:
+                this.currentDrive = 2;
+                break;
+            case SELECT_DRIVE_3:
+                this.currentDrive = 3;
+                break;
+            default:
+                throw new Error("Not drive specified in select: 0x" + Object(z80_base_dist["toHexByte"])(value));
+        }
+        if (this.currentDrive !== previousDrive) {
+            this.updateMotorOn();
+        }
+        // If a drive was selected, turn on its motor.
+        if ((this.status & STATUS_NOT_READY) == 0) {
+            this.setMotorOn(true);
+            // Set timer to later turn off motor.
+            if (this.motorOffTimeoutHandle !== undefined) {
+                this.machine.eventScheduler.cancel(this.motorOffTimeoutHandle);
+            }
+            this.motorOffTimeoutHandle = this.machine.eventScheduler.add(undefined, this.machine.tStateCount + MOTOR_TIME_AFTER_SELECT * this.machine.clockHz, () => {
+                this.motorOffTimeoutHandle = undefined;
+                this.status |= STATUS_NOT_READY;
+                this.setMotorOn(false);
+            });
+        }
+    }
+    /**
+     * Verify that head is on the expected track. Set either STATUS_NOT_FOUND or
+     * STATUS_SEEK_ERROR if a problem is found.
+     */
+    verify() {
+        const drive = this.drives[this.currentDrive];
+        if (drive.floppyDisk === undefined) {
+            this.status |= STATUS_NOT_FOUND;
+        }
+        else if (drive.physicalTrack !== this.track) {
+            this.status |= STATUS_SEEK_ERROR;
+        }
+        else {
+            // Make sure a sector exists on this track.
+            const sectorData = drive.floppyDisk.readSector(this.track, Side.FRONT, undefined);
+            if (sectorData === undefined) {
+                this.status |= STATUS_NOT_FOUND;
+            }
+            if (this.doubleDensity && !drive.floppyDisk.supportsDoubleDensity) {
+                this.status |= STATUS_NOT_FOUND;
+            }
+        }
+    }
+    /**
+     * If we're doing a non-read/write command, update the status with the state
+     * of the disk, track, and head position.
+     */
+    updateStatus() {
+        if (isReadWriteCommand(this.currentCommand)) {
+            // Don't modify status.
+            return;
+        }
+        const drive = this.drives[this.currentDrive];
+        if (drive.floppyDisk === undefined) {
+            this.status |= STATUS_INDEX;
+        }
+        else {
+            // See if we're over the index hole.
+            if (this.angle() < HOLE_WIDTH) {
+                this.status |= STATUS_INDEX;
+            }
+            else {
+                this.status &= ~STATUS_INDEX;
+            }
+            // See if the diskette is write protected.
+            if (drive.writeProtected || !SUPPORT_WRITING) {
+                this.status |= STATUS_WRITE_PROTECTED;
+            }
+            else {
+                this.status &= ~STATUS_WRITE_PROTECTED;
+            }
+        }
+        // See if we're on track 0, which for some reason has a special bit.
+        if (drive.physicalTrack === 0) {
+            this.status |= STATUS_TRACK_ZERO;
+        }
+        else {
+            this.status &= ~STATUS_TRACK_ZERO;
+        }
+        // RDY and HLT inputs are wired together on TRS-80 I/III/4/4P.
+        if ((this.status & STATUS_NOT_READY) !== 0) {
+            this.status &= ~STATUS_HEAD_ENGAGED;
+        }
+        else {
+            this.status |= STATUS_HEAD_ENGAGED;
+        }
+    }
+    /**
+     * Turn motor on or off.
+     */
+    setMotorOn(motorOn) {
+        if (motorOn !== this.motorOn) {
+            this.motorOn = motorOn;
+            this.machine.diskMotorOffInterrupt(!motorOn);
+            this.updateMotorOn();
+        }
+    }
+    /**
+     * Dispatch a change to the motor light.
+     */
+    updateMotorOn() {
+        this.onActiveDrive.dispatch(this.motorOn ? this.currentDrive : undefined);
+    }
+    // Return a value in [0,1) indicating how far we've rotated
+    // from the leading edge of the index hole. For the first HOLE_WIDTH we're
+    // on the hole itself.
+    angle() {
+        // Use simulated time.
+        const clocksPerRevolution = Math.round(this.machine.clockHz / (RPM / 60));
+        return (this.machine.tStateCount % clocksPerRevolution) / clocksPerRevolution;
+    }
+    /**
+     * Event used for delayed command completion.  Clears BUSY,
+     * sets any additional bits specified, and generates a command
+     * completion interrupt.
+     */
+    done(bits) {
+        this.status &= ~STATUS_BUSY;
+        this.status |= bits;
+        this.machine.diskIntrqInterrupt(true);
+    }
+    /**
+     * Event to abort the last command with LOST_DATA if it is
+     * still in progress.
+     */
+    lostData(cmd) {
+        if (this.currentCommand === cmd) {
+            this.status &= ~STATUS_BUSY;
+            this.status |= STATUS_LOST_DATA;
+            this.sectorData = undefined;
+            this.machine.diskIntrqInterrupt(true);
+        }
+    }
+    /**
+     * Event used as a delayed command start. Sets DRQ, generates a DRQ interrupt,
+     * sets any additional bits specified, and schedules a lostData() event.
+     */
+    firstDrq(bits) {
+        this.status |= STATUS_DRQ | bits;
+        this.machine.diskDrqInterrupt(true);
+        // Evaluate this now, not when the callback is run.
+        const currentCommand = this.currentCommand;
+        // If we've not finished our work within half a second, trigger a lost data interrupt.
+        this.machine.eventScheduler.add(EventType.DISK_LOST_DATA, this.machine.tStateCount + this.machine.clockHz / 2, () => this.lostData(currentCommand));
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/SoundPlayer.js
+const PROCESSOR_NAME = "trs80-audio-processor";
+// Get these straight from my GitHub repo.
+const SPIN_URL = "https://raw.githubusercontent.com/lkesteloot/trs80-emulator/83e7fabd7d26f3e197329ee05a7c8ffc4063362c/sounds/spin.mp3";
+const TRACK_URL = "https://raw.githubusercontent.com/lkesteloot/trs80-emulator/83845b15b3c99daa8237e22b48f00426fcdc0cbf/sounds/track.mp3";
+const SPIN_VOLUME = 0.6;
+const TRACK_VOLUME = 0.3;
+const PROCESSOR_JS = `
+// Generates the TRS-80 sound.
+class Trs80SoundProcessor extends AudioWorkletProcessor {
+    // This parameter is the audio itself. We just pass it on.
+    static get parameterDescriptors() {
+        return [{
+            name: "audioValue",
+            defaultValue: 0,
+        }];
+    }
+
+    constructor() {
+        super();
+    }
+
+    // Process 128 audio samples at a time.
+    process(inputs, outputs, parameters) {
+        // We only have one output.
+        const output = outputs[0];
+
+        // The parameter that holds the actual audio.
+        const audioValue = parameters.audioValue;
+
+        // We should be mono, but send to all channels anyway.
+        for (let channelNumber = 0; channelNumber < output.length; channelNumber++) {
+            const channel = output[channelNumber];
+
+            for (let i = 0; i < channel.length; i++) {
+                const value = audioValue.length === 1 ? audioValue[0] : audioValue[i];
+                
+                // 10% volume.
+                channel[i] = value/10;
+            }
+        }
+
+        // Keep going.
+        return true;
+    }
+}
+
+// Register ourselves by name.
+registerProcessor("${PROCESSOR_NAME}", Trs80SoundProcessor);
+`;
+/**
+ * Minimum time of silence before we suspend the audio player. Be generous here because we lose a bit of
+ * audio after resuming, so you really only want to do it after the sound-making program has stopped.
+ */
+const MIN_SILENT_TIME_S = 30;
+/**
+ * Handles playing of sound through the cassette port.
+ */
+class SoundPlayer {
+    constructor() {
+        this.muted = true;
+        this.audioContext = undefined;
+        this.audioValue = undefined;
+        this.floppyMotorOn = false;
+        this.floppySpinAudioBuffer = undefined;
+        this.floppySpinSourceNode = undefined;
+        this.floppySpinGainNode = undefined;
+        this.trackAudioBuffer = undefined;
+        // Difference between computer time and audio time, in seconds.
+        this.adjustment = 0;
+        this.lastAudioTime = 0;
+        this.isSuspended = false;
+    }
+    /**
+     * Resume the audio context if necessary.
+     */
+    resumeAudio() {
+        if (this.isSuspended && this.audioContext !== undefined) {
+            this.audioContext.resume();
+            this.isSuspended = false;
+        }
+    }
+    /**
+     * Sets the value sent to the cassette, from the set -1, 0, or 1.
+     */
+    setAudioValue(value, tStateCount, clockHz) {
+        if (!this.muted && this.audioContext !== undefined && this.audioValue !== undefined) {
+            this.resumeAudio();
+            const computerTime = tStateCount / clockHz;
+            const audioTime = this.audioContext.currentTime;
+            const delta = computerTime - audioTime;
+            const error = delta - this.adjustment;
+            if (error < 0 || error > 0.050) {
+                // We always need computer time to be ahead of audio time or it won't be heard.
+                this.adjustment = delta - 0.025;
+            }
+            this.audioValue.setValueAtTime(value, computerTime - this.adjustment);
+            // Remember when we last played audio.
+            this.lastAudioTime = audioTime;
+        }
+    }
+    /**
+     * Mutes the audio. This is the default.
+     */
+    mute() {
+        if (!this.muted) {
+            this.muted = true;
+            if (this.audioContext !== undefined) {
+                this.audioContext.suspend();
+                this.isSuspended = true;
+            }
+        }
+    }
+    /**
+     * Unmutes the audio.
+     */
+    unmute() {
+        if (this.muted) {
+            if (this.audioContext === undefined) {
+                this.enableAudio();
+            }
+            this.muted = false;
+            if (this.audioContext !== undefined) {
+                this.audioContext.resume();
+                this.isSuspended = false;
+            }
+        }
+    }
+    /**
+     * Update the sound system about the state of the floppy motors.
+     */
+    setFloppyMotorOn(motorOn) {
+        this.floppyMotorOn = motorOn;
+        this.updateFloppySpin();
+    }
+    /**
+     * Start or stop the background floppy spinning noise depending on the state of the motor.
+     */
+    updateFloppySpin() {
+        if (!this.floppyMotorOn && this.floppySpinSourceNode !== undefined &&
+            this.floppySpinGainNode !== undefined && this.audioContext !== undefined) {
+            // Stop playing spin sound.
+            const endTime = this.audioContext.currentTime + 0.2;
+            this.floppySpinGainNode.gain.setValueAtTime(SPIN_VOLUME, this.audioContext.currentTime);
+            this.floppySpinGainNode.gain.linearRampToValueAtTime(0, endTime);
+            this.floppySpinSourceNode.stop(endTime);
+            this.floppySpinSourceNode = undefined;
+            this.floppySpinGainNode = undefined;
+        }
+        else if (this.floppyMotorOn && this.floppySpinSourceNode === undefined &&
+            this.floppySpinAudioBuffer !== undefined && this.audioContext !== undefined) {
+            // Start playing spin sound.
+            this.resumeAudio();
+            this.floppySpinGainNode = this.audioContext.createGain();
+            this.floppySpinGainNode.connect(this.audioContext.destination);
+            this.floppySpinGainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+            this.floppySpinGainNode.gain.linearRampToValueAtTime(SPIN_VOLUME, this.audioContext.currentTime + 0.2);
+            this.floppySpinSourceNode = this.audioContext.createBufferSource();
+            this.floppySpinSourceNode.buffer = this.floppySpinAudioBuffer;
+            this.floppySpinSourceNode.connect(this.floppySpinGainNode);
+            this.floppySpinSourceNode.loop = true;
+            this.floppySpinSourceNode.start();
+            // Remember when we last played audio.
+            this.lastAudioTime = this.audioContext.currentTime;
+        }
+    }
+    /**
+     * Play the sound of the head moving one track over.
+     */
+    playTrackSound() {
+        if (this.audioContext !== undefined && this.trackAudioBuffer !== undefined) {
+            this.resumeAudio();
+            const gainNode = this.audioContext.createGain();
+            gainNode.connect(this.audioContext.destination);
+            gainNode.gain.setValueAtTime(TRACK_VOLUME, this.audioContext.currentTime);
+            const sourceNode = this.audioContext.createBufferSource();
+            sourceNode.buffer = this.trackAudioBuffer;
+            sourceNode.connect(gainNode);
+            sourceNode.start();
+            // Remember when we last played audio.
+            this.lastAudioTime = this.audioContext.currentTime;
+        }
+    }
+    /**
+     * Inform the sound system that a drive head has moved.
+     */
+    trackMoved(moveCount) {
+        // We don't currently pay attention to the track move count. We tried spacing them out by 5ms or 10ms
+        // and it didn't sound good. So just play one track move sound.
+        this.playTrackSound();
+    }
+    /**
+     * Whether we're muted.
+     */
+    isMuted() {
+        return this.muted;
+    }
+    /**
+     * Check whether it's been too long since we played audio and we should suspend the player (so that the
+     * speaker icon disappears from the tab).
+     */
+    checkAutoSuspend() {
+        if (this.audioContext !== undefined && !this.isSuspended &&
+            this.floppySpinSourceNode === undefined &&
+            this.audioContext.currentTime - this.lastAudioTime >= MIN_SILENT_TIME_S) {
+            this.audioContext.suspend();
+            this.isSuspended = true;
+        }
+    }
+    /**
+     * Start the audio processor.
+     */
+    enableAudio() {
+        // Create the audio context. We have to do this as a result of a user action, like a mouse click.
+        this.audioContext = new AudioContext({
+            latencyHint: "interactive",
+        });
+        const audioContext = this.audioContext;
+        // Safari doesn't have this.
+        if (window.AudioWorkletNode !== undefined) {
+            // Load our module.
+            const moduleUrl = "data:text/javascript;base64," + btoa(PROCESSOR_JS);
+            this.audioContext.audioWorklet.addModule(moduleUrl).then(() => {
+                // I don't know why we need this, but I can't figure out a way to "start" our own node.
+                const constantSourceNode = audioContext.createConstantSource();
+                /**
+                 * Simple node to access the processor.
+                 */
+                class Trs80SoundNode extends AudioWorkletNode {
+                    constructor(context) {
+                        super(context, PROCESSOR_NAME);
+                    }
+                }
+                // Our own node, which ignores its input and generates the audio.
+                const node = new Trs80SoundNode(audioContext);
+                // Into this parameter we'll write the actual audio values.
+                this.audioValue = node.parameters.get("audioValue");
+                if (this.audioValue === undefined) {
+                    throw new Error("Unknown param audioValue");
+                }
+                // Automatically suspend the audio if we've not played sound in a while.
+                setInterval(() => this.checkAutoSuspend(), 1000);
+                // Hook up the pipeline.
+                constantSourceNode.connect(node).connect(audioContext.destination);
+                constantSourceNode.start();
+            });
+        }
+        // Get the background spin sound.
+        fetch(SPIN_URL)
+            .then(response => {
+            if (response.status === 200) {
+                return response.blob();
+            }
+            else {
+                return Promise.reject("fetch failed: " + response.statusText);
+            }
+        })
+            .then(blob => blob.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+            this.floppySpinAudioBuffer = audioBuffer;
+            this.updateFloppySpin();
+        })
+            .catch(e => {
+            // TODO.
+            console.error(e);
+        });
+        // Get the track movement sound.
+        fetch(TRACK_URL)
+            .then(response => {
+            if (response.status === 200) {
+                return response.blob();
+            }
+            else {
+                return Promise.reject("fetch failed: " + response.statusText);
+            }
+        })
+            .then(blob => blob.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+            this.trackAudioBuffer = audioBuffer;
+        })
+            .catch(e => {
+            // TODO.
+            console.error(e);
+        });
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Trs80.js
+
+
+
+
+
+
+
+
+
+
+
+// IRQs
+const M1_TIMER_IRQ_MASK = 0x80;
+const M3_CASSETTE_RISE_IRQ_MASK = 0x01;
+const M3_CASSETTE_FALL_IRQ_MASK = 0x02;
+const M3_TIMER_IRQ_MASK = 0x04;
+const M3_IO_BUS_IRQ_MASK = 0x08;
+const M3_UART_SED_IRQ_MASK = 0x10;
+const M3_UART_RECEIVE_IRQ_MASK = 0x20;
+const M3_UART_ERROR_IRQ_MASK = 0x40;
+const CASSETTE_IRQ_MASKS = M3_CASSETTE_RISE_IRQ_MASK | M3_CASSETTE_FALL_IRQ_MASK;
+// NMIs
+const RESET_NMI_MASK = 0x20;
+const DISK_MOTOR_OFF_NMI_MASK = 0x40;
+const DISK_INTRQ_NMI_MASK = 0x80;
+// Timer.
+const M1_TIMER_HZ = 40;
+const M3_TIMER_HZ = 30;
+const M4_TIMER_HZ = 60;
+const ROM_SIZE = 14 * 1024;
+const RAM_START = 16 * 1024;
+// CPU clock speeds.
+const M1_CLOCK_HZ = 1774080;
+const M3_CLOCK_HZ = 2027520;
+const M4_CLOCK_HZ = 4055040;
+const INITIAL_CLICKS_PER_TICK = 2000;
+/**
+ * Converts the two-bit cassette port to an audio value. These values are from "More TRS-80 Assembly
+ * Language Programming", page 222, with the last value taken from "The B00K" volume 2 (page 5-2).
+ */
+const CASSETTE_BITS_TO_AUDIO_VALUE = [0, 1, -1, -1];
+const CASSETTE_THRESHOLD = 5000 / 32768.0;
+// State of the cassette hardware. We don't support writing.
+var CassetteState;
+(function (CassetteState) {
+    CassetteState[CassetteState["CLOSE"] = 0] = "CLOSE";
+    CassetteState[CassetteState["READ"] = 1] = "READ";
+    CassetteState[CassetteState["FAIL"] = 2] = "FAIL";
+})(CassetteState || (CassetteState = {}));
+// Value of wave in audio: negative, neutral (around zero), or positive.
+var CassetteValue;
+(function (CassetteValue) {
+    CassetteValue[CassetteValue["NEGATIVE"] = 0] = "NEGATIVE";
+    CassetteValue[CassetteValue["NEUTRAL"] = 1] = "NEUTRAL";
+    CassetteValue[CassetteValue["POSITIVE"] = 2] = "POSITIVE";
+})(CassetteValue || (CassetteValue = {}));
+/**
+ * Whether the memory address maps to a screen location.
+ */
+function isScreenAddress(address) {
+    return address >= TRS80_SCREEN_BEGIN && address < TRS80_SCREEN_END;
+}
+/**
+ * See the FONT.md file for an explanation of this, but basically bit 6 is the NOR of bits 5 and 7.
+ */
+function computeVideoBit6(value) {
+    const bit5 = (value >> 5) & 1;
+    const bit7 = (value >> 7) & 1;
+    const bit6 = (bit5 | bit7) ^ 1;
+    return (value & 0xBF) | (bit6 << 6);
+}
+const WARN_ONCE_SET = new Set();
+/**
+ * Send this warning message to the console once. This is to avoid a program repeatedly doing something
+ * that results in a warning (such as reading from an unmapped memory address) and crashing the browser.
+ */
+function warnOnce(message) {
+    if (!WARN_ONCE_SET.has(message)) {
+        WARN_ONCE_SET.add(message);
+        console.warn(message + " (further warnings suppressed)");
+    }
+}
+/**
+ * HAL for the TRS-80 Model III.
+ */
+class Trs80_Trs80 {
+    constructor(screen, cassette) {
+        this.timerHz = M3_TIMER_HZ;
+        this.clockHz = M3_CLOCK_HZ;
+        this.tStateCount = 0;
+        this.fdc = new FloppyDiskController_FloppyDiskController(this);
+        this.memory = new Uint8Array(0);
+        this.keyboard = new Keyboard();
+        this.modeImage = 0x80;
+        // Which IRQs should be handled.
+        this.irqMask = 0;
+        // Which IRQs have been requested by the hardware.
+        this.irqLatch = 0;
+        // Which NMIs should be handled.
+        this.nmiMask = 0;
+        // Which NMIs have been requested by the hardware.
+        this.nmiLatch = 0;
+        // Whether we've seen this NMI and handled it.
+        this.nmiSeen = false;
+        this.previousTimerClock = 0;
+        this.z80 = new z80_emulator_dist["Z80"](this);
+        this.clocksPerTick = INITIAL_CLICKS_PER_TICK;
+        this.startTime = Date.now();
+        this.started = false;
+        // Internal state of the cassette controller.
+        // Whether the motor is running.
+        this.cassetteMotorOn = false;
+        // State machine.
+        this.cassetteState = CassetteState.CLOSE;
+        // Internal register state.
+        this.cassetteValue = CassetteValue.NEUTRAL;
+        this.cassetteLastNonZeroValue = CassetteValue.NEUTRAL;
+        this.cassetteFlipFlop = false;
+        // When we turned on the motor (started reading the file) and how many samples
+        // we've read since then.
+        this.cassetteMotorOnClock = 0;
+        this.cassetteSamplesRead = 0;
+        this.cassetteRiseInterruptCount = 0;
+        this.cassetteFallInterruptCount = 0;
+        this.soundPlayer = new SoundPlayer();
+        this.eventScheduler = new EventScheduler();
+        this.screen = screen;
+        this.cassette = cassette;
+        this.config = Config.makeDefault();
+        this.updateFromConfig();
+        this.loadRom();
+        this.tStateCount = 0;
+        this.keyboard.configureKeyboard();
+        this.fdc.onActiveDrive.subscribe(activeDrive => this.soundPlayer.setFloppyMotorOn(activeDrive !== undefined));
+        this.fdc.onTrackMove.subscribe(moveCount => this.soundPlayer.trackMoved(moveCount));
+    }
+    /**
+     * Get the current emulator's configuration.
+     */
+    getConfig() {
+        return this.config;
+    }
+    /**
+     * Sets a new configuration and reboots into it if necessary.
+     */
+    setConfig(config) {
+        const needsReboot = config.needsReboot(this.config);
+        this.config = config;
+        this.screen.setConfig(this.config);
+        if (needsReboot) {
+            this.updateFromConfig();
+            this.reset();
+        }
+    }
+    /**
+     * Update our settings based on the config. Wipes memory.
+     */
+    updateFromConfig() {
+        this.memory = new Uint8Array(RAM_START + this.config.getRamSize());
+        this.memory.fill(0);
+        this.loadRom();
+        switch (this.config.modelType) {
+            case ModelType.MODEL1:
+                this.timerHz = M1_TIMER_HZ;
+                this.clockHz = M1_CLOCK_HZ;
+                break;
+            case ModelType.MODEL3:
+            default:
+                this.timerHz = M3_TIMER_HZ;
+                this.clockHz = M3_CLOCK_HZ;
+                break;
+        }
+    }
+    /**
+     * Load the config-specific ROM into memory.
+     */
+    loadRom() {
+        let rom;
+        switch (this.config.modelType) {
+            case ModelType.MODEL1:
+                switch (this.config.basicLevel) {
+                    case BasicLevel.LEVEL1:
+                        rom = model1Level1Rom;
+                        break;
+                    case BasicLevel.LEVEL2:
+                    default:
+                        rom = model1Level2Rom;
+                        break;
+                }
+                break;
+            case ModelType.MODEL3:
+            default:
+                rom = model3Rom;
+                break;
+        }
+        const raw = window.atob(rom);
+        for (let i = 0; i < raw.length; i++) {
+            this.memory[i] = raw.charCodeAt(i);
+        }
+    }
+    /**
+     * Event dispatcher for floppy drive activity, indicating which drive (0-based) has its motor on, if any.
+     */
+    get onMotorOn() {
+        return this.fdc.onActiveDrive;
+    }
+    /**
+     * Reset the state of the Z80 and hardware.
+     */
+    reset() {
+        this.setIrqMask(0);
+        this.setNmiMask(0);
+        this.resetCassette();
+        this.keyboard.clearKeyboard();
+        this.setTimerInterrupt(false);
+        this.z80.reset();
+    }
+    /**
+     * Jump the Z80 emulator to the specified address.
+     */
+    jumpTo(address) {
+        this.z80.regs.pc = address;
+    }
+    /**
+     * Set the stack pointer to the specified address.
+     */
+    setStackPointer(address) {
+        this.z80.regs.sp = address;
+    }
+    /**
+     * Start the executable at the given address. This sets up some
+     * state and jumps to the address.
+     */
+    startExecutable(address) {
+        // Disable the cursor.
+        this.writeMemory(0x4022, 0);
+        // Disable interrupts.
+        this.z80.regs.iff1 = 0;
+        this.z80.regs.iff2 = 0;
+        this.jumpTo(address);
+    }
+    /**
+     * Start the CPU and intercept browser keys.
+     */
+    start() {
+        if (!this.started) {
+            this.keyboard.interceptKeys = true;
+            this.scheduleNextTick();
+            this.started = true;
+        }
+    }
+    /**
+     * Stop the CPU and no longer intercept browser keys.
+     *
+     * @return whether it was started.
+     */
+    stop() {
+        if (this.started) {
+            this.keyboard.interceptKeys = false;
+            this.cancelTickTimeout();
+            this.started = false;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    /**
+     * Set the mask for IRQ (regular) interrupts.
+     */
+    setIrqMask(irqMask) {
+        this.irqMask = irqMask;
+    }
+    /**
+     * Set the mask for non-maskable interrupts. (Yes.)
+     */
+    setNmiMask(nmiMask) {
+        // Reset is always allowed:
+        this.nmiMask = nmiMask | RESET_NMI_MASK;
+        this.updateNmiSeen();
+    }
+    interruptLatchRead() {
+        if (this.config.modelType === ModelType.MODEL1) {
+            const irqLatch = this.irqLatch;
+            this.setTimerInterrupt(false);
+            // TODO irq = this.irqLatch !== 0;
+            return irqLatch;
+        }
+        else {
+            return ~this.irqLatch & 0xFF;
+        }
+    }
+    /**
+     * Take one Z80 step and update the state of the hardware.
+     */
+    step() {
+        this.z80.step();
+        // Handle non-maskable interrupts.
+        if ((this.nmiLatch & this.nmiMask) !== 0 && !this.nmiSeen) {
+            this.z80.nonMaskableInterrupt();
+            this.nmiSeen = true;
+            // Simulate the reset button being released.
+            this.resetButtonInterrupt(false);
+        }
+        // Handle interrupts.
+        if ((this.irqLatch & this.irqMask) !== 0) {
+            this.z80.maskableInterrupt();
+        }
+        // Set off a timer interrupt.
+        if (this.tStateCount > this.previousTimerClock + this.clockHz / this.timerHz) {
+            this.handleTimer();
+            this.previousTimerClock = this.tStateCount;
+        }
+        // Update cassette state.
+        this.updateCassette();
+        // Dispatch scheduled events.
+        this.eventScheduler.dispatch(this.tStateCount);
+    }
+    contendMemory(address) {
+        // Ignore.
+    }
+    contendPort(address) {
+        // Ignore.
+    }
+    readMemory(address) {
+        if (address < ROM_SIZE || address >= RAM_START || isScreenAddress(address)) {
+            return address < this.memory.length ? this.memory[address] : 0xFF;
+        }
+        else if (address === 0x37E8) {
+            // Printer. 0x30 = Printer selected, ready, with paper, not busy.
+            return 0x30;
+        }
+        else if (Keyboard.isInRange(address)) {
+            // Keyboard.
+            return this.keyboard.readKeyboard(address, this.tStateCount);
+        }
+        else {
+            // Unmapped memory.
+            warnOnce("Reading from unmapped memory at 0x" + Object(z80_base_dist["toHex"])(address, 4));
+            return 0;
+        }
+    }
+    readPort(address) {
+        const port = address & 0xFF;
+        let value = 0xFF; // Default value for missing ports.
+        switch (port) {
+            case 0x00:
+                // Joystick.
+                value = 0xFF;
+                break;
+            case 0xE0:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // IRQ latch read.
+                    value = this.interruptLatchRead();
+                }
+                break;
+            case 0xE4:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // NMI latch read.
+                    value = ~this.nmiLatch & 0xFF;
+                }
+                break;
+            case 0xEC:
+            case 0xED:
+            case 0xEE:
+            case 0xEF:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // Acknowledge timer.
+                    this.setTimerInterrupt(false);
+                    value = 0xFF;
+                }
+                break;
+            case 0xF0:
+                value = this.fdc.readStatus();
+                break;
+            case 0xF1:
+                value = this.fdc.readTrack();
+                break;
+            case 0xF2:
+                value = this.fdc.readSector();
+                break;
+            case 0xF3:
+                value = this.fdc.readData();
+                break;
+            case 0xF8:
+                // Printer status. Printer selected, ready, with paper, not busy.
+                value = 0x30;
+                break;
+            case 0xFF:
+                // Cassette and various flags.
+                if (this.config.modelType === ModelType.MODEL1) {
+                    value = 0x3F;
+                    if (!this.screen.isExpandedCharacters()) {
+                        value |= 0x40;
+                    }
+                }
+                else {
+                    value = this.modeImage & 0x7E;
+                }
+                value |= this.getCassetteByte();
+                break;
+            default:
+                // Not sure what a good default value is, but other emulators use 0xFF.
+                warnOnce("Reading from unknown port 0x" + Object(z80_base_dist["toHex"])(Object(z80_base_dist["lo"])(address), 2));
+                value = 0xFF;
+                break;
+        }
+        // console.log("Reading 0x" + toHex(value, 2) + " from port 0x" + toHex(lo(address), 2));
+        return value;
+    }
+    writePort(address, value) {
+        const port = address & 0xFF;
+        switch (port) {
+            case 0xE0:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // Set interrupt mask.
+                    this.setIrqMask(value);
+                }
+                break;
+            case 0xE4:
+            case 0xE5:
+            case 0xE6:
+            case 0xE7:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // Set NMI state.
+                    this.setNmiMask(value);
+                }
+                break;
+            case 0xEC:
+            case 0xED:
+            case 0xEE:
+            case 0xEF:
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    // Various controls.
+                    this.modeImage = value;
+                    this.setCassetteMotor((value & 0x02) !== 0);
+                    this.screen.setExpandedCharacters((value & 0x04) !== 0);
+                    this.screen.setAlternateCharacters((value & 0x08) === 0);
+                }
+                break;
+            case 0xF0:
+                this.fdc.writeCommand(value);
+                break;
+            case 0xF1:
+                this.fdc.writeTrack(value);
+                break;
+            case 0xF2:
+                this.fdc.writeSector(value);
+                break;
+            case 0xF3:
+                this.fdc.writeData(value);
+                break;
+            case 0xF4:
+            case 0xF5:
+            case 0xF6:
+            case 0xF7:
+                this.fdc.writeSelect(value);
+                break;
+            case 0xF8:
+            case 0xF9:
+            case 0xFA:
+            case 0xFB:
+                // Printer write.
+                console.log("Writing \"" + String.fromCodePoint(value) + "\" to printer");
+                break;
+            case 0xFC:
+            case 0xFD:
+            case 0xFE:
+            case 0xFF:
+                if (this.config.modelType === ModelType.MODEL1) {
+                    this.setCassetteMotor((value & 0x04) !== 0);
+                    this.screen.setExpandedCharacters((value & 0x08) !== 0);
+                }
+                if ((value & 0x20) !== 0) {
+                    // Model III Micro Labs graphics card.
+                    console.log("Sending 0x" + Object(z80_base_dist["toHex"])(value, 2) + " to Micro Labs graphics card");
+                }
+                else {
+                    // Do cassette emulation.
+                    this.putCassetteByte(value & 0x03);
+                }
+                break;
+            default:
+                warnOnce("Writing 0x" + Object(z80_base_dist["toHex"])(value, 2) + " to unknown port 0x" + Object(z80_base_dist["toHex"])(port, 2));
+                return;
+        }
+        // console.log("Wrote 0x" + toHex(value, 2) + " to port 0x" + toHex(port, 2));
+    }
+    writeMemory(address, value) {
+        if (address < ROM_SIZE) {
+            warnOnce("Warning: Writing to ROM location 0x" + Object(z80_base_dist["toHex"])(address, 4));
+        }
+        else {
+            if (address >= TRS80_SCREEN_BEGIN && address < TRS80_SCREEN_END) {
+                if (this.config.cgChip === CGChip.ORIGINAL) {
+                    // No bit 6 in video memory, need to compute it.
+                    value = computeVideoBit6(value);
+                }
+                this.screen.writeChar(address, value);
+            }
+            else if (address < RAM_START) {
+                warnOnce("Writing to unmapped memory at 0x" + Object(z80_base_dist["toHex"])(address, 4));
+            }
+            this.memory[address] = value;
+        }
+    }
+    /**
+     * Write a block of data to memory.
+     *
+     * @return the address just past the block.
+     */
+    writeMemoryBlock(address, values, startIndex = 0, length) {
+        length = length !== null && length !== void 0 ? length : values.length;
+        for (let i = 0; i < length; i++) {
+            this.writeMemory(address++, values[startIndex + i]);
+        }
+        return address;
+    }
+    /**
+     * Reset cassette edge interrupts.
+     */
+    cassetteClearInterrupt() {
+        this.irqLatch &= ~CASSETTE_IRQ_MASKS;
+    }
+    /**
+     * Check whether the software has enabled these interrupts.
+     */
+    cassetteInterruptsEnabled() {
+        return (this.irqMask & CASSETTE_IRQ_MASKS) !== 0;
+    }
+    /**
+     * Get an opaque string that represents the state of the screen. Flashes the screen.
+     */
+    getScreenshot() {
+        const buf = [];
+        // First byte is screen mode, where 0 means normal (64 columns) and 1 means wide (32 columns).
+        buf.push(this.screen.isExpandedCharacters() ? 1 : 0);
+        // Run-length encode bytes with (value,count) pairs, with a max count of 255. Bytes
+        // in the range 33 to 127 inclusive have an implicit count of 1.
+        for (let address = TRS80_SCREEN_BEGIN; address < TRS80_SCREEN_END; address++) {
+            const value = this.memory[address];
+            if (value > 32 && value < 128) {
+                // Bytes in this range don't store a count.
+                buf.push(value);
+            }
+            else if (buf.length < 2 || buf[buf.length - 1] === 255 || buf[buf.length - 2] !== value) {
+                // New entry.
+                buf.push(value);
+                buf.push(1);
+            }
+            else {
+                // Increment existing count.
+                buf[buf.length - 1] += 1;
+            }
+        }
+        // Convert to a binary string.
+        let s = buf.map(n => String.fromCharCode(n)).join("");
+        // Start visual flash effect.
+        Trs80_Trs80.flashNode(this.screen.getNode());
+        // Base-64 encode and prefix with version number.
+        return "0:" + btoa(s);
+    }
+    /**
+     * Flash the node as if a photo were taken.
+     */
+    static flashNode(node) {
+        // Position a semi-transparent white div over the screen, and reduce its transparency over time.
+        const oldNodePosition = node.style.position;
+        node.style.position = "relative";
+        const overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.left = "0";
+        overlay.style.top = "0";
+        overlay.style.right = "0";
+        overlay.style.bottom = "0";
+        overlay.style.backgroundColor = "#ffffff";
+        // Fade out.
+        let opacity = 1;
+        const updateOpacity = () => {
+            overlay.style.opacity = opacity.toString();
+            opacity -= 0.1;
+            if (opacity >= 0) {
+                window.requestAnimationFrame(updateOpacity);
+            }
+            else {
+                node.removeChild(overlay);
+                node.style.position = oldNodePosition;
+            }
+        };
+        updateOpacity();
+        node.appendChild(overlay);
+    }
+    // Reset whether we've seen this NMI interrupt if the mask and latch no longer overlap.
+    updateNmiSeen() {
+        if ((this.nmiLatch & this.nmiMask) === 0) {
+            this.nmiSeen = false;
+        }
+    }
+    /**
+     * Run a certain number of CPU instructions and schedule another tick.
+     */
+    tick() {
+        for (let i = 0; i < this.clocksPerTick && this.started; i++) {
+            this.step();
+        }
+        // We might have stopped in the step() routine (e.g., with scheduled event).
+        if (this.started) {
+            this.scheduleNextTick();
+        }
+    }
+    /**
+     * Figure out how many CPU cycles we should optimally run and how long
+     * to wait until scheduling it, then schedule it to be run later.
+     */
+    scheduleNextTick() {
+        let delay;
+        if (this.cassetteMotorOn || this.keyboard.keyQueue.length > 4) {
+            // Go fast if we're accessing the cassette or pasting.
+            this.clocksPerTick = 100000;
+            delay = 0;
+        }
+        else {
+            // Delay to match original clock speed.
+            const now = Date.now();
+            const actualElapsed = now - this.startTime;
+            const expectedElapsed = this.tStateCount * 1000 / this.clockHz;
+            let behind = expectedElapsed - actualElapsed;
+            if (behind < -100 || behind > 100) {
+                // We're too far behind or ahead. Catch up artificially.
+                this.startTime = now - expectedElapsed;
+                behind = 0;
+            }
+            delay = Math.round(Math.max(0, behind));
+            if (delay === 0) {
+                // Delay too short, do more each tick.
+                this.clocksPerTick = Math.min(this.clocksPerTick + 100, 10000);
+            }
+            else if (delay > 1) {
+                // Delay too long, do less each tick.
+                this.clocksPerTick = Math.max(this.clocksPerTick - 100, 100);
+            }
+        }
+        // console.log(this.clocksPerTick, delay);
+        this.cancelTickTimeout();
+        this.tickHandle = window.setTimeout(() => {
+            this.tickHandle = undefined;
+            this.tick();
+        }, delay);
+    }
+    /**
+     * Stop the tick timeout, if it's running.
+     */
+    cancelTickTimeout() {
+        if (this.tickHandle !== undefined) {
+            window.clearTimeout(this.tickHandle);
+            this.tickHandle = undefined;
+        }
+    }
+    // Set or reset the timer interrupt.
+    setTimerInterrupt(state) {
+        if (this.config.modelType === ModelType.MODEL1) {
+            if (state) {
+                this.irqLatch |= M1_TIMER_IRQ_MASK;
+            }
+            else {
+                this.irqLatch &= ~M1_TIMER_IRQ_MASK;
+            }
+        }
+        else {
+            if (state) {
+                this.irqLatch |= M3_TIMER_IRQ_MASK;
+            }
+            else {
+                this.irqLatch &= ~M3_TIMER_IRQ_MASK;
+            }
+        }
+    }
+    // What to do when the hardware timer goes off.
+    handleTimer() {
+        this.setTimerInterrupt(true);
+    }
+    // Set the state of the reset button interrupt.
+    resetButtonInterrupt(state) {
+        if (state) {
+            this.nmiLatch |= RESET_NMI_MASK;
+        }
+        else {
+            this.nmiLatch &= ~RESET_NMI_MASK;
+        }
+        this.updateNmiSeen();
+    }
+    // Set the state of the disk motor off interrupt.
+    diskMotorOffInterrupt(state) {
+        if (state) {
+            this.nmiLatch |= DISK_MOTOR_OFF_NMI_MASK;
+        }
+        else {
+            this.nmiLatch &= ~DISK_MOTOR_OFF_NMI_MASK;
+        }
+        this.updateNmiSeen();
+    }
+    // Set the state of the disk interrupt.
+    diskIntrqInterrupt(state) {
+        if (state) {
+            this.nmiLatch |= DISK_INTRQ_NMI_MASK;
+        }
+        else {
+            this.nmiLatch &= ~DISK_INTRQ_NMI_MASK;
+        }
+        this.updateNmiSeen();
+    }
+    // Set the state of the disk interrupt.
+    diskDrqInterrupt(state) {
+        // No effect.
+    }
+    // Reset the controller to a known state.
+    resetCassette() {
+        this.setCassetteState(CassetteState.CLOSE);
+    }
+    // Get a byte from the I/O port.
+    getCassetteByte() {
+        // If the motor's running, and we're reading a byte, then get into read mode.
+        if (this.cassetteMotorOn) {
+            this.setCassetteState(CassetteState.READ);
+        }
+        // Clear any interrupt that may have triggered this read.
+        this.cassetteClearInterrupt();
+        // Cassette owns bits 0 and 7.
+        let b = 0;
+        if (this.cassetteFlipFlop) {
+            b |= 0x80;
+        }
+        if (this.config.modelType !== ModelType.MODEL1 && this.cassetteLastNonZeroValue === CassetteValue.POSITIVE) {
+            b |= 0x01;
+        }
+        return b;
+    }
+    // Write to the cassette port. We don't support writing tapes, but this is used
+    // for 500-baud reading to trigger the next analysis of the tape.
+    putCassetteByte(b) {
+        if (this.cassetteMotorOn) {
+            if (this.cassetteState === CassetteState.READ) {
+                this.updateCassette();
+                this.cassetteFlipFlop = false;
+            }
+        }
+        else {
+            this.soundPlayer.setAudioValue(CASSETTE_BITS_TO_AUDIO_VALUE[b], this.tStateCount, this.clockHz);
+        }
+    }
+    // Kick off the reading process when doing 1500-baud reads.
+    kickOffCassette() {
+        if (this.cassetteMotorOn &&
+            this.cassetteState === CassetteState.CLOSE &&
+            this.cassetteInterruptsEnabled()) {
+            // Kick off the process.
+            this.cassetteRiseInterrupt();
+            this.cassetteFallInterrupt();
+        }
+    }
+    // Turn the motor on or off.
+    setCassetteMotor(cassetteMotorOn) {
+        if (cassetteMotorOn !== this.cassetteMotorOn) {
+            if (cassetteMotorOn) {
+                this.cassetteFlipFlop = false;
+                this.cassetteLastNonZeroValue = CassetteValue.NEUTRAL;
+                // Waits a second before kicking off the cassette.
+                // TODO this should be in CPU cycles, not browser cycles.
+                if (this.config.modelType !== ModelType.MODEL1) {
+                    setTimeout(() => this.kickOffCassette(), 1000);
+                }
+            }
+            else {
+                this.setCassetteState(CassetteState.CLOSE);
+            }
+            this.cassetteMotorOn = cassetteMotorOn;
+            if (cassetteMotorOn) {
+                this.cassette.onMotorStart();
+            }
+            else {
+                this.cassette.onMotorStop();
+            }
+        }
+    }
+    // Read some of the cassette to see if we should be triggering a rise/fall interrupt.
+    updateCassette() {
+        if (this.cassetteMotorOn && this.setCassetteState(CassetteState.READ) >= 0) {
+            // See how many samples we should have read by now.
+            const samplesToRead = Math.round((this.tStateCount - this.cassetteMotorOnClock) *
+                this.cassette.samplesPerSecond / this.clockHz);
+            // Catch up.
+            while (this.cassetteSamplesRead < samplesToRead) {
+                const sample = this.cassette.readSample();
+                this.cassetteSamplesRead++;
+                // Convert to state, where neutral is some noisy in-between state.
+                let cassetteValue = CassetteValue.NEUTRAL;
+                if (sample > CASSETTE_THRESHOLD) {
+                    cassetteValue = CassetteValue.POSITIVE;
+                }
+                else if (sample < -CASSETTE_THRESHOLD) {
+                    cassetteValue = CassetteValue.NEGATIVE;
+                }
+                // See if we've changed value.
+                if (cassetteValue !== this.cassetteValue) {
+                    if (cassetteValue === CassetteValue.POSITIVE) {
+                        // Positive edge.
+                        this.cassetteFlipFlop = true;
+                        this.cassetteRiseInterrupt();
+                    }
+                    else if (cassetteValue === CassetteValue.NEGATIVE) {
+                        // Negative edge.
+                        this.cassetteFlipFlop = true;
+                        this.cassetteFallInterrupt();
+                    }
+                    this.cassetteValue = cassetteValue;
+                    if (cassetteValue !== CassetteValue.NEUTRAL) {
+                        this.cassetteLastNonZeroValue = cassetteValue;
+                    }
+                }
+            }
+        }
+    }
+    // Returns 0 if the state was changed, 1 if it wasn't, and -1 on error.
+    setCassetteState(newState) {
+        const oldCassetteState = this.cassetteState;
+        // See if we're changing anything.
+        if (oldCassetteState === newState) {
+            return 1;
+        }
+        // Once in error, everything will fail until we close.
+        if (oldCassetteState === CassetteState.FAIL && newState !== CassetteState.CLOSE) {
+            return -1;
+        }
+        // Change things based on new state.
+        switch (newState) {
+            case CassetteState.READ:
+                this.openCassetteFile();
+                break;
+        }
+        // Update state.
+        this.cassetteState = newState;
+        return 0;
+    }
+    // Open file, get metadata, and get read to read the tape.
+    openCassetteFile() {
+        // TODO open/rewind cassette?
+        // Reset the clock.
+        this.cassetteMotorOnClock = this.tStateCount;
+        this.cassetteSamplesRead = 0;
+    }
+    // Saw a positive edge on cassette.
+    cassetteRiseInterrupt() {
+        this.cassetteRiseInterruptCount++;
+        this.irqLatch = (this.irqLatch & ~M3_CASSETTE_RISE_IRQ_MASK) |
+            (this.irqMask & M3_CASSETTE_RISE_IRQ_MASK);
+    }
+    // Saw a negative edge on cassette.
+    cassetteFallInterrupt() {
+        this.cassetteFallInterruptCount++;
+        this.irqLatch = (this.irqLatch & ~M3_CASSETTE_FALL_IRQ_MASK) |
+            (this.irqMask & M3_CASSETTE_FALL_IRQ_MASK);
+    }
+    /**
+     * Clear screen and home cursor.
+     */
+    cls() {
+        for (let address = TRS80_SCREEN_BEGIN; address < TRS80_SCREEN_END; address++) {
+            this.writeMemory(address, 32);
+        }
+        this.positionCursor(0, 0);
+    }
+    /**
+     * Move the cursor (where the ROM's write routine will write to next) to the
+     * given location.
+     *
+     * @param col 0-based text column.
+     * @param row 0-based text row.
+     */
+    positionCursor(col, row) {
+        const address = TRS80_SCREEN_BEGIN + row * 64 + col;
+        // This works on Model III, not sure if it works on Model I or in wide mode.
+        this.writeMemory(0x4020, Object(z80_base_dist["lo"])(address));
+        this.writeMemory(0x4021, Object(z80_base_dist["hi"])(address));
+    }
+    /**
+     * Run a TRS-80 program. The exact behavior depends on the type of program.
+     */
+    runTrs80File(trs80File) {
+        this.ejectAllFloppyDisks();
+        switch (trs80File.className) {
+            case "CmdProgram":
+                this.runCmdProgram(trs80File);
+                break;
+            case "Cassette":
+                if (trs80File.files.length === 1) {
+                    this.runTrs80File(trs80File.files[0].file);
+                }
+                else {
+                    // TODO.
+                    console.error("Can't currently run multiple cassette files");
+                }
+                break;
+            case "SystemProgram":
+                this.runSystemProgram(trs80File);
+                break;
+            case "BasicProgram":
+                this.runBasicProgram(trs80File);
+                break;
+            case "Jv1FloppyDisk":
+            case "Jv3FloppyDisk":
+            case "DmkFloppyDisk":
+                this.runFloppyDisk(trs80File);
+                break;
+            default:
+                console.error("Don't know how to run", trs80File);
+                break;
+        }
+    }
+    /**
+     * Load a CMD program into memory and run it.
+     */
+    runCmdProgram(cmdProgram) {
+        this.reset();
+        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
+            this.cls();
+            for (const chunk of cmdProgram.chunks) {
+                if (chunk.className === "CmdLoadBlockChunk") {
+                    this.writeMemoryBlock(chunk.address, chunk.loadData);
+                }
+                else if (chunk.className === "CmdTransferAddressChunk") {
+                    this.startExecutable(chunk.address);
+                    // Don't load any more after this. I assume on a real machine the jump
+                    // happens immediately and CMD parsing ends.
+                    break;
+                }
+            }
+        });
+    }
+    /**
+     * Load a system program into memory and run it.
+     */
+    runSystemProgram(systemProgram) {
+        this.reset();
+        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
+            this.cls();
+            for (const chunk of systemProgram.chunks) {
+                this.writeMemoryBlock(chunk.loadAddress, chunk.data);
+            }
+            // Do what the SYSTEM command does.
+            this.setStackPointer(0x4288);
+            this.startExecutable(systemProgram.entryPointAddress);
+        });
+    }
+    /**
+     * Load a Basic program into memory and run it.
+     */
+    runBasicProgram(basicProgram) {
+        this.reset();
+        // Wait for Cass?
+        this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.1, () => {
+            this.keyboard.simulateKeyboardText("\n0\n");
+            // Wait for Ready prompt.
+            this.eventScheduler.add(undefined, this.tStateCount + this.clockHz * 0.2, () => {
+                this.loadBasicProgram(basicProgram);
+                this.keyboard.simulateKeyboardText("RUN\n");
+            });
+        });
+    }
+    /**
+     * Get the address of the first line of the Basic program, or a string explaining the error.
+     */
+    getBasicAddress() {
+        const addr = this.readMemory(0x40A4) + (this.readMemory(0x40A5) << 8);
+        if (addr < 0x4200) {
+            return `Basic load address (0x${Object(z80_base_dist["toHexWord"])(addr)}) is uninitialized (0x${Object(z80_base_dist["toHexWord"])(addr)})`;
+        }
+        return addr;
+    }
+    /**
+     * Load a Basic program into memory, replacing the one that's there. Does not run it.
+     */
+    loadBasicProgram(basicProgram) {
+        // Find address to load to.
+        const addrOrError = this.getBasicAddress();
+        if (typeof (addrOrError) === "string") {
+            console.error(addrOrError);
+            return;
+        }
+        let addr = addrOrError;
+        // Terminate current line (if any) and set up the new one.
+        let lineStart;
+        const newLine = () => {
+            if (lineStart !== undefined) {
+                // End-of-line marker.
+                this.writeMemory(addr++, 0);
+                // Update previous line's next-line pointer.
+                this.writeMemory(lineStart, Object(z80_base_dist["lo"])(addr));
+                this.writeMemory(lineStart + 1, Object(z80_base_dist["hi"])(addr));
+            }
+            // Remember address of next-line pointer.
+            lineStart = addr;
+            // Next-line pointer.
+            this.writeMemory(addr++, 0);
+            this.writeMemory(addr++, 0);
+        };
+        // Write elements to memory.
+        for (const e of basicProgram.elements) {
+            if (e.offset !== undefined) {
+                if (e.elementType === ElementType.LINE_NUMBER) {
+                    newLine();
+                }
+                // Write element.
+                addr = this.writeMemoryBlock(addr, basicProgram.binary, e.offset, e.length);
+            }
+        }
+        newLine();
+        // End of Basic program pointer.
+        this.writeMemory(0x40F9, Object(z80_base_dist["lo"])(addr));
+        this.writeMemory(0x40FA, Object(z80_base_dist["hi"])(addr));
+        // Start of array variables pointer.
+        this.writeMemory(0x40FB, Object(z80_base_dist["lo"])(addr));
+        this.writeMemory(0x40FC, Object(z80_base_dist["hi"])(addr));
+        // Start of free memory pointer.
+        this.writeMemory(0x40FD, Object(z80_base_dist["lo"])(addr));
+        this.writeMemory(0x40FE, Object(z80_base_dist["hi"])(addr));
+    }
+    /**
+     * Remove floppy disks from all drives.
+     */
+    ejectAllFloppyDisks() {
+        for (let i = 0; i < FLOPPY_DRIVE_COUNT; i++) {
+            this.loadFloppyDisk(undefined, i);
+        }
+    }
+    /**
+     * Load the floppy disk into the specified drive.
+     * @param floppyDisk the floppy, or undefined to unmount.
+     * @param driveNumber the drive number, 0-based.
+     */
+    loadFloppyDisk(floppyDisk, driveNumber) {
+        this.fdc.loadFloppyDisk(floppyDisk, driveNumber);
+    }
+    /**
+     * Load a floppy and reboot into it.
+     */
+    runFloppyDisk(floppyDisk) {
+        // Mount floppy.
+        this.loadFloppyDisk(floppyDisk, 0);
+        // Reboot.
+        this.reset();
+    }
+    /**
+     * Pulls the Basic program currently in memory, or returns a string with an error.
+     */
+    getBasicProgramFromMemory() {
+        const addrOrError = this.getBasicAddress();
+        if (typeof (addrOrError) === "string") {
+            return addrOrError;
+        }
+        let addr = addrOrError;
+        // Walk through the program lines to find the end.
+        const beginAddr = addr;
+        while (true) {
+            // Find end address.
+            const nextLine = this.readMemory(addr) + (this.readMemory(addr + 1) << 8);
+            if (nextLine === 0) {
+                break;
+            }
+            if (nextLine < addr) {
+                // Error, went backward.
+                return `Next address 0x${Object(z80_base_dist["toHexWord"])(nextLine)} is less than current address 0x${Object(z80_base_dist["toHexWord"])(addr)}`;
+            }
+            addr = nextLine;
+        }
+        const endAddr = addr + 2;
+        // Put together the binary of just the program.
+        const binary = new Uint8Array(endAddr - beginAddr + 1);
+        binary[0] = BASIC_HEADER_BYTE;
+        binary.set(this.memory.subarray(beginAddr, endAddr), 1);
+        // Decode the program.
+        const basic = decodeBasicProgram(binary);
+        if (basic === undefined) {
+            return "Basic couldn't be decoded";
+        }
+        return basic;
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Trs80Screen.js
+
+/**
+ * Abstract base class for displaying a screen.
+ */
+class Trs80Screen_Trs80Screen {
+    constructor() {
+        this.expanded = false;
+        this.alternate = false;
+    }
+    /**
+     * Set the config for this screen. Before this is called, the screen is permitted to use any config
+     * it wants.
+     */
+    setConfig(config) {
+        throw new Error("Must be implemented");
+    }
+    /**
+     * Write a character to the screen.
+     * @param address address of the character, where 15360 is the upper-left of the screen.
+     * @param value the 0-255 value to write.
+     */
+    writeChar(address, value) {
+        throw new Error("Must be implemented");
+    }
+    /**
+     * Get the HTML node for this screen.
+     */
+    getNode() {
+        throw new Error("Must be implemented");
+    }
+    /**
+     * Enable or disable expanded (wide) character mode.
+     */
+    setExpandedCharacters(expanded) {
+        this.expanded = expanded;
+    }
+    /**
+     * Return whether we're in expanded (wide) character mode.
+     */
+    isExpandedCharacters() {
+        return this.expanded;
+    }
+    /**
+     * Enable or disable alternate (Katakana) character mode.
+     */
+    setAlternateCharacters(alternate) {
+        this.alternate = alternate;
+    }
+    /**
+     * Return whether we're in alternate (Katakana) character mode.
+     */
+    isAlternateCharacters() {
+        return this.alternate;
+    }
+    /**
+     * Fill the screen with the screenshot.
+     */
+    displayScreenshot(screenshot) {
+        // Leave it blank if screenshot string is blank.
+        if (screenshot === "") {
+            return;
+        }
+        if (!screenshot.startsWith("0:")) {
+            throw new Error("Invalid screenshot version number");
+        }
+        // Decode screenshot.
+        const s = atob(screenshot.substring(2));
+        if (s.length === 0) {
+            throw new Error("Screenshot string is empty");
+        }
+        // Set expanded mode.
+        this.setExpandedCharacters(s.charCodeAt(0) === 1);
+        let address = TRS80_SCREEN_BEGIN;
+        for (let i = 1; i < s.length; i++) {
+            const value = s.charCodeAt(i);
+            let count = 1;
+            if (value > 32 && value < 128) {
+                // Implicit count of 1.
+            }
+            else {
+                i++;
+                if (i === s.length) {
+                    throw new Error("Missing count in RLE");
+                }
+                count = s.charCodeAt(i);
+            }
+            // Emit "count" values.
+            while (count--) {
+                this.writeChar(address++, value);
+            }
+        }
+        if (address !== TRS80_SCREEN_END) {
+            throw new Error("Screenshot was of the wrong length");
+        }
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Fonts.js
+/**
+ * These fonts are from the xtrs emulator, and the CG# references match those.
+ * They're identical to the fonts in the sdltrs emulator. They don't include
+ * the 2x3 graphical characters; we generate those procedurally.
+ *
+ * See the original trs_chars.c file for Tim Mann's explanations and historical
+ * notes.
+ */
+// Here is the LICENSE file from the xtrs emulator:
+/*
+
+Copyright (C) 1992 Clarendon Hill Software.
+
+Permission is granted to any individual or institution to use, copy,
+or redistribute this software, provided this copyright notice is retained.
+
+This software is provided "as is" without any expressed or implied
+warranty.  If this software brings on any sort of damage -- physical,
+monetary, emotional, or brain -- too bad.  You've got no one to blame
+but yourself.
+
+The software may be modified for your own purposes, but modified versions
+must retain this notice.
+
+***
+
+Copyright (c) 1996-2020, Timothy P. Mann
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/**
+ * Original Model I character set.
+ */
+const GLYPH_CG1 = [
+    0x00, 0x1f, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x04, 0x08, 0x1e, 0x04, 0x08, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x11, 0x1b, 0x15, 0x1b, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x08, 0x05, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x1f, 0x0a, 0x0a, 0x1b, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x02, 0x0f, 0x12, 0x14, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x15, 0x0e, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x1b, 0x15, 0x1b, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x15, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x15, 0x15, 0x1d, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x1d, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x17, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x15, 0x15, 0x17, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x14, 0x08, 0x15, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x1b, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x10, 0x1f, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x0e, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x01, 0x02, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x15, 0x15, 0x17, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x11, 0x11, 0x17, 0x15, 0x15, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x11, 0x11, 0x1d, 0x15, 0x15, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x15, 0x15, 0x1d, 0x11, 0x11, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0a, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0a, 0x0a, 0x1f, 0x0a, 0x1f, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x1e, 0x05, 0x0e, 0x14, 0x0f, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x03, 0x13, 0x08, 0x04, 0x02, 0x19, 0x18, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x05, 0x05, 0x02, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x08, 0x04, 0x02, 0x02, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x04, 0x08, 0x08, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x15, 0x0e, 0x1f, 0x0e, 0x15, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x08, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x19, 0x15, 0x13, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x06, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x10, 0x0e, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x10, 0x0c, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x08, 0x0c, 0x0a, 0x09, 0x1f, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x01, 0x0f, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0c, 0x02, 0x01, 0x0f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x0e, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x1e, 0x10, 0x08, 0x06, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x08, 0x04, 0x02, 0x01, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x04, 0x08, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x10, 0x08, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0c, 0x0c, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0e, 0x10, 0x1e, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x01, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0e, 0x11, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x16, 0x19, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0e, 0x11, 0x1f, 0x01, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x08, 0x14, 0x04, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x16, 0x19, 0x19, 0x16, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x01, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x00, 0x06, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x00, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, 0x01, 0x09, 0x05, 0x03, 0x05, 0x09, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0b, 0x15, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x16, 0x19, 0x11, 0x19, 0x16, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x0d, 0x13, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x1e, 0x01, 0x0e, 0x10, 0x0f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x14, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x11, 0x11, 0x15, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x11, 0x11, 0x11, 0x1e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x1f, 0x08, 0x04, 0x02, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x08, 0x04, 0x04, 0x02, 0x04, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x04, 0x00, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x04, 0x04, 0x08, 0x04, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x15, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
+];
+/**
+ * Model I character set with official Radio Shack upgrade.
+ */
+const GLYPH_CG2 = [
+    0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0a, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0a, 0x0a, 0x1f, 0x0a, 0x1f, 0x0a, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x1e, 0x05, 0x0e, 0x14, 0x0f, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x03, 0x13, 0x08, 0x04, 0x02, 0x19, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x05, 0x05, 0x02, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x04, 0x02, 0x02, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x04, 0x08, 0x08, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x15, 0x0e, 0x1f, 0x0e, 0x15, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x1f, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x08, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x19, 0x15, 0x13, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x06, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x10, 0x0e, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x10, 0x0c, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x0c, 0x0a, 0x09, 0x1f, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x01, 0x0f, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0c, 0x02, 0x01, 0x0f, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x10, 0x08, 0x04, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x0e, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x1e, 0x10, 0x08, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x06, 0x00, 0x06, 0x06, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x04, 0x02, 0x01, 0x02, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x1f, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x04, 0x08, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x10, 0x08, 0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x10, 0x16, 0x15, 0x15, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0a, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x12, 0x12, 0x0e, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x01, 0x01, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x12, 0x12, 0x12, 0x12, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x01, 0x01, 0x07, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1e, 0x01, 0x01, 0x19, 0x11, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x10, 0x10, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x09, 0x05, 0x03, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x11, 0x11, 0x0f, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x11, 0x11, 0x15, 0x09, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0f, 0x11, 0x11, 0x0f, 0x05, 0x09, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0e, 0x11, 0x01, 0x0e, 0x10, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x0a, 0x0a, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x11, 0x11, 0x15, 0x1b, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x11, 0x0a, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1f, 0x10, 0x08, 0x04, 0x02, 0x01, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0e, 0x15, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x04, 0x04, 0x15, 0x0e, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x02, 0x1f, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x08, 0x1f, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0a, 0x02, 0x07, 0x02, 0x12, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0e, 0x10, 0x1e, 0x11, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x01, 0x0d, 0x13, 0x11, 0x13, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0e, 0x11, 0x01, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x16, 0x19, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0e, 0x11, 0x1f, 0x01, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x14, 0x04, 0x0e, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0e, 0x11, 0x11, 0x1e, 0x10, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x01, 0x01, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x00, 0x06, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x00, 0x18, 0x10, 0x10, 0x10, 0x12, 0x0c, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x12, 0x0a, 0x06, 0x0a, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x06, 0x04, 0x04, 0x04, 0x04, 0x04, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0b, 0x15, 0x15, 0x15, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0d, 0x13, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0d, 0x13, 0x13, 0x0d, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x16, 0x19, 0x19, 0x16, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x0d, 0x13, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x1e, 0x01, 0x0e, 0x10, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x0e, 0x04, 0x04, 0x14, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x11, 0x11, 0x19, 0x16, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x11, 0x11, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x11, 0x15, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x11, 0x11, 0x11, 0x1e, 0x10, 0x0e, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x1f, 0x08, 0x04, 0x02, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x04, 0x04, 0x02, 0x04, 0x04, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x04, 0x00, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x04, 0x04, 0x08, 0x04, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x11, 0x0a, 0x04, 0x1f, 0x04, 0x1f, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x15, 0x0a, 0x00, 0x00, 0x00, 0x00,
+];
+/**
+ * Original Model III character set.
+ */
+const GLYPH_CG4 = [
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x30, 0x48, 0x08, 0x3e, 0x08, 0x48, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x3c, 0x42, 0x7e, 0x02, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x00, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x7e, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x28, 0x00, 0x38, 0x44, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0xb8, 0x44, 0x64, 0x54, 0x4c, 0x44, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x10, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4c, 0x32, 0x00, 0x34, 0x4c, 0x44, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1c, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x5e, 0x22, 0x22, 0x1e, 0x12, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x28, 0x00, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4c, 0x32, 0x10, 0x28, 0x44, 0x7c, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4c, 0x32, 0x44, 0x4c, 0x54, 0x64, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x28, 0x38, 0x44, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x90, 0x68, 0x64, 0x54, 0x4c, 0x2c, 0x12, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4c, 0x32, 0x00, 0x3c, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x44, 0x44, 0x3c, 0x44, 0x44, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x00, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4c, 0x32, 0x00, 0x18, 0x24, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x54, 0x50, 0x38, 0x14, 0x54, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x14, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x08, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x02, 0x3e, 0x42, 0x7c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x7c, 0x04, 0x7c, 0x04, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x78, 0x24, 0x64, 0x3c, 0x24, 0x64, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x04, 0x04, 0x44, 0x38, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x4c, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x24, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x24, 0x7e, 0x24, 0x7e, 0x24, 0x24, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x78, 0x14, 0x38, 0x50, 0x3c, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x46, 0x26, 0x10, 0x08, 0x64, 0x62, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0c, 0x12, 0x12, 0x0c, 0x52, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x08, 0x08, 0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x08, 0x10, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x54, 0x38, 0x7c, 0x38, 0x54, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x10, 0x7c, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x62, 0x5a, 0x46, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x18, 0x14, 0x10, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x40, 0x30, 0x0c, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x40, 0x38, 0x40, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x30, 0x28, 0x24, 0x7e, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x02, 0x1e, 0x20, 0x40, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x04, 0x02, 0x3e, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x42, 0x20, 0x10, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x42, 0x3c, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x42, 0x7c, 0x40, 0x20, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x00, 0x00, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00,
+    0x60, 0x30, 0x18, 0x0c, 0x18, 0x30, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7e, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x06, 0x0c, 0x18, 0x30, 0x18, 0x0c, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x40, 0x30, 0x08, 0x00, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x52, 0x6a, 0x32, 0x04, 0x78, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x18, 0x24, 0x42, 0x7e, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3e, 0x44, 0x44, 0x3c, 0x44, 0x44, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x02, 0x02, 0x02, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1e, 0x24, 0x44, 0x44, 0x44, 0x24, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x02, 0x02, 0x1e, 0x02, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x02, 0x02, 0x1e, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x02, 0x72, 0x42, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x42, 0x7e, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x10, 0x10, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x70, 0x20, 0x20, 0x20, 0x20, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x22, 0x12, 0x0e, 0x12, 0x22, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x66, 0x5a, 0x5a, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x46, 0x4a, 0x52, 0x62, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3e, 0x42, 0x42, 0x3e, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x42, 0x42, 0x52, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3e, 0x42, 0x42, 0x3e, 0x12, 0x22, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0x02, 0x3c, 0x40, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x42, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x42, 0x24, 0x24, 0x18, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x42, 0x5a, 0x5a, 0x66, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x24, 0x18, 0x24, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x44, 0x44, 0x44, 0x38, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x20, 0x18, 0x04, 0x02, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x04, 0x04, 0x04, 0x04, 0x04, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x20, 0x20, 0x20, 0x20, 0x20, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x1c, 0x20, 0x3c, 0x22, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x3a, 0x46, 0x42, 0x46, 0x3a, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3c, 0x42, 0x02, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x40, 0x40, 0x5c, 0x62, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3c, 0x42, 0x7e, 0x02, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x30, 0x48, 0x08, 0x3e, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x5c, 0x62, 0x62, 0x5c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x3a, 0x46, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x00, 0x18, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x00, 0x30, 0x20, 0x20, 0x20, 0x22, 0x1c, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x22, 0x12, 0x0a, 0x16, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x18, 0x10, 0x10, 0x10, 0x10, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x6e, 0x92, 0x92, 0x92, 0x92, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3a, 0x46, 0x42, 0x42, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3c, 0x42, 0x42, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3a, 0x46, 0x46, 0x3a, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x5c, 0x62, 0x62, 0x5c, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3a, 0x46, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x02, 0x3c, 0x40, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x08, 0x3e, 0x08, 0x08, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x42, 0x42, 0x42, 0x62, 0x5c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x42, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x82, 0x92, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x42, 0x24, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x42, 0x42, 0x62, 0x5c, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7e, 0x20, 0x18, 0x04, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x30, 0x08, 0x08, 0x04, 0x08, 0x08, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x10, 0x00, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0c, 0x10, 0x10, 0x20, 0x10, 0x10, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0c, 0x92, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x10, 0x7c, 0x10, 0x10, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x7c, 0xfe, 0xfe, 0x7c, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x6c, 0xfe, 0xfe, 0x7c, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x7c, 0xfe, 0x7c, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x38, 0x10, 0xd6, 0xfe, 0xd6, 0x10, 0x38, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0xa5, 0x81, 0xa5, 0x99, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0xa5, 0x81, 0x99, 0xa5, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x08, 0x04, 0x08, 0x10, 0x20, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x08, 0x10, 0x20, 0x10, 0x08, 0x04, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x9c, 0x62, 0x62, 0x9c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x44, 0x3c, 0x44, 0x44, 0x3c, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00,
+    0x86, 0x48, 0x28, 0x18, 0x08, 0x0c, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x30, 0x48, 0x08, 0x30, 0x50, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x60, 0x10, 0x08, 0x7c, 0x08, 0x10, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x68, 0x60, 0x10, 0x08, 0x38, 0x40, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x34, 0x4a, 0x48, 0x48, 0x40, 0x40, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x44, 0x7c, 0x44, 0x28, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x04, 0x04, 0x04, 0x44, 0x44, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x12, 0x0a, 0x06, 0x0a, 0x52, 0x22, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x08, 0x08, 0x08, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x24, 0x24, 0x24, 0x5c, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x4c, 0x48, 0x28, 0x18, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x04, 0x18, 0x04, 0x38, 0x40, 0x30, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x18, 0x24, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x2a, 0x28, 0x28, 0x28, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x18, 0x24, 0x24, 0x1c, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x12, 0x12, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x12, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x40, 0x26, 0x24, 0x24, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x54, 0x54, 0x54, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x46, 0x28, 0x10, 0x28, 0xc4, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x92, 0x54, 0x54, 0x38, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x44, 0x82, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x82, 0x82, 0xc6, 0x44, 0xc6, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x78, 0x08, 0x08, 0x08, 0x0a, 0x0c, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x10, 0x00, 0x7c, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x04, 0x08, 0x30, 0x08, 0x04, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x4c, 0x32, 0x00, 0x4c, 0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x28, 0x44, 0xfe, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x08, 0x08, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x80, 0x40, 0xfe, 0x10, 0xfe, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x10, 0x20, 0x7c, 0x08, 0x10, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0xfc, 0x4a, 0x24, 0x10, 0x48, 0xa4, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x82, 0x82, 0xfe, 0x44, 0x44, 0xc6, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x6c, 0x92, 0x92, 0x6c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x40, 0x20, 0x12, 0x0a, 0x06, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x78, 0x04, 0x38, 0x44, 0x38, 0x40, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x44, 0xaa, 0x54, 0x28, 0x54, 0xaa, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x42, 0xb9, 0x85, 0x85, 0xb9, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x24, 0x18, 0x24, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x52, 0x52, 0x5c, 0x50, 0x50, 0x50, 0x50, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x54, 0x14, 0x54, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x5e, 0xa5, 0xa5, 0x9d, 0x95, 0x66, 0x3c, 0x00, 0x00, 0x00, 0x00,
+    0xfa, 0x06, 0xc6, 0x46, 0x26, 0xde, 0x06, 0xfa, 0x00, 0x00, 0x00, 0x00,
+    0xff, 0x20, 0xc0, 0x3f, 0x40, 0x3f, 0x20, 0x1f, 0x00, 0x00, 0x00, 0x00,
+    0x3f, 0x40, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1e, 0x22, 0x22, 0x1e, 0x52, 0x22, 0xd2, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x86, 0x41, 0x21, 0x16, 0x68, 0x94, 0x92, 0x61, 0x00, 0x00, 0x00, 0x00,
+    0x70, 0x60, 0x50, 0x0e, 0x09, 0x09, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x44, 0x44, 0x44, 0x38, 0x10, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00,
+    0x70, 0x10, 0x10, 0x70, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0xff, 0xc7, 0xbb, 0xcf, 0xef, 0xff, 0xef, 0xff, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x10, 0x38, 0x54, 0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x10, 0x38, 0x54, 0x28, 0x7c, 0x28, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x28, 0x44, 0x44, 0x44, 0x54, 0x6c, 0x44, 0x00, 0x00, 0x00, 0x00,
+    0x44, 0x28, 0x10, 0x7c, 0x10, 0x7c, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x04, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x20, 0x20, 0x20, 0x20, 0x3e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x02, 0x04, 0x08, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x3c, 0x20, 0x3c, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x40, 0x30, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x20, 0x10, 0x18, 0x14, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x7c, 0x44, 0x40, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x38, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x10, 0x3c, 0x18, 0x14, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x08, 0x7c, 0x48, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x38, 0x20, 0x20, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x7c, 0x40, 0x78, 0x40, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x54, 0x54, 0x44, 0x20, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x28, 0x18, 0x08, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x40, 0x20, 0x10, 0x18, 0x14, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x7c, 0x44, 0x44, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x10, 0x10, 0x10, 0x10, 0x10, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x7e, 0x10, 0x18, 0x14, 0x12, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x7e, 0x48, 0x48, 0x48, 0x44, 0x72, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x38, 0x10, 0x7c, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7c, 0x44, 0x44, 0x42, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x7c, 0x14, 0x12, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x40, 0x40, 0x40, 0x40, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x24, 0x7e, 0x24, 0x24, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x1c, 0x40, 0x4e, 0x40, 0x40, 0x24, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x20, 0x10, 0x18, 0x24, 0x42, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x7e, 0x48, 0x28, 0x08, 0x48, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x44, 0x48, 0x20, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x42, 0x42, 0x50, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x50, 0x3e, 0x10, 0x7c, 0x10, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x00, 0x7e, 0x40, 0x20, 0x10, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x00, 0x7c, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x1c, 0x24, 0x44, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x7c, 0x10, 0x10, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x40, 0x28, 0x10, 0x28, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x7e, 0x40, 0x20, 0x30, 0x58, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x60, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x20, 0x50, 0x50, 0x50, 0x48, 0x44, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x02, 0x7e, 0x02, 0x02, 0x42, 0x3c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x40, 0x20, 0x10, 0x08, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x08, 0x14, 0x22, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x10, 0x7c, 0x10, 0x54, 0x54, 0x54, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x40, 0x28, 0x10, 0x20, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x02, 0x3c, 0x42, 0x3c, 0x42, 0x3c, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x20, 0x10, 0x08, 0x04, 0x12, 0x22, 0x5e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x40, 0x44, 0x28, 0x10, 0x28, 0x04, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x08, 0x3c, 0x08, 0x08, 0x48, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x7e, 0x48, 0x28, 0x08, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x3c, 0x20, 0x20, 0x20, 0x10, 0x08, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x40, 0x40, 0x7c, 0x40, 0x40, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x54, 0x54, 0x44, 0x40, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x42, 0x42, 0x42, 0x42, 0x22, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x0a, 0x0a, 0x0a, 0x4a, 0x4a, 0x2a, 0x1a, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x04, 0x04, 0x44, 0x44, 0x24, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x42, 0x42, 0x42, 0x42, 0x42, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x7e, 0x42, 0x42, 0x40, 0x20, 0x10, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x4e, 0x40, 0x40, 0x40, 0x20, 0x12, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x08, 0x12, 0x24, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x04, 0x0a, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+];
+/**
+ * Class representing a font and able to generate its glyphs.
+ */
+class Font {
+    constructor(bits, width, height, banks) {
+        // Cache from glyph key (see makeImage()) to the canvas element for it.
+        this.glyphCache = new Map();
+        this.bits = bits;
+        this.width = width;
+        this.height = height;
+        this.banks = banks;
+    }
+    /**
+     * Make a bitmap for the specified character (0-255). "on" pixels are the
+     * specified color, "off" pixels are fully transparent.
+     */
+    makeImage(char, expanded, options) {
+        const key = {
+            char: char,
+            expanded: expanded,
+            options: options,
+        };
+        const stringKey = JSON.stringify(key);
+        // Cache the glyph since we create a set of these for each created canvas.
+        let glyph = this.glyphCache.get(stringKey);
+        if (glyph === undefined) {
+            glyph = this.makeImageInternal(char, expanded, options);
+            this.glyphCache.set(stringKey, glyph);
+        }
+        return glyph;
+    }
+    /**
+     * Actually creates the glyph.
+     */
+    makeImageInternal(char, expanded, options) {
+        const canvas = document.createElement("canvas");
+        let expandedMultiplier = expanded ? 2 : 1;
+        canvas.width = this.width * expandedMultiplier;
+        canvas.height = this.height * 2;
+        const ctx = canvas.getContext("2d");
+        if (ctx === null) {
+            throw new Error("2d context not supported");
+        }
+        const imageData = ctx.createImageData(canvas.width, canvas.height);
+        // Light pixel at (x,y) in imageData if bit "bit" of "byte" is on.
+        const lightPixel = (x, y, byte, bit) => {
+            const pixel = (byte & (1 << bit)) !== 0;
+            if (pixel) {
+                const pixelOffset = (y * canvas.width + x) * 4;
+                const alpha = options.scanLines ? (y % 2 == 0 ? 0xFF : 0xAA) : 0xFF;
+                imageData.data[pixelOffset + 0] = options.color[0];
+                imageData.data[pixelOffset + 1] = options.color[1];
+                imageData.data[pixelOffset + 2] = options.color[2];
+                imageData.data[pixelOffset + 3] = alpha;
+            }
+        };
+        const bankOffset = this.banks[Math.floor(char / 64)];
+        if (bankOffset === -1) {
+            // Graphical character.
+            const byte = char % 64;
+            for (let y = 0; y < canvas.height; y++) {
+                const py = Math.floor(y / (canvas.height / 3));
+                for (let x = 0; x < canvas.width; x++) {
+                    const px = Math.floor(x / (canvas.width / 2));
+                    const bit = py * 2 + px;
+                    lightPixel(x, y, byte, bit);
+                }
+            }
+        }
+        else {
+            // Bitmap character.
+            const charOffset = bankOffset + char % 64;
+            const byteOffset = charOffset * 12;
+            for (let y = 0; y < canvas.height; y++) {
+                const byte = this.bits[byteOffset + Math.floor(y / 2)];
+                for (let x = 0; x < canvas.width; x++) {
+                    lightPixel(x, y, byte, Math.floor(x / expandedMultiplier));
+                }
+            }
+        }
+        ctx.putImageData(imageData, 0, 0);
+        return canvas;
+    }
+}
+// Original Model I.
+const MODEL1A_FONT = new Font(GLYPH_CG1, 6, 12, [0, 64, -1, -1]);
+// Model I with lower case mod.
+const MODEL1B_FONT = new Font(GLYPH_CG2, 6, 12, [0, 64, -1, -1]);
+// Original Model III, with special symbols.
+const MODEL3_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 128]);
+// Original Model III, with Katakana.
+const MODEL3_ALT_FONT = new Font(GLYPH_CG4, 8, 12, [0, 64, -1, 192]);
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/CanvasScreen.js
+
+
+
+
+
+const AUTHENTIC_BACKGROUND = "#334843";
+const BLACK_BACKGROUND = "#000000";
+const PADDING = 10;
+const BORDER_RADIUS = 8;
+const WHITE_PHOSPHOR = [230, 231, 252];
+const AMBER_PHOSPHOR = [247, 190, 64];
+const GREEN_PHOSPHOR = [122, 244, 96];
+// Gets an RGB array (0-255) for a phosphor.
+function phosphorToRgb(phosphor) {
+    switch (phosphor) {
+        case Phosphor.WHITE:
+        default:
+            return WHITE_PHOSPHOR;
+        case Phosphor.GREEN:
+            return GREEN_PHOSPHOR;
+        case Phosphor.AMBER:
+            return AMBER_PHOSPHOR;
+    }
+}
+/**
+ * TRS-80 screen based on an HTML canvas element.
+ */
+class CanvasScreen_CanvasScreen extends Trs80Screen_Trs80Screen {
+    /**
+     * Create a canvas screen.
+     *
+     * @param scale size multiplier. If greater than 1, use multiples of 0.5.
+     */
+    constructor(scale = 1) {
+        super();
+        this.scale = 1;
+        this.memory = new Uint8Array(TRS80_SCREEN_END - TRS80_SCREEN_BEGIN);
+        this.glyphs = [];
+        this.config = Config.makeDefault();
+        this.glyphWidth = 0;
+        this.node = document.createElement("div");
+        // Fit canvas horizontally so that the nested objects (panels and progress bars) are
+        // displayed in the canvas.
+        this.node.style.maxWidth = "max-content";
+        this.scale = scale;
+        this.padding = Math.round(PADDING * this.scale);
+        this.canvas = document.createElement("canvas");
+        // Make it block so we don't have any weird text margins on the bottom.
+        this.canvas.style.display = "block";
+        this.canvas.width = 64 * 8 * this.scale + 2 * this.padding;
+        this.canvas.height = 16 * 24 * this.scale + 2 * this.padding;
+        this.node.append(this.canvas);
+        this.context = this.canvas.getContext("2d");
+        this.updateFromConfig();
+    }
+    getWidth() {
+        return this.canvas.width;
+    }
+    getHeight() {
+        return this.canvas.height;
+    }
+    setConfig(config) {
+        this.config = config;
+        this.updateFromConfig();
+    }
+    /**
+     * Update the font and screen from the config and other state.
+     */
+    updateFromConfig() {
+        let font;
+        switch (this.config.cgChip) {
+            case CGChip.ORIGINAL:
+                font = MODEL1A_FONT;
+                break;
+            case CGChip.LOWER_CASE:
+            default:
+                switch (this.config.modelType) {
+                    case ModelType.MODEL1:
+                        font = MODEL1B_FONT;
+                        break;
+                    case ModelType.MODEL3:
+                    default:
+                        font = this.isAlternateCharacters() ? MODEL3_ALT_FONT : MODEL3_FONT;
+                        break;
+                }
+                break;
+        }
+        const glyphOptions = {
+            color: phosphorToRgb(this.config.phosphor),
+            scanLines: this.config.scanLines === ScanLines.ON,
+        };
+        for (let i = 0; i < 256; i++) {
+            this.glyphs[i] = font.makeImage(i, this.isExpandedCharacters(), glyphOptions);
+        }
+        this.glyphWidth = font.width;
+        this.drawBackground();
+        this.refresh();
+    }
+    writeChar(address, value) {
+        const offset = address - TRS80_SCREEN_BEGIN;
+        this.memory[offset] = value;
+        this.drawChar(offset, value);
+    }
+    getForegroundColor() {
+        const color = phosphorToRgb(this.config.phosphor);
+        return "#" + Object(z80_base_dist["toHexByte"])(color[0]) + Object(z80_base_dist["toHexByte"])(color[1]) + Object(z80_base_dist["toHexByte"])(color[2]);
+    }
+    /**
+     * Get the background color as a CSS color based on the current config.
+     */
+    getBackgroundColor() {
+        switch (this.config.background) {
+            case Background.BLACK:
+                return BLACK_BACKGROUND;
+            case Background.AUTHENTIC:
+            default:
+                return AUTHENTIC_BACKGROUND;
+        }
+    }
+    getBorderRadius() {
+        return BORDER_RADIUS * this.scale;
+    }
+    /**
+     * Draw a single character to the canvas.
+     */
+    drawChar(offset, value) {
+        const screenX = (offset % 64) * 8 * this.scale + this.padding;
+        const screenY = Math.floor(offset / 64) * 24 * this.scale + this.padding;
+        this.context.fillStyle = this.getBackgroundColor();
+        if (this.isExpandedCharacters()) {
+            if (offset % 2 === 0) {
+                this.context.fillRect(screenX, screenY, 16 * this.scale, 24 * this.scale);
+                this.context.drawImage(this.glyphs[value], 0, 0, this.glyphWidth * 2, 24, screenX, screenY, 16 * this.scale, 24 * this.scale);
+            }
+        }
+        else {
+            this.context.fillRect(screenX, screenY, 8 * this.scale, 24 * this.scale);
+            this.context.drawImage(this.glyphs[value], 0, 0, this.glyphWidth, 24, screenX, screenY, 8 * this.scale, 24 * this.scale);
+        }
+    }
+    getNode() {
+        return this.node;
+    }
+    setExpandedCharacters(expanded) {
+        if (expanded !== this.isExpandedCharacters()) {
+            super.setExpandedCharacters(expanded);
+            this.updateFromConfig();
+        }
+    }
+    setAlternateCharacters(alternate) {
+        if (alternate !== this.isAlternateCharacters()) {
+            super.setAlternateCharacters(alternate);
+            this.updateFromConfig();
+        }
+    }
+    /**
+     * Draw the background of the canvas.
+     */
+    drawBackground() {
+        const width = this.canvas.width;
+        const height = this.canvas.height;
+        const radius = this.getBorderRadius();
+        this.context.fillStyle = this.getBackgroundColor();
+        this.context.beginPath();
+        this.context.moveTo(radius, 0);
+        this.context.arcTo(width, 0, width, radius, radius);
+        this.context.arcTo(width, height, width - radius, height, radius);
+        this.context.arcTo(0, height, 0, height - radius, radius);
+        this.context.arcTo(0, 0, radius, 0, radius);
+        this.context.fill();
+    }
+    /**
+     * Refresh the display based on what we've kept track of.
+     */
+    refresh() {
+        for (let offset = 0; offset < this.memory.length; offset++) {
+            this.drawChar(offset, this.memory[offset]);
+        }
+    }
+    /**
+     * Returns the canvas as an <img> element that can be resized. This is relatively
+     * expensive.
+     *
+     * This method is deprecated, use asImageAsync instead.
+     */
+    asImage() {
+        const image = document.createElement("img");
+        image.src = this.canvas.toDataURL();
+        return image;
+    }
+    /**
+     * Returns the canvas as an <img> element that can be resized. Despite the
+     * "async" name, there's still some synchronous work, about 13ms.
+     */
+    asImageAsync() {
+        return new Promise((resolve, reject) => {
+            // According to this answer:
+            //     https://stackoverflow.com/a/59025746/211234
+            // the toBlob() method still has to copy the image synchronously, so this whole method still
+            // takes about 13ms. It's better than toDataUrl() because it doesn't have to make an actual
+            // base64 string. The Object URL is just a reference to the blob.
+            this.canvas.toBlob(blob => {
+                if (blob === null) {
+                    reject("Cannot make image from screen");
+                }
+                else {
+                    const image = document.createElement("img");
+                    const url = URL.createObjectURL(blob);
+                    image.addEventListener("load", () => {
+                        URL.revokeObjectURL(url);
+                        // Resolve when the image is fully loaded so that there's no UI glitching.
+                        resolve(image);
+                    });
+                    image.src = url;
+                }
+            });
+        });
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/Utils.js
+const CSS_PREFIX = "trs80-emulator";
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/SettingsPanel.js
+
+
+
+const gCssPrefix = CSS_PREFIX + "-settings-panel";
+const gScreenNodeCssClass = gCssPrefix + "-screen-node";
+const gPanelCssClass = gCssPrefix + "-panel";
+const gShownCssClass = gCssPrefix + "-shown";
+const gAcceptButtonCssClass = gCssPrefix + "-accept";
+const gRebootButtonCssClass = gCssPrefix + "-reboot";
+const gOptionsClass = gCssPrefix + "-options";
+const gButtonsClass = gCssPrefix + "-buttons";
+const gColorButtonClass = gCssPrefix + "-color-button";
+const gDarkColorButtonClass = gCssPrefix + "-dark-color-button";
+const gAcceptButtonColor = "#449944";
+const GLOBAL_CSS = `
+.${gPanelCssClass} {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .20s ease-in-out, visibility .20s ease-in-out;
+}
+
+.${gPanelCssClass}.${gShownCssClass} {
+    opacity: 1;
+    visibility: visible;
+}
+
+.${gPanelCssClass} > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+    background-color: rgba(40, 40, 40, 0.8);
+    border-radius: 15px;
+    color: #ccc;
+    font-family: sans-serif;
+    font-size: 10pt;
+    line-height: normal;
+    margin: 20px 0;
+    padding: 10px 30px;
+    min-width: 200px;
+}
+
+.${gPanelCssClass} h1 {
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: .5px;
+    font-size: 10pt;
+    margin: 0 0 10px 0;
+}
+
+.${gPanelCssClass} .${gOptionsClass} {
+    display: flex;
+    justify-content: center;
+}
+
+.${gPanelCssClass} input[type=radio] {
+    display: none;
+}
+
+.${gPanelCssClass} input[type=radio] + label {
+    display: block;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    padding: 4px 16px;
+    margin-left: 10px;
+    border-radius: 3px;
+    background-color: #44443A;
+    white-space: nowrap;
+}
+
+.${gPanelCssClass} input[type=radio] + label.${gColorButtonClass} {
+    flex-grow: 0;
+    flex-basis: auto;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    color: transparent;
+    transition: color .20s ease-in-out;
+}
+
+.${gPanelCssClass} input[type=radio] + label.${gColorButtonClass}.${gDarkColorButtonClass} {
+    border: solid 2px #ccc;
+}
+
+.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass}::after {
+    content: "✓";
+    font-size: 20px;
+}
+
+.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass} {
+    color: black;
+}
+
+.${gPanelCssClass} input[type=radio]:checked + label.${gColorButtonClass}.${gDarkColorButtonClass} {
+    color: #ccc;
+}
+
+.${gPanelCssClass} input[type=radio] + label:first-of-type {
+    margin-left: 0;
+}
+
+.${gPanelCssClass} input[type=radio]:enabled + label:hover {
+    background-color: #66665A;
+}
+
+.${gPanelCssClass} input[type=radio]:disabled + label {
+    color: #666;
+}
+
+.${gPanelCssClass} input[type=radio]:enabled:checked + label {
+    color: #444;
+    background-color: #ccc;
+}
+
+.${gPanelCssClass} .${gButtonsClass} {
+    display: flex;
+}
+
+.${gPanelCssClass} a {
+    display: block;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    padding: 4px 16px;
+    border-radius: 3px;
+    margin-left: 10px;
+    color: #ccc;
+    background-color: #44443A;
+    cursor: default;
+}
+
+.${gPanelCssClass} a:first-of-type {
+    margin-left: 0;
+}
+
+.${gPanelCssClass} a.${gAcceptButtonCssClass} {
+    font-weight: bold;
+    color: #eee;
+    background-color: ${gAcceptButtonColor};
+}
+
+.${gPanelCssClass} a.${gAcceptButtonCssClass}:hover {
+    background-color: #338833;
+}
+
+.${gPanelCssClass} a.${gRebootButtonCssClass} {
+    background-color: #D25F43;
+}
+
+.${gPanelCssClass} a:hover {
+    background-color: #66665A;
+}
+
+.${gPanelCssClass} a.${gRebootButtonCssClass}:hover {
+    background-color: #BD563C;
+}
+
+.${gScreenNodeCssClass} {
+    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
+    position: relative;
+}
+`;
+/**
+ * An option that's currently displayed to the user.
+ */
+class DisplayedOption {
+    constructor(input, block, option) {
+        this.input = input;
+        this.block = block;
+        this.option = option;
+    }
+}
+// Convert RGB array (0-255) to a CSS string.
+function rgbToCss(color) {
+    return "#" + color.map(c => c.toString(16).padStart(2, "0").toUpperCase()).join("");
+}
+// Multiplies an RGB (0-255) color by a factor.
+function adjustColor(color, factor) {
+    return color.map(c => Math.max(0, Math.min(255, Math.round(c * factor))));
+}
+/**
+ * Our full configuration options.
+ */
+const HARDWARE_OPTION_BLOCKS = [
+    {
+        title: "Model",
+        isChecked: (modelType, config) => modelType === config.modelType,
+        updateConfig: (modelType, config) => config.withModelType(modelType),
+        options: [
+            {
+                label: "Model I",
+                value: ModelType.MODEL1,
+            },
+            {
+                label: "Model III",
+                value: ModelType.MODEL3,
+            },
+        ]
+    },
+    {
+        title: "Basic",
+        isChecked: (basicLevel, config) => basicLevel === config.basicLevel,
+        updateConfig: (basicLevel, config) => config.withBasicLevel(basicLevel),
+        options: [
+            {
+                label: "Level 1",
+                value: BasicLevel.LEVEL1,
+            },
+            {
+                label: "Level 2",
+                value: BasicLevel.LEVEL2,
+            },
+        ]
+    },
+    {
+        title: "Characters",
+        isChecked: (cgChip, config) => cgChip === config.cgChip,
+        updateConfig: (cgChip, config) => config.withCGChip(cgChip),
+        options: [
+            {
+                label: "Original",
+                value: CGChip.ORIGINAL,
+            },
+            {
+                label: "Lower case",
+                value: CGChip.LOWER_CASE,
+            },
+        ]
+    },
+    {
+        title: "RAM",
+        isChecked: (ramSize, config) => ramSize === config.ramSize,
+        updateConfig: (ramSize, config) => config.withRamSize(ramSize),
+        options: [
+            {
+                label: "4 kB",
+                value: RamSize.RAM_4_KB,
+            },
+            {
+                label: "16 kB",
+                value: RamSize.RAM_16_KB,
+            },
+            {
+                label: "32 kB",
+                value: RamSize.RAM_32_KB,
+            },
+            {
+                label: "48 kB",
+                value: RamSize.RAM_48_KB,
+            },
+        ]
+    },
+];
+const VIEW_OPTION_BLOCKS = [
+    {
+        title: "Phosphor",
+        isChecked: (phosphor, config) => phosphor === config.phosphor,
+        updateConfig: (phosphor, config) => config.withPhosphor(phosphor),
+        options: [
+            {
+                label: rgbToCss(adjustColor(phosphorToRgb(Phosphor.WHITE), 0.8)),
+                value: Phosphor.WHITE,
+            },
+            {
+                // Cheat and use the green from the OK button so that the two greens don't clash.
+                label: gAcceptButtonColor,
+                value: Phosphor.GREEN,
+            },
+            {
+                label: rgbToCss(adjustColor(phosphorToRgb(Phosphor.AMBER), 0.8)),
+                value: Phosphor.AMBER,
+            },
+        ]
+    },
+    {
+        title: "Background",
+        isChecked: (background, config) => background === config.background,
+        updateConfig: (background, config) => config.withBackground(background),
+        options: [
+            {
+                label: BLACK_BACKGROUND,
+                value: Background.BLACK,
+            },
+            {
+                label: AUTHENTIC_BACKGROUND,
+                value: Background.AUTHENTIC,
+            },
+        ]
+    },
+    {
+        title: "Scan Lines",
+        isChecked: (scanLines, config) => scanLines === config.scanLines,
+        updateConfig: (scanLines, config) => config.withScanLines(scanLines),
+        options: [
+            {
+                label: "Off",
+                value: ScanLines.OFF,
+            },
+            {
+                label: "On",
+                value: ScanLines.ON,
+            },
+        ]
+    },
+];
+// Type of panel to show.
+var PanelType;
+(function (PanelType) {
+    // Model, RAM, etc.
+    PanelType[PanelType["HARDWARE"] = 0] = "HARDWARE";
+    // Phosphor color, background, etc.
+    PanelType[PanelType["VIEW"] = 1] = "VIEW";
+})(PanelType || (PanelType = {}));
+// Get the right options blocks for the panel type.
+function optionBlocksForPanelType(panelType) {
+    switch (panelType) {
+        case PanelType.HARDWARE:
+        default:
+            return HARDWARE_OPTION_BLOCKS;
+        case PanelType.VIEW:
+            return VIEW_OPTION_BLOCKS;
+    }
+}
+/**
+ * Whether the given CSS color is dark.
+ *
+ * @param color an CSS color in the form "#rrggbb".
+ */
+function isDarkColor(color) {
+    if (!color.startsWith("#") || color.length !== 7) {
+        throw new Error("isDarkColor: not a color (" + color + ")");
+    }
+    const red = parseInt(color.substr(1, 2), 16);
+    const grn = parseInt(color.substr(3, 2), 16);
+    const blu = parseInt(color.substr(5, 2), 16);
+    const gray = red * 0.3 + grn * 0.6 + blu * 0.1;
+    return gray < 110;
+}
+let gRadioButtonCounter = 1;
+/**
+ * A full-screen control panel for configuring the emulator.
+ */
+class SettingsPanel {
+    constructor(screenNode, trs80, panelType) {
+        this.displayedOptions = [];
+        this.panelType = panelType;
+        this.trs80 = trs80;
+        // Make global CSS if necessary.
+        SettingsPanel.configureStyle();
+        screenNode.classList.add(gScreenNodeCssClass);
+        this.panelNode = document.createElement("div");
+        this.panelNode.classList.add(gPanelCssClass);
+        screenNode.appendChild(this.panelNode);
+        const div = document.createElement("div");
+        this.panelNode.appendChild(div);
+        for (const block of optionBlocksForPanelType(panelType)) {
+            const name = gCssPrefix + "-" + gRadioButtonCounter++;
+            const blockDiv = document.createElement("div");
+            div.appendChild(blockDiv);
+            const h1 = document.createElement("h1");
+            h1.innerText = block.title;
+            blockDiv.appendChild(h1);
+            const optionsDiv = document.createElement("div");
+            optionsDiv.classList.add(gOptionsClass);
+            blockDiv.appendChild(optionsDiv);
+            for (const option of block.options) {
+                const id = gCssPrefix + "-" + gRadioButtonCounter++;
+                const input = document.createElement("input");
+                input.id = id;
+                input.type = "radio";
+                input.name = name;
+                input.addEventListener("change", () => this.updateEnabledOptions());
+                optionsDiv.appendChild(input);
+                const label = document.createElement("label");
+                label.htmlFor = id;
+                if (option.label.startsWith("#")) {
+                    // It's a color, show a swatch.
+                    label.classList.add(gColorButtonClass);
+                    label.style.backgroundColor = option.label;
+                    if (isDarkColor(option.label)) {
+                        label.classList.add(gDarkColorButtonClass);
+                    }
+                }
+                else {
+                    label.innerText = option.label;
+                }
+                optionsDiv.appendChild(label);
+                this.displayedOptions.push(new DisplayedOption(input, block, option));
+            }
+        }
+        const buttonsDiv = document.createElement("div");
+        buttonsDiv.classList.add(gButtonsClass);
+        div.appendChild(buttonsDiv);
+        this.acceptButton = document.createElement("a");
+        this.acceptButton.classList.add(gAcceptButtonCssClass);
+        this.acceptButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.accept();
+        });
+        buttonsDiv.appendChild(this.acceptButton);
+        this.configureAcceptButton(this.trs80.getConfig());
+        const cancelButton = document.createElement("a");
+        cancelButton.innerText = "Cancel";
+        cancelButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.close();
+        });
+        buttonsDiv.appendChild(cancelButton);
+    }
+    /**
+     * Open the settings panel.
+     */
+    open() {
+        if (this.onOpen !== undefined) {
+            this.onOpen();
+        }
+        // Configure options.
+        for (const displayedOption of this.displayedOptions) {
+            displayedOption.input.checked = displayedOption.block.isChecked(displayedOption.option.value, this.trs80.getConfig());
+        }
+        this.updateEnabledOptions();
+        this.panelNode.classList.add(gShownCssClass);
+    }
+    /**
+     * Accept the changes, configure the machine, and close the dialog box.
+     */
+    accept() {
+        this.trs80.setConfig(this.getConfig());
+        this.close();
+    }
+    /**
+     * Close the settings panel.
+     */
+    close() {
+        this.panelNode.classList.remove(gShownCssClass);
+        if (this.onClose !== undefined) {
+            this.onClose();
+        }
+    }
+    /**
+     * Update which options are enabled based on the current selection.
+     */
+    updateEnabledOptions() {
+        const config = this.getConfig();
+        for (const displayedOption of this.displayedOptions) {
+            const enabled = displayedOption.block.updateConfig(displayedOption.option.value, config).isValid();
+            displayedOption.input.disabled = !enabled;
+        }
+        this.configureAcceptButton(config);
+    }
+    /**
+     * Set the accept button to be OK or Reboot.
+     */
+    configureAcceptButton(config) {
+        if (config.needsReboot(this.trs80.getConfig())) {
+            this.acceptButton.classList.add(gRebootButtonCssClass);
+            this.acceptButton.innerText = "Reboot";
+        }
+        else {
+            this.acceptButton.classList.remove(gRebootButtonCssClass);
+            this.acceptButton.innerText = "OK";
+        }
+    }
+    /**
+     * Make a new config from the user's currently selected options.
+     */
+    getConfig() {
+        let config = this.trs80.getConfig();
+        for (const displayedOption of this.displayedOptions) {
+            if (displayedOption.input.checked) {
+                config = displayedOption.block.updateConfig(displayedOption.option.value, config);
+            }
+        }
+        return config;
+    }
+    /**
+     * Make a global stylesheet for all TRS-80 emulators on this page.
+     */
+    static configureStyle() {
+        const styleId = gCssPrefix;
+        if (document.getElementById(styleId) !== null) {
+            // Already created.
+            return;
+        }
+        const node = document.createElement("style");
+        node.id = styleId;
+        node.innerHTML = GLOBAL_CSS;
+        document.head.appendChild(node);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/ControlPanel.js
+
+
+const ControlPanel_gCssPrefix = CSS_PREFIX + "-control-panel";
+const ControlPanel_gScreenNodeCssClass = ControlPanel_gCssPrefix + "-screen-node";
+const ControlPanel_gPanelCssClass = ControlPanel_gCssPrefix + "-panel";
+const gButtonCssClass = ControlPanel_gCssPrefix + "-button";
+const gButtonHiddenCssClass = ControlPanel_gCssPrefix + "-button-hidden";
+const gShowingOtherPanelCssClass = ControlPanel_gCssPrefix + "-showing-other-panel";
+// https://thenounproject.com/search/?q=reset&i=3012384
+const RESET_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <title>Reboot the computer</title>
+    <g fill="white">
+        <path d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z"/>
+        <path d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z"/>
+        <path d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z"/>
+        <path d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z"/>
+        <path d="M84.3,18C67.1,0.8,39.5,0.4,21.8,16.5l-4.1-4.1c-1.6-1.6-4-2.2-6.2-1.6c-2.2,0.7-3.9,2.5-4.3,4.7L2.6,36.9    c-0.4,2.1,0.2,4.2,1.7,5.7c1.5,1.5,3.6,2.1,5.7,1.7l21.4-4.5c1.2-0.3,2.3-0.9,3.1-1.7c0.7-0.7,1.3-1.6,1.6-2.6    c0.6-2.2,0-4.6-1.6-6.2l-3.9-3.9C43.5,14,63.1,14.5,75.4,26.8c12.8,12.8,12.8,33.6,0,46.4C62.6,86,41.8,86,29,73.2    c-4.1-4.1-7-9.2-8.5-14.8c-0.9-3.3-4.3-5.3-7.6-4.4c-3.3,0.9-5.3,4.3-4.4,7.6c2,7.7,6.1,14.8,11.8,20.4    c17.7,17.7,46.4,17.7,64.1,0C101.9,64.4,101.9,35.6,84.3,18z"/>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=camera&i=1841396
+const CAMERA_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <title>Take a screenshot</title>
+    <g fill="white">
+        <circle cx="50" cy="55.4" r="13.8"/>
+        <path d="M80.6,25.4H67.1l-1.8-7.2c-0.5-2.1-2.5-3.6-4.7-3.6H39.3c-2.2,0-4.1,1.5-4.7,3.6l-1.8,7.2H19.4C11.5,25.4,5,31.9,5,39.8V71   c0,7.9,6.5,14.4,14.4,14.4h61.2C88.5,85.4,95,78.9,95,71V39.8C95,31.9,88.5,25.4,80.6,25.4z M50,76.4c-11.6,0-21-9.4-21-21   s9.4-21,21-21s21,9.4,21,21S61.6,76.4,50,76.4z M81.4,40.3c-2,0-3.6-1.6-3.6-3.6c0-2,1.6-3.6,3.6-3.6s3.6,1.6,3.6,3.6   C85,38.7,83.4,40.3,81.4,40.3z"/>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=previous%20track&i=658409
+const PREVIOUS_TRACK_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -2 16 21">
+    <title>Rewind the cassette</title>
+    <g fill="white" fill-rule="evenodd">
+        <g transform="translate(-320.000000, -618.000000)">
+            <path d="M330,628.032958 L330,634.00004 C330,634.545291 330.45191,635 331.009369,635 L332.990631,635 C333.556647,635 334,634.552303 334,634.00004 L334,618.99996 C334,618.454709 333.54809,618 332.990631,618 L331.009369,618 C330.443353,618 330,618.447697 330,618.99996 L330,624.967057 C329.894605,624.850473 329.775773,624.739153 329.643504,624.634441 L322.356496,618.865559 C321.054403,617.834736 320,618.3432 320,620.000122 L320,632.999878 C320,634.663957 321.055039,635.164761 322.356496,634.134441 L329.643504,628.365559 C329.775779,628.260841 329.894611,628.149527 330,628.032958 Z" transform="translate(327.000000, 626.500000) scale(-1, 1) translate(-327.000000, -626.500000) "/>
+        </g>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=settings&i=3593545
+const HARDWARE_SETTINGS_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="7 7 121 121">
+    <title>Show the settings panel</title>
+    <g fill="white" transform="translate(0,-161.53332)">
+        <path d="m 61.57997,173.33818 c -1.653804,0 -3.159177,0.77847 -4.132553,1.85984 -0.973402,1.08136 -1.513575,2.40442 -1.771491,3.76721 a 2.1609049,2.1609049 0 0 0 0,0.002 l -1.654678,8.74831 c -2.047981,0.67947 -4.038494,1.50768 -5.964476,2.48047 l -7.367508,-5.02347 c -1.145302,-0.78076 -2.462953,-1.33572 -3.916045,-1.41232 -1.4546,-0.0764 -3.068029,0.44118 -4.235926,1.60921 l -8.699209,8.69921 c -1.169405,1.16909 -1.685211,2.78351 -1.609725,4.23643 0.07501,1.45291 0.629259,2.7738 1.410256,3.92018 l 5.001762,7.336 c -0.9702,1.93582 -1.794192,3.93628 -2.468589,5.99392 l -8.740034,1.65417 c -1.362789,0.25787 -2.688378,0.79815 -3.769783,1.77147 -1.081405,0.97346 -1.859333,2.4815 -1.859333,4.13526 v 12.30262 c 0,1.65378 0.777928,3.1592 1.859333,4.13255 1.081405,0.97338 2.406994,1.51567 3.769783,1.77353 l 8.754004,1.6583 c 0.679477,2.04603 1.506088,4.03461 2.478379,5.95882 l -5.025522,7.3675 c -0.781606,1.14644 -1.334744,2.4664 -1.410256,3.91967 -0.07498,1.45325 0.439817,3.06745 1.609725,4.23643 l 8.699209,8.69921 c 1.1693,1.16941 2.782914,1.68325 4.235926,1.60713 1.452986,-0.0761 2.771908,-0.63037 3.918109,-1.41179 l 7.33597,-5.00022 c 1.9363,0.97001 3.937926,1.79294 5.996014,2.46702 l 1.654175,8.74004 c 0.257889,1.36284 0.798486,2.68843 1.771994,3.76981 0.973402,1.08138 2.478749,1.8593 4.132553,1.8593 H 73.88672 c 1.653805,0 3.159152,-0.77792 4.132554,-1.8593 0.973005,-1.0809 1.513999,-2.40554 1.771994,-3.76772 v -0.003 l 1.656212,-8.74778 c 2.048113,-0.67943 4.038415,-1.50768 5.964502,-2.48047 l 7.365445,5.02142 c 1.146095,0.78144 2.465096,1.33567 3.918108,1.41179 1.452905,0.0761 3.068585,-0.43786 4.237995,-1.60713 l 8.6992,-8.69921 c 1.16931,-1.16946 1.68395,-2.78551 1.60767,-4.23852 -0.076,-1.45301 -0.63074,-2.77196 -1.41232,-3.91811 l -5.00177,-7.33547 c 0.9705,-1.93617 1.79398,-3.93639 2.46857,-5.99445 l 8.74003,-1.65418 c 1.36271,-0.25794 2.68841,-0.80018 3.76981,-1.77352 1.0813,-0.97335 1.85931,-2.47881 1.85931,-4.13256 v -12.30312 c 0,-1.65378 -0.77801,-3.16127 -1.85931,-4.13465 -1.0809,-0.97292 -2.40562,-1.51344 -3.76772,-1.77146 l -8.74988,-1.65624 c -0.67918,-2.04684 -1.50825,-4.03585 -2.48046,-5.96088 l 5.02348,-7.36698 c 0.78118,-1.14583 1.33572,-2.46501 1.41232,-3.91811 0.077,-1.45309 -0.43952,-3.06905 -1.60973,-4.2385 l -8.69714,-8.69921 c -1.16962,-1.16891 -2.78461,-1.68557 -4.238494,-1.6092 -1.4528,0.0768 -2.770425,0.63186 -3.915542,1.41232 l -7.33597,5.00176 c -1.9363,-0.96998 -3.937926,-1.79297 -5.996014,-2.46703 l -1.656768,-8.74211 c -0.257783,-1.36269 -0.798062,-2.68582 -1.771464,-3.76721 -0.973297,-1.0814 -2.478749,-1.85984 -4.132554,-1.85984 z m 6.152595,34.74051 c 11.726704,0 21.185664,9.46065 21.185267,21.18735 0,11.7262 -9.459066,21.18696 -21.185267,21.18733 -11.726704,0 -21.187463,-9.4606 -21.18786,-21.18733 0,-11.72726 9.460653,-21.18772 21.18786,-21.18735 z"/>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=view&i=485540
+const VIEW_SETTINGS_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 60 60">
+    <title>Show the settings panel</title>
+    <g fill="white">
+        <path d="M80,48.6c-7.8-10.4-18.4-16.7-30-16.7c-11.6,0-22.2,6.4-30,16.7c-0.6,0.9-0.6,2,0,2.9c7.8,10.4,18.4,16.7,30,16.7  s22.2-6.4,30-16.7C80.7,50.6,80.7,49.4,80,48.6z M62.8,50.8c-0.4,6.4-5.6,11.6-12,12c-7.7,0.5-14.1-5.9-13.6-13.6  c0.4-6.4,5.6-11.6,12-12C56.9,36.7,63.3,43.1,62.8,50.8z M56.9,50.4c-0.2,3.4-3,6.2-6.4,6.4c-4.2,0.3-7.6-3.2-7.3-7.3  c0.2-3.4,3-6.2,6.4-6.4C53.7,42.8,57.2,46.3,56.9,50.4z"/>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=edit&i=1072354
+const EDIT_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-25 -25 562 562">
+    <title>Edit the program (Ctrl-Enter)</title>
+    <g fill="white">
+        <path d="M318.37,85.45L422.53,190.11,158.89,455,54.79,350.38ZM501.56,60.2L455.11,13.53a45.93,45.93,0,0,0-65.11,0L345.51,58.24,449.66,162.9l51.9-52.15A35.8,35.8,0,0,0,501.56,60.2ZM0.29,497.49a11.88,11.88,0,0,0,14.34,14.17l116.06-28.28L26.59,378.72Z"/>
+    </g>
+</svg>
+`;
+// https://thenounproject.com/search/?q=checkmark&i=1409439
+const CHECK_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <title>Save (Ctrl-Enter)</title>
+    <g fill="white">
+        <line x1="19.713" y1="55.055" x2="33.258" y2="68.6"/>
+        <path d="M92.059,19.7c-2.733-2.733-7.165-2.734-9.9,0L33.258,68.6L17.841,53.183c-2.734-2.732-7.166-2.733-9.899,0.001   c-2.734,2.733-2.734,7.165,0,9.899l20.367,20.366c1.367,1.366,3.158,2.05,4.95,2.05s3.583-0.684,4.95-2.05l53.85-53.85   C94.792,26.866,94.792,22.434,92.059,19.7z"/>
+    </g>
+</svg>
+
+`;
+// https://thenounproject.com/search/?q=close&i=1609004
+const CROSS_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 110 110">
+    <title>Cancel</title>
+    <path fill="white" fill-rule="evenodd" clip-rule="evenodd" d="M61.2,50.5l32.1,32.1c3,3,3,7.7,0,10.7c-3,3-7.7,3-10.7,0L50.5,61.2L18.4,93.3c-3,3-7.7,3-10.7,0  c-3-3-3-7.7,0-10.7l32.1-32.1L7.7,18.4c-3-3-3-7.7,0-10.7s7.7-3,10.7,0l32.1,32.1L82.6,7.7c3-3,7.7-3,10.7,0c3,3,3,7.7,0,10.7  L61.2,50.5z"/>
+</svg>
+`;
+// https://thenounproject.com/term/mute/1915537
+const MUTED_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 0 1024 1024">
+    <title>Unmute</title>
+    <path fill="white" d="M 706,852.3 V 781 c -6.7,-6.6 -13.3,-13.3 -20,-19.9 -6.7,-6.6 -13.3,-13.3 -20,-19.9 -2.3,-2.2 -4.5,-4.5 -6.8,-6.7 L 469,545.2 c -61.6,-61.3 -123.3,-122.6 -184.9,-184 -1.6,-1.6 -3.3,-3.2 -4.9,-4.9 -5.2,-5.1 -10.3,-10.2 -15.5,-15.4 -6.7,-6.7 -13.4,-13 -20.1,-20 H 90 c -10.8,0 -20,9.1 -20,20 v 299.9 c 0,13.8 -0.4,27.7 0,41.5 v 0.6 c 0,10.8 9.2,20 20,20 h 214.7 c 22,19 44,37.6 66,56.3 46.5,39.8 93.1,79.5 139.6,119.3 29.3,25 58.7,50.1 88,75.2 22.8,19.5 58,30.7 83.1,9.3 17.3,-14.7 23.1,-40.3 24.5,-62 1,-16 0.1,-32.5 0.1,-48.7 z"/>
+    <path fill="white" d="m 694.3,70.7 c -8,-11.7 -19.6,-19.1 -33.6,-21 -16.8,-2.3 -34.9,2.8 -49.5,11.3 -5.1,2.9 -9.6,7.5 -14,11.3 -10.3,8.8 -20.7,17.6 -31,26.4 -33.9,28.9 -67.8,57.7 -101.7,86.5 -23.5,19.9 -47,39.8 -70.4,59.8 4.7,4.7 9.4,9.4 14.2,14.1 4.7,4.7 9.4,9.4 14.2,14.1 6.5,6.5 13,13 19.6,19.5 63.4,63.1 126.8,126.1 190.1,189.2 11.3,11.2 22.6,22.5 33.8,33.7 6.7,6.6 13.3,13.3 20,19.9 6.7,6.6 13.3,13.3 20,19.9 V 119 c -0.1,-16.3 -2.2,-34.5 -11.7,-48.3 z"/>
+    <path stroke="white" stroke-width="80.1" stroke-linecap="round" d="M 139.75018,103.02184 934.53553,895.07339"/>
+</svg>
+`;
+// https://thenounproject.com/term/mute/1915537 (modified by me to get rid of line).
+const UNMUTED_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-100 0 1024 1024">
+    <title>Mute</title>
+    <path fill="white" d="M 88.65873,702.7619 304.7,702.9 605.71429,960 c 40.51022,32.06833 100.31746,5.28523 100.31746,-46.98413 l -0.41421,-806.94435 c 0,-57.136329 -64.88295,-70.781271 -94.96826,-45.714278 L 304.7,320.8616 93.968254,321.01984 c -14.687138,0 -23.396825,7.42695 -23.396825,21.27778 l -0.08532,344.06151 c 0,7.13959 8.057136,16.40277 18.172619,16.40277 z"/>
+</svg>
+`;
+const ControlPanel_GLOBAL_CSS = `
+.${ControlPanel_gPanelCssClass} {
+    background-color: rgba(40, 40, 40, 0.8);
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity .20s ease-in-out;
+}
+
+.${ControlPanel_gScreenNodeCssClass} {
+    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
+    position: relative;
+}
+
+.${ControlPanel_gScreenNodeCssClass}:hover .${ControlPanel_gPanelCssClass} {
+    opacity: 1;
+}
+
+/* Hide the control panel if any other panel is showing (like settings). */
+.${ControlPanel_gScreenNodeCssClass}.${gShowingOtherPanelCssClass}:hover .${ControlPanel_gPanelCssClass} {
+    opacity: 0;
+}
+
+.${gButtonCssClass} {
+    display: block;
+    /* background-color: red; */
+    margin: 15px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity .05s ease-in-out, transform 0.05s ease-in-out;
+
+    /* For icons that stick out a bit: */
+    overflow: visible;
+}
+
+.${gButtonCssClass}:hover {
+    opacity: 1;
+}
+
+.${gButtonCssClass}:active {
+    transform: scale(1.15);
+}
+
+.${gButtonCssClass}.${gButtonHiddenCssClass} {
+    display: none;
+}
+
+`;
+/**
+ * Control panel that hovers in the screen for doing things like resetting the computer.
+ */
+class ControlPanel_ControlPanel {
+    /**
+     * @param screenNode the node from the Trs80Screen object's getNode() method.
+     */
+    constructor(screenNode) {
+        // Make global CSS if necessary.
+        ControlPanel_ControlPanel.configureStyle();
+        this.screenNode = screenNode;
+        screenNode.classList.add(ControlPanel_gScreenNodeCssClass);
+        this.panelNode = document.createElement("div");
+        this.panelNode.classList.add(ControlPanel_gPanelCssClass);
+        screenNode.appendChild(this.panelNode);
+    }
+    /**
+     * Generic function to add a button to the control panel.
+     */
+    addButton(iconSvg, callback) {
+        const icon = new DOMParser().parseFromString(iconSvg, "image/svg+xml").documentElement;
+        icon.classList.add(gButtonCssClass);
+        icon.setAttribute("width", "30");
+        icon.setAttribute("height", "30");
+        if (callback !== undefined) {
+            icon.addEventListener("click", callback);
+        }
+        this.panelNode.append(icon);
+        return icon;
+    }
+    /**
+     * Add a reset button.
+     */
+    addResetButton(callback) {
+        return this.addButton(RESET_ICON, callback);
+    }
+    /**
+     * Add a screenshot button.
+     */
+    addScreenshotButton(callback) {
+        return this.addButton(CAMERA_ICON, callback);
+    }
+    /**
+     * Add a tape rewind button.
+     */
+    addTapeRewindButton(callback) {
+        return this.addButton(PREVIOUS_TRACK_ICON, callback);
+    }
+    /**
+     * Add a settings button.
+     */
+    addSettingsButton(settingsPanel) {
+        settingsPanel.onOpen = () => this.screenNode.classList.add(gShowingOtherPanelCssClass);
+        settingsPanel.onClose = () => this.screenNode.classList.remove(gShowingOtherPanelCssClass);
+        let iconSvg;
+        switch (settingsPanel.panelType) {
+            case PanelType.HARDWARE:
+            default:
+                iconSvg = HARDWARE_SETTINGS_ICON;
+                break;
+            case PanelType.VIEW:
+                iconSvg = VIEW_SETTINGS_ICON;
+                break;
+        }
+        return this.addButton(iconSvg, () => settingsPanel.open());
+    }
+    /**
+     * Add a button to edit the program.
+     */
+    addEditorButton(callback) {
+        return this.addButton(EDIT_ICON, callback);
+    }
+    /**
+     * Add button to toggle mute.
+     */
+    addMuteButton(mutable) {
+        const mutedButton = this.addButton(MUTED_ICON);
+        const unmutedButton = this.addButton(UNMUTED_ICON);
+        const updateVisibility = () => {
+            const isMuted = mutable.isMuted();
+            mutedButton.classList.toggle(gButtonHiddenCssClass, !isMuted);
+            unmutedButton.classList.toggle(gButtonHiddenCssClass, isMuted);
+        };
+        mutedButton.addEventListener("click", () => {
+            mutable.unmute();
+            updateVisibility();
+        });
+        unmutedButton.addEventListener("click", () => {
+            mutable.mute();
+            updateVisibility();
+        });
+        updateVisibility();
+    }
+    /**
+     * Add a button to save.
+     */
+    addSaveButton(callback) {
+        this.addButton(CHECK_ICON, callback);
+    }
+    /**
+     * Add a button to cancel.
+     */
+    addCancelButton(callback) {
+        this.addButton(CROSS_ICON, callback);
+    }
+    /**
+     * Make a global stylesheet for all TRS-80 emulators on this page.
+     */
+    static configureStyle() {
+        const styleId = ControlPanel_gCssPrefix;
+        if (document.getElementById(styleId) !== null) {
+            // Already created.
+            return;
+        }
+        const node = document.createElement("style");
+        node.id = styleId;
+        node.innerHTML = ControlPanel_GLOBAL_CSS;
+        document.head.appendChild(node);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/ProgressBar.js
+
+const ProgressBar_gCssPrefix = CSS_PREFIX + "-progress-bar";
+const ProgressBar_gScreenNodeCssClass = ProgressBar_gCssPrefix + "-screen-node";
+const gBarCssClass = ProgressBar_gCssPrefix + "-bar";
+const gSubbarCssClass = ProgressBar_gCssPrefix + "-subbar";
+const ProgressBar_GLOBAL_CSS = "." + gBarCssClass + ` {
+    background-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 15%;
+    width: 70%;
+    bottom: 10%;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .20s ease-in-out;
+}
+
+.` + gSubbarCssClass + ` {
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 0;
+    height: 20px;
+}
+
+.` + ProgressBar_gScreenNodeCssClass + ` {
+    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
+    position: relative;
+}
+
+`;
+/**
+ * Overlay on top of a screen to show progress, for instance the position of a cassette tape.
+ */
+class ProgressBar {
+    /**
+     * @param screenNode the node from the Trs80Screen object's getNode() method.
+     */
+    constructor(screenNode) {
+        this.maxValue = 100;
+        // Make global CSS if necessary.
+        ProgressBar.configureStyle();
+        screenNode.classList.add(ProgressBar_gScreenNodeCssClass);
+        this.barNode = document.createElement("div");
+        this.barNode.classList.add(gBarCssClass);
+        screenNode.appendChild(this.barNode);
+        this.subbarNode = document.createElement("div");
+        this.subbarNode.classList.add(gSubbarCssClass);
+        this.barNode.appendChild(this.subbarNode);
+    }
+    setMaxValue(maxValue) {
+        this.maxValue = maxValue;
+    }
+    setValue(value) {
+        this.subbarNode.style.width = "" + Math.round(value * 100 / this.maxValue) + "%";
+    }
+    show() {
+        this.barNode.style.opacity = "1";
+    }
+    hide() {
+        this.barNode.style.opacity = "0";
+    }
+    /**
+     * Make a global stylesheet for all TRS-80 emulators on this page.
+     */
+    static configureStyle() {
+        const styleId = ProgressBar_gCssPrefix;
+        if (document.getElementById(styleId) !== null) {
+            // Already created.
+            return;
+        }
+        const node = document.createElement("style");
+        node.id = styleId;
+        node.innerHTML = ProgressBar_GLOBAL_CSS;
+        document.head.appendChild(node);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/DriveIndicators.js
+
+
+const DriveIndicators_gCssPrefix = CSS_PREFIX + "-drive-indicators";
+const DriveIndicators_gScreenNodeCssClass = DriveIndicators_gCssPrefix + "-screen-node";
+const gIndicatorCssClass = DriveIndicators_gCssPrefix + "-indicator";
+const gIndicatorDriveOnCssClass = DriveIndicators_gCssPrefix + "-drive-on";
+const DriveIndicators_GLOBAL_CSS = `
+.${DriveIndicators_gScreenNodeCssClass} {
+    /* Force the screen node to relative positioning. Hope that doesn't screw anything up. */
+    position: relative;
+}
+
+.${gIndicatorCssClass} {
+    position: absolute;
+    background-color: #CC0000;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity .20s ease-in-out;
+    filter: drop-shadow(0 0 3px #ff0000);
+}
+
+.${gIndicatorDriveOnCssClass} {
+    opacity: .75;
+}
+`;
+/**
+ * Red lights on top of the screen that indicate which drives are spinning.
+ */
+class DriveIndicators_DriveIndicators {
+    /**
+     * @param screenNode the node from the Trs80Screen object's getNode() method.
+     */
+    constructor(screenNode) {
+        this.lights = [];
+        // Make global CSS if necessary.
+        DriveIndicators_DriveIndicators.configureStyle();
+        screenNode.classList.add(DriveIndicators_gScreenNodeCssClass);
+        for (let i = 0; i < FLOPPY_DRIVE_COUNT; i++) {
+            const light = document.createElement("div");
+            light.classList.add(gIndicatorCssClass);
+            light.style.bottom = (12 + 20 * i) + "px";
+            screenNode.append(light);
+            this.lights.push(light);
+        }
+    }
+    /**
+     * Set the drive number (0-based) that's currently on, if any.
+     * @param drive
+     */
+    setActiveDrive(drive) {
+        for (let i = 0; i < FLOPPY_DRIVE_COUNT; i++) {
+            this.lights[i].classList.toggle(gIndicatorDriveOnCssClass, i === drive);
+        }
+    }
+    /**
+     * Make a global stylesheet for all TRS-80 emulators on this page.
+     */
+    static configureStyle() {
+        const styleId = DriveIndicators_gCssPrefix;
+        if (document.getElementById(styleId) !== null) {
+            // Already created.
+            return;
+        }
+        const node = document.createElement("style");
+        node.id = styleId;
+        node.innerHTML = DriveIndicators_GLOBAL_CSS;
+        document.head.appendChild(node);
+    }
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-emulator/dist/index.js
+
+
+
+
+
+
+
+
+// EXTERNAL MODULE: ./node_modules/z80-disasm/dist/index.js
+var z80_disasm_dist = __webpack_require__(5);
+
+// CONCATENATED MODULE: ./node_modules/trs80-disasm/dist/KnownLabels.js
+const TRS80_MODEL_III_KNOWN_LABELS = [
+    [0x0298, "clkon"],
+    [0x02a1, "clkoff"],
+    [0x0296, "cshin"],
+    [0x0235, "csin"],
+    [0x0287, "cshwr"],
+    [0x01f8, "csoff"],
+    [0x0264, "csout"],
+    [0x3033, "date"],
+    [0x0060, "delay"],
+    [0x0069, "initio"],
+    [0x002b, "kbchar"],
+    [0x0040, "kbline"],
+    [0x0049, "kbwait"],
+    [0x028d, "kbbrk"],
+    [0x003b, "prchar"],
+    [0x01d9, "prscn"],
+    [0x1a19, "ready"],
+    [0x0000, "reset"],
+    [0x006c, "route"],
+    [0x005a, "rsinit"],
+    [0x0050, "rsrcv"],
+    [0x0055, "rstx"],
+    [0x3042, "setcas"],
+    [0x3036, "time"],
+    [0x0033, "vdchar"],
+    [0x01c9, "vdcls"],
+    [0x021b, "vdline"],
+];
+
+// CONCATENATED MODULE: ./node_modules/trs80-disasm/dist/Main.js
+
+
+
+// Whether to try to disassemble this chunk.
+function shouldDisassembleSystemProgramChunk(chunk) {
+    if (chunk.loadAddress >= TRS80_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= TRS80_SCREEN_END) {
+        return false;
+    }
+    // Various addresses that don't represent code.
+    if (chunk.loadAddress === 0x4210 || chunk.loadAddress === 0x401E) {
+        return false;
+    }
+    return true;
+}
+/**
+ * Create and configure a disassembler for the specified program.
+ */
+function disasmForTrs80Program(program) {
+    const disasm = new z80_disasm_dist["Disasm"]();
+    disasm.addLabels(z80_disasm_dist["Z80_KNOWN_LABELS"]);
+    disasm.addLabels(TRS80_MODEL_III_KNOWN_LABELS);
+    if (program.entryPointAddress !== undefined) {
+        disasm.addLabels([[program.entryPointAddress, "main"]]);
+    }
+    if (program.className === "CmdProgram") {
+        for (const chunk of program.chunks) {
+            if (chunk instanceof CmdProgram_CmdLoadBlockChunk) {
+                disasm.addChunk(chunk.loadData, chunk.address);
+            }
+            if (chunk instanceof CmdProgram_CmdTransferAddressChunk) {
+                // Not sure what to do here. I've seen junk after this block, and we risk
+                // overwriting valid things in memory. I suspect that CMD parsers of the time,
+                // when running into this block, would immediately just jump to the address
+                // and ignore everything after it, so let's emulate that.
+                break;
+            }
+        }
+    }
+    else if (program.className === "SystemProgram") {
+        for (const chunk of program.chunks) {
+            if (shouldDisassembleSystemProgramChunk(chunk)) {
+                disasm.addChunk(chunk.data, chunk.loadAddress);
+            }
+        }
+    }
+    else {
+        throw new Error("program is neither SystemProgram nor CmdProgram");
+    }
+    if (program.entryPointAddress !== undefined) {
+        disasm.addEntryPoint(program.entryPointAddress);
+    }
+    return disasm;
+}
+
+// CONCATENATED MODULE: ./node_modules/trs80-disasm/dist/index.js
+
+
 
 // CONCATENATED MODULE: ./src/SystemProgramRender.ts
 
@@ -28492,7 +25148,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         SystemProgramRender_add(line, systemProgram.error, classes.error);
     }
     // Prepare screenshot, in case loading process writes to screen.
-    const screen = new trs80_emulator_dist["CanvasScreen"]();
+    const screen = new CanvasScreen_CanvasScreen();
     let wroteToScreen = false;
     // List chunks on tape.
     let h1 = document.createElement("h1");
@@ -28515,7 +25171,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
         text = text.padEnd(14, " ");
         SystemProgramRender_add(line, text, classes.hex);
         // Write explanation.
-        if (chunk.loadAddress >= trs80_base_dist["TRS80_SCREEN_BEGIN"] && chunk.loadAddress + chunk.data.length <= trs80_base_dist["TRS80_SCREEN_END"]) {
+        if (chunk.loadAddress >= TRS80_SCREEN_BEGIN && chunk.loadAddress + chunk.data.length <= TRS80_SCREEN_END) {
             SystemProgramRender_add(line, "Screen", classes.opcodes);
             if (!wroteToScreen) {
                 SystemProgramRender_add(line, " (see screenshot below)", classes.error);
@@ -28558,7 +25214,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
     h1 = document.createElement("h1");
     h1.innerText = "Disassembly";
     out.appendChild(h1);
-    const disasm = Object(trs80_disasm_dist["disasmForTrs80Program"])(systemProgram);
+    const disasm = disasmForTrs80Program(systemProgram);
     const instructions = disasm.disassemble();
     for (const instruction of instructions) {
         if (instruction.label !== undefined) {
@@ -28586,7 +25242,7 @@ function SystemProgramRender_toDiv(systemProgram, out) {
             if (byteOffset !== undefined) {
                 const endIndex = byteOffset + subbytes.length;
                 elements.push(new Highlightable(byteOffset, endIndex - 1, line));
-                annotations.push(new ProgramAnnotation["ProgramAnnotation"](instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
+                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
             }
             address += subbytes.length;
             bytes.splice(0, subbytes.length);
@@ -28596,7 +25252,6 @@ function SystemProgramRender_toDiv(systemProgram, out) {
 }
 
 // CONCATENATED MODULE: ./src/CmdProgramRender.ts
-
 
 
 
@@ -28706,44 +25361,47 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
         out.appendChild(line);
         // Chunk type.
         CmdProgramRender_add(line, Object(z80_base_dist["toHexByte"])(chunk.type) + "  ", classes.address);
-        if (chunk instanceof trs80_base_dist["CmdLoadBlockChunk"]) {
-            CmdProgramRender_add(line, "Load at ", classes.opcodes);
-            CmdProgramRender_add(line, Object(z80_base_dist["toHexWord"])(chunk.address), classes.address);
-            CmdProgramRender_add(line, ": ", classes.opcodes);
-            const bytes = chunk.loadData.slice(0, Math.min(3, chunk.loadData.length));
-            const text = Array.from(bytes).map(z80_base_dist["toHexByte"]).join(" ") + (bytes.length < chunk.loadData.length ? " ..." : "");
-            CmdProgramRender_add(line, text, classes.hex);
-            CmdProgramRender_add(line, " (" + chunk.loadData.length + " byte" + (chunk.loadData.length == 1 ? "" : "s") + ")", classes.address);
-            if (programAddress !== undefined && chunk.address !== programAddress) {
-                CmdProgramRender_add(line, " (not contiguous, expected " + Object(z80_base_dist["toHexWord"])(programAddress) + ")", classes.error);
-            }
-            programAddress = chunk.address + chunk.loadData.length;
-        }
-        else if (chunk instanceof trs80_base_dist["CmdTransferAddressChunk"]) {
-            if (chunk.rawData.length !== 2) {
-                CmdProgramRender_add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
-            }
-            else {
-                CmdProgramRender_add(line, "Jump to ", classes.opcodes);
+        switch (chunk.className) {
+            case "CmdLoadBlockChunk": {
+                CmdProgramRender_add(line, "Load at ", classes.opcodes);
                 CmdProgramRender_add(line, Object(z80_base_dist["toHexWord"])(chunk.address), classes.address);
+                CmdProgramRender_add(line, ": ", classes.opcodes);
+                const bytes = chunk.loadData.slice(0, Math.min(3, chunk.loadData.length));
+                const text = Array.from(bytes).map(z80_base_dist["toHexByte"]).join(" ") + (bytes.length < chunk.loadData.length ? " ..." : "");
+                CmdProgramRender_add(line, text, classes.hex);
+                CmdProgramRender_add(line, " (" + chunk.loadData.length + " byte" + (chunk.loadData.length == 1 ? "" : "s") + ")", classes.address);
+                if (programAddress !== undefined && chunk.address !== programAddress) {
+                    CmdProgramRender_add(line, " (not contiguous, expected " + Object(z80_base_dist["toHexWord"])(programAddress) + ")", classes.error);
+                }
+                programAddress = chunk.address + chunk.loadData.length;
+                break;
             }
-        }
-        else if (chunk instanceof trs80_base_dist["CmdLoadModuleHeaderChunk"]) {
-            CmdProgramRender_add(line, "Load module header: ", classes.opcodes);
-            CmdProgramRender_add(line, chunk.filename, classes.hex);
-        }
-        else {
-            CmdProgramRender_add(line, "Unknown type: ", classes.error);
-            const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
-            const text = Array.from(bytes).map(z80_base_dist["toHexByte"]).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
-            CmdProgramRender_add(line, text, classes.hex);
-            CmdProgramRender_add(line, " (" + chunk.rawData.length + " byte" + (chunk.rawData.length == 1 ? "" : "s") + ")", classes.address);
+            case "CmdTransferAddressChunk":
+                if (chunk.rawData.length !== 2) {
+                    CmdProgramRender_add(line, "Transfer address chunk has invalid length " + chunk.rawData.length, classes.error);
+                }
+                else {
+                    CmdProgramRender_add(line, "Jump to ", classes.opcodes);
+                    CmdProgramRender_add(line, Object(z80_base_dist["toHexWord"])(chunk.address), classes.address);
+                }
+                break;
+            case "CmdLoadModuleHeaderChunk":
+                CmdProgramRender_add(line, "Load module header: ", classes.opcodes);
+                CmdProgramRender_add(line, chunk.filename, classes.hex);
+                break;
+            default:
+                CmdProgramRender_add(line, "Unknown type: ", classes.error);
+                const bytes = chunk.rawData.slice(0, Math.min(3, chunk.rawData.length));
+                const text = Array.from(bytes).map(z80_base_dist["toHexByte"]).join(" ") + (bytes.length < chunk.rawData.length ? " ..." : "");
+                CmdProgramRender_add(line, text, classes.hex);
+                CmdProgramRender_add(line, " (" + chunk.rawData.length + " byte" + (chunk.rawData.length == 1 ? "" : "s") + ")", classes.address);
+                break;
         }
     }
     h1 = document.createElement("h1");
     h1.innerText = "Disassembly";
     out.appendChild(h1);
-    const disasm = Object(trs80_disasm_dist["disasmForTrs80Program"])(cmdProgram);
+    const disasm = disasmForTrs80Program(cmdProgram);
     const instructions = disasm.disassemble();
     for (const instruction of instructions) {
         if (instruction.label !== undefined) {
@@ -28771,7 +25429,7 @@ function CmdProgramRender_toDiv(cmdProgram, out) {
             if (byteOffset !== undefined) {
                 const endIndex = byteOffset + subbytes.length;
                 elements.push(new Highlightable(byteOffset, endIndex - 1, line));
-                annotations.push(new ProgramAnnotation["ProgramAnnotation"](instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
+                annotations.push(new ProgramAnnotation(instruction.toText() + "\n" + instruction.binText(), byteOffset, endIndex));
             }
             address += subbytes.length;
             bytes.splice(0, subbytes.length);
@@ -28881,7 +25539,7 @@ function Hexdump_create(binary, div) {
 
 
 
-let gRadioButtonCounter = 1;
+let WaveformDisplay_gRadioButtonCounter = 1;
 /**
  * Whether the user is selecting whole bytes or audio samples.
  */
@@ -29103,8 +25761,8 @@ class WaveformDisplay_WaveformDisplay {
             selectionLabel.style.fontWeight = "bold";
             controls.append(selectionLabel);
             // Unique name for this group of inputs.
-            const name = "selection-type-radio-name-" + gRadioButtonCounter;
-            gRadioButtonCounter += 1;
+            const name = "selection-type-radio-name-" + WaveformDisplay_gRadioButtonCounter;
+            WaveformDisplay_gRadioButtonCounter += 1;
             // Options for selection mode.
             let selectionModes = [
                 {
@@ -29558,7 +26216,7 @@ class WaveformDisplay_WaveformDisplay {
                             const x1 = viewSampleToX(byteInfo.startFrame / origSamplesPerViewSamples);
                             const x2 = viewSampleToX(byteInfo.endFrame / origSamplesPerViewSamples);
                             let byteValue = byteInfo.value;
-                            const basicToken = Object(trs80_base_dist["getToken"])(byteValue);
+                            const basicToken = getToken(byteValue);
                             const label = byteValue < 32 ? "^" + String.fromCodePoint(byteValue + 64)
                                 : byteValue === 32 ? '\u2423' // Open box to represent space.
                                     : byteValue < 128 ? String.fromCodePoint(byteValue)
@@ -29935,7 +26593,7 @@ function decodeEdtasm(bytes, out) {
 /**
  * Generic cassette that reads from a Int16Array.
  */
-class TapeBrowser_Int16Cassette extends trs80_emulator_dist["CassettePlayer"] {
+class TapeBrowser_Int16Cassette extends CassettePlayer {
     constructor(samples, sampleRate) {
         super();
         this.frame = 0;
@@ -30207,11 +26865,24 @@ class TapeBrowser_TapeBrowser {
                 : systemPane !== undefined ? ".3BN"
                     : cmdPane !== undefined ? ".CMD"
                         : ".BIN";
-            addKeyValues("Download", [binExtention, ".CAS"], (extension) => {
+            addKeyValues("Download", [binExtention, ".CAS", ".WAV"], (extension) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const contents = extension === binExtention ? program.binary : program.asCasFile();
-                const blob = new Blob([contents], { type: "application/octet-stream" });
+                let contents;
+                let type;
+                if (extension === ".CAS") {
+                    contents = program.asCasFile();
+                    type = "application/octet-stream";
+                }
+                else if (extension === ".WAV") {
+                    contents = program.asWavFile();
+                    type = "audio/wav";
+                }
+                else {
+                    contents = program.binary;
+                    type = "application/octet-stream";
+                }
+                const blob = new Blob([contents], { type: type });
                 a.href = window.URL.createObjectURL(blob);
                 a.download = (this.tape.name + "-" + program.getShortLabel()).replace(/ /g, "-") + extension;
                 a.click();
@@ -30233,11 +26904,20 @@ class TapeBrowser_TapeBrowser {
             }
         }
         else {
-            addKeyValues("Download", [".CAS"], (extension) => {
+            addKeyValues("Download", [".CAS", ".WAV"], (extension) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const contents = program.asCasFile();
-                const blob = new Blob([contents], { type: "application/octet-stream" });
+                let contents;
+                let type;
+                if (extension === ".CAS") {
+                    contents = program.asCasFile();
+                    type = "application/octet-stream";
+                }
+                else {
+                    contents = program.asWavFile();
+                    type = "audio/wav";
+                }
+                const blob = new Blob([contents], { type: type });
                 a.href = window.URL.createObjectURL(blob);
                 a.download = (this.tape.name).replace(/ /g, "-") + extension;
                 a.click();
@@ -30292,7 +26972,7 @@ class TapeBrowser_TapeBrowser {
             const screenshotDiv = document.createElement("div");
             screenshotDiv.style.marginLeft = "20pt";
             div.appendChild(screenshotDiv);
-            const screenshotScreen = new trs80_emulator_dist["CanvasScreen"]();
+            const screenshotScreen = new CanvasScreen_CanvasScreen();
             const updateScreenshot = (screenshot) => {
                 clearElement(screenshotDiv);
                 if (screenshot !== "") {
@@ -30318,7 +26998,7 @@ class TapeBrowser_TapeBrowser {
                     screenshotDiv.addEventListener("click", () => onProgramClick(subprogram));
                 }
                 screenshotsDiv.appendChild(screenshotDiv);
-                const screenshotScreen = new trs80_emulator_dist["CanvasScreen"]();
+                const screenshotScreen = new CanvasScreen_CanvasScreen();
                 const updateScreenshot = function (screenshot) {
                     clearElement(screenshotDiv);
                     if (screenshot !== "") {
@@ -30499,18 +27179,18 @@ class TapeBrowser_TapeBrowser {
         const div = document.createElement("div");
         const screenDiv = document.createElement("div");
         div.appendChild(screenDiv);
-        const screen = new trs80_emulator_dist["CanvasScreen"]();
+        const screen = new CanvasScreen_CanvasScreen();
         screenDiv.append(screen.getNode());
-        const trs80 = new trs80_emulator_dist["Trs80"](screen, cassette !== null && cassette !== void 0 ? cassette : new TapeBrowser_EmptyCassette());
+        const trs80 = new Trs80_Trs80(screen, cassette !== null && cassette !== void 0 ? cassette : new TapeBrowser_EmptyCassette());
         const reboot = () => {
             trs80.reset();
             if (trs80File !== undefined) {
                 trs80.runTrs80File(trs80File);
             }
         };
-        const hardwareSettingsPanel = new trs80_emulator_dist["SettingsPanel"](screen.getNode(), trs80, trs80_emulator_dist["PanelType"].HARDWARE);
-        const viewPanel = new trs80_emulator_dist["SettingsPanel"](screen.getNode(), trs80, trs80_emulator_dist["PanelType"].VIEW);
-        const controlPanel = new trs80_emulator_dist["ControlPanel"](screen.getNode());
+        const hardwareSettingsPanel = new SettingsPanel(screen.getNode(), trs80, PanelType.HARDWARE);
+        const viewPanel = new SettingsPanel(screen.getNode(), trs80, PanelType.VIEW);
+        const controlPanel = new ControlPanel_ControlPanel(screen.getNode());
         controlPanel.addResetButton(reboot);
         if (cassette !== undefined) {
             controlPanel.addTapeRewindButton(() => {
@@ -30527,7 +27207,7 @@ class TapeBrowser_TapeBrowser {
         controlPanel.addSettingsButton(hardwareSettingsPanel);
         controlPanel.addSettingsButton(viewPanel);
         if (cassette !== undefined) {
-            const progressBar = new trs80_emulator_dist["ProgressBar"](screen.getNode());
+            const progressBar = new ProgressBar(screen.getNode());
             cassette.setProgressBar(progressBar);
         }
         reboot();
@@ -30634,9 +27314,9 @@ class TapeBrowser_TapeBrowser {
             }
             copiesOfTrack.push(program);
             // Decode the programs.
-            const basicProgram = Object(trs80_base_dist["decodeBasicProgram"])(program.binary);
-            const systemProgram = Object(trs80_base_dist["decodeSystemProgram"])(program.binary);
-            const cmdProgram = Object(trs80_base_dist["decodeCmdProgram"])(program.binary);
+            const basicProgram = decodeBasicProgram(program.binary);
+            const systemProgram = decodeSystemProgram(program.binary);
+            const cmdProgram = decodeCmdProgram(program.binary);
             // Make these panes here so they're accessible from the metadata page.
             const basicPane = basicProgram !== undefined ? this.makeBasicPane(program, basicProgram) : undefined;
             const systemPane = systemProgram !== undefined ? this.makeSystemPane(program, systemProgram) : undefined;
@@ -30780,7 +27460,7 @@ class Uploader_Uploader {
             audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, audio);
         }
         else if (pathname.toLowerCase().endsWith(".bas")) {
-            audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(Object(trs80_base_dist["wrapBasic"])(new Uint8Array(arrayBuffer))), DEFAULT_SAMPLE_RATE));
+            audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(wrapBasic(new Uint8Array(arrayBuffer))), DEFAULT_SAMPLE_RATE));
         }
         else if (pathname.toLowerCase().endsWith(".cmd")) {
             audioFile = new AudioFile(DEFAULT_SAMPLE_RATE, encodeLowSpeed(wrapLowSpeed(new Uint8Array(arrayBuffer)), DEFAULT_SAMPLE_RATE));
@@ -31716,7 +28396,7 @@ function populateBrowseScreen(browseScreen) {
             if (programData.screenshot) {
                 const div = document.createElement("div");
                 browseScreen.appendChild(div);
-                const screen = new trs80_emulator_dist["CanvasScreen"]();
+                const screen = new CanvasScreen_CanvasScreen();
                 screen.displayScreenshot(programData.screenshot);
                 div.append(screen.asImage());
             }

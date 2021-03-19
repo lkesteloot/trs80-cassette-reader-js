@@ -376,11 +376,24 @@ export class TapeBrowser {
                 : systemPane !== undefined ? ".3BN"
                     : cmdPane !== undefined ? ".CMD"
                         : ".BIN";
-            addKeyValues("Download", [binExtention, ".CAS"], (extension: string) => {
+            addKeyValues("Download", [binExtention, ".CAS", ".WAV"], (extension: string) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const contents = extension === binExtention ? program.binary : program.asCasFile();
-                const blob = new Blob([contents], {type: "application/octet-stream"});
+                let contents;
+                let type;
+
+                if (extension === ".CAS") {
+                    contents = program.asCasFile();
+                    type = "application/octet-stream";
+                } else if (extension === ".WAV") {
+                    contents = program.asWavFile();
+                    type = "audio/wav";
+                } else {
+                    contents = program.binary;
+                    type = "application/octet-stream";
+                }
+
+                const blob = new Blob([contents], {type: type});
                 a.href = window.URL.createObjectURL(blob);
 
                 a.download = (this.tape.name + "-" + program.getShortLabel()).replace(/ /g, "-") + extension;
@@ -401,11 +414,21 @@ export class TapeBrowser {
                 addKeyValue("Type", "Unknown");
             }
         } else {
-            addKeyValues("Download", [".CAS"], (extension: string) => {
+            addKeyValues("Download", [".CAS", ".WAV"], (extension: string) => {
                 // Download binary.
                 const a = document.createElement("a");
-                const contents = program.asCasFile();
-                const blob = new Blob([contents], {type: "application/octet-stream"});
+                let contents;
+                let type;
+
+                if (extension === ".CAS") {
+                    contents = program.asCasFile();
+                    type = "application/octet-stream";
+                } else {
+                    contents = program.asWavFile();
+                    type = "audio/wav";
+                }
+
+                const blob = new Blob([contents], {type: type});
                 a.href = window.URL.createObjectURL(blob);
                 a.download = (this.tape.name).replace(/ /g, "-") + extension;
                 a.click();

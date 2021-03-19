@@ -3,13 +3,14 @@
 // filtered-down samples for display, and other information
 // we got from it.
 
-import {AudioFile, highPassFilter} from "./AudioUtils";
+import {AudioFile, concatAudio, highPassFilter} from "./AudioUtils";
 import {DisplaySamples} from "./DisplaySamples";
 import {Program} from "./Program";
 import {WaveformAnnotation} from "./Annotations";
 import {SimpleEventDispatcher} from "strongly-typed-events";
 import {LowSpeedTapeDecoder} from "./LowSpeedTapeDecoder";
 import {concatByteArrays} from "./Utils";
+import {DEFAULT_SAMPLE_RATE, writeWavFile} from "./WavFile";
 
 const LOCAL_DATA_KEY = "tapes";
 
@@ -89,6 +90,26 @@ export class Tape {
      */
     public asCasFile(): Uint8Array {
         return concatByteArrays(this.programs.map(program => program.asCasFile()));
+    }
+
+    /**
+     * Return a .wav file version of the tape.
+     */
+    public asWavFile(): Uint8Array {
+        const audioParts: Int16Array[] = [];
+
+        for (const program of this.programs) {
+            // One second of silence before each program.
+            audioParts.push(new Int16Array(DEFAULT_SAMPLE_RATE));
+
+            // The program itself.
+            audioParts.push(program.asAudio());
+
+            // One second of silence after each program.
+            audioParts.push(new Int16Array(DEFAULT_SAMPLE_RATE));
+        }
+
+        return writeWavFile(concatAudio(audioParts), DEFAULT_SAMPLE_RATE);
     }
 
     /**
