@@ -2,9 +2,10 @@ import {AudioFile} from "./AudioUtils";
 import {toHexByte} from "z80-base";
 
 /**
- * Rate used for writing files.
+ * Rate used for writing files. We used to have 44.1 kHz here, but 22.05 kHz works just fine
+ * and the WAV files are half the size.
  */
-export const DEFAULT_SAMPLE_RATE = 44100;
+export const DEFAULT_SAMPLE_RATE = 22050;
 
 /**
  * Values for the "audioFormat" field.

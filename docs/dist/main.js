@@ -11925,9 +11925,10 @@ var z80_base_dist = __webpack_require__(0);
 
 
 /**
- * Rate used for writing files.
+ * Rate used for writing files. We used to have 44.1 kHz here, but 22.05 kHz works just fine
+ * and the WAV files are half the size.
  */
-const DEFAULT_SAMPLE_RATE = 44100;
+const DEFAULT_SAMPLE_RATE = 22050;
 /**
  * Values for the "audioFormat" field.
  */
@@ -12494,7 +12495,6 @@ function drawBrace(ctx, left, middle, right, top, bottom, drawOnTop) {
 
 
 
-
 // What distance away from 0 counts as "positive" (or, when negative, "negative").
 const THRESHOLD = 500;
 /**
@@ -12507,8 +12507,8 @@ class HighSpeedTapeDecoder_HighSpeedTapeDecoder {
         this.bits = [];
         this.byteData = [];
         this.tape = tape;
-        // Our "number of samples" comparisons assume DEFAULT_SAMPLE_RATE, so adjust for that.
-        this.lengthMultiplier = tape.sampleRate / DEFAULT_SAMPLE_RATE;
+        // Our "number of samples" comparisons assume 44100 Hz, so adjust for that.
+        this.lengthMultiplier = tape.sampleRate / 44100;
     }
     getName() {
         return "1500 baud";
