@@ -207,7 +207,7 @@ export function readWavFile(arrayBuffer: ArrayBuffer): AudioFile {
                     // Convert from 8-bit unsigned to 16-bit signed.
                     samples = new Int16Array(samples8.length);
                     for (let i = 0; i < samples.length; i++) {
-                        samples[i] = -(samples8[i] - 128)*255;
+                        samples[i] = (samples8[i] - 128)*255;
                     }
                 } else if (bitDepth === 16) {
                     samples = reader.readInt16Array(chunkSize);
@@ -233,10 +233,10 @@ export function readWavFile(arrayBuffer: ArrayBuffer): AudioFile {
  */
 export function writeWavFile(samples: Int16Array, sampleRate: number): Uint8Array {
     const channelCount = 1;
-    const bitDepth = 16;
+    const bitDepth = 8;
 
     // Total size of WAV file.
-    const totalSize = 11*4 + samples.length*2;
+    const totalSize = 11*4 + samples.length*bitDepth/8;
     const wav = new ArrayBuffer(totalSize);
     const wavData = new DataView(wav);
 
@@ -246,6 +246,10 @@ export function writeWavFile(samples: Int16Array, sampleRate: number): Uint8Arra
             wavData.setUint8(index, s.charCodeAt(i));
             index += 1;
         }
+    };
+    const writeUint8 = (n: number) => {
+        wavData.setUint8(index, n);
+        index += 1;
     };
     const writeUint16 = (n: number) => {
         wavData.setUint16(index, n, true);
@@ -267,7 +271,7 @@ export function writeWavFile(samples: Int16Array, sampleRate: number): Uint8Arra
 
     // Format chunk.
     writeString("fmt ");
-    writeUint32(16);
+    writeUint32(16); // Chunk size.
     writeUint16(WAVE_FORMAT_PCM);
     writeUint16(channelCount);
     writeUint32(sampleRate);
@@ -277,9 +281,12 @@ export function writeWavFile(samples: Int16Array, sampleRate: number): Uint8Arra
 
     // Data chunk.
     writeString("data");
-    writeUint32(samples.length*2);
+    writeUint32(samples.length*bitDepth/8);
     for (let i = 0; i < samples.length; i++) {
-        writeInt16(samples[i]);
+        // Convert from 16-bit signed to 8-bit unsigned.
+        const sample = Math.min(Math.max(Math.round(samples[i]/256 + 128), 0), 255);
+
+        writeUint8(sample);
     }
 
     if (index !== totalSize) {
