@@ -1,11 +1,13 @@
 # trs80-cassette-reader
 
+*This repo has moved to the [TRS-80 monorepo](https://github.com/lkesteloot/trs80).*
+
 Web app and command-line tool to read programs off of TRS-80 Model I and Model
 III cassettes.
 
 ![Tape](images/tape.jpg)
 
-[Try it now in your browser](https://lkesteloot.github.io/trs80-cassette-reader-js/)
+[Try it now in your browser](https://www.my-trs-80.com/cassette/)
 or run it locally:
 
     (clone repo)
